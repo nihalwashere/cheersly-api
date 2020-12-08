@@ -1,23 +1,27 @@
 {
-  "name": "cheers",
+  "name": "cheersly",
   "version": "1.0.0",
-  "description": "Spread happiness with cheers!!!",
+  "description": "build a cheerful team",
   "main": "server.js",
   "scripts": {
-    "start": "nf start",    
+    "start": "nf start",
     "lint": "eslint --ext .js .",
     "prettier": "prettier --write ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pikure/cheers.git"
+    "url": "git+https://github.com/pikure/cheersly.git"
   },
-  "author": "Pikure",
+  "author": "Nihal Kaul",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/pikure/cheers/issues"
+    "url": "https://github.com/pikure/cheersly/issues"
   },
-  "homepage": "https://github.com/pikure/cheers#readme",
+  "homepage": "https://github.com/pikure/cheersly#readme",
+  "engines": {
+    "node": "12.17.0",
+    "npm": "6.14.4"
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
