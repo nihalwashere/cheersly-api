@@ -23,15 +23,7 @@ app.use(
 );
 app.use(bodyParser.json());
 
-const whitelist = [
-  "https://app.codekickbot.com",
-  "https://www.codekickbot.com",
-  "https://codekickbot.com",
-  "https://codekickbot-dev.herokuapp.com",
-  "https://dev.codekickbot.com",
-  "https://app-dev.codekickbot.com",
-  "http://localhost:7000",
-];
+const whitelist = ["https://cheersly.herokuapp.com", "http://localhost:7000"];
 
 app.use(
   cors({
@@ -57,9 +49,13 @@ app.use(
 app.use(express.static(PUBLIC_DIR));
 
 // ROUTES
+const slackCommands = require("./src/api/v1/slack-commands");
+const slackEvents = require("./src/api/v1/slack-events");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
+app.use("/api/v1/slack-commands", slackCommands);
+app.use("/api/v1/slack-events", slackEvents);
 app.use("/api/test", test);
 
 // CONNECT TO MONGODB
@@ -73,12 +69,16 @@ mongoose
   .then(() => logger.info("MongoDB Connected!!!"))
   .catch((err) => logger.error("MongoDB Connection Failed -> error ", err));
 
-app.get("/contact", (req, res) => {
+app.get("/tos", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
 });
 
-app.get("/tos", (req, res) => {
+app.get("/privacy", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
+});
+
+app.get("/logo.png", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.jpg"));
 });
 
 const server = app.listen(PORT, () => {
