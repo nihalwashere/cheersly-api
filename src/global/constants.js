@@ -14,5 +14,5 @@ module.exports = {
   TOKENS_REVOKED,
   APP_MENTION,
   MESSAGE,
-  IM_CHANNEL_TYPE,
+  IM_CHANNEL_TYPE
 };

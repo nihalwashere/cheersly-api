@@ -4,9 +4,9 @@ const createHelpTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "List of available commands :\n",
-      },
-    },
+        text: "List of available commands :\n"
+      }
+    }
   ];
 };
 

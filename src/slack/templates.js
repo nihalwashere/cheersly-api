@@ -4,9 +4,9 @@ const createAPITokensRevokedTemplate = (teamId) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "API tokens revoked by team - " + teamId,
-      },
-    },
+        text: "API tokens revoked by team - " + teamId
+      }
+    }
   ];
 };
 
@@ -16,9 +16,9 @@ const createAppUninstalledTemplate = (teamId) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "Slack app uninstalled by team - " + teamId,
-      },
-    },
+        text: "Slack app uninstalled by team - " + teamId
+      }
+    }
   ];
 };
 
@@ -28,14 +28,14 @@ const createAppInstalledTemplate = (teamId) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "App installed by team - " + teamId,
-      },
-    },
+        text: "App installed by team - " + teamId
+      }
+    }
   ];
 };
 
 module.exports = {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
-  createAppInstalledTemplate,
+  createAppInstalledTemplate
 };

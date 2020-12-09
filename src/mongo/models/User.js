@@ -5,18 +5,18 @@ const collection = "User";
 const UserSchema = new mongoose.Schema(
   {
     slackUserData: {
-      type: Object,
+      type: Object
     },
     slackDeleted: {
       type: Boolean,
       default: false,
-      index: true,
+      index: true
     },
     appHomePublished: {
       type: Boolean,
       default: false,
-      index: true,
-    },
+      index: true
+    }
   },
   { timestamps: true }
 );

@@ -5,18 +5,13 @@ const collection = "Auth";
 const AuthSchema = new mongoose.Schema(
   {
     slackInstallation: {
-      type: Object,
+      type: Object
     },
     slackDeleted: {
       type: Boolean,
       default: false,
-      index: true,
-    },
-    initialSyncCompleted: {
-      type: Boolean,
-      default: false,
-      index: true,
-    },
+      index: true
+    }
   },
   { timestamps: true }
 );

@@ -18,12 +18,16 @@ const app = express();
 app.use(morgan("combined"));
 app.use(
   bodyParser.urlencoded({
-    extended: true,
+    extended: true
   })
 );
 app.use(bodyParser.json());
 
-const whitelist = ["https://cheersly.herokuapp.com", "http://localhost:7000"];
+const whitelist = [
+  "https://cheersly.herokuapp.com",
+  "http://localhost:7000",
+  "http://localhost:3000"
+];
 
 app.use(
   cors({
@@ -42,7 +46,7 @@ app.use(
       }
 
       return callback(null, true);
-    },
+    }
   })
 );
 
@@ -51,11 +55,13 @@ app.use(express.static(PUBLIC_DIR));
 // ROUTES
 const slackCommands = require("./src/api/v1/slack-commands");
 const slackEvents = require("./src/api/v1/slack-events");
+const slackInstallation = require("./src/api/v1/slack-installation");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
 app.use("/api/v1/slack-commands", slackCommands);
 app.use("/api/v1/slack-events", slackEvents);
+app.use("/api/v1/slack-installation", slackInstallation);
 app.use("/api/test", test);
 
 // CONNECT TO MONGODB
@@ -64,7 +70,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    useCreateIndex: true,
+    useCreateIndex: true
   })
   .then(() => logger.info("MongoDB Connected!!!"))
   .catch((err) => logger.error("MongoDB Connection Failed -> error ", err));
@@ -79,6 +85,10 @@ app.get("/privacy", (req, res) => {
 
 app.get("/logo.png", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.jpg"));
+});
+
+app.get("/app-installed", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
 });
 
 const server = app.listen(PORT, () => {

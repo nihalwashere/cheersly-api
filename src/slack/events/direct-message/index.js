@@ -6,7 +6,7 @@ const handleDirectMessage = async (payload) => {
   try {
     const {
       team_id,
-      event: { channel },
+      event: { channel }
     } = payload;
 
     const template = createDirectMessageHelpTemplate();

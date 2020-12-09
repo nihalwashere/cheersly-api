@@ -9,12 +9,12 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, body) => {
       return {
         error: true,
         status: 403,
-        message: "You can't replay me!",
+        message: "You can't replay me!"
       };
     }
 
     const baseString = `v0:${slackRequestTimestamp}:${qs.stringify(body, {
-      format: "RFC1738",
+      format: "RFC1738"
     })}`;
 
     // logger.debug("baseString : ", baseString);
@@ -33,16 +33,19 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, body) => {
       return {
         error: true,
         status: 403,
-        message: "Nice try buddy!",
+        message: "Nice try buddy!"
       };
     }
 
     return {
-      error: false,
+      error: false
     };
   } catch (error) {
     logger.error("verifySlackRequest() -> error : ", error);
   }
 };
 
-module.exports = { verifySlackRequest };
+const waitForMilliSeconds = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+module.exports = { verifySlackRequest, waitForMilliSeconds };

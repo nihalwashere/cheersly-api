@@ -11,11 +11,11 @@ const {
   TOKENS_REVOKED,
   APP_MENTION,
   MESSAGE,
-  IM_CHANNEL_TYPE,
+  IM_CHANNEL_TYPE
 } = require("../../global/constants");
 const {
   INTERNAL_SLACK_TEAM_ID,
-  INTERNAL_SLACK_CHANNEL_ID,
+  INTERNAL_SLACK_CHANNEL_ID
 } = require("../../global/config");
 const { deleteSlackAuthByTeamId } = require("../../mongo/helper/auth");
 const { deleteSlackUsersByTeamId } = require("../../mongo/helper/user");
@@ -23,7 +23,7 @@ const { postInternalMessage } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
 const {
   createAPITokensRevokedTemplate,
-  createSlackAppUninstalledTemplate,
+  createSlackAppUninstalledTemplate
 } = require("../../slack/templates");
 
 // HELPER
@@ -36,7 +36,7 @@ const verify = (slackRequestTimestamp, slackSignature, body) => {
     return {
       error: true,
       status: 403,
-      message: "You can't replay me!",
+      message: "You can't replay me!"
     };
   }
 
@@ -56,12 +56,12 @@ const verify = (slackRequestTimestamp, slackSignature, body) => {
     return {
       error: true,
       status: 403,
-      message: "Nice try buddy!",
+      message: "Nice try buddy!"
     };
   }
 
   return {
-    error: false,
+    error: false
   };
 };
 

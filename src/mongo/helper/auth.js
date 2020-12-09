@@ -1,11 +1,19 @@
 const Auth = require("../models/Auth");
 const logger = require("../../global/logger");
 
+const addAuth = async (payload) => {
+  try {
+    return await new Auth(payload).save();
+  } catch (error) {
+    logger.error("addAuth() -> error : ", error);
+  }
+};
+
 const getAuthDataForSlackTeam = async (teamId) => {
   try {
     return await Auth.findOne({
       "slackInstallation.team.id": teamId,
-      slackDeleted: false,
+      slackDeleted: false
     });
   } catch (error) {
     logger.error(
@@ -21,7 +29,7 @@ const getSlackBotTokenForTeam = async (team_id) => {
 
     if (auth) {
       const {
-        slackInstallation: { access_token: bot_access_token },
+        slackInstallation: { access_token: bot_access_token }
       } = auth;
 
       return bot_access_token;
@@ -51,7 +59,8 @@ const deleteSlackAuthByTeamId = async (teamId) => {
 };
 
 module.exports = {
+  addAuth,
   getAuthDataForSlackTeam,
   getSlackBotTokenForTeam,
-  deleteSlackAuthByTeamId,
+  deleteSlackAuthByTeamId
 };

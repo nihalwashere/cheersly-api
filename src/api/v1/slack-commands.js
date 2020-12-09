@@ -43,10 +43,10 @@ router.post("/", async (req, res) => {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: "Seeking some help...",
-            },
-          },
-        ],
+              text: "Seeking some help..."
+            }
+          }
+        ]
       });
 
       return await handleHelp(team_id, channel_id);

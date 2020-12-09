@@ -10,7 +10,7 @@ const {
   SLACK_CLIENT_ID,
   SLACK_CLIENT_SECRET,
   SLACK_SIGNING_SECRET,
-  MONGO_URL,
+  MONGO_URL
 } = process.env;
 
 module.exports = {
@@ -20,5 +20,5 @@ module.exports = {
   SLACK_CLIENT_ID,
   SLACK_CLIENT_SECRET,
   SLACK_SIGNING_SECRET,
-  PORT,
+  PORT
 };
