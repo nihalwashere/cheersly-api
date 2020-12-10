@@ -14,8 +14,7 @@ const UserSchema = new mongoose.Schema(
     },
     appHomePublished: {
       type: Boolean,
-      default: false,
-      index: true
+      default: false
     }
   },
   { timestamps: true }

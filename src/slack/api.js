@@ -213,7 +213,7 @@ const postInternalMessage = async (teamId, channel, message) => {
   }
 };
 
-const postMessageToHook = async (teamId, message, isBlockType = false) => {
+const postMessageToHook = async (teamId, message) => {
   try {
     const auth = await getAuthDataForSlackTeam(teamId);
 
@@ -223,13 +223,9 @@ const postMessageToHook = async (teamId, message, isBlockType = false) => {
       }
     } = auth;
 
-    const messagePayload = {};
-
-    if (isBlockType) {
-      messagePayload.blocks = message;
-    } else {
-      messagePayload.attachments = message;
-    }
+    const messagePayload = {
+      blocks: message
+    };
 
     const req = await fetch(url, {
       method: "POST",

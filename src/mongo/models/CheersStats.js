@@ -13,10 +13,10 @@ const CheersStatsSchema = new mongoose.Schema(
       index: true
     },
     cheersGiven: {
-      type: String
+      type: Number
     },
     cheersReceived: {
-      type: String
+      type: Number
     }
   },
   { timestamps: true }

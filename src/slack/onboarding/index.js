@@ -1,11 +1,11 @@
-const { slackPostMessageToChannel } = require("../api");
+const { postMessageToHook } = require("../api");
 const { createOnboardingTemplate } = require("./template");
 const logger = require("../../global/logger");
 
-const sendOnBoardingInstructions = async (channelId, teamId) => {
+const sendOnBoardingInstructions = async (teamId) => {
   try {
     const template = createOnboardingTemplate();
-    await slackPostMessageToChannel(channelId, teamId, template);
+    await postMessageToHook(teamId, template);
   } catch (error) {
     logger.error(`sendOnBoardingInstructions() -> error : ${error}`);
   }

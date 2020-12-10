@@ -4,7 +4,12 @@ const router = express.Router();
 
 const logger = require("../../global/logger");
 const { verifySlackRequest } = require("../../utils/common");
-const { isHelpCommand, handleHelp } = require("../../slack/commands/help");
+const { isHelpCommand } = require("../../slack/commands/help");
+const { createHelpTemplate } = require("../../slack/commands/help/template");
+const {
+  isCheersCommand,
+  handleCheersCommand
+} = require("../../slack/commands/cheers");
 
 router.get("/health", (req, res) =>
   res.json({ msg: "SLACK COMMANDS API IS UP AND RUNNING!!!" })
@@ -13,7 +18,6 @@ router.get("/health", (req, res) =>
 router.post("/", async (req, res) => {
   try {
     logger.debug("req.body : ", req.body);
-    logger.debug("req.headers : ", req.headers);
 
     const slackRequestTimestamp = req.headers["x-slack-request-timestamp"];
     const slackSignature = req.headers["x-slack-signature"];
@@ -29,27 +33,23 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const { team_id, channel_id, text, trigger_id } = req.body;
+    const { team_id, channel_id, user_id, text } = req.body;
 
-    // res.sendStatus(200);
+    if (isCheersCommand(text)) {
+      // /cheers @user1 @user2 @user3 Thanks for all the help
+
+      res.send("");
+
+      return await handleCheersCommand(team_id, channel_id, user_id, text);
+    }
 
     if (isHelpCommand(text)) {
-      // /codekick help
+      // /cheers help
 
-      res.status(200).json({
+      return res.status(200).json({
         response_type: "in_channel",
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: "Seeking some help..."
-            }
-          }
-        ]
+        blocks: createHelpTemplate()
       });
-
-      return await handleHelp(team_id, channel_id);
     }
   } catch (error) {
     logger.error("/slack-commands -> error : ", error);

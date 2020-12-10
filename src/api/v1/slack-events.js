@@ -17,13 +17,15 @@ const {
   INTERNAL_SLACK_TEAM_ID,
   INTERNAL_SLACK_CHANNEL_ID
 } = require("../../global/config");
+const User = require("../../mongo/models/User");
 const { deleteSlackAuthByTeamId } = require("../../mongo/helper/auth");
 const { deleteSlackUsersByTeamId } = require("../../mongo/helper/user");
-const { postInternalMessage } = require("../../slack/api");
+const { postInternalMessage, getSlackUser } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
+const { publishStats } = require("../../slack/app-home");
 const {
   createAPITokensRevokedTemplate,
-  createSlackAppUninstalledTemplate
+  createAppUninstalledTemplate
 } = require("../../slack/templates");
 
 // HELPER
@@ -127,6 +129,18 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
 
       const { user: slackUserId } = payload.event;
+
+      const user = await User.findOne({ "slackUserData.id": slackUserId });
+
+      if (user && !user.appHomePublished) {
+        await publishStats(payload.team_id, slackUserId);
+      }
+
+      if (!user) {
+        const slackUserData = await getSlackUser(payload.team_id, slackUserId);
+        await publishStats(payload.team_id, slackUserId);
+        await new User({ slackUserData, appHomePublished: true }).save();
+      }
     }
 
     // DIRECT MESSAGE
@@ -167,7 +181,7 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
       logger.info("SLACK_APP_UNINSTALLED");
 
-      const slackAppUninstalledTemplate = createSlackAppUninstalledTemplate(
+      const slackAppUninstalledTemplate = createAppUninstalledTemplate(
         payload.team_id
       );
 

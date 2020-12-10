@@ -34,6 +34,7 @@
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
     "qs": "^6.9.4",
+    "ramda": "^0.27.1",
     "raw-body": "^2.4.1"
   },
   "devDependencies": {

@@ -9,4 +9,12 @@ const addCheersStats = async (payload) => {
   }
 };
 
-module.exports = { addCheersStats };
+const getCheersStatsForUser = async (slackUserId) => {
+  try {
+    return await CheersStats.findOne({ slackUserId });
+  } catch (error) {
+    logger.error(`getCheersStatsForUser() -> error : `, error, error);
+  }
+};
+
+module.exports = { addCheersStats, getCheersStatsForUser };

@@ -46,6 +46,15 @@ const createOnboardingTemplate = () => {
         text:
           "_*You should share in some cheers with your peers because it makes the recipient feel good about themselves and this can help to boost their performance. Cheersly provides the kind of positive experience or uplift that can increase people's morale, motivation and engagement, and renew their commitment to their organisation!!!*_"
       }
+    },
+    {
+      type: "context",
+      elements: [
+        {
+          type: "mrkdwn",
+          text: "Need help? contact support@cheersly.club"
+        }
+      ]
     }
   ];
 };
