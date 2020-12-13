@@ -112,7 +112,10 @@ const handleCheersCommand = async (teamId, channelId, senderUserId, text) => {
     );
 
     // set app home published to false for this team app home for all the users in context
-    await User.updateMany({ teamId }, { $set: { appHomePublished: false } });
+    await User.updateMany(
+      { "slackUserData.team_id": teamId },
+      { $set: { appHomePublished: false } }
+    );
   } catch (error) {
     logger.error("handleCheersCommand() -> error : ", error);
   }
