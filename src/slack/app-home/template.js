@@ -69,8 +69,8 @@ const createAppHomeTemplate = (cheersGiven, cheersReceived, appHomeBlocks) => {
     ]
   };
 
-  if (appHomeBlocks) {
-    appHomeBlocks.map((block) => {
+  if (appHomeBlocks && appHomeBlocks.blocks.length) {
+    appHomeBlocks.blocks.map((block) => {
       appHomeTemplate.blocks.push(block);
     });
   }
