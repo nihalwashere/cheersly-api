@@ -38,7 +38,7 @@ const createAppHomeLeaderBoard = (leaders) => {
     {
       type: "divider"
     },
-    ...createAppHomeLeadersSection(leaders),
+    createAppHomeLeadersSection(leaders),
     {
       type: "context",
       elements: [
@@ -51,11 +51,7 @@ const createAppHomeLeaderBoard = (leaders) => {
   ];
 };
 
-const createAppHomeTemplate = (
-  cheersGiven,
-  cheersReceived,
-  appHomeCommonBlocks
-) => {
+const createAppHomeTemplate = (cheersGiven, cheersReceived, appHomeBlocks) => {
   const appHomeTemplate = {
     type: "home",
     blocks: [
@@ -69,12 +65,14 @@ const createAppHomeTemplate = (
       {
         type: "divider"
       },
-      ...createMyStatsSection(cheersGiven, cheersReceived)
+      createMyStatsSection(cheersGiven, cheersReceived)
     ]
   };
 
-  if (appHomeCommonBlocks) {
-    appHomeTemplate.blocks.push(...appHomeCommonBlocks);
+  if (appHomeBlocks) {
+    appHomeBlocks.map((block) => {
+      appHomeTemplate.blocks.push(block);
+    });
   }
 
   return appHomeTemplate;

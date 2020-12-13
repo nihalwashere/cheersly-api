@@ -1,4 +1,4 @@
-const AppHomeCommonBlocks = require("../../mongo/models/AppHomeCommonBlocks");
+const AppHomeBlocks = require("../../mongo/models/AppHomeBlocks");
 const CheersStats = require("../../mongo/models/CheersStats");
 const logger = require("../../global/logger");
 const { publishView } = require("../api");
@@ -19,12 +19,12 @@ const publishStats = async (teamId, slackUserId) => {
       cheersReceived = cheersStatsForUser.cheersReceived;
     }
 
-    const appHomeCommonBlocks = await AppHomeCommonBlocks.findOne({ teamId });
+    const appHomeBlocks = await AppHomeBlocks.findOne({ teamId });
 
     const appHomeTemplate = createAppHomeTemplate(
       cheersGiven,
       cheersReceived,
-      appHomeCommonBlocks
+      appHomeBlocks
     );
 
     await publishView(teamId, slackUserId, appHomeTemplate);

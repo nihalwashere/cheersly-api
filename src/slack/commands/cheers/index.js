@@ -2,7 +2,7 @@ const R = require("ramda");
 const logger = require("../../../global/logger");
 const CheersStats = require("../../../mongo/models/CheersStats");
 const User = require("../../../mongo/models/User");
-const AppHomeCommonBlocks = require("../../../mongo/models/AppHomeCommonBlocks");
+const AppHomeBlocks = require("../../../mongo/models/AppHomeBlocks");
 const {
   addCheersStats,
   getCheersStatsForUser
@@ -105,7 +105,7 @@ const handleCheersCommand = async (teamId, channelId, senderUserId, text) => {
     const leaderBoardBlocks = createAppHomeLeaderBoard(sortedLeaders);
 
     // save to app home common blocks
-    await AppHomeCommonBlocks.updateOne(
+    await AppHomeBlocks.updateOne(
       { teamId },
       { $set: { blocks: leaderBoardBlocks } },
       { upsert: true }
