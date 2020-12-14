@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 7000;
 
 const {
   LOG_LEVEL,
+  GIPHY_API,
+  GIPHY_API_KEY,
   SLACK_API,
   SLACK_CLIENT_ID,
   SLACK_CLIENT_SECRET,
@@ -15,6 +17,8 @@ const {
 
 module.exports = {
   LOG_LEVEL,
+  GIPHY_API,
+  GIPHY_API_KEY,
   MONGO_URL,
   SLACK_API,
   SLACK_CLIENT_ID,

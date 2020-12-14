@@ -8,6 +8,9 @@ const {
   getCheersStatsForUser
 } = require("../../../mongo/helper/cheersStats");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
+const { getRandomGif } = require("../../../giphy/api");
+const { slackPostMessageToChannel } = require("../../api");
+const { createGiphyTemplate } = require("./template");
 
 const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
   try {
@@ -116,6 +119,24 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
       { "slackUserData.team_id": teamId },
       { $set: { appHomePublished: false } }
     );
+
+    // get gif
+
+    const giphy = await getRandomGif("cheers");
+    logger.debug("giphy : ", JSON.stringify(giphy));
+
+    if (giphy && giphy.data) {
+      const {
+        data: {
+          images: {
+            downsized: { url }
+          }
+        }
+      } = giphy;
+
+      const giphyTemplate = createGiphyTemplate(url);
+      await slackPostMessageToChannel(channelId, teamId, giphyTemplate);
+    }
   } catch (error) {
     logger.error("handleCheersCommand() -> error : ", error);
   }
