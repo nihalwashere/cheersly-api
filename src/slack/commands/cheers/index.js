@@ -30,7 +30,9 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
         logger.debug("i : ", i);
         logger.debug("here : ", splitArray[i]);
         const user = splitArray[i].split(" ")[0].trim();
-        recipients.push(user);
+        if (user) {
+          recipients.push(user);
+        }
 
         description = splitArray[i]
           .substring(splitArray[i].indexOf(" ") + 1)
