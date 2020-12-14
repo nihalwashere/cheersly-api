@@ -9,9 +9,9 @@ const addCheersStats = async (payload) => {
   }
 };
 
-const getCheersStatsForUser = async (slackUserId) => {
+const getCheersStatsForUser = async (slackUsername) => {
   try {
-    return await CheersStats.findOne({ slackUserId });
+    return await CheersStats.findOne({ slackUsername });
   } catch (error) {
     logger.error(`getCheersStatsForUser() -> error : `, error, error);
   }

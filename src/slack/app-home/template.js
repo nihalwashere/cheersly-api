@@ -10,12 +10,16 @@ const createMyStatsSection = (cheersGiven, cheersReceived) => {
 };
 
 const createAppHomeLeadersSection = (leaders) => {
-  let leaderBoardString = "";
+  let leaderBoardString = "```";
 
-  leaders.map((leader) => {
-    const { slackUserId, cheersReceived } = leader;
-    leaderBoardString += "@" + slackUserId + "  *" + cheersReceived + "* \n";
+  leaders.map((leader, index) => {
+    const { slackUsername, cheersReceived } = leader;
+    const row = index + 1;
+    leaderBoardString +=
+      row + "  @" + slackUsername + "  *  |  " + cheersReceived + "* \n";
   });
+
+  leaderBoardString += "```";
 
   return {
     type: "section",
@@ -39,6 +43,13 @@ const createAppHomeLeaderBoard = (leaders) => {
       type: "divider"
     },
     createAppHomeLeadersSection(leaders),
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "\n \n"
+      }
+    },
     {
       type: "context",
       elements: [
@@ -65,7 +76,14 @@ const createAppHomeTemplate = (cheersGiven, cheersReceived, appHomeBlocks) => {
       {
         type: "divider"
       },
-      createMyStatsSection(cheersGiven, cheersReceived)
+      createMyStatsSection(cheersGiven, cheersReceived),
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "\n \n"
+        }
+      }
     ]
   };
 

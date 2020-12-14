@@ -130,10 +130,14 @@ router.post("/", async (req, res) => {
 
       const { user: slackUserId } = payload.event;
 
-      const user = await User.findOne({ "slackUserData.id": slackUserId });
+      const user = await User.findOne({
+        "slackUserData.id": slackUserId,
+        slackDeleted: false
+      });
 
       if (user && !user.appHomePublished) {
-        await publishStats(payload.team_id, slackUserId);
+        const slackUsername = user.slackUserData.name;
+        await publishStats(payload.team_id, slackUserId, slackUsername);
       }
 
       if (!user) {
@@ -153,7 +157,7 @@ router.post("/", async (req, res) => {
 
       if (
         !payload.event.bot_id &&
-        !String(payload.event.text).includes("/codekick")
+        !String(payload.event.text).includes("/cheers")
       ) {
         logger.info("DIRECT MESSAGE");
         await handleDirectMessage(payload);

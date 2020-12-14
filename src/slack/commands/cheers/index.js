@@ -9,7 +9,7 @@ const {
 } = require("../../../mongo/helper/cheersStats");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
 
-const handleCheersCommand = async (teamId, channelId, senderUserId, text) => {
+const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
   try {
     const splitArray = text.split("@");
 
@@ -43,18 +43,18 @@ const handleCheersCommand = async (teamId, channelId, senderUserId, text) => {
 
     // for sender
 
-    const cheersStatsSender = await getCheersStatsForUser(senderUserId);
+    const cheersStatsSender = await getCheersStatsForUser(senderUsername);
 
     if (cheersStatsSender) {
       const { cheersGiven } = cheersStatsSender;
 
       await CheersStats.updateOne(
-        { slackUserId: senderUserId },
+        { slackUsername: senderUsername },
         { $set: { cheersGiven: cheersGiven + 1 } }
       );
     } else {
       await addCheersStats({
-        slackUserId: senderUserId,
+        slackUsername: senderUsername,
         teamId,
         cheersGiven: 1,
         cheersReceived: 0
@@ -70,12 +70,12 @@ const handleCheersCommand = async (teamId, channelId, senderUserId, text) => {
           const { cheersReceived } = cheersStatsRecipient;
 
           await CheersStats.updateOne(
-            { slackUserId: recipient },
+            { slackUsername: recipient },
             { $set: { cheersReceived: cheersReceived + 1 } }
           );
         } else {
           await addCheersStats({
-            slackUserId: recipient,
+            slackUsername: recipient,
             teamId,
             cheersGiven: 0,
             cheersReceived: 1
@@ -90,8 +90,8 @@ const handleCheersCommand = async (teamId, channelId, senderUserId, text) => {
     const leaders = [];
 
     cheersStatsForTeam.map((stat) => {
-      const { slackUserId, cheersReceived } = stat;
-      leaders.push({ slackUserId, cheersReceived });
+      const { slackUsername, cheersReceived } = stat;
+      leaders.push({ slackUsername, cheersReceived });
     });
 
     // sort leaders on the basis of cheers received

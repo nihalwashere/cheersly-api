@@ -4,19 +4,21 @@ const logger = require("../../global/logger");
 const { publishView } = require("../api");
 const { createAppHomeTemplate } = require("./template");
 
-const publishStats = async (teamId, slackUserId) => {
+const publishStats = async (teamId, slackUserId, slackUsername = null) => {
   try {
-    const cheersStatsForUser = await CheersStats.findOne({
-      teamId,
-      slackUserId
-    });
-
     let cheersGiven = 0,
       cheersReceived = 0;
 
-    if (cheersStatsForUser) {
-      cheersGiven = cheersStatsForUser.cheersGiven;
-      cheersReceived = cheersStatsForUser.cheersReceived;
+    if (slackUsername) {
+      const cheersStatsForUser = await CheersStats.findOne({
+        teamId,
+        slackUsername
+      });
+
+      if (cheersStatsForUser) {
+        cheersGiven = cheersStatsForUser.cheersGiven;
+        cheersReceived = cheersStatsForUser.cheersReceived;
+      }
     }
 
     const appHomeBlocks = await AppHomeBlocks.findOne({ teamId });

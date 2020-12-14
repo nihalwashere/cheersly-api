@@ -33,14 +33,14 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const { team_id, channel_id, user_id, text } = req.body;
+    const { team_id, channel_id, user_name, text } = req.body;
 
     if (isCheersCommand(text)) {
       // /cheers @user1 @user2 @user3 Thanks for all the help
 
       res.send("");
 
-      return await handleCheersCommand(team_id, channel_id, user_id, text);
+      return await handleCheersCommand(team_id, channel_id, user_name, text);
     }
 
     if (isHelpCommand(text)) {

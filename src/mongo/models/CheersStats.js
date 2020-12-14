@@ -4,7 +4,7 @@ const collection = "CheersStats";
 
 const CheersStatsSchema = new mongoose.Schema(
   {
-    slackUserId: {
+    slackUsername: {
       type: String,
       index: true
     },
