@@ -4,7 +4,7 @@ const createMyStatsSection = (cheersGiven, cheersReceived) => {
     text: {
       type: "mrkdwn",
       text:
-        "Given: *" + cheersGiven + "*   |  Received: * " + cheersReceived + "*"
+        "Given: *" + cheersGiven + "*   |   Received: * " + cheersReceived + "*"
     }
   };
 };
@@ -16,7 +16,12 @@ const createAppHomeLeadersSection = (leaders) => {
     const { slackUsername, cheersReceived } = leader;
     const row = index + 1;
     leaderBoardString +=
-      row + "  @" + slackUsername + "  *  |  " + cheersReceived + "* \n";
+      row +
+      ")  @" +
+      slackUsername +
+      "   |   Received : *" +
+      cheersReceived +
+      "* \n";
   });
 
   leaderBoardString += "```";
