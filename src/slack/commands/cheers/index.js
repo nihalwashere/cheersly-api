@@ -15,6 +15,7 @@ const { createGiphyTemplate } = require("./template");
 const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
   try {
     const splitArray = text.split("@");
+    const trimmedText = String(text).trim();
 
     logger.debug("splitArray : ", splitArray);
 
@@ -123,7 +124,7 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
     // get gif
 
     const giphy = await getRandomGif("cheers");
-    logger.debug("giphy : ", JSON.stringify(giphy));
+    // logger.debug("giphy : ", JSON.stringify(giphy));
 
     if (giphy && giphy.data) {
       const {
@@ -134,7 +135,7 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
         }
       } = giphy;
 
-      const giphyTemplate = createGiphyTemplate(text, url);
+      const giphyTemplate = createGiphyTemplate(trimmedText, url);
       await slackPostMessageToChannel(channelId, teamId, giphyTemplate);
     }
   } catch (error) {

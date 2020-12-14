@@ -43,14 +43,11 @@ router.post("/", async (req, res) => {
       return await handleCheersCommand(team_id, channel_id, user_name, text);
     }
 
-    if (isHelpCommand(text)) {
-      // /cheers help
-
-      return res.status(200).json({
-        response_type: "in_channel",
-        blocks: createHelpTemplate()
-      });
-    }
+    // /cheers help
+    return res.status(200).json({
+      response_type: "in_channel",
+      blocks: createHelpTemplate()
+    });
   } catch (error) {
     logger.error("/slack-commands -> error : ", error);
   }
