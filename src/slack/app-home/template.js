@@ -36,7 +36,7 @@ const createAppHomeLeaderBoard = (leaders) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*Leaderboard*"
+        text: "*Leaderboard* :trophy:"
       }
     },
     {
@@ -70,7 +70,7 @@ const createAppHomeTemplate = (cheersGiven, cheersReceived, appHomeBlocks) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*My Cheers*"
+          text: "*My Cheers* :heart:"
         }
       },
       {
