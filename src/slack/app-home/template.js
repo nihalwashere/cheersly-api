@@ -16,12 +16,7 @@ const createAppHomeLeadersSection = (leaders) => {
     const { slackUsername, cheersReceived } = leader;
     const row = index + 1;
     leaderBoardString +=
-      row +
-      ")  @" +
-      slackUsername +
-      "   |   Received : *" +
-      cheersReceived +
-      "* \n";
+      row + ")  @" + slackUsername + "  (" + cheersReceived + ") \n";
   });
 
   leaderBoardString += "```";

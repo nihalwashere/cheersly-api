@@ -138,6 +138,12 @@ router.post("/", async (req, res) => {
       if (user && !user.appHomePublished) {
         const slackUsername = user.slackUserData.name;
         await publishStats(payload.team_id, slackUserId, slackUsername);
+        await User.updateOne(
+          {
+            "slackUserData.id": slackUserId
+          },
+          { $set: { appHomePublished: true } }
+        );
       }
 
       if (!user) {
