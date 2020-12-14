@@ -36,7 +36,10 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
           .substring(splitArray[i].indexOf(" ") + 1)
           .trim();
       } else {
-        recipients.push(String(splitArray[i]).trim());
+        // eslint-disable-next-line
+        if (String(splitArray[i].trim())) {
+          recipients.push(String(splitArray[i]).trim());
+        }
       }
     }
 
