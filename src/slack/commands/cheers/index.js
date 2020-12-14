@@ -134,7 +134,7 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
         }
       } = giphy;
 
-      const giphyTemplate = createGiphyTemplate(url);
+      const giphyTemplate = createGiphyTemplate(text, url);
       await slackPostMessageToChannel(channelId, teamId, giphyTemplate);
     }
   } catch (error) {
