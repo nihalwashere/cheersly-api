@@ -83,8 +83,14 @@ app.get("/privacy", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
 });
 
-app.get("/logo.png", (req, res) => {
+app.get("/logo.jpg", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.jpg"));
+});
+
+app.get("/giphy_attribution_mark.png", (req, res) => {
+  res
+    .status(200)
+    .sendFile(path.join(__dirname, PUBLIC_DIR, "giphy_attribution_mark.png"));
 });
 
 app.get("/app-installed", (req, res) => {
