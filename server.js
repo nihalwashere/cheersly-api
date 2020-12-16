@@ -24,7 +24,7 @@ app.use(
 app.use(bodyParser.json());
 
 const whitelist = [
-  "https://cheersly.herokuapp.com",
+  "https://www.cheersly.club",
   "http://localhost:7000",
   "http://localhost:3000"
 ];
