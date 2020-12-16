@@ -83,6 +83,10 @@ app.get("/privacy", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
 });
 
+app.get("/contact", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
+});
+
 app.get("/logo.jpg", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.jpg"));
 });
