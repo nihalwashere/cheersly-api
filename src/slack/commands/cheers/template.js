@@ -21,13 +21,22 @@ const createGiphyTemplate = (text, url) => {
 //   alt_text: "Powered by GIPHY"
 // },
 
-const createCheersTemplate = (text) => {
+const createCheersTemplate = (recipients, description) => {
+  let wrappedText = "";
+
+  recipients.map((recipient) => {
+    const user = `@${recipient}`;
+    wrappedText += user + " ";
+  });
+
+  wrappedText += description;
+
   return [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text
+        text: wrappedText
       }
     }
   ];

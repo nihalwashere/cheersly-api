@@ -4,22 +4,29 @@ const router = express.Router();
 
 const logger = require("../../global/logger");
 const { getSlackTokenForUser } = require("../../slack/api");
+const { paginateUsersList } = require("../../slack/pagination/users-list");
 const { addAuth } = require("../../mongo/helper/auth");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
 
 router.post("/slack-install", async (req, res) => {
   try {
-    logger.debug("req.body : ", req.body);
+    logger.debug("/slack-install -> req.body : ", req.body);
 
     const { code } = req.body;
 
     if (code) {
       const slackTokenPayload = await getSlackTokenForUser(code);
-      logger.debug("slackTokenPayload : ", slackTokenPayload);
+      logger.info("slackTokenPayload : ", slackTokenPayload);
 
       if (slackTokenPayload && slackTokenPayload.ok === true) {
+        const {
+          team: { id: teamId },
+          access_token
+        } = slackTokenPayload;
+
         await addAuth({ slackInstallation: slackTokenPayload });
-        await sendOnBoardingInstructions(slackTokenPayload.team.id);
+        await sendOnBoardingInstructions(teamId);
+        await paginateUsersList(access_token);
       }
     }
 

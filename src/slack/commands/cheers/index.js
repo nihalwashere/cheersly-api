@@ -3,6 +3,7 @@ const logger = require("../../../global/logger");
 const CheersStats = require("../../../mongo/models/CheersStats");
 const User = require("../../../mongo/models/User");
 const AppHomeBlocks = require("../../../mongo/models/AppHomeBlocks");
+const { getUsersForTeam } = require("../../../mongo/helper/user");
 const {
   addCheersStats,
   getCheersStatsForUser
@@ -14,7 +15,7 @@ const { createCheersTemplate } = require("./template");
 const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
   try {
     const splitArray = text.split("@");
-    const trimmedText = String(text).trim();
+    // const trimmedText = String(text).trim();
 
     logger.debug("splitArray : ", splitArray);
 
@@ -47,6 +48,28 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
     logger.debug("recipients : ", recipients);
     logger.debug("description : ", description);
 
+    const validRecipients = [];
+
+    const usersForTeam = await getUsersForTeam(teamId);
+
+    recipients.map((recipient) => {
+      usersForTeam.map((user) => {
+        if (
+          user &&
+          user.slackUserData &&
+          user.slackUserData.name === recipient
+        ) {
+          validRecipients.push(recipient);
+        }
+      });
+    });
+
+    await slackPostMessageToChannel(
+      channelId,
+      teamId,
+      createCheersTemplate(validRecipients, description)
+    );
+
     // first check if stats exist for user, if it exist then update else create
 
     // for sender
@@ -71,7 +94,7 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
 
     // for receivers
     await Promise.all(
-      recipients.map(async (recipient) => {
+      validRecipients.map(async (recipient) => {
         const cheersStatsRecipient = await getCheersStatsForUser(recipient);
 
         if (cheersStatsRecipient) {
@@ -119,16 +142,10 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
       { upsert: true }
     );
 
-    // set app home published to false for this team app home for all the users in context
+    // set app home published to false for this team
     await User.updateMany(
       { "slackUserData.team_id": teamId },
       { $set: { appHomePublished: false } }
-    );
-
-    await slackPostMessageToChannel(
-      channelId,
-      teamId,
-      createCheersTemplate(trimmedText)
     );
   } catch (error) {
     logger.error("handleCheersCommand() -> error : ", error);

@@ -145,12 +145,6 @@ router.post("/", async (req, res) => {
           { $set: { appHomePublished: true } }
         );
       }
-
-      if (!user) {
-        const slackUserData = await getSlackUser(payload.team_id, slackUserId);
-        await publishStats(payload.team_id, slackUserId);
-        await new User({ slackUserData, appHomePublished: true }).save();
-      }
     }
 
     // DIRECT MESSAGE
@@ -175,15 +169,15 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
       logger.info("TOKENS_REVOKED");
 
-      const apiTokensRevokedTemplate = createAPITokensRevokedTemplate(
-        payload.team_id
-      );
+      // const apiTokensRevokedTemplate = createAPITokensRevokedTemplate(
+      //   payload.team_id
+      // );
 
-      await postInternalMessage(
-        INTERNAL_SLACK_TEAM_ID,
-        INTERNAL_SLACK_CHANNEL_ID,
-        apiTokensRevokedTemplate
-      );
+      // await postInternalMessage(
+      //   INTERNAL_SLACK_TEAM_ID,
+      //   INTERNAL_SLACK_CHANNEL_ID,
+      //   apiTokensRevokedTemplate
+      // );
     }
 
     // APP_UNINSTALLED
@@ -191,15 +185,15 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
       logger.info("SLACK_APP_UNINSTALLED");
 
-      const slackAppUninstalledTemplate = createAppUninstalledTemplate(
-        payload.team_id
-      );
+      // const slackAppUninstalledTemplate = createAppUninstalledTemplate(
+      //   payload.team_id
+      // );
 
-      await postInternalMessage(
-        INTERNAL_SLACK_TEAM_ID,
-        INTERNAL_SLACK_CHANNEL_ID,
-        slackAppUninstalledTemplate
-      );
+      // await postInternalMessage(
+      //   INTERNAL_SLACK_TEAM_ID,
+      //   INTERNAL_SLACK_CHANNEL_ID,
+      //   slackAppUninstalledTemplate
+      // );
 
       // update user and auth, set slack deleted to true for this team
 
