@@ -21,4 +21,16 @@ const createGiphyTemplate = (text, url) => {
 //   alt_text: "Powered by GIPHY"
 // },
 
-module.exports = { createGiphyTemplate };
+const createCheersTemplate = (text) => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text
+      }
+    }
+  ];
+};
+
+module.exports = { createGiphyTemplate, createCheersTemplate };

@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.3d4db7ee.chunk.css",
-    "main.js": "/static/js/main.1b361dcc.chunk.js",
-    "main.js.map": "/static/js/main.1b361dcc.chunk.js.map",
+    "main.css": "/static/css/main.183c941e.chunk.css",
+    "main.js": "/static/js/main.41ddbafc.chunk.js",
+    "main.js.map": "/static/js/main.41ddbafc.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.b48ee747.js",
     "runtime-main.js.map": "/static/js/runtime-main.b48ee747.js.map",
     "static/js/2.cc5f2aa8.chunk.js": "/static/js/2.cc5f2aa8.chunk.js",
     "static/js/2.cc5f2aa8.chunk.js.map": "/static/js/2.cc5f2aa8.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.3d4db7ee.chunk.css.map": "/static/css/main.3d4db7ee.chunk.css.map",
+    "static/css/main.183c941e.chunk.css.map": "/static/css/main.183c941e.chunk.css.map",
     "static/js/2.cc5f2aa8.chunk.js.LICENSE.txt": "/static/js/2.cc5f2aa8.chunk.js.LICENSE.txt",
     "static/media/index.css": "/static/media/Archer-Book-Pro.c8450a6e.otf",
     "static/media/happy_girl.03a2f937.jpg": "/static/media/happy_girl.03a2f937.jpg",
@@ -17,7 +17,7 @@
   "entrypoints": [
     "static/js/runtime-main.b48ee747.js",
     "static/js/2.cc5f2aa8.chunk.js",
-    "static/css/main.3d4db7ee.chunk.css",
-    "static/js/main.1b361dcc.chunk.js"
+    "static/css/main.183c941e.chunk.css",
+    "static/js/main.41ddbafc.chunk.js"
   ]
 }
