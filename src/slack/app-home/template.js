@@ -10,24 +10,38 @@ const createMyStatsSection = (cheersGiven, cheersReceived) => {
 };
 
 const createAppHomeLeadersSection = (leaders) => {
-  let leaderBoardString = "```";
+  const blocks = [];
 
-  leaders.map((leader, index) => {
-    const { slackUsername, cheersReceived } = leader;
-    const row = index + 1;
-    leaderBoardString +=
-      row + ")  @" + slackUsername + "  (" + cheersReceived + ") \n";
-  });
+  const n = 10;
 
-  leaderBoardString += "```";
+  const result = new Array(Math.ceil(leaders.length / n))
+    .fill()
+    .map(() => leaders.splice(0, n));
 
-  return {
-    type: "section",
-    text: {
-      type: "mrkdwn",
-      text: leaderBoardString
+  let leaderBoardString = "";
+
+  for (let i = 0; i < result.length; i++) {
+    const leaderArr = result[i];
+
+    for (let j = 0; j < leaderArr.length; j++) {
+      const leader = leaderArr[j];
+
+      const { slackUsername, cheersReceived } = leader;
+
+      leaderBoardString +=
+        "-  @" + slackUsername + "  (" + cheersReceived + ") \n";
     }
-  };
+
+    blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: leaderBoardString
+      }
+    });
+  }
+
+  return blocks;
 };
 
 const createAppHomeLeaderBoard = (leaders) => {
@@ -42,7 +56,7 @@ const createAppHomeLeaderBoard = (leaders) => {
     {
       type: "divider"
     },
-    createAppHomeLeadersSection(leaders),
+    ...createAppHomeLeadersSection(leaders),
     {
       type: "section",
       text: {
