@@ -7,6 +7,7 @@ const { getSlackTokenForUser } = require("../../slack/api");
 const { paginateUsersList } = require("../../slack/pagination/users-list");
 const { addAuth } = require("../../mongo/helper/auth");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
+const { createTrialSubscription } = require("../../utils/common");
 
 router.post("/slack-install", async (req, res) => {
   try {
@@ -25,6 +26,7 @@ router.post("/slack-install", async (req, res) => {
         } = slackTokenPayload;
 
         await addAuth({ slackInstallation: slackTokenPayload });
+        await createTrialSubscription(teamId);
         await sendOnBoardingInstructions(teamId);
         await paginateUsersList(access_token);
       }
