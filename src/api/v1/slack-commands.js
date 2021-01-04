@@ -76,8 +76,6 @@ router.post("/", async (req, res) => {
     if (!isCommandValid) {
       // /cheers help
 
-      res.send("");
-
       return res.status(200).json({
         response_type: "in_channel",
         blocks: createHelpTemplate()
