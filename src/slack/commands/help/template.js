@@ -4,7 +4,7 @@ const createHelpTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*Hey there!* How may I help you?"
+        text: ":wave: *Hey there!* How may I help you?"
       }
     },
     {
@@ -26,7 +26,7 @@ const createHelpTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "*/cheers @tom @jerry Thanks for the quick review on my pull request* \n To cheer your peer"
+          "*/cheers @tom @jerry Thanks for jumping in the client call at the last minute :)* \n To cheer your peers"
       }
     },
     {
