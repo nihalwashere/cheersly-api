@@ -47,7 +47,7 @@ const openDialog = async (messagePayload, bot_access_token) => {
 
     const res = await req.json();
 
-    logger.debug("openDialog() -> res : ", res);
+    logger.info("openDialog() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -75,7 +75,7 @@ const getSlackUser = async (teamId, user) => {
     );
     const res = await req.json();
 
-    logger.debug("getSlackUser() -> res : ", res);
+    logger.info("getSlackUser() -> res : ", res);
 
     const slackUser = res.user;
 
@@ -111,7 +111,7 @@ const getSlackTokenForUser = async (code) => {
 
     const res = await req.json();
 
-    logger.debug("getSlackTokenForUser() -> res : ", res);
+    logger.info("getSlackTokenForUser() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -135,7 +135,7 @@ const slackPostMessageToChannel = async (
 
     const response = await postMessage(messagePayload, bot_access_token);
 
-    logger.debug("slackPostMessageToChannel() -> response : ", response);
+    logger.info("slackPostMessageToChannel() -> response : ", response);
 
     return response;
   } catch (error) {
@@ -163,7 +163,7 @@ const openModal = async (teamId, trigger_id, view) => {
 
     const res = await req.json();
 
-    logger.debug("openModal() -> res : ", res);
+    logger.info("openModal() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -186,7 +186,7 @@ const conversationsInvite = async (teamId, channel) => {
 
     const res = await req.json();
 
-    logger.debug("conversationsInvite() -> res : ", res);
+    logger.info("conversationsInvite() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -205,7 +205,7 @@ const postInternalMessage = async (teamId, channel, message) => {
 
     const response = await postMessage(messagePayload, bot_access_token);
 
-    logger.debug("postInternalMessage() -> response : ", response);
+    logger.info("postInternalMessage() -> response : ", response);
 
     return response;
   } catch (error) {
@@ -237,7 +237,7 @@ const postMessageToHook = async (teamId, message) => {
 
     const res = await req.text();
 
-    logger.debug("postMessageToHook() -> res : ", res);
+    logger.info("postMessageToHook() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -260,7 +260,7 @@ const publishView = async (teamId, user_id, view) => {
 
     const res = await req.json();
 
-    logger.debug("publishView() -> res : ", res);
+    logger.info("publishView() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -283,7 +283,7 @@ const updateChat = async (teamId, channel, ts, blocks) => {
 
     const res = await req.json();
 
-    logger.debug("updateChat() -> res : ", res);
+    logger.info("updateChat() -> res : ", res);
 
     return res;
   } catch (error) {

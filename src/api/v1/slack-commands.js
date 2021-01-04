@@ -3,13 +3,23 @@ const express = require("express");
 const router = express.Router();
 
 const logger = require("../../global/logger");
-const { verifySlackRequest } = require("../../utils/common");
-const { isHelpCommand } = require("../../slack/commands/help");
+const {
+  verifySlackRequest,
+  isSubscriptionValidForSlack
+} = require("../../utils/common");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
 const {
   isCheersCommand,
   handleCheersCommand
 } = require("../../slack/commands/cheers");
+const {
+  upgradeSubscriptionMessage,
+  trialEndedMessage
+} = require("../../slack/subscription-handlers");
+const {
+  SubscriptionMessageType
+} = require("../../enums/subscriptionMessageTypes");
+const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
 
 router.get("/health", (req, res) =>
   res.json({ msg: "SLACK COMMANDS API IS UP AND RUNNING!!!" })
@@ -18,6 +28,8 @@ router.get("/health", (req, res) =>
 router.post("/", async (req, res) => {
   try {
     logger.debug("req.body : ", req.body);
+
+    let isCommandValid = false;
 
     const slackRequestTimestamp = req.headers["x-slack-request-timestamp"];
     const slackSignature = req.headers["x-slack-signature"];
@@ -35,19 +47,42 @@ router.post("/", async (req, res) => {
 
     const { team_id, channel_id, user_name, text } = req.body;
 
+    // verify subscription
+
+    const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+
+    if (!subscriptionInfo.hasSubscription) {
+      res.send("");
+
+      await updateAppHomePublishedForTeam(team_id, false);
+
+      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+        return await trialEndedMessage(team_id, channel_id);
+      }
+
+      return await upgradeSubscriptionMessage(team_id, channel_id);
+    }
+
     if (isCheersCommand(text)) {
       // /cheers @user1 @user2 @user3 Thanks for all the help
+
+      isCommandValid = true;
 
       res.send("");
 
       return await handleCheersCommand(team_id, channel_id, user_name, text);
     }
 
-    // /cheers help
-    return res.status(200).json({
-      response_type: "in_channel",
-      blocks: createHelpTemplate()
-    });
+    if (!isCommandValid) {
+      // /cheers help
+
+      res.send("");
+
+      return res.status(200).json({
+        response_type: "in_channel",
+        blocks: createHelpTemplate()
+      });
+    }
   } catch (error) {
     logger.error("/slack-commands -> error : ", error);
   }

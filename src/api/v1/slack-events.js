@@ -17,16 +17,27 @@ const {
   INTERNAL_SLACK_TEAM_ID,
   INTERNAL_SLACK_CHANNEL_ID
 } = require("../../global/config");
-const User = require("../../mongo/models/User");
 const { deleteSlackAuthByTeamId } = require("../../mongo/helper/auth");
-const { deleteSlackUsersByTeamId } = require("../../mongo/helper/user");
-const { postInternalMessage, getSlackUser } = require("../../slack/api");
+const {
+  getUserDataBySlackUserId,
+  deleteSlackUsersByTeamId,
+  updateAppHomePublishedForUser
+} = require("../../mongo/helper/user");
+const { postInternalMessage, publishView } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
 const { publishStats } = require("../../slack/app-home");
+const { isSubscriptionValidForSlack } = require("../../utils/common");
 const {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate
 } = require("../../slack/templates");
+const {
+  createTrialEndedTemplate,
+  createUpgradeSubscriptionTemplate
+} = require("../../slack/subscription-handlers/template");
+const {
+  SubscriptionMessageType
+} = require("../../enums/subscriptionMessageTypes");
 
 // HELPER
 
@@ -84,12 +95,6 @@ router.post("/", async (req, res) => {
       parseRawBody = getRawBody(req);
     }
 
-    // await new Errors({
-    //   payload,
-    //   error: { headers: req.headers },
-    //   type: "SLACK_EVENTS"
-    // }).save();
-
     parseRawBody.then((bodyBuf) => {
       const rawBody = bodyBuf.toString();
 
@@ -130,20 +135,39 @@ router.post("/", async (req, res) => {
 
       const { user: slackUserId } = payload.event;
 
-      const user = await User.findOne({
-        "slackUserData.id": slackUserId,
-        slackDeleted: false
-      });
+      const user = await getUserDataBySlackUserId(slackUserId);
+
+      if (!user) {
+        await publishStats(payload.team_id, slackUserId);
+        return await updateAppHomePublishedForUser(slackUserId, true);
+      }
 
       if (user && !user.appHomePublished) {
+        const subscriptionInfo = await isSubscriptionValidForSlack(
+          payload.team_id
+        );
+
+        if (!subscriptionInfo.hasSubscription) {
+          if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+            await publishView(payload.team_id, slackUserId, {
+              type: "home",
+              blocks: createTrialEndedTemplate()
+            });
+
+            return await updateAppHomePublishedForUser(slackUserId, true);
+          }
+
+          await publishView(payload.team_id, slackUserId, {
+            type: "home",
+            blocks: createUpgradeSubscriptionTemplate()
+          });
+
+          return await updateAppHomePublishedForUser(slackUserId, true);
+        }
+
         const slackUsername = user.slackUserData.name;
         await publishStats(payload.team_id, slackUserId, slackUsername);
-        await User.updateOne(
-          {
-            "slackUserData.id": slackUserId
-          },
-          { $set: { appHomePublished: true } }
-        );
+        return await updateAppHomePublishedForUser(slackUserId, true);
       }
     }
 
@@ -169,15 +193,15 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
       logger.info("TOKENS_REVOKED");
 
-      // const apiTokensRevokedTemplate = createAPITokensRevokedTemplate(
-      //   payload.team_id
-      // );
+      const apiTokensRevokedTemplate = createAPITokensRevokedTemplate(
+        payload.team_id
+      );
 
-      // await postInternalMessage(
-      //   INTERNAL_SLACK_TEAM_ID,
-      //   INTERNAL_SLACK_CHANNEL_ID,
-      //   apiTokensRevokedTemplate
-      // );
+      await postInternalMessage(
+        INTERNAL_SLACK_TEAM_ID,
+        INTERNAL_SLACK_CHANNEL_ID,
+        apiTokensRevokedTemplate
+      );
     }
 
     // APP_UNINSTALLED
@@ -185,15 +209,15 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
       logger.info("SLACK_APP_UNINSTALLED");
 
-      // const slackAppUninstalledTemplate = createAppUninstalledTemplate(
-      //   payload.team_id
-      // );
+      const slackAppUninstalledTemplate = createAppUninstalledTemplate(
+        payload.team_id
+      );
 
-      // await postInternalMessage(
-      //   INTERNAL_SLACK_TEAM_ID,
-      //   INTERNAL_SLACK_CHANNEL_ID,
-      //   slackAppUninstalledTemplate
-      // );
+      await postInternalMessage(
+        INTERNAL_SLACK_TEAM_ID,
+        INTERNAL_SLACK_CHANNEL_ID,
+        slackAppUninstalledTemplate
+      );
 
       // update user and auth, set slack deleted to true for this team
 

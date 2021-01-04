@@ -21,15 +21,15 @@ const createGiphyTemplate = (text, url) => {
 //   alt_text: "Powered by GIPHY"
 // },
 
-const createCheersTemplate = (recipients, description) => {
+const createCheersTemplate = (users, description) => {
   let wrappedText = "";
 
-  recipients.map((recipient) => {
-    const user = `@${recipient}`;
-    wrappedText += user + " ";
+  users.map((user) => {
+    const message = `@${user.recipient} now has ${user.cheersReceived} cheers :heart:`;
+    wrappedText += message + "\n";
   });
 
-  wrappedText += description;
+  wrappedText += `_*${description}*_`;
 
   return [
     {
@@ -42,4 +42,20 @@ const createCheersTemplate = (recipients, description) => {
   ];
 };
 
-module.exports = { createGiphyTemplate, createCheersTemplate };
+const createInvalidRecipientsTemplate = () => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "_*Oops! Please mention someone to say cheers...*_"
+      }
+    }
+  ];
+};
+
+module.exports = {
+  createGiphyTemplate,
+  createCheersTemplate,
+  createInvalidRecipientsTemplate
+};

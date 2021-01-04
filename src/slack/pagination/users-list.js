@@ -44,6 +44,7 @@ const getUsersList = async (limit, token, next_cursor) => {
 const paginateUsersList = async (token, next_cursor = null) => {
   try {
     const result = await getUsersList(LIMIT, token, next_cursor);
+    logger.debug("result : ", result);
 
     if (result.members && result.members.length) {
       await addUsersBatch(wrapMembers(result.members));

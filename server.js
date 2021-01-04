@@ -9,7 +9,7 @@ const cors = require("cors");
 const logger = require("./src/global/logger");
 
 // ENV PORT
-const { PORT, MONGO_URL } = require("./src/global/config");
+const { PORT, MONGO_URL, MONGO_OPTIONS } = require("./src/global/config");
 
 const PUBLIC_DIR = "src/public";
 
@@ -66,12 +66,7 @@ app.use("/api/test", test);
 
 // CONNECT TO MONGODB
 mongoose
-  .connect(MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-  })
+  .connect(MONGO_URL, MONGO_OPTIONS)
   .then(() => logger.info("MongoDB Connected!!!"))
   .catch((err) => logger.error("MongoDB Connection Failed -> error ", err));
 

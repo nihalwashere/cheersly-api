@@ -17,6 +17,20 @@ const getUsersForTeam = async (teamId) => {
   }
 };
 
+const getUserDataBySlackUserId = async (slackUserId) => {
+  try {
+    return await User.findOne({
+      "slackUserData.id": slackUserId,
+      slackDeleted: false
+    });
+  } catch (error) {
+    logger.error(
+      `getUserDataBySlackUserId() -> Failed to find slack user data for slack userId : ${slackUserId} -> `,
+      error
+    );
+  }
+};
+
 const deleteSlackUsersByTeamId = async (teamId) => {
   try {
     return await User.updateMany(
@@ -31,4 +45,43 @@ const deleteSlackUsersByTeamId = async (teamId) => {
   }
 };
 
-module.exports = { addUsersBatch, getUsersForTeam, deleteSlackUsersByTeamId };
+const updateAppHomePublishedForUser = async (slackUserId, trueOrFalse) => {
+  try {
+    return await User.updateOne(
+      {
+        "slackUserData.id": slackUserId
+      },
+      { $set: { appHomePublished: trueOrFalse } }
+    );
+  } catch (error) {
+    logger.error(
+      `updateAppHomePublishedForUser() : Failed to update app home published for slack user : ${slackUserId} -> error : `,
+      error
+    );
+  }
+};
+
+const updateAppHomePublishedForTeam = async (teamId, trueOrFalse) => {
+  try {
+    return await User.updateMany(
+      {
+        "slackUserData.team_id": teamId
+      },
+      { $set: { appHomePublished: trueOrFalse } }
+    );
+  } catch (error) {
+    logger.error(
+      `updateAppHomePublishedForTeam() : Failed to update app home published for teamId : ${teamId} -> error : `,
+      error
+    );
+  }
+};
+
+module.exports = {
+  addUsersBatch,
+  getUsersForTeam,
+  getUserDataBySlackUserId,
+  deleteSlackUsersByTeamId,
+  updateAppHomePublishedForUser,
+  updateAppHomePublishedForTeam
+};
