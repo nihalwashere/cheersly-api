@@ -22,24 +22,47 @@ const createGiphyTemplate = (text, url) => {
 // },
 
 const createCheersTemplate = (users, description) => {
-  let wrappedText = "";
+  const blocks = [];
 
-  users.map((user) => {
-    const message = `@${user.recipient} now has ${user.cheersReceived} cheers :heart:`;
-    wrappedText += message + "\n";
-  });
+  const n = 5;
 
-  wrappedText += `_*${description}*_`;
+  const result = new Array(Math.ceil(users.length / n))
+    .fill()
+    .map(() => users.splice(0, n));
 
-  return [
-    {
+  for (let i = 0; i < result.length; i++) {
+    const userArr = result[i];
+
+    let wrappedText = "";
+
+    for (let j = 0; j < userArr.length; j++) {
+      const user = userArr[j];
+
+      const message = `@${user.recipient} now has ${user.cheersReceived} cheers :heart:`;
+
+      wrappedText += message + "\n";
+    }
+
+    blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
         text: wrappedText
       }
-    }
-  ];
+    });
+  }
+
+  if (description) {
+    blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `_*${description}*_`
+      }
+    });
+  }
+
+  return blocks;
 };
 
 const createInvalidRecipientsTemplate = () => {

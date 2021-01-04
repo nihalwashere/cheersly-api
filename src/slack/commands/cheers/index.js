@@ -59,9 +59,9 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
     logger.debug("description : ", description);
 
     const validRecipients = [];
-    logger.debug("validRecipients : ", validRecipients);
 
     const usersForTeam = await getUsersForTeam(teamId);
+    logger.debug("usersForTeam : ", usersForTeam);
 
     recipients.map((recipient) => {
       usersForTeam.map((user) => {
@@ -74,6 +74,8 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
         }
       });
     });
+
+    logger.debug("validRecipients : ", validRecipients);
 
     if (validRecipients && !validRecipients.length) {
       return await slackPostMessageToChannel(
@@ -117,6 +119,8 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
           recipient
         );
 
+        logger.debug("cheersStatsRecipient : ", cheersStatsRecipient);
+
         if (cheersStatsRecipient) {
           const { cheersReceived } = cheersStatsRecipient;
 
@@ -143,6 +147,8 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
         }
       })
     );
+
+    logger.debug("notifyRecipients : ", notifyRecipients);
 
     await slackPostMessageToChannel(
       channelId,

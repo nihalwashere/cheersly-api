@@ -11,7 +11,10 @@ const addUsersBatch = async (batch) => {
 
 const getUsersForTeam = async (teamId) => {
   try {
-    return await User.find({ "slackUserData.team_id": teamId });
+    return await User.find({
+      "slackUserData.team_id": teamId,
+      slackDeleted: false
+    });
   } catch (error) {
     logger.error("getUsersForTeam() -> error : ", error);
   }

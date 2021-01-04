@@ -11,7 +11,7 @@ const addCheersStats = async (payload) => {
 
 const getCheersStatsForTeam = async (teamId) => {
   try {
-    return await CheersStats.findOne({ teamId });
+    return await CheersStats.find({ teamId });
   } catch (error) {
     logger.error(`getCheersStatsForTeam() -> error : `, error);
   }
