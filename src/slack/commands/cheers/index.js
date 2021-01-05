@@ -15,7 +15,8 @@ const { createAppHomeLeaderBoard } = require("../../app-home/template");
 const { slackPostMessageToChannel } = require("../../api");
 const {
   createCheersTemplate,
-  createInvalidRecipientsTemplate
+  createInvalidRecipientsTemplate,
+  createSelfCheersTemplate
 } = require("./template");
 
 const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
@@ -82,6 +83,14 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
         channelId,
         teamId,
         createInvalidRecipientsTemplate()
+      );
+    }
+
+    if (validRecipients && validRecipients.includes(senderUsername)) {
+      return await slackPostMessageToChannel(
+        channelId,
+        teamId,
+        createSelfCheersTemplate()
       );
     }
 

@@ -77,8 +77,22 @@ const createInvalidRecipientsTemplate = () => {
   ];
 };
 
+const createSelfCheersTemplate = () => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "_*Whoa! You should share cheers with your peers! If you are happy spread it rather that keeping it with yourself...*_"
+      }
+    }
+  ];
+};
+
 module.exports = {
   createGiphyTemplate,
   createCheersTemplate,
-  createInvalidRecipientsTemplate
+  createInvalidRecipientsTemplate,
+  createSelfCheersTemplate
 };
