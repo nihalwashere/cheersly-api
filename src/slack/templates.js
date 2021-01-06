@@ -112,7 +112,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "15 mins",
                 emoji: true
               },
-              value: 15
+              value: "15"
             },
             {
               text: {
@@ -120,7 +120,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "30 mins",
                 emoji: true
               },
-              value: 30
+              value: "30"
             },
             {
               text: {
@@ -128,7 +128,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "1 hour",
                 emoji: true
               },
-              value: 60
+              value: "60"
             },
             {
               text: {
@@ -136,7 +136,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "2 hours",
                 emoji: true
               },
-              value: 120
+              value: "120"
             },
             {
               text: {
@@ -144,7 +144,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "4 hours",
                 emoji: true
               },
-              value: 240
+              value: "240"
             },
             {
               text: {
@@ -152,7 +152,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "8 hours",
                 emoji: true
               },
-              value: 480
+              value: "480"
             },
             {
               text: {
@@ -160,7 +160,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "12 hours",
                 emoji: true
               },
-              value: 720
+              value: "720"
             },
             {
               text: {
@@ -168,7 +168,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "24 hours",
                 emoji: true
               },
-              value: 1440
+              value: "1440"
             },
             {
               text: {
@@ -176,7 +176,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "48 hours",
                 emoji: true
               },
-              value: 2880
+              value: "2880"
             },
             {
               text: {
@@ -184,7 +184,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
                 text: "72 hours",
                 emoji: true
               },
-              value: 4320
+              value: "4320"
             }
           ],
           action_id: SELECTED_DURATION
