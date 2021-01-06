@@ -55,12 +55,14 @@ app.use(express.static(PUBLIC_DIR));
 // ROUTES
 const slackCommands = require("./src/api/v1/slack-commands");
 const slackEvents = require("./src/api/v1/slack-events");
+const slackActions = require("./src/api/v1/slack-actions");
 const slackInstallation = require("./src/api/v1/slack-installation");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
 app.use("/api/v1/slack-commands", slackCommands);
 app.use("/api/v1/slack-events", slackEvents);
+app.use("/api/v1/slack-actions", slackActions);
 app.use("/api/v1/slack-installation", slackInstallation);
 app.use("/api/test", test);
 

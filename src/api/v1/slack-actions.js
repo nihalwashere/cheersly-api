@@ -12,17 +12,9 @@ const router = express.Router();
 
 // SLACK ACTIONS
 
-// @route 	GET api/v1/slack-action/health
-// @desc   	Health check for slack-actions route
-// @access 	Public
-
 router.get("/health", (req, res) =>
-  res.json({ msg: "Slack-Actions are up and running!!!" })
+  res.json({ msg: "SLACK ACTIONS API IS UP AND RUNNING!!!" })
 );
-
-// @route 	POST api/v1/slack-actions
-// @desc    Create
-// @access 	Protected
 
 router.post("/", async (req, res) => {
   try {

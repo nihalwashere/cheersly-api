@@ -96,7 +96,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
         block_id: SELECT_DURATION,
         text: {
           type: "mrkdwn",
-          text: "*Poll Duration*"
+          text: "*Select Poll Duration*"
         },
         accessory: {
           type: "static_select",
@@ -165,7 +165,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
             {
               text: {
                 type: "plain_text",
-                text: "24 hours",
+                text: "1 day",
                 emoji: true
               },
               value: "1440"
@@ -173,7 +173,7 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
             {
               text: {
                 type: "plain_text",
-                text: "48 hours",
+                text: "2 days",
                 emoji: true
               },
               value: "2880"
@@ -181,10 +181,18 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
             {
               text: {
                 type: "plain_text",
-                text: "72 hours",
+                text: "3 days",
                 emoji: true
               },
               value: "4320"
+            },
+            {
+              text: {
+                type: "plain_text",
+                text: "1 week",
+                emoji: true
+              },
+              value: "10080"
             }
           ],
           action_id: SELECTED_DURATION
