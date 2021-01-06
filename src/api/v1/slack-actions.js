@@ -5,7 +5,7 @@ const {
 } = require("../../slack/view-submissions/handler");
 const { verifySlackRequest } = require("../../utils/common");
 const {
-  SLACK_ACTIONS: { VIEW_SUBMISSION }
+  SLACK_ACTIONS: { BLOCK_ACTIONS, VIEW_SUBMISSION }
 } = require("../../global/constants");
 
 const router = express.Router();
@@ -40,6 +40,10 @@ router.post("/", async (req, res) => {
     logger.debug("parsedPayload : ", JSON.stringify(parsedPayload));
 
     const { type } = parsedPayload;
+
+    if (type === BLOCK_ACTIONS) {
+      res.sendStatus(200);
+    }
 
     if (type === VIEW_SUBMISSION) {
       res.status(200).send({
