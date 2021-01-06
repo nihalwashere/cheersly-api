@@ -17,8 +17,7 @@ const processPoll = async (payload) => {
     const pollQuestion = state.values[POLL_QUESTION][POLL_QUESTION_VALUE].value;
 
     const pollChannel =
-      state.values[SELECT_POLL_CHANNEL][SELECTED_POLL_CHANNEL].selected_option
-        .value;
+      state.values[SELECT_POLL_CHANNEL][SELECTED_POLL_CHANNEL].selected_channel;
 
     const pollDuration =
       state.values[SELECT_DURATION][SELECTED_DURATION].selected_option.value;
