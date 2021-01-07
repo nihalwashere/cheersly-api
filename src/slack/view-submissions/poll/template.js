@@ -47,6 +47,8 @@ const createPollOptionBlocks = (pollOptions) => {
       }
     });
   });
+
+  return pollOptionBlocks;
 };
 
 const createPollSubmittedTemplate = (
