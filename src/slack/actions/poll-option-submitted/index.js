@@ -1,5 +1,14 @@
 const { postEphemeralMessage } = require("../../api");
-const { createPollOptionSubmittedTemplate } = require("./template");
+const {
+  addPollAnswers,
+  getPollAnswerForUser,
+  updatePollAnswerForUser
+} = require("../../../mongo/helper/pollAnswers");
+const {
+  createPollOptionSubmittedTemplate,
+  createPollOptionAlreadySubmittedTemplate,
+  createPollOptionUpdatedTemplate
+} = require("./template");
 const logger = require("../../../global/logger");
 
 const handlePollOptionSubmitted = async (payload) => {
@@ -13,13 +22,58 @@ const handlePollOptionSubmitted = async (payload) => {
       actions
     } = payload;
 
-    const pollOptionIndex = actions[0].value;
+    const pollAnswer = actions[0].value;
+    logger.debug("pollAnswer : ", pollAnswer);
 
-    logger.info("pollOptionIndex : ", pollOptionIndex);
+    const pollId = String(pollAnswer).split("-----")[0];
+    const pollOption = String(pollAnswer).split("-----")[1];
 
-    const template = createPollOptionSubmittedTemplate();
+    const pollAnswerForUser = await getPollAnswerForUser(
+      userId,
+      teamId,
+      pollId
+    );
 
-    await postEphemeralMessage(channelId, userId, teamId, template);
+    logger.debug("pollAnswerForUser : ", pollAnswerForUser);
+
+    if (pollAnswerForUser && pollAnswerForUser.answer === pollOption) {
+      logger.debug("poll already submitted");
+      return await postEphemeralMessage(
+        channelId,
+        userId,
+        teamId,
+        createPollOptionAlreadySubmittedTemplate()
+      );
+    }
+
+    if (pollAnswerForUser && pollAnswerForUser.answer !== pollOption) {
+      logger.debug("poll updated");
+
+      await postEphemeralMessage(
+        channelId,
+        userId,
+        teamId,
+        createPollOptionUpdatedTemplate()
+      );
+
+      return await updatePollAnswerForUser(userId, teamId, pollId, pollOption);
+    }
+
+    logger.debug("poll option submitted");
+
+    await addPollAnswers({
+      slackUserId: userId,
+      teamId,
+      pollId,
+      answer: pollOption
+    });
+
+    await postEphemeralMessage(
+      channelId,
+      userId,
+      teamId,
+      createPollOptionSubmittedTemplate()
+    );
   } catch (error) {
     logger.error("handlePollOptionSubmitted() -> error : ", error);
   }

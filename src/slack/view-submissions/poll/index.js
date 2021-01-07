@@ -19,6 +19,8 @@ const {
   }
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
+const { addPollQuestions } = require("../../../mongo/helper/pollQuestions");
+const { newIdString } = require("../../../utils/common");
 const { createPollSubmittedTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
@@ -47,6 +49,8 @@ const processPoll = async (payload) => {
 
     const pollOptionD = state.values[POLL_OPTION_D][POLL_OPTION_D_VALUE].value;
 
+    const pollId = newIdString();
+
     logger.debug("pollQuestion : ", pollQuestion);
     logger.debug("pollChannel : ", pollChannel);
     logger.debug("pollDuration : ", pollDuration);
@@ -54,6 +58,7 @@ const processPoll = async (payload) => {
     logger.debug("pollOptionB : ", pollOptionB);
     logger.debug("pollOptionC : ", pollOptionC);
     logger.debug("pollOptionD : ", pollOptionD);
+    logger.debug("pollId : ", pollId);
 
     const pollOptions = [pollOptionA, pollOptionB];
 
@@ -65,7 +70,18 @@ const processPoll = async (payload) => {
       pollOptions.push(pollOptionD);
     }
 
+    await addPollQuestions({
+      createdBy: user_name,
+      teamId,
+      question: pollQuestion,
+      channel: pollChannel,
+      duration: pollDuration,
+      options: pollOptions,
+      pollId
+    });
+
     const template = createPollSubmittedTemplate(
+      pollId,
       user_name,
       pollQuestion,
       pollDuration,

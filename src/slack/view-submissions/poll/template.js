@@ -2,7 +2,7 @@ const {
   SLACK_ACTIONS: { POLL_OPTION_SUBMITTED }
 } = require("../../../global/constants");
 
-const createPollOptionBlocks = (pollOptions) => {
+const createPollOptionBlocks = (pollId, pollOptions) => {
   const pollOptionBlocks = [];
 
   pollOptions.map((option, index) => {
@@ -42,7 +42,7 @@ const createPollOptionBlocks = (pollOptions) => {
           text: "Poll",
           emoji: true
         },
-        value: optionIndex,
+        value: `${pollId}-----${optionIndex}`,
         action_id: POLL_OPTION_SUBMITTED
       }
     });
@@ -52,6 +52,7 @@ const createPollOptionBlocks = (pollOptions) => {
 };
 
 const createPollSubmittedTemplate = (
+  pollId,
   user_name,
   pollQuestion,
   pollDuration,
@@ -89,7 +90,7 @@ const createPollSubmittedTemplate = (
         text: "Options :"
       }
     },
-    ...createPollOptionBlocks(pollOptions),
+    ...createPollOptionBlocks(pollId, pollOptions),
     {
       type: "section",
       text: {

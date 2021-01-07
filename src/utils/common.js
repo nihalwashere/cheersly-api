@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const crypto = require("crypto");
 const qs = require("qs");
 const {
@@ -8,6 +9,8 @@ const {
   SubscriptionMessageType
 } = require("../enums/subscriptionMessageTypes");
 const logger = require("../global/logger");
+
+const newIdString = () => mongoose.Types.ObjectId().toHexString();
 
 const verifySlackRequest = (slackRequestTimestamp, slackSignature, body) => {
   try {
@@ -143,6 +146,7 @@ const isSubscriptionValidForSlack = async (slackTeamId) => {
 };
 
 module.exports = {
+  newIdString,
   verifySlackRequest,
   waitForMilliSeconds,
   createTrialSubscription,
