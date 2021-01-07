@@ -35,7 +35,8 @@ const ACTION_IDS = {
 const SLACK_ACTIONS = {
   BLOCK_ACTIONS: "block_actions",
   VIEW_SUBMISSION: "view_submission",
-  POLL: "POLL"
+  POLL: "POLL",
+  POLL_OPTION_SUBMITTED: "POLL_OPTION_SUBMITTED"
 };
 
 module.exports = {

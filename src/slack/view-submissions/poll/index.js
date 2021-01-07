@@ -55,10 +55,21 @@ const processPoll = async (payload) => {
     logger.debug("pollOptionC : ", pollOptionC);
     logger.debug("pollOptionD : ", pollOptionD);
 
+    const pollOptions = [pollOptionA, pollOptionB];
+
+    if (pollOptionC) {
+      pollOptions.push(pollOptionC);
+    }
+
+    if (pollOptionD) {
+      pollOptions.push(pollOptionD);
+    }
+
     const template = createPollSubmittedTemplate(
       user_name,
       pollQuestion,
-      pollDuration
+      pollDuration,
+      pollOptions
     );
 
     await slackPostMessageToChannel(pollChannel, teamId, template, true);

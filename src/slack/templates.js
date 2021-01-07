@@ -82,7 +82,12 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         element: {
           type: "plain_text_input",
           multiline: true,
-          action_id: POLL_QUESTION_VALUE
+          action_id: POLL_QUESTION_VALUE,
+          placeholder: {
+            type: "plain_text",
+            text: "Ask something!",
+            emoji: true
+          }
         },
         label: {
           type: "plain_text",
@@ -219,7 +224,12 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         block_id: POLL_OPTION_A,
         element: {
           type: "plain_text_input",
-          action_id: POLL_OPTION_A_VALUE
+          action_id: POLL_OPTION_A_VALUE,
+          placeholder: {
+            type: "plain_text",
+            text: "Option A",
+            emoji: true
+          }
         },
         label: {
           type: "plain_text",
@@ -232,7 +242,12 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         block_id: POLL_OPTION_B,
         element: {
           type: "plain_text_input",
-          action_id: POLL_OPTION_B_VALUE
+          action_id: POLL_OPTION_B_VALUE,
+          placeholder: {
+            type: "plain_text",
+            text: "Option B",
+            emoji: true
+          }
         },
         label: {
           type: "plain_text",
@@ -246,7 +261,12 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         optional: true,
         element: {
           type: "plain_text_input",
-          action_id: POLL_OPTION_C_VALUE
+          action_id: POLL_OPTION_C_VALUE,
+          placeholder: {
+            type: "plain_text",
+            text: "Option C",
+            emoji: true
+          }
         },
         label: {
           type: "plain_text",
@@ -260,7 +280,12 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         optional: true,
         element: {
           type: "plain_text_input",
-          action_id: POLL_OPTION_D_VALUE
+          action_id: POLL_OPTION_D_VALUE,
+          placeholder: {
+            type: "plain_text",
+            text: "Option D",
+            emoji: true
+          }
         },
         label: {
           type: "plain_text",

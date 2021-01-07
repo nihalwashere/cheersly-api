@@ -1,4 +1,60 @@
-const createPollSubmittedTemplate = (user_name, pollQuestion, pollDuration) => {
+const {
+  SLACK_ACTIONS: { POLL_OPTION_SUBMITTED }
+} = require("../../../global/constants");
+
+const createPollOptionBlocks = (pollOptions) => {
+  const pollOptionBlocks = [];
+
+  pollOptions.map((option, index) => {
+    let optionIndex = "";
+
+    switch (index) {
+      case 0:
+        optionIndex = "A";
+        break;
+
+      case 1:
+        optionIndex = "B";
+        break;
+
+      case 2:
+        optionIndex = "C";
+        break;
+
+      case 3:
+        optionIndex = "D";
+        break;
+
+      default:
+        break;
+    }
+
+    pollOptionBlocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `${optionIndex}) *${option}*`
+      },
+      accessory: {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: "Poll",
+          emoji: true
+        },
+        value: optionIndex,
+        action_id: POLL_OPTION_SUBMITTED
+      }
+    });
+  });
+};
+
+const createPollSubmittedTemplate = (
+  user_name,
+  pollQuestion,
+  pollDuration,
+  pollOptions
+) => {
   let pollDurationString = "";
 
   const pollDurationNumber = Number(pollDuration);
@@ -31,40 +87,7 @@ const createPollSubmittedTemplate = (user_name, pollQuestion, pollDuration) => {
         text: "Options :"
       }
     },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "A) *Yes*"
-      },
-      accessory: {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: "Poll",
-          emoji: true
-        },
-        value: "click_me_123",
-        action_id: "button-action"
-      }
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "B) *No*"
-      },
-      accessory: {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: "Poll",
-          emoji: true
-        },
-        value: "click_me_123",
-        action_id: "button-action"
-      }
-    },
+    ...createPollOptionBlocks(pollOptions),
     {
       type: "section",
       text: {

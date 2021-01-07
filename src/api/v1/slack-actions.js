@@ -1,5 +1,6 @@
 const express = require("express");
 const logger = require("../../global/logger");
+const { actionsHandler } = require("../../slack/actions/handler");
 const {
   viewSubmissionHandler
 } = require("../../slack/view-submissions/handler");
@@ -43,6 +44,8 @@ router.post("/", async (req, res) => {
 
     if (type === BLOCK_ACTIONS) {
       res.sendStatus(200);
+
+      return await actionsHandler(parsedPayload);
     }
 
     if (type === VIEW_SUBMISSION) {

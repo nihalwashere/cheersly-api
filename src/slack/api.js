@@ -122,16 +122,15 @@ const getSlackTokenForUser = async (code) => {
 const slackPostMessageToChannel = async (
   channel, // can be slack userId as well for DM
   teamId,
-  message
+  blocks
 ) => {
   try {
     const bot_access_token = await getSlackBotTokenForTeam(teamId);
 
     const messagePayload = {
-      channel
+      channel,
+      blocks
     };
-
-    messagePayload.blocks = message;
 
     const response = await postMessage(messagePayload, bot_access_token);
 
@@ -291,6 +290,35 @@ const updateChat = async (teamId, channel, ts, blocks) => {
   }
 };
 
+const postEphemeralMessage = async (channel, user, teamId, blocks) => {
+  try {
+    const bot_access_token = await getSlackBotTokenForTeam(teamId);
+
+    const messagePayload = {
+      channel,
+      user,
+      blocks
+    };
+
+    const req = await fetch(`${SLACK_API}/chat.postEphemeral`, {
+      method: "POST",
+      body: JSON.stringify(messagePayload),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${bot_access_token}`
+      }
+    });
+
+    const res = await req.json();
+
+    logger.info("postEphemeralMessage() -> response : ", res);
+
+    return res;
+  } catch (error) {
+    logger.error(`postEphemeralMessage() -> error : `, error);
+  }
+};
+
 module.exports = {
   getSlackUser,
   getSlackTokenForUser,
@@ -301,5 +329,6 @@ module.exports = {
   postMessageToHook,
   conversationsInvite,
   publishView,
-  updateChat
+  updateChat,
+  postEphemeralMessage
 };
