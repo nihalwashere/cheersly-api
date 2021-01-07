@@ -70,12 +70,22 @@ const processPoll = async (payload) => {
       pollOptions.push(pollOptionD);
     }
 
+    let pollDurationString = "";
+
+    const pollDurationNumber = Number(pollDuration);
+
+    if (pollDurationNumber > 60) {
+      pollDurationString = `${pollDurationNumber / 60} hours`;
+    } else {
+      pollDurationString = `${pollDurationNumber} mins`;
+    }
+
     await addPollQuestions({
       createdBy: user_name,
       teamId,
       question: pollQuestion,
       channel: pollChannel,
-      duration: pollDuration,
+      duration: pollDurationString,
       options: pollOptions,
       pollId
     });
@@ -84,7 +94,7 @@ const processPoll = async (payload) => {
       pollId,
       user_name,
       pollQuestion,
-      pollDuration,
+      pollDurationString,
       pollOptions
     );
 

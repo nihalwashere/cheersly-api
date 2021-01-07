@@ -55,19 +55,9 @@ const createPollSubmittedTemplate = (
   pollId,
   user_name,
   pollQuestion,
-  pollDuration,
+  pollDurationString,
   pollOptions
 ) => {
-  let pollDurationString = "";
-
-  const pollDurationNumber = Number(pollDuration);
-
-  if (pollDurationNumber > 60) {
-    pollDurationString = `${pollDurationNumber / 60} hours`;
-  } else {
-    pollDurationString = `${pollDurationNumber} mins`;
-  }
-
   return [
     {
       type: "section",
