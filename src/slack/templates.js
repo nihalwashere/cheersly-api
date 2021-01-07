@@ -1,6 +1,22 @@
 const {
-  BLOCK_IDS: { POLL_QUESTION, SELECT_POLL_CHANNEL, SELECT_DURATION },
-  ACTION_IDS: { POLL_QUESTION_VALUE, SELECTED_POLL_CHANNEL, SELECTED_DURATION }
+  BLOCK_IDS: {
+    POLL_QUESTION,
+    SELECT_POLL_CHANNEL,
+    SELECT_DURATION,
+    POLL_OPTION_A,
+    POLL_OPTION_B,
+    POLL_OPTION_C,
+    POLL_OPTION_D
+  },
+  ACTION_IDS: {
+    POLL_QUESTION_VALUE,
+    SELECTED_POLL_CHANNEL,
+    SELECTED_DURATION,
+    POLL_OPTION_A_VALUE,
+    POLL_OPTION_B_VALUE,
+    POLL_OPTION_C_VALUE,
+    POLL_OPTION_D_VALUE
+  }
 } = require("../global/constants");
 
 const createAPITokensRevokedTemplate = (teamId) => {
@@ -39,11 +55,11 @@ const createAppInstalledTemplate = (teamId) => {
   ];
 };
 
-const createSubmitAPollTemplate = (channelId, callback_id) => {
+const createSubmitAPollTemplate = (user_name, callback_id) => {
   return {
     type: "modal",
     callback_id,
-    private_metadata: channelId,
+    private_metadata: user_name,
     title: {
       type: "plain_text",
       text: "Submit a Poll",
@@ -196,6 +212,60 @@ const createSubmitAPollTemplate = (channelId, callback_id) => {
             }
           ],
           action_id: SELECTED_DURATION
+        }
+      },
+      {
+        type: "input",
+        block_id: POLL_OPTION_A,
+        element: {
+          type: "plain_text_input",
+          action_id: POLL_OPTION_A_VALUE
+        },
+        label: {
+          type: "plain_text",
+          text: "Option A",
+          emoji: true
+        }
+      },
+      {
+        type: "input",
+        block_id: POLL_OPTION_B,
+        element: {
+          type: "plain_text_input",
+          action_id: POLL_OPTION_B_VALUE
+        },
+        label: {
+          type: "plain_text",
+          text: "Option B",
+          emoji: true
+        }
+      },
+      {
+        type: "input",
+        block_id: POLL_OPTION_C,
+        optional: true,
+        element: {
+          type: "plain_text_input",
+          action_id: POLL_OPTION_C_VALUE
+        },
+        label: {
+          type: "plain_text",
+          text: "Option C",
+          emoji: true
+        }
+      },
+      {
+        type: "input",
+        block_id: POLL_OPTION_D,
+        optional: true,
+        element: {
+          type: "plain_text_input",
+          action_id: POLL_OPTION_D_VALUE
+        },
+        label: {
+          type: "plain_text",
+          text: "Option D",
+          emoji: true
         }
       }
     ]

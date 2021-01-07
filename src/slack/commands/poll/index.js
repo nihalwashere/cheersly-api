@@ -5,11 +5,11 @@ const {
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handlePollCommand = async (team_id, channel_id, trigger_id) => {
+const handlePollCommand = async (team_id, user_name, trigger_id) => {
   try {
     // /cheers poll
 
-    const viewTemplate = createSubmitAPollTemplate(channel_id, POLL);
+    const viewTemplate = createSubmitAPollTemplate(user_name, POLL);
 
     await openModal(team_id, trigger_id, viewTemplate);
   } catch (error) {
