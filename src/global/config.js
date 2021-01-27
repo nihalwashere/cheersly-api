@@ -16,23 +16,14 @@ const {
   SLACK_CLIENT_ID,
   SLACK_CLIENT_SECRET,
   SLACK_SIGNING_SECRET,
-  MONGO_URL,
-  SG_MONGO_CERT
+  MONGO_URL
 } = process.env;
-
-// const SG_MONGO_CERT = fs.readFileSync(
-//   path.resolve(__dirname, "../../scale-grid-key.pem"),
-//   "utf-8"
-// );
 
 const MONGO_OPTIONS = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  useCreateIndex: true,
-  ssl: true,
-  sslValidate: true,
-  sslCA: SG_MONGO_CERT
+  useCreateIndex: true
 };
 
 module.exports = {
