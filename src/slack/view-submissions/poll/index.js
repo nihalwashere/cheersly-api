@@ -89,7 +89,7 @@ const processPoll = async (payload) => {
       pollOptions
     );
 
-    await addPollQuestions({
+    const poll = await addPollQuestions({
       createdBy: user_name,
       teamId,
       question: pollQuestion,
@@ -101,7 +101,19 @@ const processPoll = async (payload) => {
       pollSubmittedTemplate: JSON.stringify(template)
     });
 
-    await slackPostMessageToChannel(pollChannel, teamId, template, true);
+    const slackMessageResponse = await slackPostMessageToChannel(
+      pollChannel,
+      teamId,
+      template,
+      true
+    );
+
+    logger.debug("slackMessageResponse : ", slackMessageResponse);
+
+    if (slackMessageResponse && slackMessageResponse.ok) {
+      poll.messageTimestamp = slackMessageResponse.ts;
+      poll.save();
+    }
   } catch (error) {
     logger.error("processPoll() -> error : ", error);
   }

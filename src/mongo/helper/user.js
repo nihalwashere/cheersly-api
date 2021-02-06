@@ -34,6 +34,20 @@ const getUserDataBySlackUserId = async (slackUserId) => {
   }
 };
 
+const getUserDataBySlackUserName = async (slackUserName) => {
+  try {
+    return await User.findOne({
+      "slackUserData.name": slackUserName,
+      slackDeleted: false
+    });
+  } catch (error) {
+    logger.error(
+      `getUserDataBySlackUserName() -> Failed to find slack user data for slack username : ${slackUserName} -> `,
+      error
+    );
+  }
+};
+
 const deleteSlackUsersByTeamId = async (teamId) => {
   try {
     return await User.updateMany(
@@ -84,6 +98,7 @@ module.exports = {
   addUsersBatch,
   getUsersForTeam,
   getUserDataBySlackUserId,
+  getUserDataBySlackUserName,
   deleteSlackUsersByTeamId,
   updateAppHomePublishedForUser,
   updateAppHomePublishedForTeam

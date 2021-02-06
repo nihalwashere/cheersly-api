@@ -104,7 +104,7 @@ const server = app.listen(PORT, () => {
 
     // polls cron scheduled every 5 mins
     new CronJob(
-      "00 00 8 * * *",
+      "00 */5 * * * *",
       () => {
         spawn(process.execPath, ["./src/cron/polls.js"], {
           stdio: "inherit"

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const pMap = require("p-map");
 const { MONGO_URL, MONGO_OPTIONS } = require("../global/config");
 const { getClosedPolls } = require("../mongo/helper/pollQuestions");
+const { getUserDataBySlackUserName } = require("../mongo/helper/user");
 const logger = require("../global/logger");
 
 const service = async () => {
@@ -16,9 +17,42 @@ const service = async () => {
     // update all closed polls and send results to poll creator
 
     const handler = async (poll) => {
-      const { pollSubmittedTemplate } = poll;
+      const { createdBy, pollSubmittedTemplate, channel } = poll;
 
-      logger.debug("pollSubmittedTemplate : ", pollSubmittedTemplate);
+      const user = await getUserDataBySlackUserName(createdBy);
+
+      if (user) {
+        const {
+          slackUserData: { id: slackUserId, team_id }
+        } = user;
+
+        const parsedPollSubmittedTemplate = JSON.parse(pollSubmittedTemplate);
+
+        logger.debug("pollSubmittedTemplate : ", parsedPollSubmittedTemplate);
+
+        const pollCompletedTemplate = [];
+
+        parsedPollSubmittedTemplate.map((section, index) => {
+          if (section.accessory) {
+            pollCompletedTemplate.push({
+              type: section.type,
+              text: section.text
+            });
+          } else if (parsedPollSubmittedTemplate.length === index + 1) {
+            pollCompletedTemplate.push({
+              type: "section",
+              text: {
+                type: "mrkdwn",
+                text: "_*Polling is closed*_"
+              }
+            });
+          } else {
+            pollCompletedTemplate.push(section);
+          }
+        });
+
+        logger.debug("pollCompletedTemplate : ", pollCompletedTemplate);
+      }
     };
 
     if (closedPolls && closedPolls.length) {

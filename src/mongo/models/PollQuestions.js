@@ -33,6 +33,9 @@ const PollQuestionsSchema = new mongoose.Schema(
     },
     pollSubmittedTemplate: {
       type: String
+    },
+    messageTimestamp: {
+      type: String
     }
   },
   { timestamps: true }
