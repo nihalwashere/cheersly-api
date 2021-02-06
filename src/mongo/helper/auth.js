@@ -9,6 +9,17 @@ const addAuth = async (payload) => {
   }
 };
 
+const updateAuth = async (teamId, payload) => {
+  try {
+    return await Auth.updateOne(
+      { teamId },
+      { $set: { slackInstallation: payload } }
+    );
+  } catch (error) {
+    logger.error("updateAuth() -> error : ", error);
+  }
+};
+
 const getAuthDataForSlackTeam = async (teamId) => {
   try {
     return await Auth.findOne({
@@ -60,6 +71,7 @@ const deleteSlackAuthByTeamId = async (teamId) => {
 
 module.exports = {
   addAuth,
+  updateAuth,
   getAuthDataForSlackTeam,
   getSlackBotTokenForTeam,
   deleteSlackAuthByTeamId

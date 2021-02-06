@@ -13,7 +13,11 @@ const {
   postInternalMessage
 } = require("../../slack/api");
 const { paginateUsersList } = require("../../slack/pagination/users-list");
-const { addAuth } = require("../../mongo/helper/auth");
+const {
+  getAuthDataForSlackTeam,
+  addAuth,
+  updateAuth
+} = require("../../mongo/helper/auth");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
 const { createTrialSubscription } = require("../../utils/common");
 
@@ -33,10 +37,20 @@ router.post("/slack-install", async (req, res) => {
           access_token
         } = slackTokenPayload;
 
-        await addAuth({ slackInstallation: slackTokenPayload });
+        // check if installation already exists
+        const auth = await getAuthDataForSlackTeam(teamId);
+
+        if (!auth) {
+          // create new auth
+          await addAuth({ slackInstallation: slackTokenPayload });
+          await paginateUsersList(access_token);
+        } else {
+          // update auth
+          await updateAuth(teamId, slackTokenPayload);
+        }
+
         await createTrialSubscription(teamId);
         await sendOnBoardingInstructions(teamId);
-        await paginateUsersList(access_token);
         await postInternalMessage(
           INTERNAL_SLACK_TEAM_ID,
           INTERNAL_SLACK_CHANNEL_ID,
