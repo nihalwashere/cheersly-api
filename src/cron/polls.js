@@ -1,9 +1,23 @@
 const mongoose = require("mongoose");
 const pMap = require("p-map");
+const R = require("ramda");
 const { MONGO_URL, MONGO_OPTIONS } = require("../global/config");
 const { getClosedPolls } = require("../mongo/helper/pollQuestions");
 const { getUserDataBySlackUserName } = require("../mongo/helper/user");
+const { getAllPollAnswers } = require("../mongo/helper/pollAnswers");
+const { slackPostMessageToChannel, updateChat } = require("../slack/api");
+
 const logger = require("../global/logger");
+
+const createNotifyPollResultsToCreatorTemplate = (pollCompletedTemplate) => {
+  const blocks = pollCompletedTemplate;
+
+  blocks[0].text.text = "*Results for poll submission*";
+
+  blocks.splice(blocks.length - 1, 1);
+
+  return blocks;
+};
 
 const service = async () => {
   try {
@@ -17,7 +31,13 @@ const service = async () => {
     // update all closed polls and send results to poll creator
 
     const handler = async (poll) => {
-      const { createdBy, pollSubmittedTemplate, channel } = poll;
+      const {
+        createdBy,
+        pollSubmittedTemplate,
+        channel,
+        messageTimestamp,
+        pollId
+      } = poll;
 
       const user = await getUserDataBySlackUserName(createdBy);
 
@@ -25,6 +45,25 @@ const service = async () => {
         const {
           slackUserData: { id: slackUserId, team_id }
         } = user;
+
+        const pollAnswers = await getAllPollAnswers(pollId);
+
+        const totalPollAnswers = pollAnswers.length;
+        logger.debug("totalPollAnswers : ", totalPollAnswers);
+
+        const pollOptions = pollAnswers.map(({ answer }) => answer);
+        logger.debug("pollOptions : ", pollOptions);
+
+        const uniquePollOptions = R.uniq(pollOptions);
+        logger.debug("uniquePollOptions : ", uniquePollOptions);
+
+        const results = {};
+
+        uniquePollOptions.map((option) => {
+          results[option] = 0;
+        });
+
+        logger.debug("results : ", results);
 
         const parsedPollSubmittedTemplate = JSON.parse(pollSubmittedTemplate);
 
@@ -34,9 +73,29 @@ const service = async () => {
 
         parsedPollSubmittedTemplate.map((section, index) => {
           if (section.accessory) {
+            const pollOption = String(section.accessory.value).split(
+              "-----"
+            )[1];
+            logger.debug("pollOption : ", pollOption);
+
+            pollAnswers.map(({ answer }) => {
+              logger.debug("answer : ", answer);
+
+              if (answer === pollOption) {
+                results[pollOption] += 1;
+              }
+            });
+
             pollCompletedTemplate.push({
               type: section.type,
-              text: section.text
+              text: {
+                type: section.text.type,
+                text:
+                  section.text.text +
+                  " = *" +
+                  Math.ceil((results[pollOption] / totalPollAnswers) * 100) +
+                  "%*"
+              }
             });
           } else if (parsedPollSubmittedTemplate.length === index + 1) {
             pollCompletedTemplate.push({
@@ -52,6 +111,23 @@ const service = async () => {
         });
 
         logger.debug("pollCompletedTemplate : ", pollCompletedTemplate);
+
+        logger.debug("results : ", results);
+
+        await updateChat(
+          team_id,
+          channel,
+          messageTimestamp,
+          pollCompletedTemplate
+        );
+
+        // notify poll creator with results
+
+        await slackPostMessageToChannel(
+          slackUserId,
+          team_id,
+          createNotifyPollResultsToCreatorTemplate(pollCompletedTemplate)
+        );
       }
     };
 

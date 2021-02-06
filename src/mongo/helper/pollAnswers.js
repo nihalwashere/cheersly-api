@@ -9,6 +9,14 @@ const addPollAnswers = async (payload) => {
   }
 };
 
+const getAllPollAnswers = async (pollId) => {
+  try {
+    return await PollAnswers.find({ pollId });
+  } catch (error) {
+    logger.error(`getAllPollAnswers() -> error : `, error);
+  }
+};
+
 const getPollAnswerForUser = async (slackUserId, teamId, pollId) => {
   try {
     return await PollAnswers.findOne({
@@ -38,6 +46,7 @@ const updatePollAnswerForUser = async (slackUserId, teamId, pollId, answer) => {
 
 module.exports = {
   addPollAnswers,
+  getAllPollAnswers,
   getPollAnswerForUser,
   updatePollAnswerForUser
 };
