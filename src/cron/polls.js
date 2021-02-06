@@ -86,15 +86,15 @@ const service = async () => {
               }
             });
 
+            const percentageResult = results[pollOption]
+              ? Math.ceil((results[pollOption] / totalPollAnswers) * 100)
+              : 0;
+
             pollCompletedTemplate.push({
               type: section.type,
               text: {
                 type: section.text.type,
-                text:
-                  section.text.text +
-                  " = *" +
-                  Math.ceil((results[pollOption] / totalPollAnswers) * 100) +
-                  "%*"
+                text: section.text.text + " = *" + percentageResult + "%*"
               }
             });
           } else if (parsedPollSubmittedTemplate.length === index + 1) {
