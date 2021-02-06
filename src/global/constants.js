@@ -39,6 +39,8 @@ const SLACK_ACTIONS = {
   POLL_OPTION_SUBMITTED: "POLL_OPTION_SUBMITTED"
 };
 
+const DEFAULT_TIME_ZONE = "America/Los_Angeles";
+
 module.exports = {
   APP_HOME_OPENED,
   APP_UNINSTALLED,
@@ -49,5 +51,6 @@ module.exports = {
   VIEW_SUBMISSIONS,
   BLOCK_IDS,
   ACTION_IDS,
-  SLACK_ACTIONS
+  SLACK_ACTIONS,
+  DEFAULT_TIME_ZONE
 };

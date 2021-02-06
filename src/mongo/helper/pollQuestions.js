@@ -9,6 +9,15 @@ const addPollQuestions = async (payload) => {
   }
 };
 
+const getClosedPolls = async () => {
+  try {
+    return await PollQuestions.find({ closeAt: { $lt: new Date() } });
+  } catch (error) {
+    logger.error(`getClosedPolls() -> error : `, error);
+  }
+};
+
 module.exports = {
-  addPollQuestions
+  addPollQuestions,
+  getClosedPolls
 };

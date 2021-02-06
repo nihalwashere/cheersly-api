@@ -1,6 +1,6 @@
 const express = require("express");
-// const { CronJob } = require("cron");
-// const { spawn } = require("child_process");
+const { CronJob } = require("cron");
+const { spawn } = require("child_process");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const path = require("path");
@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const logger = require("./src/global/logger");
 
-// ENV PORT
 const { PORT, MONGO_URL, MONGO_OPTIONS } = require("./src/global/config");
+const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
 
 const PUBLIC_DIR = "src/public";
 
@@ -101,6 +101,19 @@ app.get("/app-installed", (req, res) => {
 const server = app.listen(PORT, () => {
   try {
     logger.info(`App is now running on port ${PORT}!!!`);
+
+    // polls cron scheduled every 5 mins
+    new CronJob(
+      "00 00 8 * * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/polls.js"], {
+          stdio: "inherit"
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
   } catch (error) {
     logger.error("Failed to start server -> error : ", error);
   }

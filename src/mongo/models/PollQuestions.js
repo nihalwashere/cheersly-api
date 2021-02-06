@@ -27,6 +27,12 @@ const PollQuestionsSchema = new mongoose.Schema(
     pollId: {
       type: String,
       index: true
+    },
+    closeAt: {
+      type: Date
+    },
+    pollSubmittedTemplate: {
+      type: String
     }
   },
   { timestamps: true }

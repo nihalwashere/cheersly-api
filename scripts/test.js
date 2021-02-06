@@ -1,3 +1,5 @@
+const moment = require("moment-timezone");
+
 // const text =
 //   "@user1 @user2 @user3      Thanks for all the help \n      dasdsad dasdsada \n dasdsa :beers:";
 
@@ -40,6 +42,11 @@
 
 // console.log("result : ", result);
 
-const str = "abc----def";
+// const str = "abc----def";
 
-console.log("result : ", str.split("----"));
+// console.log("result : ", str.split("----"));
+
+const now = new Date();
+console.log("now : ", now);
+
+console.log("later : ", moment().add(60, "minutes").toDate());

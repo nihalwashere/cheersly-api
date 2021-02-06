@@ -1,3 +1,4 @@
+const moment = require("moment-timezone");
 const {
   BLOCK_IDS: {
     POLL_QUESTION,
@@ -80,16 +81,6 @@ const processPoll = async (payload) => {
       pollDurationString = `${pollDurationNumber} mins`;
     }
 
-    await addPollQuestions({
-      createdBy: user_name,
-      teamId,
-      question: pollQuestion,
-      channel: pollChannel,
-      duration: pollDurationString,
-      options: pollOptions,
-      pollId
-    });
-
     const template = createPollSubmittedTemplate(
       pollId,
       user_name,
@@ -97,6 +88,18 @@ const processPoll = async (payload) => {
       pollDurationString,
       pollOptions
     );
+
+    await addPollQuestions({
+      createdBy: user_name,
+      teamId,
+      question: pollQuestion,
+      channel: pollChannel,
+      duration: pollDurationString,
+      options: pollOptions,
+      pollId,
+      closeAt: moment().add(pollDurationNumber, "minutes").toDate(),
+      pollSubmittedTemplate: JSON.stringify(template)
+    });
 
     await slackPostMessageToChannel(pollChannel, teamId, template, true);
   } catch (error) {
