@@ -37,6 +37,9 @@ router.post("/slack-install", async (req, res) => {
           access_token
         } = slackTokenPayload;
 
+        await sendOnBoardingInstructions(teamId);
+        await createTrialSubscription(teamId);
+
         // check if installation already exists
         const auth = await getAuthDataForSlackTeam(teamId);
 
@@ -49,8 +52,6 @@ router.post("/slack-install", async (req, res) => {
           await updateAuth(teamId, slackTokenPayload);
         }
 
-        await createTrialSubscription(teamId);
-        await sendOnBoardingInstructions(teamId);
         await postInternalMessage(
           INTERNAL_SLACK_TEAM_ID,
           INTERNAL_SLACK_CHANNEL_ID,

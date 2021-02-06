@@ -12,7 +12,7 @@ const addAuth = async (payload) => {
 const updateAuth = async (teamId, payload) => {
   try {
     return await Auth.updateOne(
-      { teamId },
+      { "slackInstallation.team.id": teamId },
       { $set: { slackInstallation: payload } }
     );
   } catch (error) {
