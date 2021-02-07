@@ -22,5 +22,7 @@ const CheersStatsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+CheersStatsSchema.index({ slackUsername: 1, teamId: 1 });
+
 const CheersStats = mongoose.model(collection, CheersStatsSchema);
 module.exports = CheersStats;

@@ -23,6 +23,8 @@ const PollAnswersSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+PollAnswersSchema.index({ slackUserId: 1, teamId: 1, pollId: 1 });
+
 const PollAnswers = mongoose.model(collection, PollAnswersSchema);
 
 module.exports = PollAnswers;
