@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const pMap = require("p-map");
 const R = require("ramda");
 const { MONGO_URL, MONGO_OPTIONS } = require("../global/config");
-const { getClosedPolls } = require("../mongo/helper/pollQuestions");
+const {
+  getClosedPolls,
+  markPollAsClosed
+} = require("../mongo/helper/pollQuestions");
 const { getUserDataBySlackUserName } = require("../mongo/helper/user");
 const { getAllPollAnswers } = require("../mongo/helper/pollAnswers");
 const { slackPostMessageToChannel, updateChat } = require("../slack/api");
@@ -122,12 +125,14 @@ const service = async () => {
         );
 
         // notify poll creator with results
-
         await slackPostMessageToChannel(
           slackUserId,
           team_id,
           createNotifyPollResultsToCreatorTemplate(pollCompletedTemplate)
         );
+
+        // mark poll as closed
+        await markPollAsClosed(pollId);
       }
     };
 

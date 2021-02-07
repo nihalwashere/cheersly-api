@@ -17,7 +17,19 @@ const getClosedPolls = async () => {
   }
 };
 
+const markPollAsClosed = async (pollId) => {
+  try {
+    return await PollQuestions.updateOne(
+      { pollId },
+      { $set: { closeAt: null } }
+    );
+  } catch (error) {
+    logger.error(`markPollAsClosed() -> error : `, error);
+  }
+};
+
 module.exports = {
   addPollQuestions,
-  getClosedPolls
+  getClosedPolls,
+  markPollAsClosed
 };
