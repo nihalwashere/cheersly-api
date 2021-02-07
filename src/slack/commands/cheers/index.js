@@ -122,31 +122,18 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
       });
     }
 
+    // save to cheers for filters
     await Promise.all(
       validRecipients.map(async (recipient) => {
         await addCheers({ from: senderUsername, to: recipient, teamId });
       })
     );
 
-    // logger.debug("cheersGivenBySender : ", cheersGivenBySender);
-
     const notifyRecipients = [];
 
     // for receivers
     await Promise.all(
       validRecipients.map(async (recipient) => {
-        const cheersReceivedByRecipient = await getCheersReceivedForUser(
-          teamId,
-          recipient
-        );
-
-        logger.debug("cheersReceivedByRecipient : ", cheersReceivedByRecipient);
-
-        notifyRecipients.push({
-          recipient,
-          cheersReceived: cheersReceivedByRecipient
-        });
-
         const cheersStatsRecipient = await getCheersStatsForUser(
           teamId,
           recipient
