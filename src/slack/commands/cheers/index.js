@@ -11,6 +11,10 @@ const {
   getCheersStatsForUser,
   updateCheersStatsForUser
 } = require("../../../mongo/helper/cheersStats");
+const {
+  addCheers,
+  getCheersReceivedForUser
+} = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
 const { slackPostMessageToChannel } = require("../../api");
 const {
@@ -118,17 +122,35 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
       });
     }
 
+    await Promise.all(
+      validRecipients.map(async (recipient) => {
+        await addCheers({ from: senderUsername, to: recipient, teamId });
+      })
+    );
+
+    // logger.debug("cheersGivenBySender : ", cheersGivenBySender);
+
     const notifyRecipients = [];
 
     // for receivers
     await Promise.all(
       validRecipients.map(async (recipient) => {
-        const cheersStatsRecipient = await getCheersStatsForUser(
+        const cheersReceivedByRecipient = await getCheersReceivedForUser(
           teamId,
           recipient
         );
 
-        logger.debug("cheersStatsRecipient : ", cheersStatsRecipient);
+        logger.debug("cheersReceivedByRecipient : ", cheersReceivedByRecipient);
+
+        notifyRecipients.push({
+          recipient,
+          cheersReceived: cheersReceivedByRecipient
+        });
+
+        const cheersStatsRecipient = await getCheersStatsForUser(
+          teamId,
+          recipient
+        );
 
         if (cheersStatsRecipient) {
           const { cheersReceived } = cheersStatsRecipient;
