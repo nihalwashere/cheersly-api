@@ -1,3 +1,3 @@
-# cheers
+# Cheersly
 
-Spread happiness with some cheers!!!
+Build cheerful teams.

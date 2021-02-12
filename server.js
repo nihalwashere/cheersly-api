@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 
 const whitelist = [
   "https://www.cheersly.club",
+  "https://cheersly-dev.herokuapp.com/",
   "http://localhost:7000",
   "http://localhost:3000"
 ];
@@ -72,30 +73,14 @@ mongoose
   .then(() => logger.info("MongoDB Connected!!!"))
   .catch((err) => logger.error("MongoDB Connection Failed -> error ", err));
 
-app.get("/tos", (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
-});
-
-app.get("/privacy", (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
-});
-
-app.get("/contact", (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
-});
-
-app.get("/logo.jpg", (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.jpg"));
+app.get("/logo.png", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.png"));
 });
 
 app.get("/giphy_attribution_mark.png", (req, res) => {
   res
     .status(200)
     .sendFile(path.join(__dirname, PUBLIC_DIR, "giphy_attribution_mark.png"));
-});
-
-app.get("/app-installed", (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "index.html"));
 });
 
 const server = app.listen(PORT, () => {
