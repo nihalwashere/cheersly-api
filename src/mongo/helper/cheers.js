@@ -9,6 +9,14 @@ const addCheers = async (payload) => {
   }
 };
 
+const getCheersForTeam = async (teamId, fromDate, toDate) => {
+  try {
+    return await Cheers.find({ teamId });
+  } catch (error) {
+    logger.error(`getCheersForTeam() -> error : `, error);
+  }
+};
+
 const getCheersGivenForUser = async (teamId, from) => {
   try {
     return await Cheers.countDocuments({ teamId, from });
@@ -27,6 +35,7 @@ const getCheersReceivedForUser = async (teamId, to) => {
 
 module.exports = {
   addCheers,
+  getCheersForTeam,
   getCheersGivenForUser,
   getCheersReceivedForUser
 };

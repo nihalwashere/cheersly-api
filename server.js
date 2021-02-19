@@ -1,15 +1,18 @@
 const express = require("express");
-// const { CronJob } = require("cron");
-// const { spawn } = require("child_process");
+const { CronJob } = require("cron");
+const { spawn } = require("child_process");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { graphqlHTTP } = require("express-graphql");
+const schema = require("./src/graphql/schema");
+
 const logger = require("./src/global/logger");
 
 const { PORT, MONGO_URL, MONGO_OPTIONS } = require("./src/global/config");
-// const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
+const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
 
 const PUBLIC_DIR = "src/public";
 
@@ -25,7 +28,8 @@ app.use(bodyParser.json());
 
 const whitelist = [
   "https://www.cheersly.club",
-  "https://cheersly-dev.herokuapp.com/",
+  "https://dev.cheersly.club",
+  "https://cheersly-dev.herokuapp.com",
   "http://localhost:7000",
   "http://localhost:3000"
 ];
@@ -58,6 +62,7 @@ const slackCommands = require("./src/api/v1/slack-commands");
 const slackEvents = require("./src/api/v1/slack-events");
 const slackActions = require("./src/api/v1/slack-actions");
 const slackInstallation = require("./src/api/v1/slack-installation");
+const auth = require("./src/api/v1/auth");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
@@ -65,7 +70,18 @@ app.use("/api/v1/slack-commands", slackCommands);
 app.use("/api/v1/slack-events", slackEvents);
 app.use("/api/v1/slack-actions", slackActions);
 app.use("/api/v1/slack-installation", slackInstallation);
+app.use("/api/v1/auth", auth);
 app.use("/api/test", test);
+
+// GraphQL
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+    pretty: true
+  })
+);
 
 // CONNECT TO MONGODB
 mongoose
@@ -88,17 +104,56 @@ const server = app.listen(PORT, () => {
     logger.info(`App is now running on port ${PORT}!!!`);
 
     // polls cron scheduled every 5 mins
-    // new CronJob(
-    //   "00 */5 * * * *",
-    //   () => {
-    //     spawn(process.execPath, ["./src/cron/polls.js"], {
-    //       stdio: "inherit"
-    //     });
-    //   },
-    //   null,
-    //   true,
-    //   DEFAULT_TIME_ZONE
-    // );
+    new CronJob(
+      "00 */5 * * * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/polls.js"], {
+          stdio: "inherit"
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
+    // weekly stats cron scheduled every Monday at 2 AM
+    new CronJob(
+      "00 00 2 * * 1",
+      () => {
+        spawn(process.execPath, ["./src/cron/stats/weekly.js"], {
+          stdio: "inherit"
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
+    // monthly stats cron scheduled at first day of each month at 4 AM
+    new CronJob(
+      "00 00 10 * * 1",
+      () => {
+        spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
+          stdio: "inherit"
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
+    // all time stats cron scheduled bi-weekly every Monday at 6 AM
+    new CronJob(
+      "00 00 10 * * 1",
+      () => {
+        spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
+          stdio: "inherit"
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
   } catch (error) {
     logger.error("Failed to start server -> error : ", error);
   }

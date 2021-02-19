@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const { team_id, channel_id, user_name, text, trigger_id } = req.body;
+    const { team_id, channel_id, command, user_name, trigger_id } = req.body;
 
     // verify subscription
 
@@ -67,28 +67,28 @@ router.post("/", async (req, res) => {
       return await upgradeSubscriptionMessage(team_id, channel_id);
     }
 
-    if (isCheersCommand(text)) {
-      // /cheers @user1 @user2 @user3 Thanks for all the help
+    if (isCheersCommand(command)) {
+      // /cheers
 
       isCommandValid = true;
 
       res.send("");
 
-      return await handleCheersCommand(team_id, channel_id, user_name, text);
+      return await handleCheersCommand(team_id, user_name, trigger_id);
     }
 
-    // if (isPollCommand(text)) {
-    //   // /cheers poll
+    if (isPollCommand(command)) {
+      // /cheers-poll
 
-    //   isCommandValid = true;
+      isCommandValid = true;
 
-    //   res.send("");
+      res.send("");
 
-    //   return await handlePollCommand(team_id, user_name, trigger_id);
-    // }
+      return await handlePollCommand(team_id, user_name, trigger_id);
+    }
 
     if (!isCommandValid) {
-      // /cheers help
+      // /cheers-help
 
       return res.status(200).json({
         response_type: "in_channel",

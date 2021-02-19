@@ -1,13 +1,15 @@
 const {
-  VIEW_SUBMISSIONS: { POLL }
+  VIEW_SUBMISSIONS: { POLL, SAY_CHEERS }
 } = require("../../global/constants");
 const { processPoll } = require("./poll");
+const { processCheers } = require("./cheers");
 const logger = require("../../global/logger");
 
 const submissionsMapper = async (callback_id, payload) => {
   try {
     const mapper = {
-      [POLL]: async () => await processPoll(payload)
+      [POLL]: async () => await processPoll(payload),
+      [SAY_CHEERS]: async () => await processCheers(payload)
     };
 
     const applyMapper = mapper[callback_id];

@@ -6,7 +6,10 @@ const {
     POLL_OPTION_A,
     POLL_OPTION_B,
     POLL_OPTION_C,
-    POLL_OPTION_D
+    POLL_OPTION_D,
+    SUBMIT_CHEERS_FOR_REASON,
+    SUBMIT_CHEERS_TO_CHANNEL,
+    SUBMIT_CHEERS_TO_USERS
   },
   ACTION_IDS: {
     POLL_QUESTION_VALUE,
@@ -15,7 +18,10 @@ const {
     POLL_OPTION_A_VALUE,
     POLL_OPTION_B_VALUE,
     POLL_OPTION_C_VALUE,
-    POLL_OPTION_D_VALUE
+    POLL_OPTION_D_VALUE,
+    SUBMIT_CHEERS_FOR_REASON_VALUE,
+    SUBMIT_CHEERS_TO_CHANNEL_VALUE,
+    SUBMIT_CHEERS_TO_USERS_VALUE
   }
 } = require("../global/constants");
 
@@ -297,9 +303,89 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
   };
 };
 
+const submitCheersTemplate = (user_name, callback_id) => {
+  return {
+    type: "modal",
+    callback_id,
+    private_metadata: user_name,
+    title: {
+      type: "plain_text",
+      text: "Say Cheers",
+      emoji: true
+    },
+    submit: {
+      type: "plain_text",
+      text: "Submit",
+      emoji: true
+    },
+    close: {
+      type: "plain_text",
+      text: "Cancel",
+      emoji: true
+    },
+    blocks: [
+      {
+        type: "input",
+        block_id: SUBMIT_CHEERS_TO_USERS,
+        element: {
+          type: "multi_users_select",
+          placeholder: {
+            type: "plain_text",
+            text: "Select your peers",
+            emoji: true
+          },
+          action_id: SUBMIT_CHEERS_TO_USERS_VALUE
+        },
+        label: {
+          type: "plain_text",
+          text: "Whom do you want to say cheers to?",
+          emoji: true
+        }
+      },
+      {
+        type: "input",
+        block_id: SUBMIT_CHEERS_TO_CHANNEL,
+        element: {
+          type: "conversations_select",
+          placeholder: {
+            type: "plain_text",
+            text: "Select conversation",
+            emoji: true
+          },
+          filter: {
+            include: ["public"]
+          },
+          action_id: SUBMIT_CHEERS_TO_CHANNEL_VALUE
+        },
+        label: {
+          type: "plain_text",
+          text: "Which channel do you want to post to?",
+          emoji: true
+        }
+      },
+      {
+        type: "input",
+        block_id: SUBMIT_CHEERS_FOR_REASON,
+        optional: true,
+        element: {
+          type: "plain_text_input",
+          multiline: true,
+          action_id: SUBMIT_CHEERS_FOR_REASON_VALUE
+        },
+        label: {
+          type: "plain_text",
+          text: "For reason?",
+          emoji: true
+        }
+      }
+    ]
+  };
+};
+
 module.exports = {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
   createAppInstalledTemplate,
-  createSubmitAPollTemplate
+  createSubmitAPollTemplate,
+  submitCheersTemplate
 };

@@ -1,3 +1,4 @@
+const R = require("ramda");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 const qs = require("qs");
@@ -5,6 +6,8 @@ const {
   addSubscription,
   getSubscriptionBySlackTeamId
 } = require("../mongo/helper/subscriptions");
+const { getUserDataBySlackUserId } = require("../mongo/helper/user");
+const { getAuthDataForSlackTeamFromDB } = require("../mongo/helper/auth");
 const {
   SubscriptionMessageType
 } = require("../enums/subscriptionMessageTypes");
@@ -145,10 +148,74 @@ const isSubscriptionValidForSlack = async (slackTeamId) => {
   }
 };
 
+const sortLeaders = R.sortWith([R.descend(R.prop("cheersReceived"))]);
+
+const validateToken = async (headers) => {
+  const token = headers["x-access-token"];
+
+  if (!token) {
+    return {
+      status: 401,
+      payload: {
+        message: "Invalid token!"
+      }
+    };
+  }
+
+  const buffer = Buffer.from(token, "base64");
+  const decodedToken = buffer.toString("ascii");
+
+  const slackUserId = decodedToken.split("$")[0];
+  const slackTeamId = decodedToken.split("$")[1];
+
+  if (!slackUserId) {
+    return {
+      status: 401,
+      message: "Invalid token! - Slack userId is required"
+    };
+  }
+
+  if (!slackTeamId) {
+    return {
+      status: 401,
+      message: "Invalid token! - Slack teamId is required"
+    };
+  }
+
+  const user = await getUserDataBySlackUserId(slackUserId);
+
+  if (!user) {
+    return {
+      status: 401,
+      message: "Slack user not found!"
+    };
+  }
+
+  const auth = await getAuthDataForSlackTeamFromDB(slackTeamId);
+
+  if (!auth) {
+    return {
+      status: 401,
+      message: "Auth not found!"
+    };
+  }
+
+  return {
+    status: 200,
+    message: "Success",
+    slackUserId,
+    slackTeamId,
+    slackUserData: user.slackUserData,
+    slackInstallation: auth.slackInstallation
+  };
+};
+
 module.exports = {
   newIdString,
   verifySlackRequest,
   waitForMilliSeconds,
   createTrialSubscription,
-  isSubscriptionValidForSlack
+  isSubscriptionValidForSlack,
+  sortLeaders,
+  validateToken
 };

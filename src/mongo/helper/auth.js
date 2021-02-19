@@ -9,6 +9,14 @@ const addAuth = async (payload) => {
   }
 };
 
+const getAllAuths = async () => {
+  try {
+    return await Auth.fine({ slackDeleted: false });
+  } catch (error) {
+    logger.error("getAllAuths() -> error : ", error);
+  }
+};
+
 const updateAuth = async (teamId, payload) => {
   try {
     return await Auth.updateOne(
@@ -69,10 +77,26 @@ const deleteSlackAuthByTeamId = async (teamId) => {
   }
 };
 
+const getAuthDataForSlackTeamFromDB = async (teamId) => {
+  try {
+    return await Auth.findOne({
+      "slackInstallation.team.id": teamId,
+      slackDeleted: false
+    });
+  } catch (error) {
+    logger.error(
+      `getAuthDataForSlackTeamFromDB() : Failed to find auth data for teamId : ${teamId}`,
+      error
+    );
+  }
+};
+
 module.exports = {
   addAuth,
+  getAllAuths,
   updateAuth,
   getAuthDataForSlackTeam,
   getSlackBotTokenForTeam,
-  deleteSlackAuthByTeamId
+  deleteSlackAuthByTeamId,
+  getAuthDataForSlackTeamFromDB
 };
