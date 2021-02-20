@@ -18,7 +18,7 @@ const createHelpTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*/cheers help* \n To seek some help"
+        text: "*/cheers-poll \n Submit a Poll"
       }
     },
     {
@@ -27,6 +27,13 @@ const createHelpTemplate = () => {
         type: "mrkdwn",
         text:
           "*/cheers @tom @jerry Thanks for jumping in the client call at the last minute :)* \n To cheer your peers"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*/cheers-help* \n Seek some help"
       }
     },
     {
