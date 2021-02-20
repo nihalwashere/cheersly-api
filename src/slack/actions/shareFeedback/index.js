@@ -1,5 +1,5 @@
 const { openModal } = require("../../api");
-const { createSendUsFeedbackTemplate } = require("./template");
+const { createShareFeedbackTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
 const handleShareFeedback = async (payload) => {
@@ -10,7 +10,7 @@ const handleShareFeedback = async (payload) => {
       team: { id: teamId }
     } = payload;
 
-    const viewTemplate = createSendUsFeedbackTemplate();
+    const viewTemplate = createShareFeedbackTemplate();
 
     // open description modal
     await openModal(teamId, trigger_id, viewTemplate);

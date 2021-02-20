@@ -22,7 +22,7 @@ const createHelpTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*/cheers poll \n Submit a Poll"
+        text: "*/cheers poll* \n Submit a Poll"
       }
     },
     {
@@ -62,7 +62,8 @@ const createHelpTemplate = () => {
           text: "Share feedback",
           emoji: true
         },
-        value: SHARE_FEEDBACK
+        value: SHARE_FEEDBACK,
+        action_id: SHARE_FEEDBACK
       }
     },
     {

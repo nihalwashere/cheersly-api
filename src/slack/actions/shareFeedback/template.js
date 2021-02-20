@@ -11,7 +11,7 @@ const {
   }
 } = require("../../../global/constants");
 
-const createSendUsFeedbackTemplate = () => {
+const createShareFeedbackTemplate = () => {
   return {
     type: "modal",
     callback_id: CUSTOMER_FEEDBACK,
@@ -120,4 +120,4 @@ const createSendUsFeedbackTemplate = () => {
   };
 };
 
-module.exports = { createSendUsFeedbackTemplate };
+module.exports = { createShareFeedbackTemplate };
