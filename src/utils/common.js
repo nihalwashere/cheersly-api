@@ -210,6 +210,22 @@ const validateToken = async (headers) => {
   };
 };
 
+const getMedalType = (place) => {
+  switch (place) {
+    case 0:
+      return ":first_place_medal:";
+
+    case 1:
+      return ":second_place_medal:";
+
+    case 2:
+      return ":third_place_medal:";
+
+    default:
+      return "";
+  }
+};
+
 module.exports = {
   newIdString,
   verifySlackRequest,
@@ -217,5 +233,6 @@ module.exports = {
   createTrialSubscription,
   isSubscriptionValidForSlack,
   sortLeaders,
-  validateToken
+  validateToken,
+  getMedalType
 };

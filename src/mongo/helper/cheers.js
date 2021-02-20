@@ -11,7 +11,16 @@ const addCheers = async (payload) => {
 
 const getCheersForTeam = async (teamId, fromDate, toDate) => {
   try {
-    return await Cheers.find({ teamId });
+    const query = { teamId };
+
+    if (fromDate && toDate) {
+      query.$and = [
+        { createdAt: { $gte: new Date(fromDate) } },
+        { createdAt: { $lte: new Date(toDate) } }
+      ];
+    }
+
+    return await Cheers.find(query);
   } catch (error) {
     logger.error(`getCheersForTeam() -> error : `, error);
   }

@@ -11,7 +11,7 @@ const addAuth = async (payload) => {
 
 const getAllAuths = async () => {
   try {
-    return await Auth.fine({ slackDeleted: false });
+    return await Auth.find({ slackDeleted: false });
   } catch (error) {
     logger.error("getAllAuths() -> error : ", error);
   }

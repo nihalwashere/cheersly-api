@@ -1,14 +1,12 @@
 const mongoose = require("mongoose");
 const pMap = require("p-map");
+const moment = require("moment-timezone");
 const { MONGO_URL, MONGO_OPTIONS } = require("../../global/config");
 const { getAllAuths } = require("../../mongo/helper/auth");
-const {
-  getUsersForTeam,
-  getUserDataBySlackUserName
-} = require("../../mongo/helper/user");
 const { getCheersForTeam } = require("../../mongo/helper/cheers");
 const { postMessageToHook } = require("../../slack/api");
 const { processTopCheersReceivers } = require("./common");
+const { createStatsTemplate } = require("./template");
 const logger = require("../../global/logger");
 
 const service = async () => {
@@ -24,39 +22,20 @@ const service = async () => {
         }
       } = auth;
 
+      const fromDate = moment().subtract(30, "day").startOf("day").toDate();
+      const toDate = moment().startOf("day").toDate();
+
       // get cheers for past week
-      const cheers = await getCheersForTeam(teamId);
+      const cheers = await getCheersForTeam(teamId, fromDate, toDate);
 
       const topCheersReceivers = processTopCheersReceivers(cheers);
 
       logger.debug("topCheersReceivers : ", topCheersReceivers);
 
-      if (
-        topCheersReceivers &&
-        topCheersReceivers.length &&
-        topCheersReceivers.length === 0
-      ) {
-        // no cheers receivers for this week
-      }
-
-      if (
-        topCheersReceivers &&
-        topCheersReceivers.length &&
-        topCheersReceivers.length > 3
-      ) {
-        // consider only top 3
-      }
-
-      if (
-        topCheersReceivers &&
-        topCheersReceivers.length &&
-        topCheersReceivers.length > 0 &&
-        topCheersReceivers.length < 3
-      ) {
-        // consider exact count
-      }
-
-      await postMessageToHook(teamId, []);
+      await postMessageToHook(
+        teamId,
+        createStatsTemplate(topCheersReceivers, fromDate, toDate)
+      );
     };
 
     await pMap(auths, handler, { concurrency: 1 });

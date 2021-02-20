@@ -1,23 +1,16 @@
 const mongoose = require("mongoose");
 const pMap = require("p-map");
-const R = require("ramda");
 const { MONGO_URL, MONGO_OPTIONS } = require("../../global/config");
 const { getAllAuths } = require("../../mongo/helper/auth");
-const {
-  getUsersForTeam,
-  getUserDataBySlackUserName
-} = require("../../mongo/helper/user");
-const { getCheersStatsForUser } = require("../../mongo/helper/cheersStats");
+const { getCheersForTeam } = require("../../mongo/helper/cheers");
+const { createStatsTemplate } = require("./template");
+const { processTopCheersReceivers } = require("./common");
 const { postMessageToHook } = require("../../slack/api");
-const { sortLeaders } = require("../../utils/common");
 const logger = require("../../global/logger");
-
-const getUniqueUsers = R.uniq(R.prop("to"));
 
 const service = async () => {
   try {
-    logger.info("STARTING WEEKLY STATS CRON SERVICE");
-
+    logger.info("STARTING ALL TIME STATS CRON SERVICE");
     const auths = await getAllAuths();
 
     const handler = async (auth) => {
@@ -27,57 +20,19 @@ const service = async () => {
         }
       } = auth;
 
-      const leaders = [];
+      // get cheers for past week
+      const cheers = await getCheersForTeam(teamId);
 
-      const users = await getUsersForTeam(teamId);
+      const topCheersReceivers = processTopCheersReceivers(cheers);
 
-      await Promise.all(
-        users.map(async (user) => {
-          const {
-            slackUserData: { name: slackUserName }
-          } = user;
+      logger.debug("topCheersReceivers : ", topCheersReceivers);
 
-          const cheersStats = await getCheersStatsForUser(
-            teamId,
-            slackUserName
-          );
-
-          if (cheersStats) {
-            leaders.push({
-              slackUserName,
-              cheersReceived: cheersStats.cheersReceived
-            });
-          }
-        })
-      );
-
-      const sortedLeaders = sortLeaders(leaders);
-
-      logger.debug("sortedLeaders : ", sortedLeaders);
-
-      if (sortedLeaders && sortedLeaders.length && sortedLeaders.length === 0) {
-        // no cheers receivers for this week
-      }
-
-      if (sortedLeaders && sortedLeaders.length && sortedLeaders.length > 3) {
-        // consider only top 3
-      }
-
-      if (
-        sortedLeaders &&
-        sortedLeaders.length &&
-        sortedLeaders.length > 0 &&
-        sortedLeaders.length < 3
-      ) {
-        // consider exact count
-      }
-
-      await postMessageToHook(teamId, []);
+      await postMessageToHook(teamId, createStatsTemplate(topCheersReceivers));
     };
 
     await pMap(auths, handler, { concurrency: 1 });
   } catch (error) {
-    logger.error("WEEKLY STATS CRON SERVICE FAILED -> error : ", error);
+    logger.error("ALL TIME STATS CRON SERVICE FAILED -> error : ", error);
   }
 };
 
@@ -91,7 +46,7 @@ mongoose.connect(MONGO_URL, {
 // On Connection
 mongoose.connection.on("connected", async () => {
   try {
-    logger.info("Connected to database from weekly stats cron service");
+    logger.info("Connected to database from all time stats cron service");
 
     // execute service
     await service();
@@ -106,7 +61,7 @@ mongoose.connection.on("connected", async () => {
 // On Error
 mongoose.connection.on("error", (error) => {
   logger.error(
-    "Database error from weekly stats cron service -> error : ",
+    "Database error from all time stats cron service -> error : ",
     error
   );
 });

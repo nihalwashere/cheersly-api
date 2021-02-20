@@ -2,12 +2,18 @@ const R = require("ramda");
 const { sortLeaders } = require("../../utils/common");
 const logger = require("../../global/logger");
 
-const getUniqueUsers = R.uniq(R.prop("to"));
-
 const processTopCheersReceivers = (cheers) => {
   const leaders = [];
 
-  const uniqueUsers = getUniqueUsers(cheers);
+  const uniqueUsers = [];
+
+  cheers.map((cheer) => {
+    const foundUser = uniqueUsers.find((user) => user === cheer.to);
+
+    if (!foundUser) {
+      uniqueUsers.push(cheer.to);
+    }
+  });
 
   logger.debug("uniqueUsers : ", uniqueUsers);
 

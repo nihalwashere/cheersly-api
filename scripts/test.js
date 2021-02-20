@@ -49,4 +49,9 @@ const moment = require("moment-timezone");
 const now = new Date();
 console.log("now : ", now);
 
-console.log("later : ", moment().add(60, "minutes").toDate());
+// console.log("later : ", moment().add(60, "minutes").toDate());
+
+console.log("from : ", moment().subtract(7, "day").startOf("day").toDate());
+console.log("to : ", moment().format("Do MMM YYYY"));
+
+console.log("to : ", moment().startOf("day").toDate());

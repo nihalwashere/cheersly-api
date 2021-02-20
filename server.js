@@ -131,7 +131,7 @@ const server = app.listen(PORT, () => {
 
     // monthly stats cron scheduled at first day of each month at 4 AM
     new CronJob(
-      "00 00 10 * * 1",
+      "00 00 4 1 * *",
       () => {
         spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
           stdio: "inherit"
@@ -142,11 +142,11 @@ const server = app.listen(PORT, () => {
       DEFAULT_TIME_ZONE
     );
 
-    // all time stats cron scheduled bi-weekly every Monday at 6 AM
+    // all time stats cron scheduled at first day of each month at 6 AM
     new CronJob(
-      "00 00 10 * * 1",
+      "00 00 6 1 * *",
       () => {
-        spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
+        spawn(process.execPath, ["./src/cron/stats/all-time.js"], {
           stdio: "inherit"
         });
       },

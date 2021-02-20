@@ -1,4 +1,5 @@
 const express = require("express");
+const { spawn } = require("child_process");
 
 const router = express.Router();
 
@@ -27,6 +28,30 @@ router.post("/app-home", async (req, res) => {
   const { teamId, slackUserId, slackUsername } = req.body;
   await publishStats(teamId, slackUserId, slackUsername);
   res.status(200).json({ success: true });
+});
+
+router.post("/cron-all-time", async (req, res) => {
+  spawn(process.execPath, ["./src/cron/stats/all-time.js"], {
+    stdio: "inherit"
+  });
+
+  return res.status(200).json({ success: true });
+});
+
+router.post("/cron-weekly", async (req, res) => {
+  spawn(process.execPath, ["./src/cron/stats/weekly.js"], {
+    stdio: "inherit"
+  });
+
+  return res.status(200).json({ success: true });
+});
+
+router.post("/cron-monthly", async (req, res) => {
+  spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
+    stdio: "inherit"
+  });
+
+  return res.status(200).json({ success: true });
 });
 
 module.exports = router;
