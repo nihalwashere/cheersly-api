@@ -390,12 +390,7 @@ const submitCheersTemplate = (user_name, callback_id) => {
   };
 };
 
-const createInternalFeedbackTemplate = (
-  name,
-  email,
-  regarding,
-  description
-) => {
+const createInternalFeedbackTemplate = (name, regarding, description) => {
   return [
     {
       type: "section",
@@ -409,13 +404,6 @@ const createInternalFeedbackTemplate = (
       text: {
         type: "mrkdwn",
         text: "*Name :* " + name
-      }
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "*Email :* " + email
       }
     },
     {

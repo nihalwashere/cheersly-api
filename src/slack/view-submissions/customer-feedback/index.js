@@ -48,11 +48,9 @@ const processCustomerFeedback = async (payload) => {
 
     if (userData) {
       const { name } = userData.slackUserData;
-      const { email } = userData.slackUserData.profile;
 
       const internalFeedbackTemplate = createInternalFeedbackTemplate(
         name,
-        email,
         regarding,
         description || ""
       );
