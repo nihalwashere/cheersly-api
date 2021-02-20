@@ -10,8 +10,12 @@ const {
     SUBMIT_CHEERS_FOR_REASON_VALUE
   }
 } = require("../../../global/constants");
-const { slackPostMessageToChannel } = require("../../api");
-const { createCheersSubmittedTemplate } = require("./template");
+const { slackPostMessageToChannel, pushViewToModal } = require("../../api");
+const {
+  createCheersSubmittedTemplate,
+  createInvalidRecipientsTemplate,
+  createSelfCheersTemplate
+} = require("./template");
 const {
   getUsersForTeam,
   updateAppHomePublishedForTeam
@@ -25,39 +29,38 @@ const {
 } = require("../../../mongo/helper/cheersStats");
 const { addCheers } = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
-const {
-  createCheersTemplate,
-  createInvalidRecipientsTemplate,
-  createSelfCheersTemplate
-} = require("./template");
 const { sortLeaders } = require("../../../utils/common");
 const logger = require("../../../global/logger");
 
 const processCheers = async (payload) => {
   try {
-    logger.debug("processPoll : ", JSON.stringify(payload));
+    logger.debug("processCheers : ", JSON.stringify(payload));
 
     const {
       team: { id: teamId },
-      view: { state, private_metadata: user_name }
+      view: { state, private_metadata: senderUsername },
+      trigger_id
     } = payload;
 
-    const toUsers =
-      state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE].value;
+    const recipients =
+      state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
+        .selected_users;
 
-    const toChannels =
+    const channel =
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
-        .selected_channel;
+        .selected_conversation;
 
     const reason =
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
-        .selected_option.value;
+        .value;
 
-    logger.debug("toUsers : ", toUsers);
-    logger.debug("toChannels : ", toChannels);
+    logger.debug("recipients : ", recipients);
+    logger.debug("channel : ", channel);
     logger.debug("reason : ", reason);
 
-    const cheersSubmittedTemplate = createCheersSubmittedTemplate(user_name);
+    // const cheersSubmittedTemplate = createCheersSubmittedTemplate(
+    //   senderUsername
+    // );
 
     // await slackPostMessageToChannel(
     //   pollChannel,
@@ -66,65 +69,35 @@ const processCheers = async (payload) => {
     //   true
     // );
 
-    // const splitArray = text.split("@");
-    // // const trimmedText = String(text).trim();
-    // logger.debug("splitArray : ", splitArray);
-    // const n = splitArray.length - 1;
-    // logger.debug("n : ", n);
-    // const recipients = [];
-    // let description = "";
-    // for (let i = 1; i <= n; i++) {
-    //   if (i === n) {
-    //     logger.debug("i : ", i);
-    //     logger.debug("here : ", splitArray[i]);
-    //     const user = splitArray[i].split(" ")[0].trim();
-    //     if (user) {
-    //       recipients.push(user);
-    //     }
-    //     description = splitArray[i]
-    //       .substring(splitArray[i].indexOf(" ") + 1)
-    //       .trim();
-    //   } else {
-    //     // eslint-disable-next-line
-    //     if (String(splitArray[i]).trim().length) {
-    //       recipients.push(String(splitArray[i]).trim());
-    //     }
-    //   }
-    // }
-    // if (recipients.includes(description)) {
-    //   description = "";
-    // }
-    // logger.debug("recipients : ", recipients);
-    // logger.debug("description : ", description);
-    // const validRecipients = [];
-    // const usersForTeam = await getUsersForTeam(teamId);
-    // logger.debug("usersForTeam : ", usersForTeam);
-    // recipients.map((recipient) => {
-    //   usersForTeam.map((user) => {
-    //     if (
-    //       user &&
-    //       user.slackUserData &&
-    //       user.slackUserData.name === recipient
-    //     ) {
-    //       validRecipients.push(recipient);
-    //     }
-    //   });
-    // });
-    // logger.debug("validRecipients : ", validRecipients);
-    // if (validRecipients && !validRecipients.length) {
-    //   return await slackPostMessageToChannel(
-    //     channelId,
-    //     teamId,
-    //     createInvalidRecipientsTemplate()
-    //   );
-    // }
-    // if (validRecipients && validRecipients.includes(senderUsername)) {
-    //   return await slackPostMessageToChannel(
-    //     channelId,
-    //     teamId,
-    //     createSelfCheersTemplate()
-    //   );
-    // }
+    const validRecipients = [];
+    const usersForTeam = await getUsersForTeam(teamId);
+    logger.debug("usersForTeam : ", usersForTeam);
+    recipients.map((recipient) => {
+      usersForTeam.map((user) => {
+        if (user && user.slackUserData && user.slackUserData.id === recipient) {
+          validRecipients.push(recipient);
+        }
+      });
+    });
+
+    logger.debug("validRecipients : ", validRecipients);
+
+    if (validRecipients && !validRecipients.length) {
+      return await pushViewToModal(
+        teamId,
+        trigger_id,
+        createInvalidRecipientsTemplate()
+      );
+    }
+
+    if (validRecipients && validRecipients.includes(senderUsername)) {
+      return await pushViewToModal(
+        teamId,
+        trigger_id,
+        createSelfCheersTemplate()
+      );
+    }
+
     // // first check if stats exist for user, if it exist then update else create
     // // for sender
     // const cheersStatsSender = await getCheersStatsForUser(
