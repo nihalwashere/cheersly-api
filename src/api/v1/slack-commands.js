@@ -74,7 +74,7 @@ router.post("/", async (req, res) => {
 
       res.send("");
 
-      return await handleCheersCommand(team_id, user_name, trigger_id);
+      return await handleCheersCommand(team_id, channel_id, user_name, text);
     }
 
     if (isPollCommand(text)) {

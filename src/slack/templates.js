@@ -298,6 +298,14 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
           text: "Option D",
           emoji: true
         }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text:
+            "_Note: Please make sure that Cheersly is invited to the channel you selected._"
+        }
       }
     ]
   };
@@ -382,10 +390,56 @@ const submitCheersTemplate = (user_name, callback_id) => {
   };
 };
 
+const createInternalFeedbackTemplate = (
+  name,
+  email,
+  regarding,
+  description
+) => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "Received a new feedback"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Name :* " + name
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Email :* " + email
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Regarding :* " + regarding
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Description :* " + description
+      }
+    }
+  ];
+};
+
 module.exports = {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
   createAppInstalledTemplate,
   createSubmitAPollTemplate,
-  submitCheersTemplate
+  submitCheersTemplate,
+  createInternalFeedbackTemplate
 };

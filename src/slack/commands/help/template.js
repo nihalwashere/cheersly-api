@@ -1,3 +1,7 @@
+const {
+  SLACK_ACTIONS: { SHARE_FEEDBACK }
+} = require("../../../global/constants");
+
 const createHelpTemplate = () => {
   return [
     {
@@ -42,6 +46,23 @@ const createHelpTemplate = () => {
         type: "mrkdwn",
         text:
           "_Get a sneak peak of your team's mood in the home tab of *Cheersly*_"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "*Question or Feedback?* \n Let us know if you have any questions or feedback"
+      },
+      accessory: {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: "Share feedback",
+          emoji: true
+        },
+        value: SHARE_FEEDBACK
       }
     },
     {
