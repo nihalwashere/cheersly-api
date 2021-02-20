@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const { team_id, channel_id, command, user_name, trigger_id } = req.body;
+    const { team_id, channel_id, user_name, trigger_id, text } = req.body;
 
     // verify subscription
 
@@ -67,8 +67,8 @@ router.post("/", async (req, res) => {
       return await upgradeSubscriptionMessage(team_id, channel_id);
     }
 
-    if (isCheersCommand(command)) {
-      // /cheers
+    if (isCheersCommand(text)) {
+      // /cheers @tom @jerry Thanks
 
       isCommandValid = true;
 
@@ -77,8 +77,8 @@ router.post("/", async (req, res) => {
       return await handleCheersCommand(team_id, user_name, trigger_id);
     }
 
-    if (isPollCommand(command)) {
-      // /cheers-poll
+    if (isPollCommand(text)) {
+      // /cheers poll
 
       isCommandValid = true;
 
@@ -88,7 +88,7 @@ router.post("/", async (req, res) => {
     }
 
     if (!isCommandValid) {
-      // /cheers-help
+      // /cheers help
 
       return res.status(200).json({
         response_type: "in_channel",

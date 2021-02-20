@@ -46,12 +46,6 @@ const SLACK_ACTIONS = {
   POLL_OPTION_SUBMITTED: "POLL_OPTION_SUBMITTED"
 };
 
-const SLACK_COMMANDS = {
-  CHEERS: "/cheers",
-  POLL: "/cheers-poll",
-  HELP: "/cheers-help"
-};
-
 const DEFAULT_TIME_ZONE = "America/Los_Angeles";
 
 module.exports = {
@@ -65,6 +59,5 @@ module.exports = {
   BLOCK_IDS,
   ACTION_IDS,
   SLACK_ACTIONS,
-  SLACK_COMMANDS,
   DEFAULT_TIME_ZONE
 };
