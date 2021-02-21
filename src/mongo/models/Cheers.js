@@ -12,6 +12,9 @@ const CheersSchema = new mongoose.Schema(
       type: String,
       index: true
     },
+    reason: {
+      type: String
+    },
     teamId: {
       type: String,
       index: true

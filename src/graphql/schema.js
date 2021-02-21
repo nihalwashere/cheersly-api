@@ -1,13 +1,6 @@
 const graphql = require("graphql");
 
 const { GraphQLObjectType, GraphQLSchema } = graphql;
-const {
-  CreateHypeDocMutation,
-  HypeDocsList,
-  UpdateHypeDocMutation,
-  DeleteHypeDocMutation,
-  HypeDocDetails
-} = require("./hype-docs");
 
 const { LeaderBoardList } = require("./leaderboard");
 
@@ -16,22 +9,18 @@ const { LeaderBoardList } = require("./leaderboard");
  */
 const query = new GraphQLObjectType({
   name: "Query",
-  fields: () => ({ HypeDocsList, HypeDocDetails, LeaderBoardList })
+  fields: () => ({ LeaderBoardList })
 });
 
 /*
  * Root Mutation
  */
-const mutation = new GraphQLObjectType({
-  name: "Mutation",
-  fields: () => ({
-    CreateHypeDocMutation,
-    UpdateHypeDocMutation,
-    DeleteHypeDocMutation
-  })
-});
+// const mutation = new GraphQLObjectType({
+//   name: "Mutation",
+//   fields: () => ({})
+// });
 
 module.exports = new GraphQLSchema({
-  query,
-  mutation
+  query
+  // mutation
 });

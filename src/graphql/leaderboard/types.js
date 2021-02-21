@@ -1,22 +1,19 @@
 const {
   GraphQLList,
   GraphQLObjectType,
-  GraphQLBoolean,
-  GraphQLString,
   GraphQLInt,
   GraphQLFloat,
   GraphQLID
 } = require("graphql");
-const { GraphQLDateTime } = require("graphql-iso-date");
+const { UserType } = require("../common/types");
 
 const LeaderBoardType = new GraphQLObjectType({
   name: "LeaderBoardType",
   fields: () => ({
     id: { type: GraphQLID },
-    title: { type: GraphQLString },
-    category: { type: GraphQLString },
-    when: { type: GraphQLDateTime },
-    content: { type: GraphQLString }
+    slackUser: { type: UserType },
+    cheersGiven: { type: GraphQLInt },
+    cheersReceived: { type: GraphQLInt }
   })
 });
 

@@ -31,7 +31,7 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
     logger.debug("n : ", n);
 
     const recipients = [];
-    let description = "";
+    let reason = "";
 
     for (let i = 1; i <= n; i++) {
       if (i === n) {
@@ -42,9 +42,7 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
           recipients.push(user);
         }
 
-        description = splitArray[i]
-          .substring(splitArray[i].indexOf(" ") + 1)
-          .trim();
+        reason = splitArray[i].substring(splitArray[i].indexOf(" ") + 1).trim();
       } else {
         // eslint-disable-next-line
         if (String(splitArray[i]).trim().length) {
@@ -53,12 +51,12 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
       }
     }
 
-    if (recipients.includes(description)) {
-      description = "";
+    if (recipients.includes(reason)) {
+      reason = "";
     }
 
     logger.debug("recipients : ", recipients);
-    logger.debug("description : ", description);
+    logger.debug("reason : ", reason);
 
     const validRecipients = [];
 
@@ -122,7 +120,12 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
     // save to cheers for filters
     await Promise.all(
       validRecipients.map(async (recipient) => {
-        await addCheers({ from: senderUsername, to: recipient, teamId });
+        await addCheers({
+          from: senderUsername,
+          to: recipient,
+          teamId,
+          reason
+        });
       })
     );
 
@@ -168,7 +171,7 @@ const handleCheersCommand = async (teamId, channelId, senderUsername, text) => {
     await slackPostMessageToChannel(
       channelId,
       teamId,
-      createCheersTemplate(notifyRecipients, description)
+      createCheersTemplate(notifyRecipients, reason)
     );
 
     // compute leaderboard

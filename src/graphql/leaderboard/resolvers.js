@@ -13,7 +13,7 @@ const LeaderBoardListResolver = async (_, args, context) => {
 
     const { pageIndex, pageSize } = args;
 
-    return await paginateCheersStatsForTeam(
+    const { data, totalCount, totalPages } = await paginateCheersStatsForTeam(
       token.slackTeamId,
       pageIndex,
       pageSize
