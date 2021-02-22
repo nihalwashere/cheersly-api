@@ -119,6 +119,17 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         }
       },
       {
+        type: "context",
+        elements: [
+          {
+            type: "plain_text",
+            text:
+              "Note: Please make sure that Cheersly is invited to the channel you selected.",
+            emoji: true
+          }
+        ]
+      },
+      {
         type: "section",
         block_id: SELECT_DURATION,
         text: {
@@ -297,14 +308,6 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
           type: "plain_text",
           text: "Option D",
           emoji: true
-        }
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text:
-            "_Note: Please make sure that Cheersly is invited to the channel you selected._"
         }
       }
     ]
