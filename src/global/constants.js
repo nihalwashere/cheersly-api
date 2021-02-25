@@ -45,6 +45,7 @@ const ACTION_IDS = {
 };
 
 const SLACK_ACTIONS = {
+  SHORTCUT: "shortcut",
   BLOCK_ACTIONS: "block_actions",
   VIEW_SUBMISSION: "view_submission",
   POLL: "POLL",
@@ -62,6 +63,10 @@ const FEEDBACK_OPTIONS = {
 
 const DEFAULT_TIME_ZONE = "America/Los_Angeles";
 
+const SHORTCUTS = {
+  POLL: "POLL"
+};
+
 module.exports = {
   APP_HOME_OPENED,
   APP_UNINSTALLED,
@@ -74,5 +79,6 @@ module.exports = {
   ACTION_IDS,
   SLACK_ACTIONS,
   DEFAULT_TIME_ZONE,
-  FEEDBACK_OPTIONS
+  FEEDBACK_OPTIONS,
+  SHORTCUTS
 };
