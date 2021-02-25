@@ -75,10 +75,27 @@ const processPoll = async (payload) => {
 
     const pollDurationNumber = Number(pollDuration);
 
-    if (pollDurationNumber > 60) {
-      pollDurationString = `${pollDurationNumber / 60} hours`;
-    } else {
+    const minsInADay = 24 * 60;
+
+    // mins
+    if (pollDurationNumber < 60) {
       pollDurationString = `${pollDurationNumber} mins`;
+    }
+
+    // hours
+    if (pollDurationNumber > 60 && pollDurationNumber < minsInADay) {
+      const hours = pollDurationNumber / 60;
+      const hourOrHours = hours > 1 ? "hours" : "hour";
+
+      pollDurationString = `${hours} ${hourOrHours}`;
+    }
+
+    // days
+    if (pollDurationNumber > minsInADay) {
+      const days = pollDurationNumber / 24;
+      const dayOrDays = days > 1 ? "days" : "day";
+
+      pollDurationString = `${days} ${dayOrDays}`;
     }
 
     const template = createPollSubmittedTemplate(
