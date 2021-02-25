@@ -78,12 +78,15 @@ const processPoll = async (payload) => {
     const minsInADay = 24 * 60;
 
     // mins
-    if (pollDurationNumber < 60) {
+    if (pollDurationNumber < 60 || pollDurationNumber === 60) {
       pollDurationString = `${pollDurationNumber} mins`;
     }
 
     // hours
-    if (pollDurationNumber > 60 && pollDurationNumber < minsInADay) {
+    if (
+      (pollDurationNumber > 60 || pollDurationNumber === 60) &&
+      pollDurationNumber < minsInADay
+    ) {
       const hours = pollDurationNumber / 60;
       const hourOrHours = hours > 1 ? "hours" : "hour";
 
@@ -91,8 +94,8 @@ const processPoll = async (payload) => {
     }
 
     // days
-    if (pollDurationNumber > minsInADay) {
-      const days = pollDurationNumber / 24;
+    if (pollDurationNumber > minsInADay || pollDurationNumber === minsInADay) {
+      const days = pollDurationNumber / 60 / 24;
       const dayOrDays = days > 1 ? "days" : "day";
 
       pollDurationString = `${days} ${dayOrDays}`;
