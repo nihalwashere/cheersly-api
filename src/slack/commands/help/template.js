@@ -22,7 +22,7 @@ const createHelpTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*/cheers poll* \n Submit a Poll"
+        text: "*/cheers poll* \n Ask a question to your peers and get a poll"
       }
     },
     {

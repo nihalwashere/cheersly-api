@@ -11,7 +11,7 @@ const processPollShortcut = async (payload) => {
 
     const {
       team: { id: teamId },
-      user: { id: username },
+      user: { username },
       trigger_id
     } = payload;
 
