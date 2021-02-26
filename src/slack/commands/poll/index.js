@@ -19,7 +19,6 @@ const handlePollCommand = async (team_id, user_name, trigger_id) => {
 
 const isPollCommand = (text) => {
   if (
-    String(text).trim().includes("p") ||
     String(text).trim().includes("po") ||
     String(text).trim().includes("pol") ||
     String(text).trim().includes("poll")
