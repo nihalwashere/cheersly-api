@@ -30,6 +30,10 @@ const whitelist = [
   "https://www.cheersly.club",
   "https://dev.cheersly.club",
   "https://cheersly-dev.herokuapp.com",
+  "https://cheersly.herokuapp.com",
+  "https://cheersly.club",
+  "https://app.cheersly.club",
+  "https://app-dev.cheersly.club",
   "http://localhost:7000",
   "http://localhost:3000"
 ];
