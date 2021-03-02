@@ -25,7 +25,7 @@ const publishStats = async (teamId, slackUserId, slackUsername = null) => {
 
     const appHomeBlocks = await getAppHpmeBlocksForTeam(teamId);
 
-    const url = String(APP_NAME).includes("-dev") ? PROD_APP_URL : DEV_APP_URL;
+    const url = String(APP_NAME).includes("-dev") ? DEV_APP_URL : PROD_APP_URL;
 
     const appHomeTemplate = createAppHomeTemplate(
       url,
