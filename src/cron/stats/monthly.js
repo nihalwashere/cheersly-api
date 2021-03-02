@@ -5,7 +5,7 @@ const { MONGO_URL, MONGO_OPTIONS } = require("../../global/config");
 const { getAllAuths } = require("../../mongo/helper/auth");
 const { getCheersForTeam } = require("../../mongo/helper/cheers");
 const { postMessageToHook } = require("../../slack/api");
-const { processTopCheersReceivers } = require("./common");
+const { processTopCheersReceivers } = require("../../utils/common");
 const { createStatsTemplate } = require("./template");
 const logger = require("../../global/logger");
 

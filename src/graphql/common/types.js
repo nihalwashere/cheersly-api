@@ -12,7 +12,15 @@ const SlackUserDataType = new GraphQLObjectType({
     team_id: { type: GraphQLString },
     name: { type: GraphQLString },
     real_name: { type: GraphQLString },
-    tz: { type: GraphQLString }
+    tz: { type: GraphQLString },
+    profile: {
+      type: new GraphQLObjectType({
+        name: "SlackUserProfileType",
+        fields: () => ({
+          image_192: { type: GraphQLString }
+        })
+      })
+    }
   })
 });
 

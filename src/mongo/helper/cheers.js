@@ -9,14 +9,14 @@ const addCheers = async (payload) => {
   }
 };
 
-const getCheersForTeam = async (teamId, fromDate, toDate) => {
+const getCheersForTeam = async (teamId, from, to) => {
   try {
     const query = { teamId };
 
-    if (fromDate && toDate) {
+    if (from && to) {
       query.$and = [
-        { createdAt: { $gte: new Date(fromDate) } },
-        { createdAt: { $lte: new Date(toDate) } }
+        { createdAt: { $gte: new Date(from) } },
+        { createdAt: { $lte: new Date(to) } }
       ];
     }
 

@@ -7,6 +7,7 @@ const {
   verifySlackRequest,
   isSubscriptionValidForSlack
 } = require("../../utils/common");
+const { isHelpCommand } = require("../../slack/commands/help");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
 const {
   isCheersCommand,
@@ -50,6 +51,15 @@ router.post("/", async (req, res) => {
     }
 
     const { team_id, channel_id, user_name, trigger_id, text } = req.body;
+
+    if (isHelpCommand(text)) {
+      // /cheers help
+
+      return res.status(200).json({
+        response_type: "in_channel",
+        blocks: createHelpTemplate()
+      });
+    }
 
     // verify subscription
 

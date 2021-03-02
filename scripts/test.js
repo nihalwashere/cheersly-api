@@ -47,11 +47,25 @@ const moment = require("moment-timezone");
 // console.log("result : ", str.split("----"));
 
 const now = new Date();
-console.log("now : ", now);
+// console.log("now : ", now);
 
 // console.log("later : ", moment().add(60, "minutes").toDate());
 
-console.log("from : ", moment().subtract(7, "day").startOf("day").toDate());
-console.log("to : ", moment().format("Do MMM YYYY"));
+// console.log("from : ", moment().subtract(7, "day").startOf("day").toDate());
+// console.log("to : ", moment().format("Do MMM YYYY"));
 
-console.log("to : ", moment().startOf("day").toDate());
+// console.log("to : ", moment().startOf("day").toDate());
+
+// function paginate(array, page_size, page_number) {
+//   // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
+//   return array.slice((page_number - 1) * page_size, page_number * page_size);
+// }
+
+// console.log(paginate([1, 2, 3, 4, 5, 6], 3, 2));
+
+console.log(
+  "from : ",
+  moment().subtract(1, "months").startOf("month").toDate(),
+  "to : ",
+  moment().subtract(1, "months").endOf("month").toDate()
+);
