@@ -3,13 +3,14 @@ const graphql = require("graphql");
 const { GraphQLObjectType, GraphQLSchema } = graphql;
 
 const { LeaderBoardList } = require("./leaderboard");
+const { CheersStat } = require("./cheers-stat");
 
 /*
  * Root Query
  */
 const query = new GraphQLObjectType({
   name: "Query",
-  fields: () => ({ LeaderBoardList })
+  fields: () => ({ LeaderBoardList, CheersStat })
 });
 
 /*

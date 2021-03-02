@@ -76,7 +76,12 @@ const createAppHomeLeaderBoard = (leaders) => {
   ];
 };
 
-const createAppHomeTemplate = (cheersGiven, cheersReceived, appHomeBlocks) => {
+const createAppHomeTemplate = (
+  url,
+  cheersGiven,
+  cheersReceived,
+  appHomeBlocks
+) => {
   const appHomeTemplate = {
     type: "home",
     blocks: [
@@ -84,7 +89,16 @@ const createAppHomeTemplate = (cheersGiven, cheersReceived, appHomeBlocks) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*My Cheers* :heart:"
+          text: "*My Cheers* :beers:"
+        },
+        accessory: {
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "App Dashboard",
+            emoji: true
+          },
+          url
         }
       },
       {

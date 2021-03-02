@@ -67,6 +67,10 @@ const SHORTCUTS = {
   POLL: "POLL"
 };
 
+const PROD_APP_URL = "https://app.cheersly.club";
+
+const DEV_APP_URL = "https://app-dev.cheersly.club";
+
 module.exports = {
   APP_HOME_OPENED,
   APP_UNINSTALLED,
@@ -80,5 +84,7 @@ module.exports = {
   SLACK_ACTIONS,
   DEFAULT_TIME_ZONE,
   FEEDBACK_OPTIONS,
-  SHORTCUTS
+  SHORTCUTS,
+  PROD_APP_URL,
+  DEV_APP_URL
 };

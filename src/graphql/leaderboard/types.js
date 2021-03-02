@@ -10,7 +10,7 @@ const LeaderBoardType = new GraphQLObjectType({
   name: "LeaderBoardType",
   fields: () => ({
     slackUser: { type: UserType },
-    // cheersGiven: { type: GraphQLInt },
+    cheersGiven: { type: GraphQLInt },
     cheersReceived: { type: GraphQLInt }
   })
 });

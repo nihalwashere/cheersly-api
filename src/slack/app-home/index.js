@@ -3,6 +3,8 @@ const { getAppHpmeBlocksForTeam } = require("../../mongo/helper/appHomeBlocks");
 const { getCheersStatsForUser } = require("../../mongo/helper/cheersStats");
 const { publishView } = require("../api");
 const { createAppHomeTemplate } = require("./template");
+const { APP_NAME } = require("../../global/config");
+const { PROD_APP_URL, DEV_APP_URL } = require("../../global/constants");
 
 const publishStats = async (teamId, slackUserId, slackUsername = null) => {
   try {
@@ -23,7 +25,10 @@ const publishStats = async (teamId, slackUserId, slackUsername = null) => {
 
     const appHomeBlocks = await getAppHpmeBlocksForTeam(teamId);
 
+    const url = String(APP_NAME).includes("-dev") ? PROD_APP_URL : DEV_APP_URL;
+
     const appHomeTemplate = createAppHomeTemplate(
+      url,
       cheersGiven,
       cheersReceived,
       appHomeBlocks

@@ -38,7 +38,7 @@ const createCheersTemplate = (users, description) => {
     for (let j = 0; j < userArr.length; j++) {
       const user = userArr[j];
 
-      const message = `@${user.recipient} now has ${user.cheersReceived} cheers :heart:`;
+      const message = `@${user.recipient} now has ${user.cheersReceived} cheers :beers:`;
 
       wrappedText += message + "\n";
     }

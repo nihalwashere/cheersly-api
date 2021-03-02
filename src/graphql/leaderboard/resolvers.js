@@ -1,11 +1,11 @@
+const R = require("ramda");
 const moment = require("moment-timezone");
 const { getCheersForTeam } = require("../../mongo/helper/cheers");
 const { getUserDataBySlackUserName } = require("../../mongo/helper/user");
-const {
-  validateToken,
-  processTopCheersReceivers
-} = require("../../utils/common");
+const { validateToken } = require("../../utils/common");
 const { TYPES } = require("../../enums/leaderBoardFilters");
+
+const getUniqueUsers = (users) => R.uniq(users);
 
 const paginate = (data, page_size, page_number) =>
   data.slice((page_number - 1) * page_size, page_number * page_size);
@@ -82,6 +82,99 @@ const resolveDuration = (duration) => {
       };
 };
 
+const findLeaders = (cheers) => {
+  const cheerGivers = [];
+  const cheerReceivers = [];
+
+  const uniqueCheerGivers = [];
+  const uniqueCheerReceivers = [];
+
+  // cheers given
+
+  cheers.map((cheer) => {
+    const foundUser = uniqueCheerGivers.find((user) => user === cheer.from);
+
+    if (!foundUser) {
+      uniqueCheerGivers.push(cheer.from);
+    }
+  });
+
+  uniqueCheerGivers.map((user) => {
+    let cheersGiven = 0;
+
+    cheers.map((cheer) => {
+      if (cheer.from === user) {
+        cheersGiven += 1;
+      }
+    });
+
+    cheerGivers.push({ slackUserName: user, cheersGiven });
+  });
+
+  // cheers received
+
+  cheers.map((cheer) => {
+    const foundUser = uniqueCheerReceivers.find((user) => user === cheer.to);
+
+    if (!foundUser) {
+      uniqueCheerReceivers.push(cheer.to);
+    }
+  });
+
+  uniqueCheerReceivers.map((user) => {
+    let cheersReceived = 0;
+
+    cheers.map((cheer) => {
+      if (cheer.to === user) {
+        cheersReceived += 1;
+      }
+    });
+
+    cheerReceivers.push({ slackUserName: user, cheersReceived });
+  });
+
+  let uniqueUsers = uniqueCheerGivers.concat(uniqueCheerReceivers);
+  uniqueUsers = R.uniq(uniqueUsers);
+
+  const leaders = [];
+
+  uniqueUsers.map((user) => {
+    const hasGivenCheers = cheerGivers.find(
+      (cheer) => cheer.slackUserName === user
+    );
+
+    const hasReceivedCheers = cheerReceivers.find(
+      (cheer) => cheer.slackUserName === user
+    );
+
+    if (hasGivenCheers && hasReceivedCheers) {
+      leaders.push({
+        slackUserName: user,
+        cheersGiven: hasGivenCheers.cheersGiven,
+        cheersReceived: hasReceivedCheers.cheersReceived
+      });
+    }
+
+    if (!hasGivenCheers && hasReceivedCheers) {
+      leaders.push({
+        slackUserName: user,
+        cheersGiven: 0,
+        cheersReceived: hasReceivedCheers.cheersReceived
+      });
+    }
+
+    if (hasGivenCheers && !hasReceivedCheers) {
+      leaders.push({
+        slackUserName: user,
+        cheersGiven: hasGivenCheers.cheersGiven,
+        cheersReceived: 0
+      });
+    }
+  });
+
+  return leaders;
+};
+
 const LeaderBoardListResolver = async (_, args, context) => {
   try {
     const token = await validateToken(context.headers);
@@ -98,22 +191,26 @@ const LeaderBoardListResolver = async (_, args, context) => {
 
     const cheersForTeam = await getCheersForTeam(slackTeamId, from, to);
 
-    const topCheersReceivers = processTopCheersReceivers(cheersForTeam);
+    const leaders = findLeaders(cheersForTeam);
 
-    const data = paginate(topCheersReceivers, pageSize, pageIndex);
+    const data = paginate(leaders, pageSize, pageIndex);
 
-    const totalCount = topCheersReceivers.length;
+    const totalCount = leaders.length;
 
     const mappedData = [];
 
     await Promise.all(
       data.map(async (item) => {
-        const { slackUserName, cheersReceived } = item;
+        const { slackUserName, cheersGiven, cheersReceived } = item;
 
         const slackUserData = await getUserDataBySlackUserName(slackUserName);
 
         if (slackUserData) {
-          mappedData.push({ slackUser: slackUserData, cheersReceived });
+          mappedData.push({
+            slackUser: slackUserData,
+            cheersGiven,
+            cheersReceived
+          });
         }
       })
     );
