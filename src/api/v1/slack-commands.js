@@ -101,15 +101,15 @@ router.post("/", async (req, res) => {
       return await handlePollCommand(team_id, user_name, trigger_id);
     }
 
-    if (isFeedbackCommand(text)) {
-      // /cheers feedback
+    // if (isFeedbackCommand(text)) {
+    //   // /cheers feedback
 
-      isCommandValid = true;
+    //   isCommandValid = true;
 
-      res.send("");
+    //   res.send("");
 
-      return await handleFeedbackCommand(team_id, user_name, trigger_id);
-    }
+    //   return await handleFeedbackCommand(team_id, user_name, trigger_id);
+    // }
 
     if (!isCommandValid) {
       // /cheers help
