@@ -1,17 +1,27 @@
-const createFeedbackSubmittedTemplate = (user_name, feedback) => {
+const createUserSection = (user_name, isAnonymous) => {
+  let text = `*@${user_name} shared a feedback*`;
+
+  if (isAnonymous) {
+    text = "*Someone shared a feedback*";
+  }
+
+  return {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text
+    }
+  };
+};
+
+const createFeedbackSubmittedTemplate = (user_name, feedback, isAnonymous) => {
   return [
+    createUserSection(user_name, isAnonymous),
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `@${user_name} submitted a Feedback`
-      }
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `Feedback: *${feedback}*`
+        text: `_${feedback}_`
       }
     }
   ];

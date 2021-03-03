@@ -26,21 +26,28 @@ const processFeedback = async (payload) => {
     const channel =
       state.values[FEEDBACK_CHANNEL][FEEDBACK_CHANNEL_VALUE].selected_channel;
 
-    const isAnonymous =
-      state.values[FEEDBACK_IS_ANONYMOUS][FEEDBACK_IS_ANONYMOUS_VALUE].value;
+    const isAnonymous = state.values[FEEDBACK_IS_ANONYMOUS][
+      FEEDBACK_IS_ANONYMOUS_VALUE
+    ].selected_options.length
+      ? true // eslint-disable-line
+      : false;
 
     logger.debug("feedback : ", feedback);
     logger.debug("channel : ", channel);
     logger.debug("isAnonymous : ", isAnonymous);
 
-    const template = createFeedbackSubmittedTemplate(user_name, feedback);
+    const template = createFeedbackSubmittedTemplate(
+      user_name,
+      feedback,
+      isAnonymous
+    );
 
-    // await addFeedback({
-    //   slackUserName: user_name,
-    //   teamId,
-    //   feedback,
-    //   isAnonymous
-    // });
+    await addFeedback({
+      slackUserName: user_name,
+      teamId,
+      feedback,
+      isAnonymous
+    });
 
     await slackPostMessageToChannel(channel, teamId, template, true);
   } catch (error) {

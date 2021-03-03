@@ -402,8 +402,7 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
               text: {
                 type: "mrkdwn",
                 text: "Hide my identity"
-              },
-              value: FEEDBACK_IS_ANONYMOUS_VALUE
+              }
             }
           ],
           action_id: FEEDBACK_IS_ANONYMOUS_VALUE
