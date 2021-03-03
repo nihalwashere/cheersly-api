@@ -36,7 +36,7 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "You can get a birds eye view of your team's mood and keep track of who has given or received the most cheers. If you feel low, just visit the app's home tab and recall all the good work you have done and have been appreciated for so far!"
+          "You can get a birds eye view of your team's mood and keep track of who has given or received the most cheers. If you feel low, just visit the app's home tab and recall all the good work you have done and have been appreciated for so far. \n You can also view the leaderboard for your team in the app dashboard and drill down on who has given or received the most cheers for a specific duration and reward them."
       }
     },
     {
@@ -44,7 +44,7 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "_*You should share in some cheers with your peers because it makes the recipient feel good about themselves and this can help to boost their performance. Cheersly provides the kind of positive experience or uplift that can increase people's morale, motivation and engagement, and renew their commitment to their organization!!!*_"
+          "*Polls* help you to ask a question to your peers and analyze their responses. You can submit a poll using the command `/cheers poll`"
       }
     },
     {

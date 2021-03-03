@@ -9,7 +9,10 @@ const {
     POLL_OPTION_D,
     SUBMIT_CHEERS_FOR_REASON,
     SUBMIT_CHEERS_TO_CHANNEL,
-    SUBMIT_CHEERS_TO_USERS
+    SUBMIT_CHEERS_TO_USERS,
+    FEEDBACK_DESCRIPTION,
+    FEEDBACK_CHANNEL,
+    FEEDBACK_IS_ANONYMOUS
   },
   ACTION_IDS: {
     POLL_QUESTION_VALUE,
@@ -21,7 +24,10 @@ const {
     POLL_OPTION_D_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
-    SUBMIT_CHEERS_TO_USERS_VALUE
+    SUBMIT_CHEERS_TO_USERS_VALUE,
+    FEEDBACK_DESCRIPTION_VALUE,
+    FEEDBACK_CHANNEL_VALUE,
+    FEEDBACK_IS_ANONYMOUS_VALUE
   }
 } = require("../global/constants");
 
@@ -314,6 +320,99 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
   };
 };
 
+const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
+  return {
+    type: "modal",
+    callback_id,
+    private_metadata: user_name,
+    title: {
+      type: "plain_text",
+      text: "Submit a Feedback",
+      emoji: true
+    },
+    submit: {
+      type: "plain_text",
+      text: "Submit",
+      emoji: true
+    },
+    close: {
+      type: "plain_text",
+      text: "Cancel",
+      emoji: true
+    },
+    blocks: [
+      {
+        type: "input",
+        block_id: FEEDBACK_DESCRIPTION,
+        element: {
+          type: "plain_text_input",
+          multiline: true,
+          action_id: FEEDBACK_DESCRIPTION_VALUE,
+          placeholder: {
+            type: "plain_text",
+            text: "Share constructive feedback!",
+            emoji: true
+          }
+        },
+        label: {
+          type: "plain_text",
+          text: "Feedback",
+          emoji: true
+        }
+      },
+      {
+        type: "section",
+        block_id: FEEDBACK_CHANNEL,
+        text: {
+          type: "mrkdwn",
+          text: "*Select Feedback Channel*"
+        },
+        accessory: {
+          type: "channels_select",
+          placeholder: {
+            type: "plain_text",
+            text: "Channel",
+            emoji: true
+          },
+          action_id: FEEDBACK_CHANNEL_VALUE
+        }
+      },
+      {
+        type: "context",
+        elements: [
+          {
+            type: "plain_text",
+            text:
+              "Note: Please make sure that Cheersly is invited to the channel you selected.",
+            emoji: true
+          }
+        ]
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*Is feedback anonymous?*"
+        },
+        block_id: FEEDBACK_IS_ANONYMOUS,
+        accessory: {
+          type: "checkboxes",
+          options: [
+            {
+              text: {
+                type: "mrkdwn",
+                text: "Hide my identity"
+              }
+              // value: FEEDBACK_IS_ANONYMOUS_VALUE
+            }
+          ],
+          action_id: FEEDBACK_IS_ANONYMOUS_VALUE
+        }
+      }
+    ]
+  };
+};
+
 const submitCheersTemplate = (user_name, callback_id) => {
   return {
     type: "modal",
@@ -432,5 +531,6 @@ module.exports = {
   createAppInstalledTemplate,
   createSubmitAPollTemplate,
   submitCheersTemplate,
-  createInternalFeedbackTemplate
+  createInternalFeedbackTemplate,
+  createSubmitAFeedbackTemplate
 };

@@ -18,6 +18,10 @@ const {
   handlePollCommand
 } = require("../../slack/commands/poll");
 const {
+  isFeedbackCommand,
+  handleFeedbackCommand
+} = require("../../slack/commands/feedback");
+const {
   upgradeSubscriptionMessage,
   trialEndedMessage
 } = require("../../slack/subscription-handlers");
@@ -95,6 +99,16 @@ router.post("/", async (req, res) => {
       res.send("");
 
       return await handlePollCommand(team_id, user_name, trigger_id);
+    }
+
+    if (isFeedbackCommand(text)) {
+      // /cheers feedback
+
+      isCommandValid = true;
+
+      res.send("");
+
+      return await handleFeedbackCommand(team_id, user_name, trigger_id);
     }
 
     if (!isCommandValid) {

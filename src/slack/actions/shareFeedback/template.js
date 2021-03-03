@@ -1,8 +1,11 @@
 const {
-  BLOCK_IDS: { SELECT_OPTION_FOR_FEEDBACK, FEEDBACK_DESCRIPTION },
-  ACTION_IDS: { SELECTED_OPTION_FOR_FEEDBACK, FEEDBACK_DESCRIPTION_TEXT },
+  BLOCK_IDS: { SELECT_OPTION_FOR_FEEDBACK, CUSTOMER_FEEDBACK_DESCRIPTION },
+  ACTION_IDS: {
+    SELECTED_OPTION_FOR_FEEDBACK,
+    CUSTOMER_FEEDBACK_DESCRIPTION_TEXT
+  },
   VIEW_SUBMISSIONS: { CUSTOMER_FEEDBACK },
-  FEEDBACK_OPTIONS: {
+  CUSTOMER_FEEDBACK_OPTIONS: {
     HELP_WITH_GETTING_STARTED,
     REQUEST_A_FEATURE,
     RAISE_A_BUG,
@@ -93,11 +96,11 @@ const createShareFeedbackTemplate = () => {
       },
       {
         type: "input",
-        block_id: FEEDBACK_DESCRIPTION,
+        block_id: CUSTOMER_FEEDBACK_DESCRIPTION,
         optional: true,
         element: {
           type: "plain_text_input",
-          action_id: FEEDBACK_DESCRIPTION_TEXT,
+          action_id: CUSTOMER_FEEDBACK_DESCRIPTION_TEXT,
           multiline: true
         },
         label: {

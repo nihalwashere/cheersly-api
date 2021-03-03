@@ -1,6 +1,9 @@
 const {
-  BLOCK_IDS: { SELECT_OPTION_FOR_FEEDBACK, FEEDBACK_DESCRIPTION },
-  ACTION_IDS: { SELECTED_OPTION_FOR_FEEDBACK, FEEDBACK_DESCRIPTION_TEXT }
+  BLOCK_IDS: { SELECT_OPTION_FOR_FEEDBACK, CUSTOMER_FEEDBACK_DESCRIPTION },
+  ACTION_IDS: {
+    SELECTED_OPTION_FOR_FEEDBACK,
+    CUSTOMER_FEEDBACK_DESCRIPTION_TEXT
+  }
 } = require("../../../global/constants");
 const { createFeedbackSubmissionSuccessTemplate } = require("./template");
 const {
@@ -29,7 +32,9 @@ const processCustomerFeedback = async (payload) => {
         .selected_option.value;
 
     const description =
-      state.values[FEEDBACK_DESCRIPTION][FEEDBACK_DESCRIPTION_TEXT].value;
+      state.values[CUSTOMER_FEEDBACK_DESCRIPTION][
+        CUSTOMER_FEEDBACK_DESCRIPTION_TEXT
+      ].value;
 
     // save feedback to database
     await addCustomerFeedback({

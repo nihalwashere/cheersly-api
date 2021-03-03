@@ -1,5 +1,5 @@
 const {
-  SLACK_ACTIONS: { SHARE_FEEDBACK }
+  SLACK_ACTIONS: { CUSTOMER_FEEDBACK }
 } = require("../../../global/constants");
 
 const createHelpTemplate = () => {
@@ -62,8 +62,8 @@ const createHelpTemplate = () => {
           text: "Share feedback",
           emoji: true
         },
-        value: SHARE_FEEDBACK,
-        action_id: SHARE_FEEDBACK
+        value: CUSTOMER_FEEDBACK,
+        action_id: CUSTOMER_FEEDBACK
       }
     },
     {
