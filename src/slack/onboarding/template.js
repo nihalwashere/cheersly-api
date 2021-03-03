@@ -5,7 +5,7 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          ":wave: *Hey there!* \n\n *I am Cheersly!* Nice to meet you!. You can use me to share in some cheers with your peers."
+          ":wave: *Hey there!* \n\n *I am Cheersly!* Nice to meet you!. I am here to build an awesome cheerful team!"
       }
     },
     {
@@ -36,7 +36,15 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "You can get a birds eye view of your team's mood and keep track of who has given or received the most cheers. If you feel low, just visit the app's home tab and recall all the good work you have done and have been appreciated for so far. \n You can also view the leaderboard for your team in the app dashboard and drill down on who has given or received the most cheers for a specific duration and reward them."
+          "You can get a birds eye view of your team's mood and keep track of who has given or received the most cheers. If you feel low, just visit the app's home tab and recall all the good work you have done and have been appreciated for so far."
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "You can also view the leaderboard for your team in the app dashboard and drill down on who has given or received the most cheers for a specific duration and reward them."
       }
     },
     {

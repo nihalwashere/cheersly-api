@@ -392,7 +392,7 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*Is feedback anonymous?*"
+          text: "*Is Feedback Anonymous?*"
         },
         block_id: FEEDBACK_IS_ANONYMOUS,
         accessory: {
