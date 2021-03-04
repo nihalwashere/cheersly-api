@@ -71,7 +71,9 @@ const CUSTOMER_FEEDBACK_OPTIONS = {
 const DEFAULT_TIME_ZONE = "America/Los_Angeles";
 
 const SHORTCUTS = {
-  POLL: "POLL"
+  POLL: "POLL",
+  FEEDBACK: "FEEDBACK",
+  CHEERS: "CHEERS"
 };
 
 const PROD_APP_URL = "https://app.cheersly.club";
