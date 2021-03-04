@@ -26,7 +26,8 @@ const handleSelectUsersSuggestions = async (payload) => {
     logger.debug("handleSelectUsersSuggestions");
 
     const {
-      team: { id: teamId }
+      team: { id: teamId },
+      user: { name: slackUserName }
     } = payload;
 
     const usersForTeam = await getUsersForTeam(teamId);
@@ -35,7 +36,8 @@ const handleSelectUsersSuggestions = async (payload) => {
       (user) =>
         !user.slackUserData.deleted &&
         !user.slackUserData.is_bot &&
-        user.slackUserData.name !== "slackbot"
+        user.slackUserData.name !== "slackbot" &&
+        user.slackUserData.name !== slackUserName
     );
 
     const options = getUsersOptions(users);

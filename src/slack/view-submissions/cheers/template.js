@@ -1,5 +1,13 @@
-const createCheersSubmittedTemplate = (users, description) => {
-  const blocks = [];
+const createCheersSubmittedTemplate = (senderUsername, users, reason) => {
+  const blocks = [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `@${senderUsername} just shared in some cheers :heart:`
+      }
+    }
+  ];
 
   const n = 5;
 
@@ -29,12 +37,12 @@ const createCheersSubmittedTemplate = (users, description) => {
     });
   }
 
-  if (description) {
+  if (reason) {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `_*${description}*_`
+        text: `*For reason:*\n${reason}`
       }
     });
   }

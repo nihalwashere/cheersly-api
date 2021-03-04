@@ -120,7 +120,7 @@ const processCheers = async (payload) => {
     await slackPostMessageToChannel(
       channel,
       teamId,
-      createCheersSubmittedTemplate(notifyRecipients, reason)
+      createCheersSubmittedTemplate(senderUsername, notifyRecipients, reason)
     );
 
     // compute leaderboard
