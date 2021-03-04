@@ -1,5 +1,5 @@
 const {
-  BLOCK_IDS: { SELECT_USERS }
+  BLOCK_IDS: { SUBMIT_CHEERS_TO_USERS }
 } = require("../../global/constants");
 const { handleSelectUsersSuggestions } = require("./select-users");
 const logger = require("../../global/logger");
@@ -7,7 +7,7 @@ const logger = require("../../global/logger");
 const suggestionsMapper = async (block_id, payload) => {
   try {
     const mapper = {
-      [SELECT_USERS]: async () => {
+      [SUBMIT_CHEERS_TO_USERS]: async () => {
         return await handleSelectUsersSuggestions(payload);
       }
     };
