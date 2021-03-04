@@ -1,9 +1,10 @@
 const {
-  VIEW_SUBMISSIONS: { POLL, CUSTOMER_FEEDBACK, FEEDBACK }
+  VIEW_SUBMISSIONS: { POLL, CUSTOMER_FEEDBACK, FEEDBACK, SAY_CHEERS }
 } = require("../../global/constants");
 const { processPoll } = require("./poll");
 const { processCustomerFeedback } = require("./customer-feedback");
 const { processFeedback } = require("./feedback");
+const { processCheers } = require("./cheers");
 const logger = require("../../global/logger");
 
 const submissionsMapper = async (callback_id, payload) => {
@@ -11,7 +12,8 @@ const submissionsMapper = async (callback_id, payload) => {
     const mapper = {
       [POLL]: async () => await processPoll(payload),
       [CUSTOMER_FEEDBACK]: async () => await processCustomerFeedback(payload),
-      [FEEDBACK]: async () => await processFeedback(payload)
+      [FEEDBACK]: async () => await processFeedback(payload),
+      [SAY_CHEERS]: async () => await processCheers(payload)
     };
 
     const applyMapper = mapper[callback_id];

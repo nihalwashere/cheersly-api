@@ -82,13 +82,13 @@ router.post("/", async (req, res) => {
     }
 
     if (isCheersCommand(text)) {
-      // /cheers @tom @jerry Thanks
+      // /cheers
 
       isCommandValid = true;
 
       res.send("");
 
-      return await handleCheersCommand(team_id, channel_id, user_name, text);
+      return await handleCheersCommand(team_id, user_name, trigger_id);
     }
 
     if (isPollCommand(text)) {
@@ -101,15 +101,15 @@ router.post("/", async (req, res) => {
       return await handlePollCommand(team_id, user_name, trigger_id);
     }
 
-    // if (isFeedbackCommand(text)) {
-    //   // /cheers feedback
+    if (isFeedbackCommand(text)) {
+      // /cheers feedback
 
-    //   isCommandValid = true;
+      isCommandValid = true;
 
-    //   res.send("");
+      res.send("");
 
-    //   return await handleFeedbackCommand(team_id, user_name, trigger_id);
-    // }
+      return await handleFeedbackCommand(team_id, user_name, trigger_id);
+    }
 
     if (!isCommandValid) {
       // /cheers help

@@ -434,43 +434,48 @@ const submitCheersTemplate = (user_name, callback_id) => {
     },
     blocks: [
       {
-        type: "input",
+        type: "section",
         block_id: SUBMIT_CHEERS_TO_USERS,
-        element: {
-          type: "multi_users_select",
+        text: {
+          type: "mrkdwn",
+          text: "*Whom do you want to say cheers to?*"
+        },
+        accessory: {
+          action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
+          type: "multi_external_select",
           placeholder: {
             type: "plain_text",
-            text: "Select your peers",
-            emoji: true
-          },
-          action_id: SUBMIT_CHEERS_TO_USERS_VALUE
-        },
-        label: {
-          type: "plain_text",
-          text: "Whom do you want to say cheers to?",
-          emoji: true
+            text: "Select your peers"
+          }
         }
       },
       {
-        type: "input",
+        type: "section",
         block_id: SUBMIT_CHEERS_TO_CHANNEL,
-        element: {
-          type: "conversations_select",
+        text: {
+          type: "mrkdwn",
+          text: "*Which channel do you want to post to?*"
+        },
+        accessory: {
+          type: "channels_select",
           placeholder: {
             type: "plain_text",
-            text: "Select conversation",
+            text: "Select Channel",
             emoji: true
           },
-          filter: {
-            include: ["public"]
-          },
           action_id: SUBMIT_CHEERS_TO_CHANNEL_VALUE
-        },
-        label: {
-          type: "plain_text",
-          text: "Which channel do you want to post to?",
-          emoji: true
         }
+      },
+      {
+        type: "context",
+        elements: [
+          {
+            type: "plain_text",
+            text:
+              "Note: Please make sure that Cheersly is invited to the channel you selected.",
+            emoji: true
+          }
+        ]
       },
       {
         type: "input",
