@@ -42,21 +42,21 @@ const processCheers = async (payload) => {
       trigger_id
     } = payload;
 
-    // const recipients =
-    //   state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
-    //     .selected_users;
+    const recipients =
+      state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
+        .selected_options;
 
-    // const channel =
-    //   state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
-    //     .selected_conversation;
+    const channel =
+      state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
+        .selected_channel;
 
-    // const reason =
-    //   state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
-    //     .value;
+    const reason =
+      state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
+        .value;
 
-    // logger.debug("recipients : ", recipients);
-    // logger.debug("channel : ", channel);
-    // logger.debug("reason : ", reason);
+    logger.debug("recipients : ", recipients);
+    logger.debug("channel : ", channel);
+    logger.debug("reason : ", reason);
 
     // const cheersSubmittedTemplate = createCheersSubmittedTemplate(
     //   senderUsername

@@ -11,7 +11,7 @@ const wrapMembers = (members) => {
   const wrappedMembers = [];
 
   members.map((member) => {
-    if (!member.deleted && !member.is_bot) {
+    if (!member.deleted && !member.is_bot && member.name !== "slackbot") {
       wrappedMembers.push({ slackUserData: member });
     }
   });

@@ -66,6 +66,7 @@ const slackCommands = require("./src/api/v1/slack-commands");
 const slackEvents = require("./src/api/v1/slack-events");
 const slackActions = require("./src/api/v1/slack-actions");
 const slackInstallation = require("./src/api/v1/slack-installation");
+const loadOptions = require("./src/api/v1/load-options");
 const auth = require("./src/api/v1/auth");
 const test = require("./src/api/v1/test");
 
@@ -74,6 +75,7 @@ app.use("/api/v1/slack-commands", slackCommands);
 app.use("/api/v1/slack-events", slackEvents);
 app.use("/api/v1/slack-actions", slackActions);
 app.use("/api/v1/slack-installation", slackInstallation);
+app.use("/api/v1/load-options", loadOptions);
 app.use("/api/v1/auth", auth);
 app.use("/api/test", test);
 
