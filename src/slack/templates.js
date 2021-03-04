@@ -434,19 +434,22 @@ const submitCheersTemplate = (user_name, callback_id) => {
     },
     blocks: [
       {
-        type: "section",
+        type: "input",
         block_id: SUBMIT_CHEERS_TO_USERS,
-        text: {
-          type: "mrkdwn",
-          text: "*Whom do you want to say cheers to?*"
+        label: {
+          type: "plain_text",
+          text: "*Whom do you want to say cheers to?*",
+          emoji: true
         },
-        accessory: {
+        element: {
           action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
           type: "multi_external_select",
           placeholder: {
             type: "plain_text",
-            text: "Select your peers"
-          }
+            text: "Select your peers",
+            emoji: true
+          },
+          min_query_length: 0
         }
       },
       {

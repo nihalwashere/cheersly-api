@@ -1,68 +1,47 @@
-const createCheersSubmittedTemplate = (user_name) => {
-  return [
-    {
+const createCheersSubmittedTemplate = (users, description) => {
+  const blocks = [];
+
+  const n = 5;
+
+  const result = new Array(Math.ceil(users.length / n))
+    .fill()
+    .map(() => users.splice(0, n));
+
+  for (let i = 0; i < result.length; i++) {
+    const userArr = result[i];
+
+    let wrappedText = "";
+
+    for (let j = 0; j < userArr.length; j++) {
+      const user = userArr[j];
+
+      const message = `@${user.recipient} now has ${user.cheersReceived} cheers :beers:`;
+
+      wrappedText += message + "\n";
+    }
+
+    blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `@${user_name} shared some cheers`
+        text: wrappedText
       }
-    }
-  ];
-};
+    });
+  }
 
-const createInvalidRecipientsTemplate = () => {
-  return {
-    type: "modal",
-    title: {
-      type: "plain_text",
-      text: "Oops!",
-      emoji: true
-    },
-    close: {
-      type: "plain_text",
-      text: "OK",
-      emoji: true
-    },
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "Please mention someone to say cheers!"
-        }
+  if (description) {
+    blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `_*${description}*_`
       }
-    ]
-  };
-};
+    });
+  }
 
-const createSelfCheersTemplate = () => {
-  return {
-    type: "modal",
-    title: {
-      type: "plain_text",
-      text: "Oops!",
-      emoji: true
-    },
-    close: {
-      type: "plain_text",
-      text: "OK",
-      emoji: true
-    },
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text:
-            "You cannot share cheers with yourself. You should share cheers with your peers! If you are happy spread it rather that keeping it with yourself!!!"
-        }
-      }
-    ]
-  };
+  return blocks;
 };
 
 module.exports = {
-  createCheersSubmittedTemplate,
-  createInvalidRecipientsTemplate,
-  createSelfCheersTemplate
+  createCheersSubmittedTemplate
 };

@@ -30,7 +30,6 @@ const handleSelectUsersSuggestions = async (payload) => {
     } = payload;
 
     const usersForTeam = await getUsersForTeam(teamId);
-    logger.debug("usersForTeam : ", usersForTeam);
 
     const users = usersForTeam.filter(
       (user) =>
@@ -41,9 +40,6 @@ const handleSelectUsersSuggestions = async (payload) => {
 
     const options = getUsersOptions(users);
 
-    logger.debug("options : ", JSON.stringify(options));
-
-    // return options
     return {
       options
     };
