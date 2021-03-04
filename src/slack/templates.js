@@ -108,13 +108,14 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         }
       },
       {
-        type: "section",
+        type: "input",
         block_id: SELECT_POLL_CHANNEL,
-        text: {
-          type: "mrkdwn",
-          text: "*Select Poll Channel*"
+        label: {
+          type: "plain_text",
+          text: "Select Poll Channel",
+          emoji: true
         },
-        accessory: {
+        element: {
           type: "channels_select",
           placeholder: {
             type: "plain_text",
@@ -136,13 +137,14 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         ]
       },
       {
-        type: "section",
+        type: "input",
         block_id: SELECT_DURATION,
-        text: {
-          type: "mrkdwn",
-          text: "*Select Poll Duration*"
+        label: {
+          type: "plain_text",
+          text: "Select Poll Duration",
+          emoji: true
         },
-        accessory: {
+        element: {
           type: "static_select",
           placeholder: {
             type: "plain_text",
@@ -361,13 +363,14 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
         }
       },
       {
-        type: "section",
+        type: "input",
         block_id: FEEDBACK_CHANNEL,
-        text: {
-          type: "mrkdwn",
-          text: "*Select Feedback Channel*"
+        label: {
+          type: "plain_text",
+          text: "Select Feedback Channel",
+          emoji: true
         },
-        accessory: {
+        element: {
           type: "channels_select",
           placeholder: {
             type: "plain_text",
@@ -438,7 +441,7 @@ const submitCheersTemplate = (user_name, callback_id) => {
         block_id: SUBMIT_CHEERS_TO_USERS,
         label: {
           type: "plain_text",
-          text: "*Whom do you want to say cheers to?*",
+          text: "Whom do you want to say cheers to?",
           emoji: true
         },
         element: {
@@ -453,13 +456,14 @@ const submitCheersTemplate = (user_name, callback_id) => {
         }
       },
       {
-        type: "section",
+        type: "input",
         block_id: SUBMIT_CHEERS_TO_CHANNEL,
-        text: {
-          type: "mrkdwn",
-          text: "*Which channel do you want to post to?*"
+        label: {
+          type: "plain_text",
+          text: "Which channel do you want to post to?",
+          emoji: true
         },
-        accessory: {
+        element: {
           type: "channels_select",
           placeholder: {
             type: "plain_text",
