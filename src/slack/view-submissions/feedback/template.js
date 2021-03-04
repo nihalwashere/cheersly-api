@@ -21,7 +21,7 @@ const createFeedbackSubmittedTemplate = (user_name, feedback, isAnonymous) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `_${feedback}_`
+        text: feedback
       }
     }
   ];
