@@ -4,6 +4,7 @@ const {
     POLL_QUESTION,
     SELECT_POLL_CHANNEL,
     SELECT_DURATION,
+    POLL_IS_ANONYMOUS,
     POLL_OPTION_A,
     POLL_OPTION_B,
     POLL_OPTION_C,
@@ -13,6 +14,7 @@ const {
     POLL_QUESTION_VALUE,
     SELECTED_POLL_CHANNEL,
     SELECTED_DURATION,
+    POLL_IS_ANONYMOUS_VALUE,
     POLL_OPTION_A_VALUE,
     POLL_OPTION_B_VALUE,
     POLL_OPTION_C_VALUE,
@@ -42,6 +44,11 @@ const processPoll = async (payload) => {
     const pollDuration =
       state.values[SELECT_DURATION][SELECTED_DURATION].selected_option.value;
 
+    const isAnonymous = state.values[POLL_IS_ANONYMOUS][POLL_IS_ANONYMOUS_VALUE]
+      .selected_options.length
+      ? true // eslint-disable-line
+      : false;
+
     const pollOptionA = state.values[POLL_OPTION_A][POLL_OPTION_A_VALUE].value;
 
     const pollOptionB = state.values[POLL_OPTION_B][POLL_OPTION_B_VALUE].value;
@@ -55,6 +62,7 @@ const processPoll = async (payload) => {
     logger.debug("pollQuestion : ", pollQuestion);
     logger.debug("pollChannel : ", pollChannel);
     logger.debug("pollDuration : ", pollDuration);
+    logger.debug("isAnonymous : ", isAnonymous);
     logger.debug("pollOptionA : ", pollOptionA);
     logger.debug("pollOptionB : ", pollOptionB);
     logger.debug("pollOptionC : ", pollOptionC);
@@ -101,12 +109,13 @@ const processPoll = async (payload) => {
       pollDurationString = `${days} ${dayOrDays}`;
     }
 
-    const template = createPollSubmittedTemplate(
+    const pollSubmittedTemplate = createPollSubmittedTemplate(
       pollId,
       user_name,
       pollQuestion,
       pollDurationString,
-      pollOptions
+      pollOptions,
+      isAnonymous
     );
 
     const poll = await addPollQuestions({
@@ -118,13 +127,13 @@ const processPoll = async (payload) => {
       options: pollOptions,
       pollId,
       closeAt: moment().add(pollDurationNumber, "minutes").toDate(),
-      pollSubmittedTemplate: JSON.stringify(template)
+      pollSubmittedTemplate: JSON.stringify(pollSubmittedTemplate)
     });
 
     const slackMessageResponse = await slackPostMessageToChannel(
       pollChannel,
       teamId,
-      template,
+      pollSubmittedTemplate,
       true
     );
 

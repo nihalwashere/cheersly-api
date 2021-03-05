@@ -22,14 +22,15 @@ const createHelpTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*/cheers \n To cheer your peers"
+        text: "*/cheers* \n To cheer your peers"
       }
     },
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*/cheers poll* \n Ask a question to your peers and get a poll"
+        text:
+          "*/cheers poll* \n Ask a question to your peers and get a poll (anonymous/non-anonymous)"
       }
     },
     {

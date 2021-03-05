@@ -5,7 +5,7 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          ":wave: *Hey there!* \n\n *I am Cheersly!* Nice to meet you!. I am here to build an awesome cheerful team!"
+          ":wave: *Hey there!* \n\n *I am Cheersly!* Nice to meet you! I am here to build an awesome cheerful team!"
       }
     },
     {
@@ -28,7 +28,7 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          ":point_right: *Polls* help you to ask a question to your peers and analyze their responses. You can submit a poll using the command `/cheers poll`"
+          ":point_right: You can ask a question to your peers and get a poll (anonymous/non-anonymous) using the command `/cheers poll`"
       }
     },
     {
@@ -44,7 +44,7 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "You can use me in channels where I am in and in the app's DM. To invite me to a channel, use the command `/invite @Cheersly` and get onboarding instructions using `/cheers onboard`"
+          "You can use me in channels where I am in and in the app's DM. To invite me to a channel, use the command `/invite @Cheersly` and get onboarding instructions using \n `/cheers onboard`"
       }
     },
     {

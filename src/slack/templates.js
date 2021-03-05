@@ -3,6 +3,7 @@ const {
     POLL_QUESTION,
     SELECT_POLL_CHANNEL,
     SELECT_DURATION,
+    POLL_IS_ANONYMOUS,
     POLL_OPTION_A,
     POLL_OPTION_B,
     POLL_OPTION_C,
@@ -18,6 +19,7 @@ const {
     POLL_QUESTION_VALUE,
     SELECTED_POLL_CHANNEL,
     SELECTED_DURATION,
+    POLL_IS_ANONYMOUS_VALUE,
     POLL_OPTION_A_VALUE,
     POLL_OPTION_B_VALUE,
     POLL_OPTION_C_VALUE,
@@ -112,14 +114,14 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         block_id: SELECT_POLL_CHANNEL,
         label: {
           type: "plain_text",
-          text: "Select Poll Channel",
+          text: "Poll Channel",
           emoji: true
         },
         element: {
           type: "channels_select",
           placeholder: {
             type: "plain_text",
-            text: "Channel",
+            text: "Select channel",
             emoji: true
           },
           action_id: SELECTED_POLL_CHANNEL
@@ -141,14 +143,14 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         block_id: SELECT_DURATION,
         label: {
           type: "plain_text",
-          text: "Select Poll Duration",
+          text: "Poll Duration",
           emoji: true
         },
         element: {
           type: "static_select",
           placeholder: {
             type: "plain_text",
-            text: "Duration",
+            text: "Select duration",
             emoji: true
           },
           options: [
@@ -242,6 +244,26 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
             }
           ],
           action_id: SELECTED_DURATION
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*Is Poll Anonymous?*"
+        },
+        block_id: POLL_IS_ANONYMOUS,
+        accessory: {
+          type: "checkboxes",
+          options: [
+            {
+              text: {
+                type: "mrkdwn",
+                text: "Hide my identity"
+              }
+            }
+          ],
+          action_id: POLL_IS_ANONYMOUS_VALUE
         }
       },
       {
@@ -367,14 +389,14 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
         block_id: FEEDBACK_CHANNEL,
         label: {
           type: "plain_text",
-          text: "Select Feedback Channel",
+          text: "Feedback Channel",
           emoji: true
         },
         element: {
           type: "channels_select",
           placeholder: {
             type: "plain_text",
-            text: "Channel",
+            text: "Select channel",
             emoji: true
           },
           action_id: FEEDBACK_CHANNEL_VALUE
@@ -467,7 +489,7 @@ const submitCheersTemplate = (user_name, callback_id) => {
           type: "channels_select",
           placeholder: {
             type: "plain_text",
-            text: "Select Channel",
+            text: "Select channel",
             emoji: true
           },
           action_id: SUBMIT_CHEERS_TO_CHANNEL_VALUE
