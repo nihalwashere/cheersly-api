@@ -44,6 +44,14 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
+          "You can also run all of the above commands through shortcuts in Slack."
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
           "You can use me in channels where I am in and in the app's DM. To invite me to a channel, use the command `/invite @Cheersly` and get onboarding instructions using \n `/cheers onboard`"
       }
     },

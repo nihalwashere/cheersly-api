@@ -77,7 +77,6 @@ const createHelpTemplate = () => {
           text: "Share feedback",
           emoji: true
         },
-        value: CUSTOMER_FEEDBACK,
         action_id: CUSTOMER_FEEDBACK
       }
     },
