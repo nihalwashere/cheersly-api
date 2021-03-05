@@ -10,6 +10,10 @@ const {
 const { isHelpCommand } = require("../../slack/commands/help");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
 const {
+  isOnboardCommand,
+  handleOnboardCommand
+} = require("../../slack/commands/onboard");
+const {
   isCheersCommand,
   handleCheersCommand
 } = require("../../slack/commands/cheers");
@@ -63,6 +67,16 @@ router.post("/", async (req, res) => {
         response_type: "in_channel",
         blocks: createHelpTemplate()
       });
+    }
+
+    if (isOnboardCommand(text)) {
+      // /cheers onboard
+
+      isCommandValid = true;
+
+      res.send("");
+
+      return await handleOnboardCommand(team_id, channel_id);
     }
 
     // verify subscription

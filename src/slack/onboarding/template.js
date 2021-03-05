@@ -20,7 +20,7 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "You can spread joy amongst your peers by using the command `/cheers` in the form ```/cheers @tom @jerry Thanks for jumping in the client call at the last minute :)```"
+          ":point_right: You can cheer your peers by using the command `/cheers`"
       }
     },
     {
@@ -28,7 +28,23 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "You can use me in channels where I am in and in the app's DM. To invite me to a channel, use the command `/invite @Cheersly`"
+          ":point_right: *Polls* help you to ask a question to your peers and analyze their responses. You can submit a poll using the command `/cheers poll`"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          ":point_right: You can share feedback (anoymous/non-anonymous) with your team and get heard. To submit a feedback, use the command `/cheers feedback`"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "You can use me in channels where I am in and in the app's DM. To invite me to a channel, use the command `/invite @Cheersly` and get onboarding instructions using `/cheers onboard`"
       }
     },
     {
@@ -45,14 +61,6 @@ const createOnboardingTemplate = () => {
         type: "mrkdwn",
         text:
           "You can also view the leaderboard for your team in the app dashboard and drill down on who has given or received the most cheers for a specific duration and reward them."
-      }
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text:
-          "*Polls* help you to ask a question to your peers and analyze their responses. You can submit a poll using the command `/cheers poll`"
       }
     },
     {

@@ -22,6 +22,13 @@ const createHelpTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
+        text: "*/cheers \n To cheer your peers"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
         text: "*/cheers poll* \n Ask a question to your peers and get a poll"
       }
     },
@@ -30,7 +37,14 @@ const createHelpTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "*/cheers @tom @jerry Thanks for jumping in the client call at the last minute :)* \n To cheer your peers"
+          "*/cheers feedback* \n Share feedback with your team (anonymous/non-anonymous)"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*/cheers onboard* \n Get onboarding instructions"
       }
     },
     {
