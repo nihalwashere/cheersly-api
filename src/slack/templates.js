@@ -11,6 +11,7 @@ const {
     SUBMIT_CHEERS_FOR_REASON,
     SUBMIT_CHEERS_TO_CHANNEL,
     SUBMIT_CHEERS_TO_USERS,
+    SHOULD_SHARE_GIPHY,
     FEEDBACK_DESCRIPTION,
     FEEDBACK_CHANNEL,
     FEEDBACK_IS_ANONYMOUS
@@ -27,6 +28,7 @@ const {
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
     SUBMIT_CHEERS_TO_USERS_VALUE,
+    SHOULD_SHARE_GIPHY_VALUE,
     FEEDBACK_DESCRIPTION_VALUE,
     FEEDBACK_CHANNEL_VALUE,
     FEEDBACK_IS_ANONYMOUS_VALUE
@@ -519,6 +521,26 @@ const submitCheersTemplate = (user_name, callback_id) => {
           type: "plain_text",
           text: "For reason?",
           emoji: true
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*Would you like to post a Giphy?*"
+        },
+        block_id: SHOULD_SHARE_GIPHY,
+        accessory: {
+          type: "checkboxes",
+          options: [
+            {
+              text: {
+                type: "mrkdwn",
+                text: "Share cheers Giphy"
+              }
+            }
+          ],
+          action_id: SHOULD_SHARE_GIPHY_VALUE
         }
       }
     ]

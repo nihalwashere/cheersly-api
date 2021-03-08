@@ -1,4 +1,9 @@
-const createCheersSubmittedTemplate = (senderUsername, users, reason) => {
+const createCheersSubmittedTemplate = (
+  senderUsername,
+  users,
+  reason,
+  giphyUrl
+) => {
   const blocks = [
     {
       type: "section",
@@ -44,6 +49,14 @@ const createCheersSubmittedTemplate = (senderUsername, users, reason) => {
         type: "mrkdwn",
         text: `*For reason:*\n${reason}`
       }
+    });
+  }
+
+  if (giphyUrl) {
+    blocks.push({
+      type: "image",
+      image_url: giphyUrl,
+      alt_text: "cheers"
     });
   }
 

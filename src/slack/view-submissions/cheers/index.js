@@ -2,12 +2,14 @@ const {
   BLOCK_IDS: {
     SUBMIT_CHEERS_TO_USERS,
     SUBMIT_CHEERS_TO_CHANNEL,
-    SUBMIT_CHEERS_FOR_REASON
+    SUBMIT_CHEERS_FOR_REASON,
+    SHOULD_SHARE_GIPHY
   },
   ACTION_IDS: {
     SUBMIT_CHEERS_TO_USERS_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
-    SUBMIT_CHEERS_FOR_REASON_VALUE
+    SUBMIT_CHEERS_FOR_REASON_VALUE,
+    SHOULD_SHARE_GIPHY_VALUE
   }
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
@@ -23,6 +25,7 @@ const {
 const { addCheers } = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
 const { sortLeaders } = require("../../../utils/common");
+const { getRandomGif } = require("../../../giphy/api");
 const logger = require("../../../global/logger");
 
 const processCheers = async (payload) => {
@@ -46,9 +49,16 @@ const processCheers = async (payload) => {
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
         .value;
 
+    const shouldShareGiphy = state.values[SHOULD_SHARE_GIPHY][
+      SHOULD_SHARE_GIPHY_VALUE
+    ].selected_options.length
+      ? true // eslint-disable-line
+      : false;
+
     logger.debug("recipients : ", recipients);
     logger.debug("channel : ", channel);
     logger.debug("reason : ", reason);
+    logger.debug("shouldShareGiphy : ", shouldShareGiphy);
 
     // first check if stats exist for user, if it exist then update else create
 
@@ -117,10 +127,32 @@ const processCheers = async (payload) => {
 
     logger.debug("notifyRecipients : ", notifyRecipients);
 
+    let giphyUrl = "";
+
+    if (shouldShareGiphy) {
+      const giphy = await getRandomGif("cheers");
+      // logger.debug("giphy : ", JSON.stringify(giphy));
+
+      if (
+        giphy &&
+        giphy.data &&
+        giphy.data.images &&
+        giphy.data.images.downsized &&
+        giphy.data.images.downsized.url
+      ) {
+        giphyUrl = giphy.data.images.downsized.url;
+      }
+    }
+
     await slackPostMessageToChannel(
       channel,
       teamId,
-      createCheersSubmittedTemplate(senderUsername, notifyRecipients, reason)
+      createCheersSubmittedTemplate(
+        senderUsername,
+        notifyRecipients,
+        reason,
+        giphyUrl
+      )
     );
 
     // compute leaderboard
