@@ -24,7 +24,7 @@ const {
 } = require("../../../mongo/helper/cheersStats");
 const { addCheers } = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
-const { sortLeaders } = require("../../../utils/common");
+const { sortLeaders, getUnique } = require("../../../utils/common");
 const { getRandomGif } = require("../../../giphy/api");
 const logger = require("../../../global/logger");
 
@@ -37,9 +37,11 @@ const processCheers = async (payload) => {
       view: { state, private_metadata: senderUsername }
     } = payload;
 
-    const recipients = state.values[SUBMIT_CHEERS_TO_USERS][
-      SUBMIT_CHEERS_TO_USERS_VALUE
-    ].selected_options.map((option) => option.value);
+    const recipients = getUnique(
+      state.values[SUBMIT_CHEERS_TO_USERS][
+        SUBMIT_CHEERS_TO_USERS_VALUE
+      ].selected_options.map((option) => option.value)
+    );
 
     const channel =
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
@@ -101,11 +103,14 @@ const processCheers = async (payload) => {
           teamId,
           recipient
         );
+
         if (cheersStatsRecipient) {
           const { cheersReceived } = cheersStatsRecipient;
+
           await updateCheersStatsForUser(recipient, {
             cheersReceived: cheersReceived + 1
           });
+
           notifyRecipients.push({
             recipient,
             cheersReceived: cheersReceived + 1

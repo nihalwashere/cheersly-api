@@ -258,6 +258,8 @@ const processTopCheersReceivers = (cheers) => {
   return sortedLeaders;
 };
 
+const getUnique = (data) => R.uniq(data);
+
 module.exports = {
   newIdString,
   verifySlackRequest,
@@ -267,5 +269,6 @@ module.exports = {
   sortLeaders,
   validateToken,
   getMedalType,
-  processTopCheersReceivers
+  processTopCheersReceivers,
+  getUnique
 };

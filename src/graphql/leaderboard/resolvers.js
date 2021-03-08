@@ -5,8 +5,6 @@ const { getUserDataBySlackUserName } = require("../../mongo/helper/user");
 const { validateToken } = require("../../utils/common");
 const { TYPES } = require("../../enums/leaderBoardFilters");
 
-const getUniqueUsers = (users) => R.uniq(users);
-
 const paginate = (data, page_size, page_number) =>
   data.slice((page_number - 1) * page_size, page_number * page_size);
 
