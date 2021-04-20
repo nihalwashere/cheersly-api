@@ -44,13 +44,14 @@ router.post("/slack-install", async (req, res) => {
           // create new auth
           await addAuth({ slackInstallation: slackTokenPayload });
           await paginateUsersList(access_token);
+          await createTrialSubscription(teamId);
         } else {
           // update auth
           await updateAuth(teamId, slackTokenPayload);
         }
 
         await sendOnBoardingInstructions(teamId);
-        await createTrialSubscription(teamId);
+
         await postInternalMessage(
           INTERNAL_SLACK_TEAM_ID,
           INTERNAL_SLACK_CHANNEL_ID,
