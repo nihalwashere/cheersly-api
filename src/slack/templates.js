@@ -468,15 +468,24 @@ const submitCheersTemplate = (user_name, callback_id) => {
           text: "Whom do you want to say cheers to?",
           emoji: true
         },
+        // element: {
+        //   action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
+        //   type: "multi_external_select",
+        //   placeholder: {
+        //     type: "plain_text",
+        //     text: "Select your peers",
+        //     emoji: true
+        //   },
+        //   min_query_length: 0
+        // }
         element: {
           action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
-          type: "multi_external_select",
+          type: "multi_users_select",
           placeholder: {
             type: "plain_text",
-            text: "Select your peers",
+            text: "Select a user",
             emoji: true
-          },
-          min_query_length: 0
+          }
         }
       },
       {
