@@ -18,7 +18,7 @@ const {
 } = require("../../api");
 const {
   createCheersSubmittedTemplate,
-  createBotUsersSelectedTemplate
+  createSelectPeersTemplate
 } = require("./template");
 const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
 const { upsertAppHpmeBlocks } = require("../../../mongo/helper/appHomeBlocks");
@@ -89,7 +89,11 @@ const processCheers = async (payload) => {
       });
     }
 
-    const validRecipients = await validateRecipients(teamId, recipients);
+    const validRecipients = await validateRecipients(
+      teamId,
+      recipients,
+      senderUsername
+    );
 
     if (validRecipients && validRecipients.length) {
       // save to cheers for filters
@@ -194,7 +198,7 @@ const processCheers = async (payload) => {
         channel,
         senderUserId,
         teamId,
-        createBotUsersSelectedTemplate()
+        createSelectPeersTemplate()
       );
     }
   } catch (error) {

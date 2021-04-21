@@ -6,14 +6,14 @@ const {
 const { getSlackUser } = require("../../api");
 const logger = require("../../../global/logger");
 
-const validateRecipients = async (teamId, recipients) => {
+const validateRecipients = async (teamId, recipients, senderUsername) => {
   try {
     const validRecipients = [];
 
     const handler = async (recipient) => {
       const user = await getUserDataBySlackUserId(recipient);
 
-      if (user) {
+      if (user && user.slackUserData.name !== senderUsername) {
         validRecipients.push(user.slackUserData.name);
       } else {
         const slackUserData = await getSlackUser(teamId, recipient);
