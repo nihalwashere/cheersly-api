@@ -92,7 +92,7 @@ const processCheers = async (payload) => {
         await addCheersStats({
           slackUsername: senderUsername,
           teamId,
-          cheersGiven: 1,
+          cheersGiven: validRecipients.length,
           cheersReceived: 0
         });
       }
