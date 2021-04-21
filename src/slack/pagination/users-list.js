@@ -21,16 +21,19 @@ const wrapMembers = (members) => {
 
 const getUsersList = async (limit, token, next_cursor) => {
   try {
-    let url = `${SLACK_API}/users.list?limit=${limit}&token=${token}`;
+    let url = `${SLACK_API}/users.list?limit=${limit}`;
 
     if (next_cursor) {
       url = `${SLACK_API}/users.list?limit=${limit}&cursor=${encodeURIComponent(
         next_cursor
-      )}&token=${token}`;
+      )}`;
     }
 
     const req = await fetch(url, {
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
     const res = await req.json();
