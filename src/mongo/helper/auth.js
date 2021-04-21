@@ -31,8 +31,8 @@ const updateAuth = async (teamId, payload) => {
 const upsertAuth = async (teamId, payload) => {
   try {
     return await Auth.findOneAndUpdate(
-      { teamId },
-      { slackInstallation: payload },
+      { "slackInstallation.team.id": teamId },
+      { ...payload },
       { new: true, upsert: true }
     );
   } catch (error) {

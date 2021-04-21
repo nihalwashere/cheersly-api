@@ -21,9 +21,7 @@ const upsertUser = async (slackUserId, payload) => {
   try {
     return await User.findOneAndUpdate(
       { "slackUserData.id": slackUserId },
-      {
-        ...payload
-      },
+      { ...payload },
       { new: true, upsert: true }
     );
   } catch (error) {
