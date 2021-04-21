@@ -70,25 +70,6 @@ const processCheers = async (payload) => {
 
     // first check if stats exist for user, if it exist then update else create
 
-    // for sender
-    const cheersStatsSender = await getCheersStatsForUser(
-      teamId,
-      senderUsername
-    );
-    if (cheersStatsSender) {
-      const { cheersGiven } = cheersStatsSender;
-      await updateCheersStatsForUser(senderUsername, {
-        cheersGiven: cheersGiven + 1
-      });
-    } else {
-      await addCheersStats({
-        slackUsername: senderUsername,
-        teamId,
-        cheersGiven: 1,
-        cheersReceived: 0
-      });
-    }
-
     const validRecipients = await validateRecipients(
       teamId,
       recipients,
@@ -96,6 +77,26 @@ const processCheers = async (payload) => {
     );
 
     if (validRecipients && validRecipients.length) {
+      // for sender
+      const cheersStatsSender = await getCheersStatsForUser(
+        teamId,
+        senderUsername
+      );
+
+      if (cheersStatsSender) {
+        const { cheersGiven } = cheersStatsSender;
+        await updateCheersStatsForUser(senderUsername, {
+          cheersGiven: cheersGiven + 1
+        });
+      } else {
+        await addCheersStats({
+          slackUsername: senderUsername,
+          teamId,
+          cheersGiven: 1,
+          cheersReceived: 0
+        });
+      }
+
       // save to cheers for filters
       await Promise.all(
         validRecipients.map(async (recipient) => {
@@ -135,6 +136,7 @@ const processCheers = async (payload) => {
               cheersGiven: 0,
               cheersReceived: 1
             });
+
             notifyRecipients.push({
               recipient,
               cheersReceived: 1
