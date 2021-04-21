@@ -44,7 +44,10 @@ router.post("/slack-install", async (req, res) => {
           await createTrialSubscription(teamId);
         }
 
-        await upsertAuth(teamId, { slackTokenPayload, slackDeleted: false });
+        await upsertAuth(teamId, {
+          slackInstallation: slackTokenPayload,
+          slackDeleted: false
+        });
 
         await paginateUsersList(access_token);
 
