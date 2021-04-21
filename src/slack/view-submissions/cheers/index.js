@@ -86,7 +86,7 @@ const processCheers = async (payload) => {
       if (cheersStatsSender) {
         const { cheersGiven } = cheersStatsSender;
         await updateCheersStatsForUser(senderUsername, {
-          cheersGiven: cheersGiven + 1
+          cheersGiven: cheersGiven + validRecipients.length
         });
       } else {
         await addCheersStats({
