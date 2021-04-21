@@ -70,7 +70,7 @@ const createSelectPeersTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "Hey there! Please select your peers while sharing cheers, you should not share cheers with bots and yourself! :smile:"
+          "Hey there! Please select your peers while sharing cheers, you should not share cheers yourself! :smile:"
       }
     }
   ];

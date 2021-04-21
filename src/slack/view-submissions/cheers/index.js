@@ -47,7 +47,7 @@ const processCheers = async (payload) => {
 
     const recipients =
       state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
-        .selected_users;
+        .selected_conversations;
 
     const channel =
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
