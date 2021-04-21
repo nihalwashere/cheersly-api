@@ -24,8 +24,9 @@ const {
 } = require("../../../mongo/helper/cheersStats");
 const { addCheers } = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
-const { sortLeaders, getUnique } = require("../../../utils/common");
+const { sortLeaders } = require("../../../utils/common");
 const { getRandomGif } = require("../../../giphy/api");
+const { validateRecipients } = require("./helper");
 const logger = require("../../../global/logger");
 
 const processCheers = async (payload) => {
@@ -37,11 +38,9 @@ const processCheers = async (payload) => {
       view: { state, private_metadata: senderUsername }
     } = payload;
 
-    const recipients = getUnique(
-      state.values[SUBMIT_CHEERS_TO_USERS][
-        SUBMIT_CHEERS_TO_USERS_VALUE
-      ].selected_options.map((option) => option.value)
-    );
+    const recipients =
+      state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
+        .selected_users;
 
     const channel =
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
@@ -83,9 +82,11 @@ const processCheers = async (payload) => {
       });
     }
 
+    const validRecipients = await validateRecipients(teamId, recipients);
+
     // save to cheers for filters
     await Promise.all(
-      recipients.map(async (recipient) => {
+      validRecipients.map(async (recipient) => {
         await addCheers({
           from: senderUsername,
           to: recipient,
@@ -98,7 +99,7 @@ const processCheers = async (payload) => {
     const notifyRecipients = [];
     // for receivers
     await Promise.all(
-      recipients.map(async (recipient) => {
+      validRecipients.map(async (recipient) => {
         const cheersStatsRecipient = await getCheersStatsForUser(
           teamId,
           recipient

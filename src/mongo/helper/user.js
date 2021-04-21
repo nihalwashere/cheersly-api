@@ -1,6 +1,14 @@
 const User = require("../models/User");
 const logger = require("../../global/logger");
 
+const addUser = async (payload) => {
+  try {
+    return await new User(payload).save();
+  } catch (error) {
+    logger.error("addUser() -> error : ", error);
+  }
+};
+
 const addUsersBatch = async (batch) => {
   try {
     return await User.insertMany(batch);
@@ -95,6 +103,7 @@ const updateAppHomePublishedForTeam = async (teamId, trueOrFalse) => {
 };
 
 module.exports = {
+  addUser,
   addUsersBatch,
   getUsersForTeam,
   getUserDataBySlackUserId,
