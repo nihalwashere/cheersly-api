@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 const { SLACK_API } = require("../../global/config");
 const logger = require("../../global/logger");
-const { addUsersBatch } = require("../../mongo/helper/user");
+const { upsertUser } = require("../../mongo/helper/user");
 
 const LIMIT = 100;
 
@@ -18,6 +18,13 @@ const wrapMembers = (members) => {
 
   return wrappedMembers;
 };
+
+const addUsers = async (users) =>
+  await Promise.all(
+    users.map(async (user) => {
+      await upsertUser(user.slackUserData.id, user);
+    })
+  );
 
 const getUsersList = async (limit, token, next_cursor) => {
   try {
@@ -50,7 +57,7 @@ const paginateUsersList = async (token, next_cursor = null) => {
     logger.debug("result : ", result);
 
     if (result.members && result.members.length) {
-      await addUsersBatch(wrapMembers(result.members));
+      await addUsers(wrapMembers(result.members));
     }
 
     if (

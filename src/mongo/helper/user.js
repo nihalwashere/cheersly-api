@@ -17,6 +17,20 @@ const addUsersBatch = async (batch) => {
   }
 };
 
+const upsertUser = async (slackUserId, payload) => {
+  try {
+    return await User.findOneAndUpdate(
+      { "slackUserData.id": slackUserId },
+      {
+        ...payload
+      },
+      { new: true, upsert: true }
+    );
+  } catch (error) {
+    logger.error("upsertUser() -> error : ", error);
+  }
+};
+
 const getUsersForTeam = async (teamId) => {
   try {
     return await User.find({
@@ -105,6 +119,7 @@ const updateAppHomePublishedForTeam = async (teamId, trueOrFalse) => {
 module.exports = {
   addUser,
   addUsersBatch,
+  upsertUser,
   getUsersForTeam,
   getUserDataBySlackUserId,
   getUserDataBySlackUserName,

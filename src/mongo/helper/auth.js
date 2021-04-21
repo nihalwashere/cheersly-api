@@ -28,6 +28,18 @@ const updateAuth = async (teamId, payload) => {
   }
 };
 
+const upsertAuth = async (teamId, payload) => {
+  try {
+    return await Auth.findOneAndUpdate(
+      { teamId },
+      { slackInstallation: payload },
+      { new: true, upsert: true }
+    );
+  } catch (error) {
+    logger.error("upsertAuth() -> error : ", error);
+  }
+};
+
 const getAuthDataForSlackTeam = async (teamId) => {
   try {
     return await Auth.findOne({
@@ -39,6 +51,16 @@ const getAuthDataForSlackTeam = async (teamId) => {
       `getAuthDataForSlackTeam() : Failed to find auth data for teamId : ${teamId} -> error : `,
       error
     );
+  }
+};
+
+const getAuthDeletedOrNotDeleted = async (teamId) => {
+  try {
+    return await Auth.findOne({
+      "slackInstallation.team.id": teamId
+    });
+  } catch (error) {
+    logger.error(`getAuthDeletedOrNotDeleted() -> error : `, error);
   }
 };
 
@@ -77,26 +99,13 @@ const deleteSlackAuthByTeamId = async (teamId) => {
   }
 };
 
-const getAuthDataForSlackTeamFromDB = async (teamId) => {
-  try {
-    return await Auth.findOne({
-      "slackInstallation.team.id": teamId,
-      slackDeleted: false
-    });
-  } catch (error) {
-    logger.error(
-      `getAuthDataForSlackTeamFromDB() : Failed to find auth data for teamId : ${teamId}`,
-      error
-    );
-  }
-};
-
 module.exports = {
   addAuth,
   getAllAuths,
   updateAuth,
+  upsertAuth,
   getAuthDataForSlackTeam,
   getSlackBotTokenForTeam,
   deleteSlackAuthByTeamId,
-  getAuthDataForSlackTeamFromDB
+  getAuthDeletedOrNotDeleted
 };

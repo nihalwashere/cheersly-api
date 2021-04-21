@@ -7,7 +7,7 @@ const {
   getSubscriptionBySlackTeamId
 } = require("../mongo/helper/subscriptions");
 const { getUserDataBySlackUserId } = require("../mongo/helper/user");
-const { getAuthDataForSlackTeamFromDB } = require("../mongo/helper/auth");
+const { getAuthDataForSlackTeam } = require("../mongo/helper/auth");
 const {
   SubscriptionMessageType
 } = require("../enums/subscriptionMessageTypes");
@@ -191,7 +191,7 @@ const validateToken = async (headers) => {
     };
   }
 
-  const auth = await getAuthDataForSlackTeamFromDB(slackTeamId);
+  const auth = await getAuthDataForSlackTeam(slackTeamId);
 
   if (!auth) {
     return {

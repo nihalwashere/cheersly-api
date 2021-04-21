@@ -14,9 +14,8 @@ const {
 } = require("../../slack/api");
 const { paginateUsersList } = require("../../slack/pagination/users-list");
 const {
-  getAuthDataForSlackTeam,
-  addAuth,
-  updateAuth
+  upsertAuth,
+  getAuthDeletedOrNotDeleted
 } = require("../../mongo/helper/auth");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
 const { createTrialSubscription } = require("../../utils/common");
@@ -38,17 +37,16 @@ router.post("/slack-install", async (req, res) => {
         } = slackTokenPayload;
 
         // check if installation already exists
-        const auth = await getAuthDataForSlackTeam(teamId);
+        const auth = await getAuthDeletedOrNotDeleted(teamId);
 
         if (!auth) {
-          // create new auth
-          await addAuth({ slackInstallation: slackTokenPayload });
-          await paginateUsersList(access_token);
+          // if installation does not exist already, then create trial subscription
           await createTrialSubscription(teamId);
-        } else {
-          // update auth
-          await updateAuth(teamId, slackTokenPayload);
         }
+
+        await upsertAuth(teamId, slackTokenPayload);
+
+        await paginateUsersList(access_token);
 
         await sendOnBoardingInstructions(teamId);
 
