@@ -14,7 +14,7 @@ const validateRecipients = async (teamId, recipients) => {
       const user = await getUserDataBySlackUserId(recipient);
 
       if (user) {
-        validRecipients.push(recipient);
+        validRecipients.push(user.slackUserData.name);
       } else {
         const slackUserData = await getSlackUser(teamId, recipient);
 
@@ -27,7 +27,7 @@ const validateRecipients = async (teamId, recipients) => {
 
           await addUser({ slackUserData });
 
-          validRecipients.push(recipient);
+          validRecipients.push(slackUserData.name);
         }
       }
     };

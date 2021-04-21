@@ -63,6 +63,20 @@ const createCheersSubmittedTemplate = (
   return blocks;
 };
 
+const createBotUsersSelectedTemplate = () => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "Hey, please select your peers while sharing cheers, trust me, you don't want to share cheers with bots! :p"
+      }
+    }
+  ];
+};
+
 module.exports = {
-  createCheersSubmittedTemplate
+  createCheersSubmittedTemplate,
+  createBotUsersSelectedTemplate
 };
