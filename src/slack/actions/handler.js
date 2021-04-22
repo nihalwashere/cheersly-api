@@ -1,8 +1,9 @@
 const {
-  SLACK_ACTIONS: { POLL_OPTION_SUBMITTED, CUSTOMER_FEEDBACK }
+  SLACK_ACTIONS: { POLL_OPTION_SUBMITTED, CUSTOMER_FEEDBACK, SAY_CHEERS }
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
-const { handleShareFeedback } = require("./shareFeedback");
+const { handleShareFeedback } = require("./share-feedback");
+const { handleSayCheers } = require("./say-cheers");
 const logger = require("../../global/logger");
 
 const actionsMapper = async (payload) => {
@@ -10,7 +11,8 @@ const actionsMapper = async (payload) => {
     const mapper = {
       [POLL_OPTION_SUBMITTED]: async () =>
         await handlePollOptionSubmitted(payload),
-      [CUSTOMER_FEEDBACK]: async () => await handleShareFeedback(payload)
+      [CUSTOMER_FEEDBACK]: async () => await handleShareFeedback(payload),
+      [SAY_CHEERS]: async () => await handleSayCheers(payload)
     };
 
     const applyMapper = mapper[payload.actions[0].action_id];

@@ -54,4 +54,12 @@ router.post("/cron-monthly", async (req, res) => {
   return res.status(200).json({ success: true });
 });
 
+router.post("/cron-cheers", async (req, res) => {
+  spawn(process.execPath, ["./src/cron/say-cheers/index.js"], {
+    stdio: "inherit"
+  });
+
+  return res.status(200).json({ success: true });
+});
+
 module.exports = router;
