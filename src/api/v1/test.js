@@ -62,4 +62,12 @@ router.post("/cron-cheers", async (req, res) => {
   return res.status(200).json({ success: true });
 });
 
+router.post("/cron-upgrade-trial-subscription", async (req, res) => {
+  spawn(process.execPath, ["./src/cron/upgrade-trial-subscription/index.js"], {
+    stdio: "inherit"
+  });
+
+  return res.status(200).json({ success: true });
+});
+
 module.exports = router;

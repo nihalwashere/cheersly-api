@@ -63,9 +63,13 @@ const now = new Date();
 
 // console.log(paginate([1, 2, 3, 4, 5, 6], 3, 2));
 
-console.log(
-  "from : ",
-  moment().subtract(1, "months").startOf("month").toDate(),
-  "to : ",
-  moment().subtract(1, "months").endOf("month").toDate()
-);
+// console.log(
+//   "from : ",
+//   moment().subtract(1, "months").startOf("month").toDate(),
+//   "to : ",
+//   moment().subtract(1, "months").endOf("month").toDate()
+// );
+
+console.log("due date : ", new Date("2021-04-28 12:40:50.813Z").getDate());
+
+console.log("date : ", moment(new Date()).format("LL"));

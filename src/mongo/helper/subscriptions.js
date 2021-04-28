@@ -12,6 +12,20 @@ const addSubscription = async (payload) => {
   }
 };
 
+const getTrialSubscriptionForSlackTeam = async (slackTeamId) => {
+  try {
+    return await Subscriptions.findOne({
+      slackTeamId,
+      isTrialPeriod: true
+    });
+  } catch (error) {
+    logger.error(
+      `getTrialSubscriptionForSlackTeam() : slackTeamId : ${slackTeamId} -> error : `,
+      error
+    );
+  }
+};
+
 const getSubscriptionBySlackTeamId = async (slackTeamId) => {
   try {
     return await Subscriptions.findOne({ slackTeamId }).sort({
@@ -25,4 +39,8 @@ const getSubscriptionBySlackTeamId = async (slackTeamId) => {
   }
 };
 
-module.exports = { addSubscription, getSubscriptionBySlackTeamId };
+module.exports = {
+  addSubscription,
+  getSubscriptionBySlackTeamId,
+  getTrialSubscriptionForSlackTeam
+};
