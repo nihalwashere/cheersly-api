@@ -29,7 +29,6 @@ const service = async () => {
     // fetch all poll questions that are closed
 
     const closedPolls = await getClosedPolls();
-    logger.debug("closedPolls : ", closedPolls);
 
     // update all closed polls and send results to poll creator
 
@@ -52,13 +51,10 @@ const service = async () => {
         const pollAnswers = await getAllPollAnswers(pollId);
 
         const totalPollAnswers = pollAnswers.length;
-        logger.debug("totalPollAnswers : ", totalPollAnswers);
 
         const pollOptions = pollAnswers.map(({ answer }) => answer);
-        logger.debug("pollOptions : ", pollOptions);
 
         const uniquePollOptions = R.uniq(pollOptions);
-        logger.debug("uniquePollOptions : ", uniquePollOptions);
 
         const results = {};
 
@@ -66,11 +62,7 @@ const service = async () => {
           results[option] = 0;
         });
 
-        logger.debug("results : ", results);
-
         const parsedPollSubmittedTemplate = JSON.parse(pollSubmittedTemplate);
-
-        logger.debug("pollSubmittedTemplate : ", parsedPollSubmittedTemplate);
 
         const pollCompletedTemplate = [];
 
@@ -79,11 +71,8 @@ const service = async () => {
             const pollOption = String(section.accessory.value).split(
               "-----"
             )[1];
-            logger.debug("pollOption : ", pollOption);
 
             pollAnswers.map(({ answer }) => {
-              logger.debug("answer : ", answer);
-
               if (answer === pollOption) {
                 results[pollOption] += 1;
               }
@@ -112,10 +101,6 @@ const service = async () => {
             pollCompletedTemplate.push(section);
           }
         });
-
-        logger.debug("pollCompletedTemplate : ", pollCompletedTemplate);
-
-        logger.debug("results : ", results);
 
         await updateChat(
           team_id,
