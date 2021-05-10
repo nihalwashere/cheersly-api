@@ -143,27 +143,27 @@ router.post("/", async (req, res) => {
       }
 
       if (user && !user.appHomePublished) {
-        // const subscriptionInfo = await isSubscriptionValidForSlack(
-        //   payload.team_id
-        // );
+        const subscriptionInfo = await isSubscriptionValidForSlack(
+          payload.team_id
+        );
 
-        // if (!subscriptionInfo.hasSubscription) {
-        //   if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
-        //     await publishView(payload.team_id, slackUserId, {
-        //       type: "home",
-        //       blocks: createTrialEndedTemplate()
-        //     });
+        if (!subscriptionInfo.hasSubscription) {
+          if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+            await publishView(payload.team_id, slackUserId, {
+              type: "home",
+              blocks: createTrialEndedTemplate()
+            });
 
-        //     return await updateAppHomePublishedForUser(slackUserId, true);
-        //   }
+            return await updateAppHomePublishedForUser(slackUserId, true);
+          }
 
-        //   await publishView(payload.team_id, slackUserId, {
-        //     type: "home",
-        //     blocks: createUpgradeSubscriptionTemplate()
-        //   });
+          await publishView(payload.team_id, slackUserId, {
+            type: "home",
+            blocks: createUpgradeSubscriptionTemplate()
+          });
 
-        //   return await updateAppHomePublishedForUser(slackUserId, true);
-        // }
+          return await updateAppHomePublishedForUser(slackUserId, true);
+        }
 
         const slackUsername = user.slackUserData.name;
         await publishStats(payload.team_id, slackUserId, slackUsername);
