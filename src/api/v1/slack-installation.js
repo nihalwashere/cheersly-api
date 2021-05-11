@@ -48,6 +48,10 @@ router.post("/slack-install", async (req, res) => {
         if (!auth) {
           // if installation does not exist already, then create trial subscription
           await createTrialSubscription(teamId);
+
+          await addCommonCompanyValuesForTeam(teamId);
+
+          await sendPersonalOnBoardingInstructions(teamId);
         }
 
         await upsertAuth(teamId, {
@@ -57,11 +61,7 @@ router.post("/slack-install", async (req, res) => {
 
         await paginateUsersList(access_token);
 
-        await addCommonCompanyValuesForTeam(teamId);
-
         await sendOnBoardingInstructions(teamId);
-
-        await sendPersonalOnBoardingInstructions(teamId);
 
         await postInternalMessage(
           INTERNAL_SLACK_TEAM_ID,
