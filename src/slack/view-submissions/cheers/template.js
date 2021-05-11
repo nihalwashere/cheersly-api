@@ -48,7 +48,7 @@ const createCheersSubmittedTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*For reason:*\n" + ```${reason}```
+        text: "*For reason:*\n" + "```" + `${reason}` + "```"
       }
     });
   }
@@ -58,7 +58,11 @@ const createCheersSubmittedTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*Company values favored :*\n" + ```${companyValues.join(" ")}```
+        text:
+          "*Company values favored :*\n" +
+          "```" +
+          `${companyValues.join(" ")}` +
+          "```"
       }
     });
   }
