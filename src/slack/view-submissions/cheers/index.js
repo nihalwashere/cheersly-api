@@ -55,10 +55,9 @@ const processCheers = async (payload) => {
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
         .selected_channel;
 
-    // const companyValues =
-    //   state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
-    //     SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
-    //   ].selected_channel;
+    const companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
+      SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
+    ].selected_options.map((option) => option.value);
 
     const reason =
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
@@ -72,7 +71,7 @@ const processCheers = async (payload) => {
 
     logger.debug("recipients : ", recipients);
     logger.debug("channel : ", channel);
-    // logger.debug("companyValues : ", companyValues);
+    logger.debug("companyValues : ", companyValues);
     logger.debug("reason : ", reason);
     logger.debug("shouldShareGiphy : ", shouldShareGiphy);
 
