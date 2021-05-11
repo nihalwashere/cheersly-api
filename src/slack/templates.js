@@ -122,13 +122,18 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
           emoji: true
         },
         element: {
-          type: "channels_select",
+          action_id: SELECTED_POLL_CHANNEL,
+          type: "conversations_select",
           placeholder: {
             type: "plain_text",
             text: "Select channel",
             emoji: true
           },
-          action_id: SELECTED_POLL_CHANNEL
+          filter: {
+            include: ["private", "public"],
+            exclude_bot_users: true,
+            exclude_external_shared_channels: true
+          }
         }
       },
       {
@@ -397,13 +402,18 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
           emoji: true
         },
         element: {
-          type: "channels_select",
+          action_id: FEEDBACK_CHANNEL_VALUE,
+          type: "conversations_select",
           placeholder: {
             type: "plain_text",
             text: "Select channel",
             emoji: true
           },
-          action_id: FEEDBACK_CHANNEL_VALUE
+          filter: {
+            include: ["private", "public"],
+            exclude_bot_users: true,
+            exclude_external_shared_channels: true
+          }
         }
       },
       {
@@ -480,7 +490,8 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
           },
           filter: {
             include: ["im"],
-            exclude_bot_users: true
+            exclude_bot_users: true,
+            exclude_external_shared_channels: true
           }
         }
       },
@@ -493,13 +504,18 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
           emoji: true
         },
         element: {
-          type: "channels_select",
+          action_id: SUBMIT_CHEERS_TO_CHANNEL_VALUE,
+          type: "conversations_select",
           placeholder: {
             type: "plain_text",
             text: "Select channel",
             emoji: true
           },
-          action_id: SUBMIT_CHEERS_TO_CHANNEL_VALUE
+          filter: {
+            include: ["private", "public"],
+            exclude_bot_users: true,
+            exclude_external_shared_channels: true
+          }
         }
       },
       {
