@@ -10,6 +10,7 @@ const {
     POLL_OPTION_D,
     SUBMIT_CHEERS_FOR_REASON,
     SUBMIT_CHEERS_TO_CHANNEL,
+    SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_TO_USERS,
     SHOULD_SHARE_GIPHY,
     FEEDBACK_DESCRIPTION,
@@ -27,6 +28,7 @@ const {
     POLL_OPTION_D_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
+    SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_TO_USERS_VALUE,
     SHOULD_SHARE_GIPHY_VALUE,
     FEEDBACK_DESCRIPTION_VALUE,
@@ -439,7 +441,7 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
   };
 };
 
-const submitCheersTemplate = (user_name, callback_id) => {
+const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
   return {
     type: "modal",
     callback_id,
@@ -510,6 +512,26 @@ const submitCheersTemplate = (user_name, callback_id) => {
             emoji: true
           }
         ]
+      },
+      {
+        type: "input",
+        block_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES,
+        optional: true,
+        label: {
+          type: "plain_text",
+          text: "Tag company values",
+          emoji: true
+        },
+        element: {
+          type: "multi_static_select",
+          placeholder: {
+            type: "plain_text",
+            text: "Select a company value",
+            emoji: true
+          },
+          options: companyValueOptions,
+          action_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
+        }
       },
       {
         type: "input",

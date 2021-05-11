@@ -1,5 +1,6 @@
 const { openModal } = require("../../api");
 const { submitCheersTemplate } = require("../../templates");
+const { wrapCompanyValueOptionsForTeam } = require("../../helper");
 const {
   VIEW_SUBMISSIONS: { SAY_CHEERS }
 } = require("../../../global/constants");
@@ -9,7 +10,13 @@ const handleCheersCommand = async (team_id, user_name, trigger_id) => {
   try {
     // /cheers
 
-    const viewTemplate = submitCheersTemplate(user_name, SAY_CHEERS);
+    const companyValueOptions = await wrapCompanyValueOptionsForTeam(team_id);
+
+    const viewTemplate = submitCheersTemplate(
+      user_name,
+      SAY_CHEERS,
+      companyValueOptions
+    );
 
     await openModal(team_id, trigger_id, viewTemplate);
   } catch (error) {

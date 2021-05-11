@@ -17,6 +17,9 @@ const {
   upsertAuth,
   getAuthDeletedOrNotDeleted
 } = require("../../mongo/helper/auth");
+const {
+  addCommonCompanyValuesForTeam
+} = require("../../mongo/helper/companyValues");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
 const { createTrialSubscription } = require("../../utils/common");
 
@@ -50,6 +53,8 @@ router.post("/slack-install", async (req, res) => {
         });
 
         await paginateUsersList(access_token);
+
+        await addCommonCompanyValuesForTeam(teamId);
 
         await sendOnBoardingInstructions(teamId);
 

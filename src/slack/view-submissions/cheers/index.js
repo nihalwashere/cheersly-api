@@ -2,12 +2,14 @@ const {
   BLOCK_IDS: {
     SUBMIT_CHEERS_TO_USERS,
     SUBMIT_CHEERS_TO_CHANNEL,
+    SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_FOR_REASON,
     SHOULD_SHARE_GIPHY
   },
   ACTION_IDS: {
     SUBMIT_CHEERS_TO_USERS_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
+    SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SHOULD_SHARE_GIPHY_VALUE
   }
@@ -53,6 +55,11 @@ const processCheers = async (payload) => {
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
         .selected_channel;
 
+    // const companyValues =
+    //   state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
+    //     SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
+    //   ].selected_channel;
+
     const reason =
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
         .value;
@@ -65,6 +72,7 @@ const processCheers = async (payload) => {
 
     logger.debug("recipients : ", recipients);
     logger.debug("channel : ", channel);
+    // logger.debug("companyValues : ", companyValues);
     logger.debug("reason : ", reason);
     logger.debug("shouldShareGiphy : ", shouldShareGiphy);
 
