@@ -24,7 +24,8 @@ const processFeedback = async (payload) => {
       state.values[FEEDBACK_DESCRIPTION][FEEDBACK_DESCRIPTION_VALUE].value;
 
     const channel =
-      state.values[FEEDBACK_CHANNEL][FEEDBACK_CHANNEL_VALUE].selected_channel;
+      state.values[FEEDBACK_CHANNEL][FEEDBACK_CHANNEL_VALUE]
+        .selected_conversation;
 
     const isAnonymous = state.values[FEEDBACK_IS_ANONYMOUS][
       FEEDBACK_IS_ANONYMOUS_VALUE

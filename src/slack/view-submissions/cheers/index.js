@@ -53,7 +53,7 @@ const processCheers = async (payload) => {
 
     const channel =
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
-        .selected_channel;
+        .selected_conversation;
 
     const companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
       SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE

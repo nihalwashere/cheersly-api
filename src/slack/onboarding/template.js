@@ -56,11 +56,21 @@ const createOnboardingTemplate = () => {
       }
     },
     {
+      type: "context",
+      elements: [
+        {
+          type: "mrkdwn",
+          text:
+            "Note: Please invite Cheersly to all the public and private channels you would like to use Cheersly in."
+        }
+      ]
+    },
+    {
       type: "section",
       text: {
         type: "mrkdwn",
         text:
-          "You can get a birds eye view of your team's mood and keep track of who has given or received the most cheers. If you feel low, just visit the app's home tab and recall all the good work you have done and have been appreciated for so far."
+          "You can get a birds eye view of your team's mood and keep track of who has given or received the most cheers. If you feel low, just visit the app's home tab and recall all the good work you have been appreciated for so far!"
       }
     },
     {
@@ -69,6 +79,21 @@ const createOnboardingTemplate = () => {
         type: "mrkdwn",
         text:
           "You can also view the leaderboard for your team in the app dashboard and drill down on who has given or received the most cheers for a specific duration and reward them."
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "You can add, edit or remove company values from the app dashboard, by default, we have included a few company values for your team."
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "Cheers :beers:"
       }
     },
     {
