@@ -1,16 +1,46 @@
-const { postMessageToHook } = require("../api");
-const { createOnboardingTemplate } = require("./template");
+const pMap = require("p-map");
+const { postMessageToHook, slackPostMessageToChannel } = require("../api");
+const { getUsersForTeam } = require("../../mongo/helper/user");
+const { waitForMilliSeconds } = require("../../utils/common");
+const {
+  createOnboardingTemplate,
+  createPersonalOnboardingTemplate
+} = require("./template");
 const logger = require("../../global/logger");
 
 const sendOnBoardingInstructions = async (teamId) => {
   try {
-    const template = createOnboardingTemplate();
-    await postMessageToHook(teamId, template);
+    await postMessageToHook(teamId, createOnboardingTemplate());
   } catch (error) {
     logger.error(`sendOnBoardingInstructions() -> error : ${error}`);
   }
 };
 
+const sendPersonalOnBoardingInstructions = async (teamId) => {
+  try {
+    const users = await getUsersForTeam(teamId);
+
+    const handler = async (user) => {
+      const {
+        slackUserData: { id: channel, name }
+      } = user;
+
+      await slackPostMessageToChannel(
+        channel,
+        teamId,
+        createPersonalOnboardingTemplate(name)
+      );
+
+      await waitForMilliSeconds(1000);
+    };
+
+    await pMap(users, handler, { concurrency: 1 });
+  } catch (error) {
+    logger.error(`sendPersonalOnBoardingInstructions() -> error : ${error}`);
+  }
+};
+
 module.exports = {
-  sendOnBoardingInstructions
+  sendOnBoardingInstructions,
+  sendPersonalOnBoardingInstructions
 };

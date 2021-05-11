@@ -20,7 +20,10 @@ const {
 const {
   addCommonCompanyValuesForTeam
 } = require("../../mongo/helper/companyValues");
-const { sendOnBoardingInstructions } = require("../../slack/onboarding");
+const {
+  sendOnBoardingInstructions,
+  sendPersonalOnBoardingInstructions
+} = require("../../slack/onboarding");
 const { createTrialSubscription } = require("../../utils/common");
 
 router.post("/slack-install", async (req, res) => {
@@ -57,6 +60,8 @@ router.post("/slack-install", async (req, res) => {
         await addCommonCompanyValuesForTeam(teamId);
 
         await sendOnBoardingInstructions(teamId);
+
+        await sendPersonalOnBoardingInstructions(teamId);
 
         await postInternalMessage(
           INTERNAL_SLACK_TEAM_ID,

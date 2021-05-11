@@ -108,4 +108,46 @@ const createOnboardingTemplate = () => {
   ];
 };
 
-module.exports = { createOnboardingTemplate };
+const createPersonalOnboardingTemplate = (name) => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Hey @${name}`
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "Your team just added *Cheersly* to this workspace. Cheersly is an employee engagement and peer recognition platform to build cheerful teams. You can give cheers, conduct anonymous polls and share feedback."
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "Remote teams use Cheersly to increase team engagement and the feeling of togetherness. "
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "Use the command `/cheers help` to learn more."
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "Cheers :beers:"
+      }
+    }
+  ];
+};
+
+module.exports = { createOnboardingTemplate, createPersonalOnboardingTemplate };
