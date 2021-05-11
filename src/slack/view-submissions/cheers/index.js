@@ -178,7 +178,8 @@ const processCheers = async (payload) => {
           senderUsername,
           notifyRecipients,
           reason,
-          giphyUrl
+          giphyUrl,
+          companyValues
         )
       );
 
