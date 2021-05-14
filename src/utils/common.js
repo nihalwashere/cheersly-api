@@ -156,9 +156,7 @@ const validateToken = async (headers) => {
   if (!token) {
     return {
       status: 401,
-      payload: {
-        message: "Invalid token!"
-      }
+      message: "Token is required!"
     };
   }
 
@@ -171,14 +169,14 @@ const validateToken = async (headers) => {
   if (!slackUserId) {
     return {
       status: 401,
-      message: "Invalid token! - Slack userId is required"
+      message: "Invalid token - Slack userId is required!"
     };
   }
 
   if (!slackTeamId) {
     return {
       status: 401,
-      message: "Invalid token! - Slack teamId is required"
+      message: "Invalid token - Slack teamId is required!"
     };
   }
 
@@ -203,8 +201,10 @@ const validateToken = async (headers) => {
   return {
     status: 200,
     message: "Success",
+    userId: user._id,
     slackUserId,
     slackTeamId,
+    role: user.role,
     slackUserData: user.slackUserData,
     slackInstallation: auth.slackInstallation
   };

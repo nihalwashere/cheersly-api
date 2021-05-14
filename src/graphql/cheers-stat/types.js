@@ -4,7 +4,8 @@ const CheersStatType = new GraphQLObjectType({
   name: "CheersStatType",
   fields: () => ({
     cheersGiven: { type: GraphQLInt },
-    cheersReceived: { type: GraphQLInt }
+    cheersReceived: { type: GraphQLInt },
+    cheersRedeemable: { type: GraphQLInt }
   })
 });
 

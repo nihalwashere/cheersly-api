@@ -100,7 +100,8 @@ const processCheers = async (payload) => {
           slackUsername: senderUsername,
           teamId,
           cheersGiven: validRecipients.length,
-          cheersReceived: 0
+          cheersReceived: 0,
+          cheersRedeemable: 0
         });
       }
 
@@ -126,10 +127,11 @@ const processCheers = async (payload) => {
           );
 
           if (cheersStatsRecipient) {
-            const { cheersReceived } = cheersStatsRecipient;
+            const { cheersReceived, cheersRedeemable } = cheersStatsRecipient;
 
             await updateCheersStatsForUser(recipient, {
-              cheersReceived: cheersReceived + 1
+              cheersReceived: cheersReceived + 1,
+              cheersRedeemable: cheersRedeemable + 1
             });
 
             notifyRecipients.push({
@@ -141,7 +143,8 @@ const processCheers = async (payload) => {
               slackUsername: recipient,
               teamId,
               cheersGiven: 0,
-              cheersReceived: 1
+              cheersReceived: 1,
+              cheersRedeemable: 1
             });
 
             notifyRecipients.push({

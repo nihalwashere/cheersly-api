@@ -10,13 +10,33 @@ const {
   UpdateCompanyValues,
   DeleteCompanyValues
 } = require("./company-values");
+const {
+  RewardList,
+  CreateReward,
+  UpdateReward,
+  DeleteReward,
+  RedemptionRequestList,
+  CreateRedemptionRequest,
+  SettleRedemptionRequest,
+  DeclineRedemptionRequest,
+  RewardsHistoryList
+} = require("./rewards");
+const { AdminSettingsList, AdminSwitch } = require("./admin-settings");
 
 /*
  * Root Query
  */
 const query = new GraphQLObjectType({
   name: "Query",
-  fields: () => ({ LeaderBoardList, CheersStat, CompanyValuesList })
+  fields: () => ({
+    LeaderBoardList,
+    CheersStat,
+    CompanyValuesList,
+    RewardList,
+    AdminSettingsList,
+    RedemptionRequestList,
+    RewardsHistoryList
+  })
 });
 
 /*
@@ -25,9 +45,20 @@ const query = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
   name: "Mutation",
   fields: () => ({
+    AdminSwitch,
+
+    // Company Values
     CreateCompanyValues,
     UpdateCompanyValues,
-    DeleteCompanyValues
+    DeleteCompanyValues,
+
+    // Rewards
+    CreateReward,
+    UpdateReward,
+    DeleteReward,
+    CreateRedemptionRequest,
+    SettleRedemptionRequest,
+    DeclineRedemptionRequest
   })
 });
 

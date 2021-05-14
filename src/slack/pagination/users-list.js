@@ -1,7 +1,8 @@
 const fetch = require("node-fetch");
 const { SLACK_API } = require("../../global/config");
-const logger = require("../../global/logger");
 const { upsertUser } = require("../../mongo/helper/user");
+const { UserRoles } = require("../../enums/userRoles");
+const logger = require("../../global/logger");
 
 const LIMIT = 100;
 
@@ -12,10 +13,13 @@ const wrapMembers = (members) => {
 
   members.map((member) => {
     if (!member.deleted && !member.is_bot && member.name !== "slackbot") {
+      const { isAdmin } = member;
+
       wrappedMembers.push({
         slackUserData: member,
         slackDeleted: false,
-        appHomePublished: false
+        appHomePublished: false,
+        role: isAdmin ? UserRoles.ADMIN : UserRoles.MEMBER
       });
     }
   });

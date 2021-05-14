@@ -17,6 +17,9 @@ const CheersStatsSchema = new mongoose.Schema(
     },
     cheersReceived: {
       type: Number
+    },
+    cheersRedeemable: {
+      type: Number
     }
   },
   { timestamps: true }
