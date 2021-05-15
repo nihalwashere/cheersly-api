@@ -50,7 +50,7 @@ const paginateRedemptionRequests = async ({ pageIndex, pageSize, filter }) => {
       ...filter
     })
       .populate("user reward")
-      .sort({ created_at: 1 })
+      .sort({ createdAt: -1 })
       .skip(pageSize * pageIndex)
       .limit(pageSize);
 

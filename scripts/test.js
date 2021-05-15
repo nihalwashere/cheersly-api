@@ -70,6 +70,10 @@ const now = new Date();
 //   moment().subtract(1, "months").endOf("month").toDate()
 // );
 
-console.log("due date : ", new Date("2021-04-28 12:40:50.813Z").getDate());
+// console.log("due date : ", new Date("2021-04-28 12:40:50.813Z").getDate());
 
-console.log("date : ", moment(new Date()).format("LL"));
+// console.log("date : ", moment(new Date()).format("LL"));
+
+const date = "2021-05-15T11:54:12.700Z";
+
+console.log("days : ", new Date().getDay() - new Date(date).getDay());

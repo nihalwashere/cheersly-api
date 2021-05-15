@@ -6,6 +6,7 @@ const {
   GraphQLInt,
   GraphQLFloat
 } = require("graphql");
+const { GraphQLDateTime } = require("graphql-iso-date");
 const { UserType } = require("../common/types");
 
 const RewardType = new GraphQLObjectType({
@@ -53,7 +54,9 @@ const RedemptionRequestType = new GraphQLObjectType({
     user: { type: UserType },
     reward: { type: RewardType },
     status: { type: GraphQLString },
-    teamId: { type: GraphQLString }
+    teamId: { type: GraphQLString },
+    createdAt: { type: GraphQLDateTime },
+    updatedAt: { type: GraphQLDateTime }
   })
 });
 
