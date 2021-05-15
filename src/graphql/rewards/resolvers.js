@@ -5,6 +5,7 @@ const {
   updateRewardsById,
   deleteRewardsById
 } = require("../../mongo/helper/rewards");
+const { slackPostMessageToChannel } = require("../../slack/api");
 const { getUserDataById } = require("../../mongo/helper/user");
 const {
   getCheersStatsForUser,
@@ -19,6 +20,10 @@ const {
 const {
   RedemptionRequestStatus
 } = require("../../enums/redemptionRequestStatus");
+const {
+  createRedemptionRequestSettledTemplate,
+  createRedemptionRequestDeclinedTemplate
+} = require("./template");
 const { validateToken } = require("../../utils/common");
 
 const RewardListResolver = async (_, args, context) => {
@@ -220,9 +225,24 @@ const SettleRedemptionRequestResolver = async (_, args, context) => {
       throw new Error("Redemption request not found.");
     }
 
+    const {
+      user: {
+        slackUserData: { id: channel, team_id }
+      },
+      reward: { title, price }
+    } = redemptionRequest;
+
     await updateRedemptionRequestById(id, {
       status: RedemptionRequestStatus.SETTLED
     });
+
+    // notify user in Slack
+
+    await slackPostMessageToChannel(
+      channel,
+      team_id,
+      createRedemptionRequestSettledTemplate({ title, price })
+    );
 
     return {
       success: true,
@@ -257,9 +277,9 @@ const DeclineRedemptionRequestResolver = async (_, args, context) => {
 
     const {
       user: {
-        slackUserData: { name: slackUsername }
+        slackUserData: { id: channel, name: slackUsername }
       },
-      reward: { price }
+      reward: { title, price }
     } = redemptionRequest;
 
     const cheersStat = await getCheersStatsForUser(slackTeamId, slackUsername);
@@ -277,6 +297,13 @@ const DeclineRedemptionRequestResolver = async (_, args, context) => {
     await updateCheersStatsForUser(slackUsername, {
       cheersRedeemable: cheersRedeemable + price
     });
+
+    // notify user in Slack
+    await slackPostMessageToChannel(
+      channel,
+      slackTeamId,
+      createRedemptionRequestDeclinedTemplate({ title, price })
+    );
 
     return {
       success: true,

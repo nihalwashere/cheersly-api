@@ -1,10 +1,13 @@
-const createMyStatsSection = (cheersGiven, cheersReceived) => {
+const createMyStatsSection = (
+  cheersGiven,
+  cheersReceived,
+  cheersRedeemable
+) => {
   return {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "Given: *" + cheersGiven + "*   |   Received: * " + cheersReceived + "*"
+      text: `Given: *${cheersGiven}*   |   Received: *${cheersReceived}*   |   Redeemable: *${cheersRedeemable}*`
     }
   };
 };
@@ -80,6 +83,7 @@ const createAppHomeTemplate = (
   url,
   cheersGiven,
   cheersReceived,
+  cheersRedeemable,
   appHomeBlocks
 ) => {
   const appHomeTemplate = {
@@ -104,7 +108,7 @@ const createAppHomeTemplate = (
       {
         type: "divider"
       },
-      createMyStatsSection(cheersGiven, cheersReceived),
+      createMyStatsSection(cheersGiven, cheersReceived, cheersRedeemable),
       {
         type: "section",
         text: {
