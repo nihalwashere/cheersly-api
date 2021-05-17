@@ -1,5 +1,8 @@
 const RedemptionRequests = require("../models/RedemptionRequests");
 const logger = require("../../global/logger");
+const {
+  RedemptionRequestStatus
+} = require("../../enums/redemptionRequestStatus");
 
 const getRedemptionRequestsByTeamId = async (teamId) => {
   try {
@@ -64,10 +67,22 @@ const paginateRedemptionRequests = async ({ pageIndex, pageSize, filter }) => {
   }
 };
 
+const declineRedemptionRequestByRewardId = async (reward) => {
+  try {
+    return await RedemptionRequests.updateMany(
+      { reward },
+      { $set: { status: RedemptionRequestStatus.DECLINED } }
+    );
+  } catch (error) {
+    logger.error(`declineRedemptionRequestByRewardId() -> error : `, error);
+  }
+};
+
 module.exports = {
   getRedemptionRequestsByTeamId,
   addRedemptionRequest,
   getRedemptionRequestById,
   updateRedemptionRequestById,
-  paginateRedemptionRequests
+  paginateRedemptionRequests,
+  declineRedemptionRequestByRewardId
 };

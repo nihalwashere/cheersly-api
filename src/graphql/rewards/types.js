@@ -15,7 +15,8 @@ const RewardType = new GraphQLObjectType({
     id: { type: GraphQLString },
     title: { type: GraphQLString },
     description: { type: GraphQLString },
-    price: { type: GraphQLString }
+    price: { type: GraphQLString },
+    deleted: { type: GraphQLBoolean }
   })
 });
 
@@ -29,21 +30,24 @@ const RewardListType = new GraphQLObjectType({
 const CreateRewardType = new GraphQLObjectType({
   name: "CreateRewardType",
   fields: () => ({
-    success: { type: GraphQLBoolean }
+    success: { type: GraphQLBoolean },
+    message: { type: GraphQLString }
   })
 });
 
 const UpdateRewardType = new GraphQLObjectType({
   name: "UpdateRewardType",
   fields: () => ({
-    success: { type: GraphQLBoolean }
+    success: { type: GraphQLBoolean },
+    message: { type: GraphQLString }
   })
 });
 
 const DeleteRewardType = new GraphQLObjectType({
   name: "DeleteRewardType",
   fields: () => ({
-    success: { type: GraphQLBoolean }
+    success: { type: GraphQLBoolean },
+    message: { type: GraphQLString }
   })
 });
 

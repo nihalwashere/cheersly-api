@@ -15,6 +15,7 @@ const {
   addRedemptionRequest,
   getRedemptionRequestById,
   updateRedemptionRequestById,
+  declineRedemptionRequestByRewardId,
   paginateRedemptionRequests
 } = require("../../mongo/helper/redemptionRequests");
 const {
@@ -28,7 +29,13 @@ const { validateToken } = require("../../utils/common");
 
 const RewardListResolver = async (_, args, context) => {
   try {
-    const { slackTeamId } = await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
+
+    const { slackTeamId } = token;
 
     const data = await getRewardsByTeamId(slackTeamId);
 
@@ -42,7 +49,13 @@ const RewardListResolver = async (_, args, context) => {
 
 const CreateRewardResolver = async (_, args, context) => {
   try {
-    const { slackTeamId: teamId } = await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
+
+    const { slackTeamId: teamId } = token;
 
     const { title, description, price } = args;
 
@@ -61,7 +74,8 @@ const CreateRewardResolver = async (_, args, context) => {
     await addRewards({ title, description, price, teamId });
 
     return {
-      success: true
+      success: true,
+      message: "Reward created successfully."
     };
   } catch (error) {
     throw new Error(error);
@@ -70,7 +84,11 @@ const CreateRewardResolver = async (_, args, context) => {
 
 const UpdateRewardResolver = async (_, args, context) => {
   try {
-    await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
 
     const { id, title, description, price } = args;
 
@@ -93,7 +111,8 @@ const UpdateRewardResolver = async (_, args, context) => {
     await updateRewardsById(id, title, description, price);
 
     return {
-      success: true
+      success: true,
+      message: "Reward updated successfully."
     };
   } catch (error) {
     throw new Error(error);
@@ -102,7 +121,11 @@ const UpdateRewardResolver = async (_, args, context) => {
 
 const DeleteRewardResolver = async (_, args, context) => {
   try {
-    await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
 
     const { id } = args;
 
@@ -112,8 +135,11 @@ const DeleteRewardResolver = async (_, args, context) => {
 
     await deleteRewardsById(id);
 
+    await declineRedemptionRequestByRewardId(id);
+
     return {
-      success: true
+      success: true,
+      message: "Reward deleted successfully."
     };
   } catch (error) {
     throw new Error(error);
@@ -122,7 +148,13 @@ const DeleteRewardResolver = async (_, args, context) => {
 
 const RedemptionRequestListResolver = async (_, args, context) => {
   try {
-    const { slackTeamId } = await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
+
+    const { slackTeamId } = token;
 
     const { pageIndex, pageSize } = args;
 
@@ -147,7 +179,13 @@ const RedemptionRequestListResolver = async (_, args, context) => {
 
 const CreateRedemptionRequestResolver = async (_, args, context) => {
   try {
-    const { slackTeamId: teamId } = await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
+
+    const { slackTeamId: teamId } = token;
 
     const { userId, rewardId } = args;
 
@@ -211,7 +249,11 @@ const CreateRedemptionRequestResolver = async (_, args, context) => {
 
 const SettleRedemptionRequestResolver = async (_, args, context) => {
   try {
-    await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
 
     const { id } = args;
 
@@ -316,7 +358,13 @@ const DeclineRedemptionRequestResolver = async (_, args, context) => {
 
 const RewardsHistoryListResolver = async (_, args, context) => {
   try {
-    const { slackTeamId } = await validateToken(context.headers);
+    const token = await validateToken(context.headers);
+
+    if (token.status !== 200) {
+      throw new Error(token.message);
+    }
+
+    const { slackTeamId } = token;
 
     const { pageIndex, pageSize } = args;
 

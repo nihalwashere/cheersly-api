@@ -16,6 +16,10 @@ const RewardsSchema = new mongoose.Schema(
     teamId: {
       type: String,
       index: true
+    },
+    deleted: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

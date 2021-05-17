@@ -28,13 +28,11 @@ const validateRecipients = async (teamId, recipients, senderUsername) => {
         ) {
           // add new user
 
-          const { isAdmin } = slackUserData;
-
           await addUser({
             slackUserData,
             slackDeleted: false,
             appHomePublished: false,
-            role: isAdmin ? UserRoles.ADMIN : UserRoles.MEMBER
+            role: slackUserData.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER
           });
 
           validRecipients.push(slackUserData.name);

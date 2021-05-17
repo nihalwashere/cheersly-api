@@ -18,8 +18,9 @@ const {
   getAuthDeletedOrNotDeleted
 } = require("../../mongo/helper/auth");
 const {
-  addCommonCompanyValuesForTeam
+  addDefaultCompanyValuesForTeam
 } = require("../../mongo/helper/companyValues");
+const { addDefaultRewardsForTeam } = require("../../mongo/helper/rewards");
 const {
   sendOnBoardingInstructions,
   sendPersonalOnBoardingInstructions
@@ -48,7 +49,8 @@ router.post("/slack-install", async (req, res) => {
         if (!auth) {
           // if installation does not exist already, then create trial subscription
           await createTrialSubscription(teamId);
-          await addCommonCompanyValuesForTeam(teamId);
+          await addDefaultCompanyValuesForTeam(teamId);
+          await addDefaultRewardsForTeam(teamId);
         }
 
         await upsertAuth(teamId, {

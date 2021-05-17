@@ -1,5 +1,5 @@
 const CompanyValues = require("../models/CompanyValues");
-const CommanCompanyValues = require("../../utils/commonCompanyValues");
+const DefaultCompanyValues = require("../../utils/defaults/companyValues");
 const logger = require("../../global/logger");
 
 const getCompanyValuesByTeamId = async (teamId) => {
@@ -18,13 +18,13 @@ const addCompanyValues = async (payload) => {
   }
 };
 
-const addCommonCompanyValuesForTeam = async (teamId) => {
+const addDefaultCompanyValuesForTeam = async (teamId) => {
   try {
     return await CompanyValues.insertMany(
-      CommanCompanyValues.map((value) => ({ ...value, teamId }))
+      DefaultCompanyValues.map((value) => ({ ...value, teamId }))
     );
   } catch (error) {
-    logger.error(`addCommonCompanyValuesForTeam() -> error : `, error);
+    logger.error(`addDefaultCompanyValuesForTeam() -> error : `, error);
   }
 };
 
@@ -55,7 +55,7 @@ const deleteCompanyValuesById = async (_id) => {
 module.exports = {
   getCompanyValuesByTeamId,
   addCompanyValues,
-  addCommonCompanyValuesForTeam,
+  addDefaultCompanyValuesForTeam,
   updateCompanyValuesById,
   deleteCompanyValuesById
 };

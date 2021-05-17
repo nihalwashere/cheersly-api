@@ -13,13 +13,11 @@ const wrapMembers = (members) => {
 
   members.map((member) => {
     if (!member.deleted && !member.is_bot && member.name !== "slackbot") {
-      const { isAdmin } = member;
-
       wrappedMembers.push({
         slackUserData: member,
         slackDeleted: false,
         appHomePublished: false,
-        role: isAdmin ? UserRoles.ADMIN : UserRoles.MEMBER
+        role: member.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER
       });
     }
   });
