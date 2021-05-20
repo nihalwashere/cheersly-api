@@ -17,7 +17,14 @@ const {
   upsertAuth,
   getAuthDeletedOrNotDeleted
 } = require("../../mongo/helper/auth");
-const { sendOnBoardingInstructions } = require("../../slack/onboarding");
+const {
+  addDefaultCompanyValuesForTeam
+} = require("../../mongo/helper/companyValues");
+const { addDefaultRewardsForTeam } = require("../../mongo/helper/rewards");
+const {
+  sendOnBoardingInstructions,
+  sendPersonalOnBoardingInstructions
+} = require("../../slack/onboarding");
 const { createTrialSubscription } = require("../../utils/common");
 
 router.post("/slack-install", async (req, res) => {
@@ -42,6 +49,8 @@ router.post("/slack-install", async (req, res) => {
         if (!auth) {
           // if installation does not exist already, then create trial subscription
           await createTrialSubscription(teamId);
+          await addDefaultCompanyValuesForTeam(teamId);
+          await addDefaultRewardsForTeam(teamId);
         }
 
         await upsertAuth(teamId, {
@@ -52,6 +61,10 @@ router.post("/slack-install", async (req, res) => {
         await paginateUsersList(access_token);
 
         await sendOnBoardingInstructions(teamId);
+
+        if (!auth) {
+          await sendPersonalOnBoardingInstructions(teamId);
+        }
 
         await postInternalMessage(
           INTERNAL_SLACK_TEAM_ID,

@@ -40,6 +40,17 @@ const getUsersForTeam = async (teamId) => {
   }
 };
 
+const getUserDataById = async (_id) => {
+  try {
+    return await User.findOne({
+      _id,
+      slackDeleted: false
+    });
+  } catch (error) {
+    logger.error(`getUserDataById() -> error : `, error);
+  }
+};
+
 const getUserDataBySlackUserId = async (slackUserId) => {
   try {
     return await User.findOne({
@@ -114,6 +125,40 @@ const updateAppHomePublishedForTeam = async (teamId, trueOrFalse) => {
   }
 };
 
+const paginateUsersForTeam = async (teamId, pageIndex, pageSize) => {
+  try {
+    const totalCount = await User.find({
+      "slackUserData.team_id": teamId
+    }).countDocuments({});
+
+    const data = await User.find({ "slackUserData.team_id": teamId })
+      .sort({ created_at: 1 })
+      .skip(pageSize * pageIndex)
+      .limit(pageSize);
+
+    return {
+      data,
+      totalCount: Number(totalCount),
+      totalPages: Math.ceil(totalCount / pageSize)
+    };
+  } catch (error) {
+    logger.error(`paginateUsersForTeam() -> error : `, error);
+  }
+};
+
+const updateRoleForUser = async (slackUserId, role) => {
+  try {
+    return await User.updateOne(
+      {
+        "slackUserData.id": slackUserId
+      },
+      { $set: { role } }
+    );
+  } catch (error) {
+    logger.error(`updateRoleForUser() -> error : `, error);
+  }
+};
+
 module.exports = {
   addUser,
   addUsersBatch,
@@ -123,5 +168,8 @@ module.exports = {
   getUserDataBySlackUserName,
   deleteSlackUsersByTeamId,
   updateAppHomePublishedForUser,
-  updateAppHomePublishedForTeam
+  updateAppHomePublishedForTeam,
+  paginateUsersForTeam,
+  updateRoleForUser,
+  getUserDataById
 };

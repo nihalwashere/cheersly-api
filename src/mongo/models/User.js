@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { getUserRoles } = require("../../enums/userRoles");
+
 const collection = "User";
 
 const UserSchema = new mongoose.Schema(
@@ -15,6 +17,11 @@ const UserSchema = new mongoose.Schema(
     appHomePublished: {
       type: Boolean,
       default: false
+    },
+    role: {
+      type: String,
+      enum: getUserRoles(),
+      index: true
     }
   },
   { timestamps: true }

@@ -1,5 +1,6 @@
 const { openModal } = require("../../api");
 const { submitCheersTemplate } = require("../../templates");
+const { wrapCompanyValueOptionsForTeam } = require("../../helper");
 const {
   VIEW_SUBMISSIONS: { SAY_CHEERS }
 } = require("../../../global/constants");
@@ -15,7 +16,13 @@ const handleSayCheers = async (payload) => {
       team: { id: teamId }
     } = payload;
 
-    const viewTemplate = submitCheersTemplate(slackUserName, SAY_CHEERS);
+    const companyValueOptions = await wrapCompanyValueOptionsForTeam(teamId);
+
+    const viewTemplate = submitCheersTemplate(
+      slackUserName,
+      SAY_CHEERS,
+      companyValueOptions
+    );
 
     await openModal(teamId, trigger_id, viewTemplate);
   } catch (error) {

@@ -2,12 +2,14 @@ const {
   BLOCK_IDS: {
     SUBMIT_CHEERS_TO_USERS,
     SUBMIT_CHEERS_TO_CHANNEL,
+    SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_FOR_REASON,
     SHOULD_SHARE_GIPHY
   },
   ACTION_IDS: {
     SUBMIT_CHEERS_TO_USERS_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
+    SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SHOULD_SHARE_GIPHY_VALUE
   }
@@ -51,7 +53,11 @@ const processCheers = async (payload) => {
 
     const channel =
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
-        .selected_channel;
+        .selected_conversation;
+
+    const companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
+      SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
+    ].selected_options.map((option) => option.value);
 
     const reason =
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
@@ -65,6 +71,7 @@ const processCheers = async (payload) => {
 
     logger.debug("recipients : ", recipients);
     logger.debug("channel : ", channel);
+    logger.debug("companyValues : ", companyValues);
     logger.debug("reason : ", reason);
     logger.debug("shouldShareGiphy : ", shouldShareGiphy);
 
@@ -93,7 +100,8 @@ const processCheers = async (payload) => {
           slackUsername: senderUsername,
           teamId,
           cheersGiven: validRecipients.length,
-          cheersReceived: 0
+          cheersReceived: 0,
+          cheersRedeemable: 0
         });
       }
 
@@ -119,10 +127,11 @@ const processCheers = async (payload) => {
           );
 
           if (cheersStatsRecipient) {
-            const { cheersReceived } = cheersStatsRecipient;
+            const { cheersReceived, cheersRedeemable } = cheersStatsRecipient;
 
             await updateCheersStatsForUser(recipient, {
-              cheersReceived: cheersReceived + 1
+              cheersReceived: cheersReceived + 1,
+              cheersRedeemable: cheersRedeemable + 1
             });
 
             notifyRecipients.push({
@@ -134,7 +143,8 @@ const processCheers = async (payload) => {
               slackUsername: recipient,
               teamId,
               cheersGiven: 0,
-              cheersReceived: 1
+              cheersReceived: 1,
+              cheersRedeemable: 1
             });
 
             notifyRecipients.push({
@@ -171,7 +181,8 @@ const processCheers = async (payload) => {
           senderUsername,
           notifyRecipients,
           reason,
-          giphyUrl
+          giphyUrl,
+          companyValues
         )
       );
 

@@ -9,7 +9,8 @@ const { PROD_APP_URL, DEV_APP_URL } = require("../../global/constants");
 const publishStats = async (teamId, slackUserId, slackUsername = null) => {
   try {
     let cheersGiven = 0,
-      cheersReceived = 0;
+      cheersReceived = 0,
+      cheersRedeemable = 0;
 
     if (slackUsername) {
       const cheersStatsForUser = await getCheersStatsForUser(
@@ -20,6 +21,7 @@ const publishStats = async (teamId, slackUserId, slackUsername = null) => {
       if (cheersStatsForUser) {
         cheersGiven = cheersStatsForUser.cheersGiven;
         cheersReceived = cheersStatsForUser.cheersReceived;
+        cheersRedeemable = cheersStatsForUser.cheersRedeemable;
       }
     }
 
@@ -31,6 +33,7 @@ const publishStats = async (teamId, slackUserId, slackUsername = null) => {
       url,
       cheersGiven,
       cheersReceived,
+      cheersRedeemable,
       appHomeBlocks
     );
 

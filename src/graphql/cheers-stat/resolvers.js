@@ -17,8 +17,14 @@ const CheersStatResolver = async (_, args, context) => {
     const cheersStat = await getCheersStatsForUser(slackTeamId, slackUserName);
 
     return {
-      cheersGiven: cheersStat.cheersGiven || 0,
-      cheersReceived: cheersStat.cheersReceived || 0
+      cheersGiven:
+        cheersStat && cheersStat.cheersGiven ? cheersStat.cheersGiven : 0,
+      cheersReceived:
+        cheersStat && cheersStat.cheersReceived ? cheersStat.cheersReceived : 0,
+      cheersRedeemable:
+        cheersStat && cheersStat.cheersRedeemable
+          ? cheersStat.cheersRedeemable
+          : 0
     };
   } catch (error) {
     throw new Error(error);

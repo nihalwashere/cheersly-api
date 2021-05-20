@@ -4,6 +4,7 @@ const {
   getUserDataBySlackUserId
 } = require("../../../mongo/helper/user");
 const { getSlackUser } = require("../../api");
+const { UserRoles } = require("../../../enums/userRoles");
 const logger = require("../../../global/logger");
 
 const validateRecipients = async (teamId, recipients, senderUsername) => {
@@ -27,7 +28,12 @@ const validateRecipients = async (teamId, recipients, senderUsername) => {
         ) {
           // add new user
 
-          await addUser({ slackUserData });
+          await addUser({
+            slackUserData,
+            slackDeleted: false,
+            appHomePublished: false,
+            role: slackUserData.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER
+          });
 
           validRecipients.push(slackUserData.name);
         }

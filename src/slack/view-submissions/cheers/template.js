@@ -2,7 +2,8 @@ const createCheersSubmittedTemplate = (
   senderUsername,
   users,
   reason,
-  giphyUrl
+  giphyUrl,
+  companyValues
 ) => {
   const blocks = [
     {
@@ -47,7 +48,21 @@ const createCheersSubmittedTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `*For reason:*\n${reason}`
+        text: "*For reason:*\n" + "```" + `${reason}` + "```"
+      }
+    });
+  }
+
+  if (companyValues && companyValues.length) {
+    blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "*Company values favored :*\n" +
+          "```" +
+          `${companyValues.join(" ")}` +
+          "```"
       }
     });
   }
