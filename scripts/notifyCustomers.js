@@ -1,6 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const pMap = require("p-map");
+const { getAllAuths } = require("../src/mongo/helper/auth");
 const { postMessageToHook } = require("../src/slack/api");
 const logger = require("../src/global/logger");
 
@@ -12,14 +13,22 @@ const service = async () => {
   try {
     logger.info("STARTING NOTIFY CUSTOMERS SCRIPT");
 
-    const handler = async (teamId) => {
+    const auths = await getAllAuths();
+
+    const handler = async (auth) => {
+      const {
+        slackInstallation: {
+          team: { id: teamId }
+        }
+      } = auth;
+
       await postMessageToHook(teamId, [
         {
           type: "section",
           text: {
             type: "mrkdwn",
             text:
-              "*Hey there!* :wave: \n Hope everything is fine in that part of the world! \n\n We released *Polls* this week, it allows you to ask a question to your peers and analyze their responses right within Slack. You can use the command `/cheers poll` or alternatively you can use the `Submit a Poll` shortcut."
+              "Hey there! :wave: \n\n This is to inform that we are taking *Cheersly* off from the Slack app directory and will be manually distributing it (not through the Slack app directory)."
           }
         },
         {
@@ -27,7 +36,7 @@ const service = async () => {
           text: {
             type: "mrkdwn",
             text:
-              "There's some good news, we have bumped your trial period until *April*. We are cooking some new features for you and would like you to try them out. "
+              "*Why are we moving off from the Slack app directory?* \n Whenever we submit any changes to the app, we need the changes to get approved by the Slack team, this often takes too long which we cannot afford at the moment. We are moving fast and committed to solving the problems of our customers."
           }
         },
         {
@@ -35,36 +44,29 @@ const service = async () => {
           text: {
             type: "mrkdwn",
             text:
-              "This week we would be releasing the app dashboard (external to Slack). You can sign in using your Slack account associated with your current workspace where *Cheersly* is installed. You can view the leaderboard for your team in the app dashboard and drill down on who has given or received the most cheers for a specific duration and reward them."
+              "*How does this impact you?* \n Your current installation of Cheersly will no longer work. But the good news is that you can use Cheersly by joining our private beta program. We're prioritizing people ops managers at fast-growing startups that use Slack. If you're a fit, you'll get access to Cheersly and help us improve remote team connection. Just send an email to support@cheersly.club with your interest and we will take it forward from there."
           }
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text:
-              "We are also working on building a feedback system in Slack that would help you to share feedback with your team (anonymous/non-anonymous)."
+            text: "Cheers :beers:"
           }
         },
         {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text:
-              "We are all ears and we would love to get some feedback. You can share feedback by running `/cheers help` and clicking on the `Share Feedback` button. Alternatively, you can also get in touch with us at support@cheersly.club"
-          }
-        },
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: "Till then, stay safe and take care! \n\n Cheers :beers:"
-          }
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: "Need help? contact support@cheersly.club"
+            }
+          ]
         }
       ]);
     };
 
-    await pMap([], handler, { concurrency: 1 });
+    await pMap(auths, handler, { concurrency: 1 });
   } catch (error) {
     logger.error("POLLS CRON SERVICE FAILED -> error : ", error);
   }
