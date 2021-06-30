@@ -22,7 +22,6 @@ const {
 } = require("../../mongo/helper/companyValues");
 const { addDefaultRewardsForTeam } = require("../../mongo/helper/rewards");
 const {
-  sendOnBoardingInstructions,
   sendPersonalOnBoardingInstructions
 } = require("../../slack/onboarding");
 const { createTrialSubscription } = require("../../utils/common");
@@ -59,8 +58,6 @@ router.post("/slack-install", async (req, res) => {
         });
 
         await paginateUsersList(access_token);
-
-        await sendOnBoardingInstructions(teamId);
 
         if (!auth) {
           await sendPersonalOnBoardingInstructions(teamId);
