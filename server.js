@@ -122,44 +122,44 @@ const server = app.listen(PORT, () => {
       DEFAULT_TIME_ZONE
     );
 
-    // weekly stats cron scheduled every Monday at 2 AM
-    new CronJob(
-      "00 00 2 * * 1",
-      () => {
-        spawn(process.execPath, ["./src/cron/stats/weekly.js"], {
-          stdio: "inherit"
-        });
-      },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
-    );
+    // // weekly stats cron scheduled every Monday at 2 AM
+    // new CronJob(
+    //   "00 00 2 * * 1",
+    //   () => {
+    //     spawn(process.execPath, ["./src/cron/stats/weekly.js"], {
+    //       stdio: "inherit"
+    //     });
+    //   },
+    //   null,
+    //   true,
+    //   DEFAULT_TIME_ZONE
+    // );
 
-    // monthly stats cron scheduled at first day of each month at 4 AM
-    new CronJob(
-      "00 00 4 1 * *",
-      () => {
-        spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
-          stdio: "inherit"
-        });
-      },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
-    );
+    // // monthly stats cron scheduled at first day of each month at 4 AM
+    // new CronJob(
+    //   "00 00 4 1 * *",
+    //   () => {
+    //     spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
+    //       stdio: "inherit"
+    //     });
+    //   },
+    //   null,
+    //   true,
+    //   DEFAULT_TIME_ZONE
+    // );
 
-    // all time stats cron scheduled at first day of each month at 6 AM
-    new CronJob(
-      "00 00 6 1 * *",
-      () => {
-        spawn(process.execPath, ["./src/cron/stats/all-time.js"], {
-          stdio: "inherit"
-        });
-      },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
-    );
+    // // all time stats cron scheduled at first day of each month at 6 AM
+    // new CronJob(
+    //   "00 00 6 1 * *",
+    //   () => {
+    //     spawn(process.execPath, ["./src/cron/stats/all-time.js"], {
+    //       stdio: "inherit"
+    //     });
+    //   },
+    //   null,
+    //   true,
+    //   DEFAULT_TIME_ZONE
+    // );
 
     // share cheers cron scheduled at 10:00 AM on monday, wednesday and friday
     new CronJob(
@@ -174,22 +174,22 @@ const server = app.listen(PORT, () => {
       DEFAULT_TIME_ZONE
     );
 
-    // upgrade trial subscription reminder cron scheduled at 12:00 PM daily
-    new CronJob(
-      "00 00 12 * * *",
-      () => {
-        spawn(
-          process.execPath,
-          ["./src/cron/upgrade-trial-subscription/index.js"],
-          {
-            stdio: "inherit"
-          }
-        );
-      },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
-    );
+    // // upgrade trial subscription reminder cron scheduled at 12:00 PM daily
+    // new CronJob(
+    //   "00 00 12 * * *",
+    //   () => {
+    //     spawn(
+    //       process.execPath,
+    //       ["./src/cron/upgrade-trial-subscription/index.js"],
+    //       {
+    //         stdio: "inherit"
+    //       }
+    //     );
+    //   },
+    //   null,
+    //   true,
+    //   DEFAULT_TIME_ZONE
+    // );
   } catch (error) {
     logger.error("Failed to start server -> error : ", error);
   }

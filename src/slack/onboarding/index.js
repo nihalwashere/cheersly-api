@@ -2,10 +2,7 @@ const pMap = require("p-map");
 const { postMessageToHook, slackPostMessageToChannel } = require("../api");
 const { getUsersForTeam } = require("../../mongo/helper/user");
 const { waitForMilliSeconds } = require("../../utils/common");
-const {
-  createOnboardingTemplate,
-  createPersonalOnboardingTemplate
-} = require("./template");
+const { createOnboardingTemplate } = require("./template");
 const logger = require("../../global/logger");
 
 const sendOnBoardingInstructions = async (teamId) => {
@@ -22,13 +19,13 @@ const sendPersonalOnBoardingInstructions = async (teamId) => {
 
     const handler = async (user) => {
       const {
-        slackUserData: { id: channel, name }
+        slackUserData: { id: channel }
       } = user;
 
       await slackPostMessageToChannel(
         channel,
         teamId,
-        createPersonalOnboardingTemplate(name)
+        createOnboardingTemplate()
       );
 
       await waitForMilliSeconds(1000);
