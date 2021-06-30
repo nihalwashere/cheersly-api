@@ -93,6 +93,14 @@ const createOnboardingTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
+        text:
+          "You can exchange your earned `cheers` against rewards! You can manage rewards from the app dashboard."
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
         text: "Cheers :beers:"
       }
     },
