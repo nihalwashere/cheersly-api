@@ -64,7 +64,7 @@ router.post("/", async (req, res) => {
       // /cheers help
 
       return res.status(200).json({
-        response_type: "in_channel",
+        response_type: "ephemeral",
         blocks: createHelpTemplate()
       });
     }
@@ -129,7 +129,7 @@ router.post("/", async (req, res) => {
       // /cheers help
 
       return res.status(200).json({
-        response_type: "in_channel",
+        response_type: "ephemeral",
         blocks: createHelpTemplate()
       });
     }

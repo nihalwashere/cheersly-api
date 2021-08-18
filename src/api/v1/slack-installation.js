@@ -39,7 +39,8 @@ router.post("/slack-install", async (req, res) => {
       if (slackTokenPayload && slackTokenPayload.ok === true) {
         const {
           team: { id: teamId },
-          access_token
+          access_token,
+          authed_user: { id: authedUserId }
         } = slackTokenPayload;
 
         // check if installation already exists
@@ -60,7 +61,7 @@ router.post("/slack-install", async (req, res) => {
         await paginateUsersList(access_token);
 
         if (!auth) {
-          await sendPersonalOnBoardingInstructions(teamId);
+          await sendPersonalOnBoardingInstructions(teamId, authedUserId);
         }
 
         await postInternalMessage(
