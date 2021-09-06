@@ -161,19 +161,6 @@ const server = app.listen(PORT, () => {
     //   DEFAULT_TIME_ZONE
     // );
 
-    // share cheers cron scheduled at 10:00 AM on monday, wednesday and friday
-    new CronJob(
-      "00 00 10 * * 1,3,5",
-      () => {
-        spawn(process.execPath, ["./src/cron/say-cheers/index.js"], {
-          stdio: "inherit"
-        });
-      },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
-    );
-
     // // upgrade trial subscription reminder cron scheduled at 12:00 PM daily
     // new CronJob(
     //   "00 00 12 * * *",
