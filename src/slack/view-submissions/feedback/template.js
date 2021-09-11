@@ -13,6 +13,7 @@ const createPretext = (user_name, isAnonymous) => {
 const createFeedbackSubmittedTemplate = (user_name, feedback, isAnonymous) => {
   return [
     {
+      mrkdwn_in: ["text", "fallback", "pretext"],
       fallback: createPretext(user_name, isAnonymous),
       color: COLOR,
       pretext: createPretext(user_name, isAnonymous),
