@@ -1,4 +1,4 @@
-const createOnboardingTemplate = () => {
+const createOnboardingTemplate = (url) => {
   return [
     {
       type: "section",
@@ -77,8 +77,14 @@ const createOnboardingTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "You can also view the leaderboard for your team in the app dashboard and drill down on who has given or received the most cheers for a specific duration and reward them."
+        text: `You can also view the leaderboard for your team in the <${url}|app dashboard> and drill down on who has given or received the most cheers for a specific duration and reward them.`
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `You can add, edit or remove company values from the <${url}|app dashboard>, by default, we have included a few company values for your team.`
       }
     },
     {
@@ -86,15 +92,8 @@ const createOnboardingTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "You can add, edit or remove company values from the app dashboard, by default, we have included a few company values for your team."
-      }
-    },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text:
-          "You can exchange your earned `cheers` against rewards! You can manage rewards from the app dashboard."
+          "You can exchange your earned `cheers` against rewards! You can manage rewards from the " +
+          `<${url}|app dashboard>.`
       }
     },
     {

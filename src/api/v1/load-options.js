@@ -11,10 +11,6 @@ const router = express.Router();
 
 // SLACK LOAD OPTIONS FOR SELECT
 
-router.get("/health", (req, res) =>
-  res.json({ msg: "Load Options are up and running!!!" })
-);
-
 router.post("/", async (req, res) => {
   try {
     const { payload } = req.body;

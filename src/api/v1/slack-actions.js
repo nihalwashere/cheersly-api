@@ -14,10 +14,6 @@ const router = express.Router();
 
 // SLACK ACTIONS
 
-router.get("/health", (req, res) =>
-  res.json({ msg: "SLACK ACTIONS API IS UP AND RUNNING!!!" })
-);
-
 router.post("/", async (req, res) => {
   try {
     logger.debug("slack-actions -> req.body : ", JSON.stringify(req.body));

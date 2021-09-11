@@ -2,7 +2,6 @@ const express = require("express");
 
 const router = express.Router();
 
-const logger = require("../../global/logger");
 const {
   verifySlackRequest
   // isSubscriptionValidForSlack
@@ -33,10 +32,9 @@ const {
 //   SubscriptionMessageType
 // } = require("../../enums/subscriptionMessageTypes");
 // const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
-
-router.get("/health", (req, res) =>
-  res.json({ msg: "SLACK COMMANDS API IS UP AND RUNNING!!!" })
-);
+const { APP_NAME } = require("../../global/config");
+const { PROD_APP_URL, DEV_APP_URL } = require("../../global/constants");
+const logger = require("../../global/logger");
 
 router.post("/", async (req, res) => {
   try {
@@ -60,12 +58,14 @@ router.post("/", async (req, res) => {
 
     const { team_id, channel_id, user_name, trigger_id, text } = req.body;
 
+    const url = String(APP_NAME).includes("-dev") ? DEV_APP_URL : PROD_APP_URL;
+
     if (isHelpCommand(text)) {
       // /cheers help
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate()
+        blocks: createHelpTemplate(url)
       });
     }
 
@@ -130,7 +130,7 @@ router.post("/", async (req, res) => {
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate()
+        blocks: createHelpTemplate(url)
       });
     }
   } catch (error) {

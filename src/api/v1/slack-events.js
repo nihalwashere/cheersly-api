@@ -78,10 +78,6 @@ const verify = (slackRequestTimestamp, slackSignature, body) => {
   };
 };
 
-router.get("/health", (req, res) =>
-  res.json({ msg: "SLACK EVENTS API IS UP AND RUNNING!!!" })
-);
-
 router.post("/", async (req, res) => {
   try {
     let payload = req.body;

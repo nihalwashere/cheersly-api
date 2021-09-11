@@ -2,7 +2,7 @@ const {
   SLACK_ACTIONS: { CUSTOMER_FEEDBACK }
 } = require("../../../global/constants");
 
-const createHelpTemplate = () => {
+const createHelpTemplate = (url) => {
   return [
     {
       type: "section",
@@ -53,6 +53,23 @@ const createHelpTemplate = () => {
       text: {
         type: "mrkdwn",
         text: "*/cheers help* \n Seek some help"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Take me to app dashboard!*"
+      },
+      accessory: {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: "App Dashboard",
+          emoji: true
+        },
+        url,
+        value: "take_me_to_app_dashboard"
       }
     },
     {
