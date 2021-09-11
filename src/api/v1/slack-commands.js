@@ -4,8 +4,8 @@ const router = express.Router();
 
 const logger = require("../../global/logger");
 const {
-  verifySlackRequest,
-  isSubscriptionValidForSlack
+  verifySlackRequest
+  // isSubscriptionValidForSlack
 } = require("../../utils/common");
 const { isHelpCommand } = require("../../slack/commands/help");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
@@ -25,14 +25,14 @@ const {
   isFeedbackCommand,
   handleFeedbackCommand
 } = require("../../slack/commands/feedback");
-const {
-  upgradeSubscriptionMessage,
-  trialEndedMessage
-} = require("../../slack/subscription-handlers");
-const {
-  SubscriptionMessageType
-} = require("../../enums/subscriptionMessageTypes");
-const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
+// const {
+//   upgradeSubscriptionMessage,
+//   trialEndedMessage
+// } = require("../../slack/subscription-handlers");
+// const {
+//   SubscriptionMessageType
+// } = require("../../enums/subscriptionMessageTypes");
+// const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
 
 router.get("/health", (req, res) =>
   res.json({ msg: "SLACK COMMANDS API IS UP AND RUNNING!!!" })

@@ -122,15 +122,21 @@ const getSlackTokenForUser = async (code) => {
 const slackPostMessageToChannel = async (
   channel, // can be slack userId as well for DM
   teamId,
-  blocks
+  message,
+  isAttachmentType = false
 ) => {
   try {
     const bot_access_token = await getSlackBotTokenForTeam(teamId);
 
     const messagePayload = {
-      channel,
-      blocks
+      channel
     };
+
+    if (isAttachmentType) {
+      messagePayload.attachments = message;
+    } else {
+      messagePayload.blocks = message;
+    }
 
     const response = await postMessage(messagePayload, bot_access_token);
 

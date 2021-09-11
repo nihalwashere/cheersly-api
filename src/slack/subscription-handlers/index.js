@@ -7,9 +7,11 @@ const logger = require("../../global/logger");
 
 const trialEndedMessage = async (teamId, channel) => {
   try {
-    const trialEndedTemplate = createTrialEndedTemplate();
-
-    await slackPostMessageToChannel(channel, teamId, trialEndedTemplate, true);
+    return await slackPostMessageToChannel(
+      channel,
+      teamId,
+      createTrialEndedTemplate()
+    );
   } catch (error) {
     logger.error("trialEndedMessage() -> ", error);
   }
@@ -17,12 +19,10 @@ const trialEndedMessage = async (teamId, channel) => {
 
 const upgradeSubscriptionMessage = async (teamId, channel) => {
   try {
-    const upgrageSubscriptionTemplate = createUpgradeSubscriptionTemplate();
-
-    await slackPostMessageToChannel(
+    return await slackPostMessageToChannel(
       channel,
       teamId,
-      upgrageSubscriptionTemplate,
+      createUpgradeSubscriptionTemplate(),
       true
     );
   } catch (error) {

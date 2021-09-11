@@ -9,8 +9,11 @@ const handleDirectMessage = async (payload) => {
       event: { channel }
     } = payload;
 
-    const template = createDirectMessageHelpTemplate();
-    await slackPostMessageToChannel(channel, team_id, template, true);
+    await slackPostMessageToChannel(
+      channel,
+      team_id,
+      createDirectMessageHelpTemplate()
+    );
   } catch (error) {
     logger.error(
       `handleDirectMessage() : Failed to post message to slack for user ${payload.event.user} ->`,

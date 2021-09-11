@@ -50,7 +50,7 @@ const processFeedback = async (payload) => {
       isAnonymous
     });
 
-    await slackPostMessageToChannel(channel, teamId, template, true);
+    return await slackPostMessageToChannel(channel, teamId, template, true);
   } catch (error) {
     logger.error("processFeedback() -> error : ", error);
   }
