@@ -37,12 +37,6 @@ const processFeedback = async (payload) => {
     logger.debug("channel : ", channel);
     logger.debug("isAnonymous : ", isAnonymous);
 
-    const template = createFeedbackSubmittedTemplate(
-      user_name,
-      feedback,
-      isAnonymous
-    );
-
     await addFeedback({
       slackUserName: user_name,
       teamId,
@@ -50,7 +44,11 @@ const processFeedback = async (payload) => {
       isAnonymous
     });
 
-    return await slackPostMessageToChannel(channel, teamId, template, true);
+    return await slackPostMessageToChannel(
+      channel,
+      teamId,
+      createFeedbackSubmittedTemplate(user_name, feedback, isAnonymous)
+    );
   } catch (error) {
     logger.error("processFeedback() -> error : ", error);
   }

@@ -1,23 +1,28 @@
-const { COLOR } = require("../../../global/constants");
-
-const createPretext = (user_name, isAnonymous) => {
-  let pretext = `*@${user_name} shared a feedback*`;
+const createUserSection = (user_name, isAnonymous) => {
+  let text = `*@${user_name} shared a feedback*`;
 
   if (isAnonymous) {
-    pretext = "*Someone shared a feedback*";
+    text = "*Someone shared a feedback*";
   }
 
-  return pretext;
+  return {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text
+    }
+  };
 };
 
 const createFeedbackSubmittedTemplate = (user_name, feedback, isAnonymous) => {
   return [
+    createUserSection(user_name, isAnonymous),
     {
-      mrkdwn_in: ["text", "fallback", "pretext"],
-      fallback: createPretext(user_name, isAnonymous),
-      color: COLOR,
-      pretext: createPretext(user_name, isAnonymous),
-      text: feedback
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: feedback
+      }
     }
   ];
 };
