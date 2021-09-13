@@ -56,15 +56,6 @@ const createHelpTemplate = (url) => {
       }
     },
     {
-      type: "context",
-      elements: [
-        {
-          type: "mrkdwn",
-          text: "Got a question? Check our <https://cheersly.club/faq|FAQ's>"
-        }
-      ]
-    },
-    {
       type: "section",
       text: {
         type: "mrkdwn",
@@ -111,7 +102,8 @@ const createHelpTemplate = (url) => {
       elements: [
         {
           type: "mrkdwn",
-          text: "Need help? contact support@cheersly.club"
+          text:
+            "Need help? contact support@cheersly.club or check our <https://cheersly.club/faq|FAQ's>"
         }
       ]
     }
