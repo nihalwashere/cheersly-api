@@ -76,4 +76,6 @@ const now = new Date();
 
 const date = "2021-05-15T11:54:12.700Z";
 
-console.log("days : ", new Date().getDay() - new Date(date).getDay());
+console.log(new Date(date).getDate());
+
+console.log("days : ", new Date().getDate() - new Date(date).getDate());

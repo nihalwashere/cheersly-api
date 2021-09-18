@@ -122,6 +122,19 @@ const server = app.listen(PORT, () => {
       DEFAULT_TIME_ZONE
     );
 
+    // admin onboarding cron scheduled every day at 12 AM
+    new CronJob(
+      "00 00 12 * * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/admin-onboarding.js"], {
+          stdio: "inherit"
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
     // // weekly stats cron scheduled every Monday at 2 AM
     // new CronJob(
     //   "00 00 2 * * 1",

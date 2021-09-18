@@ -2,7 +2,6 @@ const express = require("express");
 
 const router = express.Router();
 
-const logger = require("../../global/logger");
 const {
   INTERNAL_SLACK_TEAM_ID,
   INTERNAL_SLACK_CHANNEL_ID
@@ -21,10 +20,9 @@ const {
   addDefaultCompanyValuesForTeam
 } = require("../../mongo/helper/companyValues");
 const { addDefaultRewardsForTeam } = require("../../mongo/helper/rewards");
-const {
-  sendPersonalOnBoardingInstructions
-} = require("../../slack/onboarding");
+const { sendOnBoardingInstructions } = require("../../slack/onboarding");
 const { createTrialSubscription } = require("../../utils/common");
+const logger = require("../../global/logger");
 
 router.post("/slack-install", async (req, res) => {
   try {
@@ -55,13 +53,14 @@ router.post("/slack-install", async (req, res) => {
 
         await upsertAuth(teamId, {
           slackInstallation: slackTokenPayload,
-          slackDeleted: false
+          slackDeleted: false,
+          adminOnboardingDone: false
         });
 
         await paginateUsersList(access_token);
 
         if (!auth) {
-          await sendPersonalOnBoardingInstructions(teamId, authedUserId);
+          await sendOnBoardingInstructions(teamId, authedUserId);
         }
 
         await postInternalMessage(

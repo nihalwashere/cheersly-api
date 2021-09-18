@@ -129,7 +129,9 @@ const slackPostMessageToChannel = async (
 
     const messagePayload = {
       channel,
-      blocks
+      blocks,
+      unfurl_links: false,
+      unfurl_media: false
     };
 
     const response = await postMessage(messagePayload, bot_access_token);

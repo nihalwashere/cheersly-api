@@ -11,6 +11,10 @@ const AuthSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
       index: true
+    },
+    adminOnboardingDone: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

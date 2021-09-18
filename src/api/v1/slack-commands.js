@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  verifySlackRequest
+  verifySlackRequest,
+  getAppUrl
   // isSubscriptionValidForSlack
 } = require("../../utils/common");
 const { isHelpCommand } = require("../../slack/commands/help");
@@ -32,8 +33,6 @@ const {
 //   SubscriptionMessageType
 // } = require("../../enums/subscriptionMessageTypes");
 // const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
-const { APP_NAME } = require("../../global/config");
-const { PROD_APP_URL, DEV_APP_URL } = require("../../global/constants");
 const logger = require("../../global/logger");
 
 router.post("/", async (req, res) => {
@@ -58,14 +57,12 @@ router.post("/", async (req, res) => {
 
     const { team_id, channel_id, user_name, trigger_id, text } = req.body;
 
-    const url = String(APP_NAME).includes("-dev") ? DEV_APP_URL : PROD_APP_URL;
-
     if (isHelpCommand(text)) {
       // /cheers help
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate(url)
+        blocks: createHelpTemplate(getAppUrl(), team_id)
       });
     }
 
@@ -130,7 +127,7 @@ router.post("/", async (req, res) => {
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate(url)
+        blocks: createHelpTemplate(getAppUrl())
       });
     }
   } catch (error) {

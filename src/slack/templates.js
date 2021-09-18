@@ -1,3 +1,4 @@
+const { SLACK_APP_ID } = require("../global/config");
 const {
   BLOCK_IDS: {
     POLL_QUESTION,
@@ -34,8 +35,10 @@ const {
     FEEDBACK_DESCRIPTION_VALUE,
     FEEDBACK_CHANNEL_VALUE,
     FEEDBACK_IS_ANONYMOUS_VALUE
-  }
+  },
+  SLACK_ACTIONS: { CUSTOMER_FEEDBACK }
 } = require("../global/constants");
+const { getAppHomeLink } = require("../utils/common");
 
 const createAPITokensRevokedTemplate = (teamId) => {
   return [
@@ -621,6 +624,114 @@ const createInternalFeedbackTemplate = (name, regarding, description) => {
   ];
 };
 
+const createSupportContextTemplate = () => ({
+  type: "context",
+  elements: [
+    {
+      type: "mrkdwn",
+      text:
+        "Need help? contact support@cheersly.club or check our <https://cheersly.club/faq|FAQ's>"
+    }
+  ]
+});
+
+const createHomeSneakPeakTemplate = (teamId) => ({
+  type: "section",
+  text: {
+    type: "mrkdwn",
+    text: `_Get a sneak peak of your team's mood in the ${getAppHomeLink(
+      teamId
+    )} tab of *Cheersly*_`
+  }
+});
+
+const createAdminOnboardingMessageTemplate = (appUrl, teamId) => [
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "Hey there :wave: Hope you are doing good! I am *Cheersly*, you recently installed me to your workspace, remember?"
+    }
+  },
+  {
+    type: "context",
+    elements: [
+      {
+        type: "plain_text",
+        text:
+          "Note: You are seeing this message because either you installed the app to this workspace or you are an admin.",
+        emoji: true
+      }
+    ]
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "Wanted to check in if you have setup *Cheersly* for your team yet? If you haven't, let me guide you through!"
+    }
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `1) Deliver a fun, candid and social *Recognition & Rewards* experience for your employees. You can add, edit or delete rewards from the <${appUrl}|app dashboard>. Create real-life perks and reward your team.`
+    }
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `2) Recognize when employees align with your company values to reinforce good behavior. You can add, edit or delete company values from the <${appUrl}|app dashboard>.`
+    }
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "3) Constantly share cheers with your peer team members using the command `/cheers`. Team building activities help to bridge gaps and build relationships."
+    }
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "4) Cheersly provides opportunities to share anonymous feedback. To share feedback use the command `/cheers feedback`."
+    }
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "5) Ask questions and receive insights that help you make a decision. Conduct polls using the command `/cheers poll`."
+    }
+  },
+  createHomeSneakPeakTemplate(teamId),
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "Please feel free to share any feedback, we are all ears and we would sincerely value your input!"
+    },
+    accessory: {
+      type: "button",
+      text: {
+        type: "plain_text",
+        text: "Share feedback",
+        emoji: true
+      },
+      action_id: CUSTOMER_FEEDBACK
+    }
+  },
+  createSupportContextTemplate()
+];
+
 module.exports = {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
@@ -628,5 +739,8 @@ module.exports = {
   createSubmitAPollTemplate,
   submitCheersTemplate,
   createInternalFeedbackTemplate,
-  createSubmitAFeedbackTemplate
+  createSubmitAFeedbackTemplate,
+  createSupportContextTemplate,
+  createHomeSneakPeakTemplate,
+  createAdminOnboardingMessageTemplate
 };

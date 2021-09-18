@@ -1,3 +1,5 @@
+const { createSupportContextTemplate } = require("../templates");
+
 const createMyStatsSection = (
   cheersGiven,
   cheersReceived,
@@ -67,15 +69,7 @@ const createAppHomeLeaderBoard = (leaders) => {
         text: "\n \n"
       }
     },
-    {
-      type: "context",
-      elements: [
-        {
-          type: "mrkdwn",
-          text: "Need help? contact support@cheersly.club"
-        }
-      ]
-    }
+    createSupportContextTemplate()
   ];
 };
 
