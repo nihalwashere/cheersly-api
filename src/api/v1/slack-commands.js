@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate(getAppUrl(), team_id)
+        blocks: createHelpTemplate(team_id, getAppUrl())
       });
     }
 
@@ -127,7 +127,7 @@ router.post("/", async (req, res) => {
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate(getAppUrl())
+        blocks: createHelpTemplate(team_id, getAppUrl())
       });
     }
   } catch (error) {
