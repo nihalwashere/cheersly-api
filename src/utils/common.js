@@ -63,8 +63,8 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, body) => {
 const waitForMilliSeconds = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-// return date + 30 days
-const getTrialEndDate = (date) => new Date(date.setDate(date.getDate() + 30));
+// return date + 14 days
+const getTrialEndDate = (date) => new Date(date.setDate(date.getDate() + 14));
 
 const createTrialSubscription = async (slackTeamId) => {
   try {
