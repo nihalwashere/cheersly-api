@@ -132,14 +132,14 @@ const paginateUsersForTeam = async (teamId, pageIndex, pageSize) => {
     }).countDocuments({});
 
     const data = await User.find({ "slackUserData.team_id": teamId })
-      .sort({ created_at: 1 })
+      .sort({ createdAt: 1 })
       .skip(pageSize * pageIndex)
       .limit(pageSize);
 
     return {
       data,
       totalCount: Number(totalCount),
-      totalPages: pageSize === -1 ? 1 : Math.ceil(totalCount / pageSize)
+      totalPages: Math.ceil(totalCount / pageSize)
     };
   } catch (error) {
     logger.error(`paginateUsersForTeam() -> error : `, error);
