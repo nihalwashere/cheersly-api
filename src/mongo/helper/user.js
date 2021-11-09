@@ -139,7 +139,7 @@ const paginateUsersForTeam = async (teamId, pageIndex, pageSize) => {
     return {
       data,
       totalCount: Number(totalCount),
-      totalPages: Math.ceil(totalCount / pageSize)
+      totalPages: pageSize === -1 ? 1 : Math.ceil(totalCount / pageSize)
     };
   } catch (error) {
     logger.error(`paginateUsersForTeam() -> error : `, error);
