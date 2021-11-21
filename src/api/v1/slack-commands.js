@@ -25,6 +25,10 @@ const {
   isFeedbackCommand,
   handleFeedbackCommand
 } = require("../../slack/commands/feedback");
+const {
+  handleStonePaperScissorsCommand,
+  isSPSCommand
+} = require("../../slack/commands/sps");
 // const {
 //   upgradeSubscriptionMessage,
 //   trialEndedMessage
@@ -120,6 +124,20 @@ router.post("/", async (req, res) => {
       res.send("");
 
       return await handleFeedbackCommand(team_id, user_name, trigger_id);
+    }
+
+    if (isSPSCommand(text)) {
+      // /cheers sps
+
+      isCommandValid = true;
+
+      res.send("");
+
+      return await handleStonePaperScissorsCommand(
+        team_id,
+        channel_id,
+        user_name
+      );
     }
 
     if (!isCommandValid) {
