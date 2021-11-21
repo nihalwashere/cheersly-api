@@ -1,5 +1,8 @@
 const { pushViewToModal } = require("../../api");
 const { createAddNewTopicView } = require("./template");
+const {
+  VIEW_SUBMISSIONS: { ADD_NEW_INTEREST }
+} = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
 const handleAddNewTopic = async (payload) => {
@@ -13,7 +16,11 @@ const handleAddNewTopic = async (payload) => {
       //   channel: { id: channelId },
     } = payload;
 
-    await pushViewToModal(teamId, trigger_id, createAddNewTopicView());
+    await pushViewToModal(
+      teamId,
+      trigger_id,
+      createAddNewTopicView(ADD_NEW_INTEREST)
+    );
   } catch (error) {
     logger.error("handleAddNewTopic() -> error : ", error);
   }

@@ -1,4 +1,11 @@
-const createAddNewTopicView = () => ({
+const {
+  BLOCK_IDS: { NEW_INTEREST },
+  ACTION_IDS: { NEW_INTEREST_VALUE }
+} = require("../../../global/constants");
+
+const createAddNewTopicView = (callback_id) => ({
+  type: "modal",
+  callback_id,
   title: {
     type: "plain_text",
     text: "Add new interest",
@@ -9,7 +16,6 @@ const createAddNewTopicView = () => ({
     text: "Save",
     emoji: true
   },
-  type: "modal",
   close: {
     type: "plain_text",
     text: "Cancel",
@@ -26,9 +32,10 @@ const createAddNewTopicView = () => ({
     },
     {
       type: "input",
+      block_id: NEW_INTEREST,
       element: {
         type: "plain_text_input",
-        action_id: "plain_text_input-action",
+        action_id: NEW_INTEREST_VALUE,
         placeholder: {
           type: "plain_text",
           text: "Type your new interest here..."
