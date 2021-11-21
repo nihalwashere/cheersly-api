@@ -10,6 +10,9 @@ const {
 const { isHelpCommand } = require("../../slack/commands/help");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
 const {
+  createPlayStonePaperScissorsTemplate
+} = require("../../slack/commands/sps/template");
+const {
   isOnboardCommand,
   handleOnboardCommand
 } = require("../../slack/commands/onboard");
@@ -138,9 +141,10 @@ router.post("/", async (req, res) => {
 
       isCommandValid = true;
 
-      res.send("");
-
-      return await handleStonePaperScissorsCommand(team_id, user_id, user_name);
+      return res.status(200).json({
+        response_type: "in_channel",
+        blocks: createPlayStonePaperScissorsTemplate(user_id)
+      });
     }
 
     if (!isCommandValid) {
