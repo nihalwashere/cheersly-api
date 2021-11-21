@@ -1,4 +1,3 @@
-const { SLACK_APP_ID } = require("../global/config");
 const {
   BLOCK_IDS: {
     POLL_QUESTION,

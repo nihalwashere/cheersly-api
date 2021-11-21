@@ -29,9 +29,13 @@ const {
   handleFeedbackCommand
 } = require("../../slack/commands/feedback");
 const {
-  handleStonePaperScissorsCommand,
-  isSPSCommand
+  isSPSCommand,
+  handleStonePaperScissorsCommand
 } = require("../../slack/commands/sps");
+const {
+  isInterestsCommand,
+  handleInterestsCommand
+} = require("../../slack/commands/interests");
 // const {
 //   upgradeSubscriptionMessage,
 //   trialEndedMessage
@@ -145,6 +149,16 @@ router.post("/", async (req, res) => {
         response_type: "in_channel",
         blocks: createPlayStonePaperScissorsTemplate(user_id)
       });
+    }
+
+    if (isInterestsCommand(text)) {
+      // /cheers interests
+
+      isCommandValid = true;
+
+      res.send("");
+
+      return await handleInterestsCommand(team_id, trigger_id);
     }
 
     if (!isCommandValid) {
