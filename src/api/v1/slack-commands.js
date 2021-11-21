@@ -59,7 +59,14 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const { team_id, channel_id, user_name, trigger_id, text } = req.body;
+    const {
+      team_id,
+      channel_id,
+      user_id,
+      user_name,
+      trigger_id,
+      text
+    } = req.body;
 
     if (isHelpCommand(text)) {
       // /cheers help
@@ -133,11 +140,7 @@ router.post("/", async (req, res) => {
 
       res.send("");
 
-      return await handleStonePaperScissorsCommand(
-        team_id,
-        channel_id,
-        user_name
-      );
+      return await handleStonePaperScissorsCommand(team_id, user_id, user_name);
     }
 
     if (!isCommandValid) {

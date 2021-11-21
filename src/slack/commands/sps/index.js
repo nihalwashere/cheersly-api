@@ -2,16 +2,12 @@ const { slackPostMessageToChannel } = require("../../api");
 const { createPlayStonePaperScissorsTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
-const handleStonePaperScissorsCommand = async (
-  team_id,
-  channel_id,
-  user_name
-) => {
+const handleStonePaperScissorsCommand = async (team_id, user_id, user_name) => {
   try {
     // /cheers sps
 
     await slackPostMessageToChannel(
-      channel_id,
+      user_id,
       team_id,
       createPlayStonePaperScissorsTemplate(user_name)
     );
