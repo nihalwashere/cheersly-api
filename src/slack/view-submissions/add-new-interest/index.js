@@ -13,7 +13,7 @@ const processAddNewInterest = async (payload) => {
       view: { state }
     } = payload;
 
-    const newInterest = state.value[NEW_INTEREST][NEW_INTEREST_VALUE].value;
+    const newInterest = state.values[NEW_INTEREST][NEW_INTEREST_VALUE].value;
 
     logger.debug("newInterest : ", newInterest);
   } catch (error) {
