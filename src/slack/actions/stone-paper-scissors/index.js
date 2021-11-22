@@ -1,4 +1,4 @@
-const { slackPostMessageToChannel } = require("../../api");
+const { postMessageToResponseUrl } = require("../../api");
 const { createMovePlayedTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
@@ -8,18 +8,19 @@ const handleStonePaperScissors = async (payload) => {
 
     const {
       // user: { id: userId },
+      // channel: { id: channelId },
       team: { id: teamId },
-      channel: { id: channelId },
+      response_url,
       actions
     } = payload;
 
     const move = actions[0].value;
     logger.debug("move : ", move);
 
-    await slackPostMessageToChannel(
-      channelId,
+    await postMessageToResponseUrl(
       teamId,
-      createMovePlayedTemplate()
+      createMovePlayedTemplate(),
+      response_url
     );
   } catch (error) {
     logger.error("handleStonePaperScissors() -> error : ", error);

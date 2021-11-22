@@ -271,6 +271,28 @@ const postMessageToHook = async (teamId, message) => {
   }
 };
 
+const postMessageToResponseUrl = async (teamId, responseUrl, message) => {
+  try {
+    const req = await fetch(responseUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        blocks: message
+      })
+    });
+
+    const res = await req.text();
+
+    logger.info("postMessageToResponseUrl() -> res : ", res);
+
+    return res;
+  } catch (error) {
+    logger.error("postMessageToResponseUrl() -> error : ", error);
+  }
+};
+
 const publishView = async (teamId, user_id, view) => {
   try {
     const bot_access_token = await getSlackBotTokenForTeam(teamId);

@@ -46,10 +46,6 @@ router.post("/", async (req, res) => {
     }
 
     if (type === VIEW_SUBMISSION) {
-      // res.status(200).send({
-      //   response_action: "clear" // clear all views and close the modal
-      // });
-
       res.status(200).send({});
 
       return await viewSubmissionHandler(parsedPayload);
