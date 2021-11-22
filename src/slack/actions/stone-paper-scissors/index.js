@@ -9,7 +9,7 @@ const handleStonePaperScissors = async (payload) => {
     const {
       // user: { id: userId },
       // channel: { id: channelId },
-      team: { id: teamId },
+      // team: { id: teamId },
       response_url,
       actions
     } = payload;
@@ -17,11 +17,7 @@ const handleStonePaperScissors = async (payload) => {
     const move = actions[0].value;
     logger.debug("move : ", move);
 
-    await postMessageToResponseUrl(
-      teamId,
-      createMovePlayedTemplate(),
-      response_url
-    );
+    await postMessageToResponseUrl(response_url, createMovePlayedTemplate());
   } catch (error) {
     logger.error("handleStonePaperScissors() -> error : ", error);
   }

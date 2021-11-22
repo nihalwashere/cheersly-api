@@ -271,7 +271,7 @@ const postMessageToHook = async (teamId, message) => {
   }
 };
 
-const postMessageToResponseUrl = async (teamId, responseUrl, message) => {
+const postMessageToResponseUrl = async (responseUrl, message) => {
   try {
     const req = await fetch(responseUrl, {
       method: "POST",
@@ -377,6 +377,7 @@ module.exports = {
   openDialog,
   postInternalMessage,
   postMessageToHook,
+  postMessageToResponseUrl,
   conversationsInvite,
   publishView,
   updateChat,
