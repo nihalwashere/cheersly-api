@@ -13,19 +13,24 @@ const StonePaperScissorsSchema = new mongoose.Schema(
       index: true
     },
     playerOne: {
-      type: String
+      type: String,
+      default: null
     },
     playerTwo: {
-      type: String
+      type: String,
+      default: null
     },
     playerOneMove: {
-      type: String
+      type: String,
+      default: null
     },
     playerTwoMove: {
-      type: String
+      type: String,
+      default: null
     },
     winner: {
-      type: String
+      type: String,
+      default: null
     },
     draw: {
       type: Boolean,

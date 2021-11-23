@@ -147,7 +147,7 @@ router.post("/", async (req, res) => {
 
       return res
         .status(200)
-        .json(handleStonePaperScissorsCommand(team_id, user_id));
+        .json({ ...handleStonePaperScissorsCommand(team_id, user_id) });
     }
 
     if (isInterestsCommand(text)) {
