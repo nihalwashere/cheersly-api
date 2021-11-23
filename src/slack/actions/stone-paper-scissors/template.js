@@ -6,13 +6,25 @@ const createMovePlayedTemplate = (userId) => ({
   }
 });
 
-const createGameFinishedTemplate = (userId) => {
+const createGameFinishedTemplate = ({
+  winner,
+  winnerMoveEmoji,
+  loser,
+  loserMoveEmoji
+}) => {
   return [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `<@${userId}> WINS`
+        text: `<@${winner}>'s ${winnerMoveEmoji} beats <@${loser}>'s ${loserMoveEmoji}`
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `_*<@${winner}>'s ${winnerMoveEmoji} wins!_ :confetti_ball:*`
       }
     }
   ];

@@ -44,19 +44,20 @@ const handleStonePaperScissors = async (payload) => {
     if (!game.playerOne) {
       // first move
 
+      const { blocks } = game;
+
+      blocks.push(createMovePlayedTemplate(userId));
+
       await StonePaperScissorsModel.updateOne(
         { gameId },
         {
           $set: {
             playerOne: userId,
-            playerOneMove: currentMove
+            playerOneMove: currentMove,
+            blocks
           }
         }
       );
-
-      const { blocks } = game;
-
-      blocks.push(createMovePlayedTemplate(userId));
 
       return await postMessageToResponseUrl({
         responseUrl: response_url,
@@ -157,6 +158,20 @@ const handleStonePaperScissors = async (payload) => {
       }
     );
 
+    let loser = null,
+      loserMove = null,
+      winnerMove = null;
+
+    if (winner === playerOne) {
+      loser = playerTwo;
+      loserMove = playerTwoMove;
+      winnerMove = playerOneMove;
+    } else {
+      loser = playerOne;
+      loserMove = playerOneMove;
+      winnerMove = playerTwoMove;
+    }
+
     return await postMessageToResponseUrl({
       responseUrl: response_url,
       replaceOriginal: true,
@@ -166,7 +181,12 @@ const handleStonePaperScissors = async (payload) => {
             playerTwo,
             mapGameActionToEmoji(currentMove)
           )
-        : createGameFinishedTemplate(winner)
+        : createGameFinishedTemplate({
+            winner,
+            winnerMoveEmoji: mapGameActionToEmoji(winnerMove),
+            loser,
+            loserMoveEmoji: mapGameActionToEmoji(loserMove)
+          })
     });
   } catch (error) {
     logger.error("handleStonePaperScissors() -> error : ", error);
