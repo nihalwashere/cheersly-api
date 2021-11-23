@@ -32,6 +32,9 @@ const StonePaperScissorsSchema = new mongoose.Schema(
       type: String,
       default: null
     },
+    blocks: {
+      type: Array
+    },
     draw: {
       type: Boolean,
       default: false

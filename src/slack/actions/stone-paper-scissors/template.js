@@ -1,14 +1,10 @@
-const createMovePlayedTemplate = (userId) => {
-  return [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `<@${userId}> has made their move. Waiting for the opponent to play.`
-      }
-    }
-  ];
-};
+const createMovePlayedTemplate = (userId) => ({
+  type: "section",
+  text: {
+    type: "mrkdwn",
+    text: `<@${userId}> has made their move. Waiting for the opponent to play.`
+  }
+});
 
 const createGameFinishedTemplate = (userId) => {
   return [

@@ -9,14 +9,17 @@ const handleStonePaperScissorsCommand = async (team_id, user_id) => {
 
     const gameId = nanoid(10);
 
+    const blocks = createPlayStonePaperScissorsTemplate(user_id, gameId);
+
     await new StonePaperScissorsModel({
       teamId: team_id,
-      gameId
+      gameId,
+      blocks
     }).save();
 
     return {
       response_type: "in_channel",
-      blocks: createPlayStonePaperScissorsTemplate(user_id, gameId)
+      blocks
     };
   } catch (error) {
     logger.error("handleStonePaperScissorsCommand() -> error : ", error);

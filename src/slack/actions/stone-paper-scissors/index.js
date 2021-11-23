@@ -54,9 +54,14 @@ const handleStonePaperScissors = async (payload) => {
         }
       );
 
+      const { blocks } = game;
+
+      blocks.push(createMovePlayedTemplate(userId));
+
       return await postMessageToResponseUrl({
         responseUrl: response_url,
-        message: createMovePlayedTemplate(userId)
+        replaceOriginal: true,
+        message: blocks
       });
     }
 
