@@ -278,10 +278,10 @@ const postMessageToResponseUrl = async (responseUrl, message) => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
+      body: {
         blocks: message,
         replace_original: false
-      })
+      }
     });
 
     const res = await req.text();
