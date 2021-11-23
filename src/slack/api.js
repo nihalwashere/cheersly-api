@@ -279,7 +279,8 @@ const postMessageToResponseUrl = async (responseUrl, message) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        blocks: message
+        blocks: message,
+        replace_original: false
       })
     });
 
