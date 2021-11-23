@@ -33,10 +33,15 @@ const handleStonePaperScissors = async (payload) => {
     if (!game.playerOne) {
       // first move
 
-      await new StonePaperScissorsModel({
-        playerOne: userId,
-        playerOneMove: currentMove
-      }).save();
+      await StonePaperScissorsModel.updateOne(
+        { gameId },
+        {
+          $set: {
+            playerOne: userId,
+            playerOneMove: currentMove
+          }
+        }
+      );
 
       return await postMessageToResponseUrl({
         responseUrl: response_url,
@@ -123,13 +128,18 @@ const handleStonePaperScissors = async (payload) => {
       winner = playerOne;
     }
 
-    await new StonePaperScissorsModel({
-      playerTwo,
-      playerTwoMove,
-      winner,
-      draw,
-      finished: true
-    }).save();
+    await StonePaperScissorsModel.updateOne(
+      { gameId },
+      {
+        $set: {
+          playerTwo,
+          playerTwoMove,
+          winner,
+          draw,
+          finished: true
+        }
+      }
+    );
 
     return await postMessageToResponseUrl({
       responseUrl: response_url,
