@@ -278,10 +278,11 @@ const postMessageToResponseUrl = async (responseUrl, message) => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: {
+      body: JSON.stringify({
         blocks: message,
-        replace_original: false
-      }
+        replace_original: false,
+        response_type: "in_channel"
+      })
     });
 
     const res = await req.text();
