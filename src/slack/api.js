@@ -279,13 +279,14 @@ const postMessageToResponseUrl = async (responseUrl, message) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        blocks: message,
-        replace_original: false,
-        response_type: "in_channel"
+        // blocks: message
+        text: "Something played"
+        // replace_original: false,
+        // response_type: "in_channel"
       })
     });
 
-    const res = await req.text();
+    const res = await req.json();
 
     logger.info("postMessageToResponseUrl() -> res : ", res);
 
