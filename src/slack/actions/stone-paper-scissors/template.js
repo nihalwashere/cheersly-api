@@ -22,6 +22,25 @@ const createGameFinishedTemplate = (userId) => {
   ];
 };
 
+const createGameDrawedTemplate = (playerOne, playerTwo, move) => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `<@${playerOne}> and <@${playerTwo}> both played ${move}`
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "Game is drawed :handshake:"
+      }
+    }
+  ];
+};
+
 const moveAlreadyPlayedModalTemplate = () => ({
   type: "modal",
   title: {
@@ -56,5 +75,6 @@ const moveAlreadyPlayedModalTemplate = () => ({
 module.exports = {
   createMovePlayedTemplate,
   createGameFinishedTemplate,
+  createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate
 };

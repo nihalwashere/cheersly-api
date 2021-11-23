@@ -6,9 +6,22 @@ const { postMessageToResponseUrl, openModal } = require("../../api");
 const {
   createMovePlayedTemplate,
   createGameFinishedTemplate,
+  createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate
 } = require("./template");
 const logger = require("../../../global/logger");
+
+const mapGameActionToEmoji = (move) => {
+  const mapper = {
+    [STONE_PLAYED]: ":punch:",
+    [PAPER_PLAYED]: ":raised_hand_with_fingers_splayed:",
+    [SCISSORS_PLAYED]: ":v:"
+  };
+
+  const applyMapper = mapper[move];
+
+  return applyMapper ? applyMapper() : "";
+};
 
 const handleStonePaperScissors = async (payload) => {
   try {
@@ -144,7 +157,13 @@ const handleStonePaperScissors = async (payload) => {
     return await postMessageToResponseUrl({
       responseUrl: response_url,
       replaceOriginal: true,
-      message: createGameFinishedTemplate(userId)
+      message: draw
+        ? createGameDrawedTemplate(
+            playerOne,
+            playerTwo,
+            mapGameActionToEmoji(currentMove)
+          )
+        : createGameFinishedTemplate(winner)
     });
   } catch (error) {
     logger.error("handleStonePaperScissors() -> error : ", error);
