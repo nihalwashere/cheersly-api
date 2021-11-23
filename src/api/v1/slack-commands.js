@@ -145,10 +145,9 @@ router.post("/", async (req, res) => {
 
       isCommandValid = true;
 
-      return res.status(200).json({
-        response_type: "in_channel",
-        blocks: createPlayStonePaperScissorsTemplate(user_id)
-      });
+      return res
+        .status(200)
+        .json(handleStonePaperScissorsCommand(team_id, user_id));
     }
 
     if (isInterestsCommand(text)) {

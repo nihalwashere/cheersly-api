@@ -3,12 +3,12 @@ const {
   ACTION_IDS: { STONE_PLAYED, PAPER_PLAYED, SCISSORS_PLAYED }
 } = require("../../../global/constants");
 
-const createPlayStonePaperScissorsTemplate = (userId) => [
+const createPlayStonePaperScissorsTemplate = (userId, gameId) => [
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `<@${userId}> has challenged you to play a round of *Stone - Paper - Scissors*`
+      text: `<@${userId}> has challenged you to play a round of *Stone Paper Scissors*`
     }
   },
   {
@@ -29,7 +29,7 @@ const createPlayStonePaperScissorsTemplate = (userId) => [
           text: "Stone :punch:",
           emoji: true
         },
-        value: `${STONE_PLAYED}-${userId}`,
+        value: gameId,
         action_id: STONE_PLAYED
       },
       {
@@ -39,7 +39,7 @@ const createPlayStonePaperScissorsTemplate = (userId) => [
           text: "Paper :raised_hand_with_fingers_splayed:",
           emoji: true
         },
-        value: `${PAPER_PLAYED}-${userId}`,
+        value: gameId,
         action_id: PAPER_PLAYED
       },
       {
@@ -49,7 +49,7 @@ const createPlayStonePaperScissorsTemplate = (userId) => [
           text: "Scissors :v:",
           emoji: true
         },
-        value: `${SCISSORS_PLAYED}-${userId}`,
+        value: gameId,
         action_id: SCISSORS_PLAYED
       }
     ]

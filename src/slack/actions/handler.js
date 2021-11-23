@@ -5,7 +5,7 @@ const {
     SAY_CHEERS,
     ADD_NEW_TOPIC
   },
-  ACTION_IDS: { PAPER_PLAYED }
+  BLOCK_IDS: { STONE_PAPER_SCISSORS }
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
 const { handleShareFeedback } = require("./share-feedback");
@@ -16,16 +16,28 @@ const logger = require("../../global/logger");
 
 const actionsMapper = async (payload) => {
   try {
-    const mapper = {
-      [POLL_OPTION_SUBMITTED]: async () =>
-        await handlePollOptionSubmitted(payload),
-      [CUSTOMER_FEEDBACK]: async () => await handleShareFeedback(payload),
-      [SAY_CHEERS]: async () => await handleSayCheers(payload),
-      [PAPER_PLAYED]: async () => handleStonePaperScissors(payload),
+    const actionIdMapper = {
+      [POLL_OPTION_SUBMITTED]: () => handlePollOptionSubmitted(payload),
+      [CUSTOMER_FEEDBACK]: () => handleShareFeedback(payload),
+      [SAY_CHEERS]: () => handleSayCheers(payload),
       [ADD_NEW_TOPIC]: () => handleAddNewTopic(payload)
     };
 
-    const applyMapper = mapper[payload.actions[0].action_id];
+    const blockIdMapper = {
+      [STONE_PAPER_SCISSORS]: () => handleStonePaperScissors(payload)
+    };
+
+    let applyMapper = null;
+
+    if (
+      payload.actions[0].block_id &&
+      payload.actions[0].block_id === STONE_PAPER_SCISSORS
+    ) {
+      applyMapper = blockIdMapper[payload.actions[0].block_id];
+    } else {
+      applyMapper = actionIdMapper[payload.actions[0].action_id];
+    }
+
     return applyMapper ? applyMapper() : null;
   } catch (error) {
     logger.error("actionsMapper() -> error : ", error);

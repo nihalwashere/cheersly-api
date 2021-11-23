@@ -271,7 +271,12 @@ const postMessageToHook = async (teamId, message) => {
   }
 };
 
-const postMessageToResponseUrl = async (responseUrl, message) => {
+const postMessageToResponseUrl = async ({
+  responseUrl,
+  message,
+  replaceOriginal = false,
+  responseType = "in_channel"
+}) => {
   try {
     const req = await fetch(responseUrl, {
       method: "POST",
@@ -280,8 +285,8 @@ const postMessageToResponseUrl = async (responseUrl, message) => {
       },
       body: JSON.stringify({
         blocks: message,
-        replace_original: false,
-        response_type: "in_channel"
+        replace_original: replaceOriginal,
+        response_type: responseType
       })
     });
 
