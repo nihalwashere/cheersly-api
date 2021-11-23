@@ -15,7 +15,7 @@ const createPlayStonePaperScissorsTemplate = (userId, gameId) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "Pick your move"
+      text: "Pick your move :smiling_imp:"
     }
   },
   {

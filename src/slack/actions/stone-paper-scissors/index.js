@@ -18,9 +18,7 @@ const mapGameActionToEmoji = (move) => {
     [SCISSORS_PLAYED]: ":v:"
   };
 
-  const applyMapper = mapper[move];
-
-  return applyMapper ? applyMapper() : "";
+  return mapper[move];
 };
 
 const handleStonePaperScissors = async (payload) => {

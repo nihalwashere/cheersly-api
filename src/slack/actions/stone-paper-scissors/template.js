@@ -4,7 +4,7 @@ const createMovePlayedTemplate = (userId) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `<@${userId}> has made the move. Waiting for the opponent to play.`
+        text: `<@${userId}> has made their move. Waiting for the opponent to play.`
       }
     }
   ];
@@ -66,7 +66,7 @@ const moveAlreadyPlayedModalTemplate = () => ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "_Please ask your opponent to play._"
+        text: "_Please ask your opponent to make their move_ :smiling_imp:"
       }
     }
   ]
