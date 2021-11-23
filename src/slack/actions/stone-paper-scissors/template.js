@@ -24,7 +24,7 @@ const createGameFinishedTemplate = ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `_*<@${winner}>'s ${winnerMoveEmoji} wins!_ :confetti_ball:*`
+        text: `*_<@${winner}> wins!_* :confetti_ball:`
       }
     }
   ];
