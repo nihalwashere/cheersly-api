@@ -147,7 +147,9 @@ router.post("/", async (req, res) => {
 
       return res
         .status(200)
-        .json(await handleStonePaperScissorsCommand(team_id, user_id));
+        .json(
+          await handleStonePaperScissorsCommand(team_id, user_id, channel_id)
+        );
     }
 
     if (isInterestsCommand(text)) {

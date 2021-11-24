@@ -1,11 +1,29 @@
 const { nanoid } = require("nanoid");
 const StonePaperScissorsModel = require("../../../mongo/models/StonePaperScissors");
-const { createPlayStonePaperScissorsTemplate } = require("./template");
+const {
+  createAllowedOnlyInDMTemplate,
+  createPlayStonePaperScissorsTemplate
+} = require("./template");
+const { postEphemeralMessage } = require("../../api");
 const logger = require("../../../global/logger");
 
-const handleStonePaperScissorsCommand = async (team_id, user_id) => {
+const handleStonePaperScissorsCommand = async (
+  team_id,
+  user_id,
+  channel_id
+) => {
   try {
     // /cheers sps
+
+    if (String(channel_id).charAt(0) === "C") {
+      // command executed in channel or multi person chat
+      return await postEphemeralMessage(
+        channel_id,
+        user_id,
+        team_id,
+        createAllowedOnlyInDMTemplate()
+      );
+    }
 
     const gameId = nanoid(10);
 

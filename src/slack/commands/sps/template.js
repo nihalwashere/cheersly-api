@@ -56,4 +56,28 @@ const createPlayStonePaperScissorsTemplate = (userId, gameId) => [
   }
 ];
 
-module.exports = { createPlayStonePaperScissorsTemplate };
+const createAllowedOnlyInDMTemplate = () => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "*Oops! Stone Paper Scissors can be only be played in direct messages.*"
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "Enter `/cheers sps` in a direct message with your co-worker to play."
+      }
+    }
+  ];
+};
+
+module.exports = {
+  createPlayStonePaperScissorsTemplate,
+  createAllowedOnlyInDMTemplate
+};
