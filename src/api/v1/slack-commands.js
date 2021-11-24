@@ -10,9 +10,6 @@ const {
 const { isHelpCommand } = require("../../slack/commands/help");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
 const {
-  createPlayStonePaperScissorsTemplate
-} = require("../../slack/commands/sps/template");
-const {
   isOnboardCommand,
   handleOnboardCommand
 } = require("../../slack/commands/onboard");

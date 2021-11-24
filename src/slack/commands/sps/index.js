@@ -4,7 +4,6 @@ const {
   createAllowedOnlyInDMTemplate,
   createPlayStonePaperScissorsTemplate
 } = require("./template");
-const { postEphemeralMessage } = require("../../api");
 const logger = require("../../../global/logger");
 
 const handleStonePaperScissorsCommand = async (
@@ -17,12 +16,10 @@ const handleStonePaperScissorsCommand = async (
 
     if (String(channel_id).charAt(0) === "C") {
       // command executed in channel or multi person chat
-      return await postEphemeralMessage(
-        channel_id,
-        user_id,
-        team_id,
-        createAllowedOnlyInDMTemplate()
-      );
+      return {
+        response_type: "ephemeral",
+        blocks: createAllowedOnlyInDMTemplate()
+      };
     }
 
     const gameId = nanoid(10);
