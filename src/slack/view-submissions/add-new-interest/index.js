@@ -17,8 +17,9 @@ const processAddNewInterest = async (payload) => {
     const {
       user: { id: userId },
       team: { id: teamId },
-      view: { id: viewId, state },
-      hash
+      view: { state },
+      hash,
+      previous_view_id
     } = payload;
 
     const newInterest = state.values[NEW_INTEREST][NEW_INTEREST_VALUE].value;
@@ -79,7 +80,7 @@ const processAddNewInterest = async (payload) => {
 
       await updateModal({
         teamId,
-        viewId,
+        viewId: previous_view_id,
         hash,
         view: createInterestsTemplate(
           INTERESTS,
