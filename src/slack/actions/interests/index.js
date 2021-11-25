@@ -41,6 +41,8 @@ const handleInterestsChange = async (payload) => {
       { new: true }
     );
 
+    logger.debug("updatedInterest : ", updatedInterest);
+
     const { interests: updatedInterests } = updatedInterest;
 
     const topic = await TopicsModel.findOne({ teamId });
