@@ -25,10 +25,20 @@ const handleInterestsCommand = async (teamId, userId, trigger_id) => {
       interests = interest.interests;
     }
 
+    const interestIds = interests.map((elem) => elem.id);
+
+    const unSelectedTopics = [];
+
+    topics.forEach((elem) => {
+      if (!interestIds.includes(elem.id)) {
+        unSelectedTopics.push(topic);
+      }
+    });
+
     await openModal(
       teamId,
       trigger_id,
-      createInterestsTemplate(INTERESTS, topics, interests)
+      createInterestsTemplate(INTERESTS, unSelectedTopics, interests)
     );
   } catch (error) {
     logger.error("handleInterestsCommand() -> error : ", error);
