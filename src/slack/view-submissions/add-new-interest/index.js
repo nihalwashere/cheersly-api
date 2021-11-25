@@ -17,9 +17,8 @@ const processAddNewInterest = async (payload) => {
     const {
       user: { id: userId },
       team: { id: teamId },
-      view: { state },
-      hash,
-      previous_view_id
+      view: { previous_view_id, state },
+      hash
     } = payload;
 
     const newInterest = state.values[NEW_INTEREST][NEW_INTEREST_VALUE].value;
