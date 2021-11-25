@@ -5,13 +5,15 @@ const {
     SAY_CHEERS,
     ADD_NEW_TOPIC
   },
-  BLOCK_IDS: { STONE_PAPER_SCISSORS }
+  BLOCK_IDS: { STONE_PAPER_SCISSORS, TOPICS_CHANGE, INTERESTS_CHANGE }
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
 const { handleShareFeedback } = require("./share-feedback");
 const { handleSayCheers } = require("./say-cheers");
 const { handleStonePaperScissors } = require("./stone-paper-scissors");
 const { handleAddNewTopic } = require("./add-new-topic");
+const { handleTopicsChange } = require("./topics");
+const { handleInterestsChange } = require("./interests");
 const logger = require("../../global/logger");
 
 const actionsMapper = async (payload) => {
@@ -24,7 +26,9 @@ const actionsMapper = async (payload) => {
     };
 
     const blockIdMapper = {
-      [STONE_PAPER_SCISSORS]: () => handleStonePaperScissors(payload)
+      [STONE_PAPER_SCISSORS]: () => handleStonePaperScissors(payload),
+      [TOPICS_CHANGE]: () => handleTopicsChange(payload),
+      [INTERESTS_CHANGE]: () => handleInterestsChange(payload)
     };
 
     let applyMapper = null;

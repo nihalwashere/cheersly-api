@@ -1,3 +1,4 @@
+const { nanoid } = require("nanoid");
 const TopicsModel = require("../../../mongo/models/Topics");
 const InterestsModel = require("../../../mongo/models/Interests");
 const {
@@ -25,19 +26,22 @@ const processAddNewInterest = async (payload) => {
       // update topics for team
       const { topics } = topic;
 
-      topics.push(newInterest);
+      topics.push({ id: nanoid(10), value: newInterest });
 
       await TopicsModel.updateOne({ teamId }, { $set: { topics } });
     } else {
       // create new topic record for team
-      await new TopicsModel({ teamId, topics: [newInterest] }).save();
+      await new TopicsModel({
+        teamId,
+        topics: [{ id: nanoid(10), value: newInterest }]
+      }).save();
     }
 
     if (interest) {
       // update interests for user
       const { interests } = interest;
 
-      interests.push(newInterest);
+      interests.push({ id: nanoid(10), value: newInterest });
 
       await InterestsModel.updateOne(
         { teamId, userId },
@@ -48,7 +52,7 @@ const processAddNewInterest = async (payload) => {
       await new InterestsModel({
         teamId,
         userId,
-        interests: [newInterest]
+        interests: [{ id: nanoid(10), value: newInterest }]
       }).save();
     }
 

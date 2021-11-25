@@ -1,5 +1,6 @@
 const {
-  SLACK_ACTIONS: { ADD_NEW_TOPIC }
+  SLACK_ACTIONS: { ADD_NEW_TOPIC },
+  BLOCK_IDS: { TOPICS_CHANGE, INTERESTS_CHANGE }
 } = require("../../../global/constants");
 
 const noTopicsAvailableBlock = () => ({
@@ -35,16 +36,16 @@ const allTopicsSelectedBlock = () => ({
   ]
 });
 
-const getTopicActions = (topics) =>
-  topics.map((topic) => ({
+const getActions = (data) =>
+  data.map((elem) => ({
     type: "button",
     text: {
       type: "plain_text",
-      text: topic,
+      text: elem.value,
       emoji: true
     },
-    value: topic,
-    action_id: topic
+    value: elem.value,
+    action_id: elem.id
   }));
 
 const createInterestsTemplate = (callback_id, topics, interests) => {
@@ -94,7 +95,8 @@ const createInterestsTemplate = (callback_id, topics, interests) => {
   } else {
     blocks.push({
       type: "actions",
-      elements: getTopicActions(topics)
+      block_id: TOPICS_CHANGE,
+      elements: getActions(topics)
     });
   }
 
@@ -135,7 +137,8 @@ const createInterestsTemplate = (callback_id, topics, interests) => {
   } else {
     blocks.push({
       type: "actions",
-      elements: getTopicActions(interests)
+      block_id: INTERESTS_CHANGE,
+      elements: getActions(interests)
     });
   }
 
