@@ -16,6 +16,8 @@ const handleTopicsChange = async (payload) => {
 
     const topicId = actions[0].action_id;
     logger.debug("topicId : ", topicId);
+
+    // add topic to user's interests
   } catch (error) {
     logger.error("handleTopicsChange() -> error : ", error);
   }

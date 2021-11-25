@@ -19,6 +19,8 @@ const handleInterestsChange = async (payload) => {
 
     const interestId = actions[0].action_id;
     logger.debug("interestId : ", interestId);
+
+    // remove topic from user's interests
   } catch (error) {
     logger.error("handleInterestsChange() -> error : ", error);
   }

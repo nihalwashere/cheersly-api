@@ -92,7 +92,9 @@ const createInterestsTemplate = (callback_id, topics, interests) => {
 
   if (noTopicsAvailable) {
     blocks.push(noTopicsAvailableBlock());
-  } else {
+  }
+
+  if (!noTopicsAvailable && !allTopicsSelected) {
     blocks.push({
       type: "actions",
       block_id: TOPICS_CHANGE,
