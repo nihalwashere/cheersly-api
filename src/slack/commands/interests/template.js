@@ -35,19 +35,110 @@ const allTopicsSelectedBlock = () => ({
   ]
 });
 
-const getTopicActions = (interests) =>
-  interests.map((elem) => ({
+const getTopicActions = (topics) =>
+  topics.map((topic) => ({
     type: "button",
     text: {
       type: "plain_text",
-      text: `${elem}`,
+      text: topic,
       emoji: true
     },
-    value: `${elem}`,
-    action_id: "actionId-1"
+    value: topic,
+    action_id: topic
   }));
 
-const createInterestsTemplate = (callback_id) => {
+const createInterestsTemplate = (callback_id, topics, interests) => {
+  let noTopicsAvailable = false;
+  let noInterestsAvailable = false;
+  let allTopicsSelected = false;
+
+  if (!topics.length) {
+    noTopicsAvailable = true;
+  }
+
+  if (!interests.length) {
+    noInterestsAvailable = true;
+  }
+
+  if (
+    topics.length > 0 &&
+    interests.length > 0 &&
+    topics.length === interests.length
+  ) {
+    allTopicsSelected = true;
+  }
+
+  const blocks = [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "Explore and click on the topics that you find interesting or add a new topic yourself!"
+      }
+    },
+    {
+      type: "divider"
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Explore topics*"
+      }
+    }
+  ];
+
+  if (noTopicsAvailable) {
+    blocks.push(noTopicsAvailableBlock());
+  } else {
+    blocks.push({
+      type: "actions",
+      elements: getTopicActions(topics)
+    });
+  }
+
+  if (allTopicsSelected) {
+    blocks.push(allTopicsSelectedBlock());
+  }
+
+  blocks.push({
+    type: "actions",
+    elements: [
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: "Add new topic",
+          emoji: true
+        },
+        value: "Add new topic",
+        action_id: ADD_NEW_TOPIC
+      }
+    ]
+  });
+
+  blocks.push({
+    type: "divider"
+  });
+
+  blocks.push({
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*Current Interests*"
+    }
+  });
+
+  if (noInterestsAvailable) {
+    blocks.push(noCurrentInterestsAvailable());
+  } else {
+    blocks.push({
+      type: "actions",
+      elements: getTopicActions(interests)
+    });
+  }
+
   return {
     type: "modal",
     callback_id,
@@ -66,62 +157,7 @@ const createInterestsTemplate = (callback_id) => {
       text: "Cancel",
       emoji: true
     },
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text:
-            "Explore and click on the topics that you find interesting or add a new topic yourself!"
-        }
-      },
-      {
-        type: "divider"
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "*Explore topics*"
-        }
-      },
-      //   {
-      //     type: "actions",
-      //     elements: getTopicActions()
-      //   },
-      noTopicsAvailableBlock(),
-      allTopicsSelectedBlock(),
-      {
-        type: "actions",
-        elements: [
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
-              text: "Add new topic",
-              emoji: true
-            },
-            value: "Add new topic",
-            action_id: ADD_NEW_TOPIC
-          }
-        ]
-      },
-      {
-        type: "divider"
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "*Current Interests*"
-        }
-      },
-      noCurrentInterestsAvailable()
-      //   {
-      //     type: "actions",
-      //     elements: getTopicActions()
-      //   }
-    ]
+    blocks
   };
 };
 

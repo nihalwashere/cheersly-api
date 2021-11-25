@@ -17,10 +17,10 @@ const logger = require("../../global/logger");
 const submissionsMapper = async (callback_id, payload) => {
   try {
     const mapper = {
-      [POLL]: async () => await processPoll(payload),
-      [CUSTOMER_FEEDBACK]: async () => await processCustomerFeedback(payload),
-      [FEEDBACK]: async () => await processFeedback(payload),
-      [SAY_CHEERS]: async () => await processCheers(payload),
+      [POLL]: () => processPoll(payload),
+      [CUSTOMER_FEEDBACK]: () => processCustomerFeedback(payload),
+      [FEEDBACK]: () => processFeedback(payload),
+      [SAY_CHEERS]: () => processCheers(payload),
       [ADD_NEW_INTEREST]: () => processAddNewInterest(payload)
     };
 

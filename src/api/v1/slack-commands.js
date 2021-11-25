@@ -156,7 +156,7 @@ router.post("/", async (req, res) => {
 
       res.send("");
 
-      return await handleInterestsCommand(team_id, trigger_id);
+      return await handleInterestsCommand(team_id, user_id, trigger_id);
     }
 
     if (!isCommandValid) {

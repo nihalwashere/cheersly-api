@@ -1,3 +1,5 @@
+const TopicsModel = require("../../../mongo/models/Topics");
+const InterestsModel = require("../../../mongo/models/Interests");
 const { openModal } = require("../../api");
 const { createInterestsTemplate } = require("./template");
 const {
@@ -5,11 +7,29 @@ const {
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleInterestsCommand = async (team_id, trigger_id) => {
+const handleInterestsCommand = async (teamId, userId, trigger_id) => {
   try {
     // /cheers interests
 
-    await openModal(team_id, trigger_id, createInterestsTemplate(INTERESTS));
+    const topic = await TopicsModel.findOne({ teamId });
+    const interest = await InterestsModel.findOne({ teamId, userId });
+
+    let topics = [];
+    let interests = [];
+
+    if (topic) {
+      topics = topic.topics;
+    }
+
+    if (interest) {
+      interests = interest.interests;
+    }
+
+    await openModal(
+      teamId,
+      trigger_id,
+      createInterestsTemplate(INTERESTS, topics, interests)
+    );
   } catch (error) {
     logger.error("handleInterestsCommand() -> error : ", error);
   }
