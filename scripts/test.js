@@ -74,8 +74,59 @@ const now = new Date();
 
 // console.log("date : ", moment(new Date()).format("LL"));
 
-const date = "2021-05-15T11:54:12.700Z";
+// const date = "2021-05-15T11:54:12.700Z";
 
-console.log(new Date(date).getDate());
+// console.log(new Date(date).getDate());
 
-console.log("days : ", new Date().getDate() - new Date(date).getDate());
+// console.log("days : ", new Date().getDate() - new Date(date).getDate());
+
+const topics = [
+  {
+    id: "Tzbnzan_9P",
+    value: "Tech"
+  },
+  {
+    id: "jmkhzWOb0O",
+    value: "Cars"
+  },
+  {
+    id: "V6jDx9DFAD",
+    value: "Bikes"
+  },
+  {
+    id: "LUIpMPVjgb",
+    value: "Crypto"
+  }
+];
+
+const interests = [
+  {
+    id: "jmkhzWOb0O",
+    value: "Cars"
+  },
+  {
+    id: "LUIpMPVjgb",
+    value: "Crypto"
+  }
+];
+
+const topicIds = topics.map((elem) => elem.id);
+console.log("topicIds : ", topicIds);
+
+const unSelectedTopics = [];
+
+// interests.forEach((elem) => {
+//   console.log("elem : ", elem);
+//   console.log("topicIds.includes(elem.id : ", topicIds.includes(elem.id));
+//   if (!topicIds.includes(elem.id)) {
+//     unSelectedTopics.push(elem);
+//   }
+// });
+
+topics.forEach((elem) => {
+  if (!interests.some((item) => item.id === elem.id)) {
+    unSelectedTopics.push(elem);
+  }
+});
+
+console.log("unSelectedTopics : ", unSelectedTopics);
