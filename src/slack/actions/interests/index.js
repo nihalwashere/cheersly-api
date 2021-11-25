@@ -1,6 +1,4 @@
-const {
-  VIEW_SUBMISSIONS: { ADD_NEW_INTEREST }
-} = require("../../../global/constants");
+const InterestsModel = require("../../../mongo/models/Interests");
 const logger = require("../../../global/logger");
 
 const handleInterestsChange = async (payload) => {
@@ -14,13 +12,24 @@ const handleInterestsChange = async (payload) => {
       actions
     } = payload;
 
-    const interest = actions[0].value;
-    logger.debug("interest : ", interest);
+    const interestValue = actions[0].value;
+    logger.debug("interestValue : ", interestValue);
 
     const interestId = actions[0].action_id;
     logger.debug("interestId : ", interestId);
 
     // remove topic from user's interests
+
+    const interest = await InterestsModel.findOne({ teamId, userId });
+
+    const { interests } = interest;
+
+    const newInterests = interests.filter((elem) => elem.id === interestId);
+
+    await InterestsModel.updateOne(
+      { teamId, userId },
+      { $set: { interests: newInterests } }
+    );
   } catch (error) {
     logger.error("handleInterestsChange() -> error : ", error);
   }
