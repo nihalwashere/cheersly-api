@@ -22,11 +22,23 @@ const handleTopicsChange = async (payload) => {
 
     const interest = await InterestsModel.findOne({ teamId, userId });
 
-    const { interests } = interest;
+    if (interest) {
+      const { interests } = interest;
 
-    interests.push({ id: topicId, value: topicValue });
+      interests.push({ id: topicId, value: topicValue });
 
-    await InterestsModel.updateOne({ teamId, userId }, { $set: { interests } });
+      await InterestsModel.updateOne(
+        { teamId, userId },
+        { $set: { interests } }
+      );
+    } else {
+      // create new interest for user
+      await new InterestsModel({
+        teamId,
+        userId,
+        interests: [{ id: topicId, value: topicValue }]
+      }).save();
+    }
   } catch (error) {
     logger.error("handleTopicsChange() -> error : ", error);
   }
