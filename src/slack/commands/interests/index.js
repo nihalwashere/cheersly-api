@@ -25,12 +25,12 @@ const handleInterestsCommand = async (teamId, userId, trigger_id) => {
       interests = interest.interests;
     }
 
-    const interestIds = interests.map((elem) => elem.id);
+    const topicIds = topics.map((elem) => elem.id);
 
     const unSelectedTopics = [];
 
-    topics.forEach((elem) => {
-      if (!interestIds.includes(elem.id)) {
+    interests.forEach((elem) => {
+      if (!topicIds.includes(elem.id)) {
         unSelectedTopics.push(elem);
       }
     });
