@@ -19,6 +19,7 @@ const processAddNewInterest = async (payload) => {
 
     const newInterest = state.values[NEW_INTEREST][NEW_INTEREST_VALUE].value;
 
+    const topicId = nanoid(10);
     const topic = await TopicsModel.findOne({ teamId });
     const interest = await InterestsModel.findOne({ teamId, userId });
 
@@ -26,14 +27,14 @@ const processAddNewInterest = async (payload) => {
       // update topics for team
       const { topics } = topic;
 
-      topics.push({ id: nanoid(10), value: newInterest });
+      topics.push({ id: topicId, value: newInterest });
 
       await TopicsModel.updateOne({ teamId }, { $set: { topics } });
     } else {
       // create new topic record for team
       await new TopicsModel({
         teamId,
-        topics: [{ id: nanoid(10), value: newInterest }]
+        topics: [{ id: topicId, value: newInterest }]
       }).save();
     }
 
@@ -41,7 +42,7 @@ const processAddNewInterest = async (payload) => {
       // update interests for user
       const { interests } = interest;
 
-      interests.push({ id: nanoid(10), value: newInterest });
+      interests.push({ id: topicId, value: newInterest });
 
       await InterestsModel.updateOne(
         { teamId, userId },
@@ -52,7 +53,7 @@ const processAddNewInterest = async (payload) => {
       await new InterestsModel({
         teamId,
         userId,
-        interests: [{ id: nanoid(10), value: newInterest }]
+        interests: [{ id: topicId, value: newInterest }]
       }).save();
     }
 
