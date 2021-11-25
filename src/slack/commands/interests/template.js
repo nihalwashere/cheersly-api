@@ -48,7 +48,12 @@ const getActions = (data) =>
     action_id: elem.id
   }));
 
-const createInterestsTemplate = (callback_id, topics, interests) => {
+const createInterestsTemplate = (
+  callback_id,
+  topics,
+  unSelectedTopics,
+  interests
+) => {
   let noTopicsAvailable = false;
   let noInterestsAvailable = false;
   let allTopicsSelected = false;
@@ -98,7 +103,7 @@ const createInterestsTemplate = (callback_id, topics, interests) => {
     blocks.push({
       type: "actions",
       block_id: TOPICS_CHANGE,
-      elements: getActions(topics)
+      elements: getActions(unSelectedTopics)
     });
   }
 

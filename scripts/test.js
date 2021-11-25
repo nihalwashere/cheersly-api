@@ -110,9 +110,6 @@ const interests = [
   }
 ];
 
-const topicIds = topics.map((elem) => elem.id);
-console.log("topicIds : ", topicIds);
-
 const unSelectedTopics = [];
 
 // interests.forEach((elem) => {
@@ -129,4 +126,6 @@ topics.forEach((elem) => {
   }
 });
 
+console.log("topics : ", topics);
+console.log("interests : ", interests);
 console.log("unSelectedTopics : ", unSelectedTopics);

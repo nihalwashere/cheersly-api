@@ -33,10 +33,14 @@ const handleInterestsCommand = async (teamId, userId, trigger_id) => {
       }
     });
 
+    logger.debug("topics : ", topics);
+    logger.debug("interests : ", interests);
+    logger.debug("unSelectedTopics : ", unSelectedTopics);
+
     await openModal(
       teamId,
       trigger_id,
-      createInterestsTemplate(INTERESTS, unSelectedTopics, interests)
+      createInterestsTemplate(INTERESTS, topics, unSelectedTopics, interests)
     );
   } catch (error) {
     logger.error("handleInterestsCommand() -> error : ", error);
