@@ -35,7 +35,9 @@ const actionsMapper = async (payload) => {
 
     if (
       payload.actions[0].block_id &&
-      payload.actions[0].block_id === STONE_PAPER_SCISSORS
+      (payload.actions[0].block_id === STONE_PAPER_SCISSORS ||
+        payload.actions[0].block_id === TOPICS_CHANGE ||
+        payload.actions[0].block_id === INTERESTS_CHANGE)
     ) {
       applyMapper = blockIdMapper[payload.actions[0].block_id];
     } else {
