@@ -11,8 +11,6 @@ const logger = require("../../../global/logger");
 
 const handleInterestsChange = async (payload) => {
   try {
-    logger.info("handleInterestsChange");
-
     const {
       view: { id: viewId },
       user: { id: userId },

@@ -11,8 +11,6 @@ const logger = require("../../../global/logger");
 
 const handleTopicsChange = async (payload) => {
   try {
-    logger.info("handleTopicsChange");
-
     const {
       view: { id: viewId },
       user: { id: userId },
@@ -22,14 +20,14 @@ const handleTopicsChange = async (payload) => {
     } = payload;
 
     const topicValue = actions[0].value;
-    logger.debug("topicValue : ", topicValue);
 
     const topicId = actions[0].action_id;
-    logger.debug("topicId : ", topicId);
 
     // add topic to user's interests
 
     const interest = await InterestsModel.findOne({ teamId, userId });
+
+    let updatedInterest = null;
 
     if (interest) {
       // update interest for user
@@ -37,48 +35,47 @@ const handleTopicsChange = async (payload) => {
 
       interests.push({ id: topicId, value: topicValue });
 
-      const updatedInterest = await InterestsModel.findOneAndUpdate(
+      updatedInterest = await InterestsModel.findOneAndUpdate(
         { teamId, userId },
-        { interests }
+        { interests },
+        { new: true }
       );
-
-      logger.debug("updatedInterest : ", updatedInterest);
     } else {
       // create new interest for user
-      const newInterest = await new InterestsModel({
+      updatedInterest = await new InterestsModel({
         teamId,
         userId,
         interests: [{ id: topicId, value: topicValue }]
       }).save();
-
-      logger.debug("newInterest : ", newInterest);
     }
 
-    // const { interests: updatedInterests } = updatedInterest;
+    if (updatedInterest) {
+      const { interests: updatedInterests } = updatedInterest;
 
-    // const topic = await TopicsModel.findOne({ teamId });
+      const topic = await TopicsModel.findOne({ teamId });
 
-    // const { topics } = topic;
+      const { topics } = topic;
 
-    // const unSelectedTopics = [];
+      const unSelectedTopics = [];
 
-    // topics.forEach((elem) => {
-    //   if (!updatedInterests.some((item) => item.id === elem.id)) {
-    //     unSelectedTopics.push(elem);
-    //   }
-    // });
+      topics.forEach((elem) => {
+        if (!updatedInterests.some((item) => item.id === elem.id)) {
+          unSelectedTopics.push(elem);
+        }
+      });
 
-    // await updateModal({
-    //   teamId,
-    //   viewId,
-    //   hash,
-    //   view: createInterestsTemplate(
-    //     INTERESTS,
-    //     topics,
-    //     unSelectedTopics,
-    //     updatedInterests
-    //   )
-    // });
+      await updateModal({
+        teamId,
+        viewId,
+        hash,
+        view: createInterestsTemplate(
+          INTERESTS,
+          topics,
+          unSelectedTopics,
+          updatedInterests
+        )
+      });
+    }
   } catch (error) {
     logger.error("handleTopicsChange() -> error : ", error);
   }
