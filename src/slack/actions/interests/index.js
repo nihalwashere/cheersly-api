@@ -24,7 +24,7 @@ const handleInterestsChange = async (payload) => {
 
     const { interests } = interest;
 
-    const newInterests = interests.filter((elem) => elem.id === interestId);
+    const newInterests = interests.filter((elem) => elem.id !== interestId);
 
     await InterestsModel.updateOne(
       { teamId, userId },
