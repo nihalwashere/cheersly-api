@@ -21,11 +21,7 @@ const handleInterestsChange = async (payload) => {
       hash
     } = payload;
 
-    const interestValue = actions[0].value;
-    logger.debug("interestValue : ", interestValue);
-
     const interestId = actions[0].action_id;
-    logger.debug("interestId : ", interestId);
 
     // remove topic from user's interests
 
