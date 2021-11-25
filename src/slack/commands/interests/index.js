@@ -31,7 +31,7 @@ const handleInterestsCommand = async (teamId, userId, trigger_id) => {
 
     topics.forEach((elem) => {
       if (!interestIds.includes(elem.id)) {
-        unSelectedTopics.push(topic);
+        unSelectedTopics.push(elem);
       }
     });
 
