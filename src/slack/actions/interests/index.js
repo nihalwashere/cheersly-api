@@ -35,9 +35,9 @@ const handleInterestsChange = async (payload) => {
 
     const newInterests = interests.filter((elem) => elem.id !== interestId);
 
-    const updatedInterest = await InterestsModel.updateOne(
+    const updatedInterest = await InterestsModel.findOneAndUpdate(
       { teamId, userId },
-      { $set: { interests: newInterests } },
+      { interests: newInterests },
       { new: true }
     );
 
