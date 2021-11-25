@@ -33,10 +33,6 @@ const handleInterestsCommand = async (teamId, userId, trigger_id) => {
       }
     });
 
-    logger.debug("topics : ", topics);
-    logger.debug("interests : ", interests);
-    logger.debug("unSelectedTopics : ", unSelectedTopics);
-
     await openModal(
       teamId,
       trigger_id,

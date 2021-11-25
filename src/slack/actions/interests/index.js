@@ -1,4 +1,12 @@
+const TopicsModel = require("../../../mongo/models/Topics");
 const InterestsModel = require("../../../mongo/models/Interests");
+const { updateModal } = require("../../api");
+const {
+  createInterestsTemplate
+} = require("../../commands/interests/template");
+const {
+  VIEW_SUBMISSIONS: { INTERESTS }
+} = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
 const handleInterestsChange = async (payload) => {
@@ -6,10 +14,11 @@ const handleInterestsChange = async (payload) => {
     logger.info("handleInterestsChange");
 
     const {
-      //   trigger_id,
+      view: { id: viewId },
       user: { id: userId },
       team: { id: teamId },
-      actions
+      actions,
+      hash
     } = payload;
 
     const interestValue = actions[0].value;
@@ -26,10 +35,37 @@ const handleInterestsChange = async (payload) => {
 
     const newInterests = interests.filter((elem) => elem.id !== interestId);
 
-    await InterestsModel.updateOne(
+    const updatedInterest = await InterestsModel.updateOne(
       { teamId, userId },
-      { $set: { interests: newInterests } }
+      { $set: { interests: newInterests } },
+      { new: true }
     );
+
+    const { interests: updatedInterests } = updatedInterest;
+
+    const topic = await TopicsModel.findOne({ teamId });
+
+    const { topics } = topic;
+
+    const unSelectedTopics = [];
+
+    topics.forEach((elem) => {
+      if (!updatedInterests.some((item) => item.id === elem.id)) {
+        unSelectedTopics.push(elem);
+      }
+    });
+
+    await updateModal({
+      teamId,
+      viewId,
+      hash,
+      view: createInterestsTemplate(
+        INTERESTS,
+        topics,
+        unSelectedTopics,
+        interests
+      )
+    });
   } catch (error) {
     logger.error("handleInterestsChange() -> error : ", error);
   }

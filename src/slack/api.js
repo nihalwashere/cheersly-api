@@ -172,6 +172,31 @@ const openModal = async (teamId, trigger_id, view) => {
   }
 };
 
+const updateModal = async ({ teamId, viewId, hash, view }) => {
+  try {
+    const payload = { view_id: viewId, hash, view };
+
+    const bot_access_token = await getSlackBotTokenForTeam(teamId);
+
+    const req = await fetch(`${SLACK_API}/views.update`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${bot_access_token}`
+      }
+    });
+
+    const res = await req.json();
+
+    logger.info("updateModal() -> res : ", res);
+
+    return res;
+  } catch (error) {
+    logger.error("updateModal() -> error : ", error);
+  }
+};
+
 const pushViewToModal = async (teamId, trigger_id, view) => {
   try {
     const payload = { trigger_id, view };
@@ -380,6 +405,7 @@ module.exports = {
   getSlackTokenForUser,
   slackPostMessageToChannel,
   openModal,
+  updateModal,
   pushViewToModal,
   openDialog,
   postInternalMessage,
