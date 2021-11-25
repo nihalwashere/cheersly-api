@@ -41,8 +41,6 @@ const handleInterestsChange = async (payload) => {
       { new: true }
     );
 
-    logger.debug("updatedInterest : ", updatedInterest);
-
     const { interests: updatedInterests } = updatedInterest;
 
     const topic = await TopicsModel.findOne({ teamId });
@@ -65,7 +63,7 @@ const handleInterestsChange = async (payload) => {
         INTERESTS,
         topics,
         unSelectedTopics,
-        interests
+        updatedInterests
       )
     });
   } catch (error) {
