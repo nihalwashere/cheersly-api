@@ -77,6 +77,10 @@ const processAddNewInterest = async (payload) => {
         }
       });
 
+      logger.debug("updatedTopics : ", updatedTopics);
+      logger.debug("updatedInterests : ", updatedInterests);
+      logger.debug("unSelectedTopics : ", unSelectedTopics);
+
       await updateModal({
         teamId,
         viewId: previous_view_id,
