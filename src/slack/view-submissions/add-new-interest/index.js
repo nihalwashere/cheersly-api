@@ -36,7 +36,11 @@ const processAddNewInterest = async (payload) => {
 
       topics.push({ id: topicId, value: newInterest });
 
-      updatedTopic = await TopicsModel.findOneAndUpdate({ teamId }, { topics });
+      updatedTopic = await TopicsModel.findOneAndUpdate(
+        { teamId },
+        { topics },
+        { new: true }
+      );
     } else {
       // create new topic record for team
       updatedTopic = await new TopicsModel({
@@ -53,7 +57,8 @@ const processAddNewInterest = async (payload) => {
 
       updatedInterest = await InterestsModel.findOneAndUpdate(
         { teamId, userId },
-        { interests }
+        { interests },
+        { new: true }
       );
     } else {
       // create new interest record for user
