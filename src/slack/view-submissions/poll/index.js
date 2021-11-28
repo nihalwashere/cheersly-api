@@ -8,7 +8,7 @@ const {
     POLL_OPTION_A,
     POLL_OPTION_B,
     POLL_OPTION_C,
-    POLL_OPTION_D
+    POLL_OPTION_D,
   },
   ACTION_IDS: {
     POLL_QUESTION_VALUE,
@@ -18,8 +18,8 @@ const {
     POLL_OPTION_A_VALUE,
     POLL_OPTION_B_VALUE,
     POLL_OPTION_C_VALUE,
-    POLL_OPTION_D_VALUE
-  }
+    POLL_OPTION_D_VALUE,
+  },
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
 const { addPollQuestions } = require("../../../mongo/helper/pollQuestions");
@@ -27,13 +27,13 @@ const { newIdString } = require("../../../utils/common");
 const { createPollSubmittedTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
-const processPoll = async (payload) => {
+const processPoll = async payload => {
   try {
     logger.debug("processPoll : ", JSON.stringify(payload));
 
     const {
       team: { id: teamId },
-      view: { state, private_metadata: user_name }
+      view: { state, private_metadata: user_name },
     } = payload;
 
     const pollQuestion = state.values[POLL_QUESTION][POLL_QUESTION_VALUE].value;
@@ -127,8 +127,10 @@ const processPoll = async (payload) => {
       duration: pollDurationString,
       options: pollOptions,
       pollId,
-      closeAt: moment().add(pollDurationNumber, "minutes").toDate(),
-      pollSubmittedTemplate: JSON.stringify(pollSubmittedTemplate)
+      closeAt: moment()
+        .add(pollDurationNumber, "minutes")
+        .toDate(),
+      pollSubmittedTemplate: JSON.stringify(pollSubmittedTemplate),
     });
 
     const slackMessageResponse = await slackPostMessageToChannel(

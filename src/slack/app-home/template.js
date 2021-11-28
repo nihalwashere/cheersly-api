@@ -9,12 +9,12 @@ const createMyStatsSection = (
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `Given: *${cheersGiven}*   |   Received: *${cheersReceived}*   |   Redeemable: *${cheersRedeemable}*`
-    }
+      text: `Given: *${cheersGiven}*   |   Received: *${cheersReceived}*   |   Redeemable: *${cheersRedeemable}*`,
+    },
   };
 };
 
-const createAppHomeLeadersSection = (leaders) => {
+const createAppHomeLeadersSection = leaders => {
   const blocks = [];
 
   const n = 10;
@@ -41,35 +41,35 @@ const createAppHomeLeadersSection = (leaders) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: leaderBoardString
-      }
+        text: leaderBoardString,
+      },
     });
   }
 
   return blocks;
 };
 
-const createAppHomeLeaderBoard = (leaders) => {
+const createAppHomeLeaderBoard = leaders => {
   return [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*Leaderboard* :trophy:"
-      }
+        text: "*Leaderboard* :trophy:",
+      },
     },
     {
-      type: "divider"
+      type: "divider",
     },
     ...createAppHomeLeadersSection(leaders),
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "\n \n"
-      }
+        text: "\n \n",
+      },
     },
-    createSupportContextTemplate()
+    createSupportContextTemplate(),
   ];
 };
 
@@ -87,34 +87,34 @@ const createAppHomeTemplate = (
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*My Cheers* :beers:"
+          text: "*My Cheers* :beers:",
         },
         accessory: {
           type: "button",
           text: {
             type: "plain_text",
             text: "App Dashboard",
-            emoji: true
+            emoji: true,
           },
-          url
-        }
+          url,
+        },
       },
       {
-        type: "divider"
+        type: "divider",
       },
       createMyStatsSection(cheersGiven, cheersReceived, cheersRedeemable),
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "\n \n"
-        }
-      }
-    ]
+          text: "\n \n",
+        },
+      },
+    ],
   };
 
   if (appHomeBlocks && appHomeBlocks.blocks.length) {
-    appHomeBlocks.blocks.map((block) => {
+    appHomeBlocks.blocks.map(block => {
       appHomeTemplate.blocks.push(block);
     });
   }

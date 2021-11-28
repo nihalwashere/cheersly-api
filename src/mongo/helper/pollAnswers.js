@@ -1,7 +1,7 @@
 const PollAnswers = require("../models/PollAnswers");
 const logger = require("../../global/logger");
 
-const addPollAnswers = async (payload) => {
+const addPollAnswers = async payload => {
   try {
     return await new PollAnswers(payload).save();
   } catch (error) {
@@ -9,7 +9,7 @@ const addPollAnswers = async (payload) => {
   }
 };
 
-const getAllPollAnswers = async (pollId) => {
+const getAllPollAnswers = async pollId => {
   try {
     return await PollAnswers.find({ pollId });
   } catch (error) {
@@ -22,7 +22,7 @@ const getPollAnswerForUser = async (slackUserId, teamId, pollId) => {
     return await PollAnswers.findOne({
       slackUserId,
       teamId,
-      pollId
+      pollId,
     });
   } catch (error) {
     logger.error(`getPollAnswerForUser() -> error : `, error);
@@ -35,7 +35,7 @@ const updatePollAnswerForUser = async (slackUserId, teamId, pollId, answer) => {
       {
         slackUserId,
         teamId,
-        pollId
+        pollId,
       },
       { $set: { answer } }
     );
@@ -48,5 +48,5 @@ module.exports = {
   addPollAnswers,
   getAllPollAnswers,
   getPollAnswerForUser,
-  updatePollAnswerForUser
+  updatePollAnswerForUser,
 };

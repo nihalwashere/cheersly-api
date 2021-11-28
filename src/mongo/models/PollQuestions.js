@@ -6,38 +6,38 @@ const PollQuestionsSchema = new mongoose.Schema(
   {
     createdBy: {
       // slack user name
-      type: String
+      type: String,
     },
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     question: {
-      type: String
+      type: String,
     },
     channel: {
-      type: String
+      type: String,
     },
     duration: {
-      type: String
+      type: String,
     },
     options: {
-      type: Array
+      type: Array,
     },
     pollId: {
       type: String,
-      index: true
+      index: true,
     },
     closeAt: {
       type: Date,
-      index: true
+      index: true,
     },
     pollSubmittedTemplate: {
-      type: String
+      type: String,
     },
     messageTimestamp: {
-      type: String
-    }
+      type: String,
+    },
   },
   { timestamps: true }
 );

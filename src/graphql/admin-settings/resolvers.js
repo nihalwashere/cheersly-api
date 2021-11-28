@@ -1,7 +1,7 @@
 const { validateToken } = require("../../utils/common");
 const {
   paginateUsersForTeam,
-  updateRoleForUser
+  updateRoleForUser,
 } = require("../../mongo/helper/user");
 const { UserRoles } = require("../../enums/userRoles");
 
@@ -20,7 +20,7 @@ const AdminSettingsListResolver = async (_, args, context) => {
     return {
       data,
       totalCount,
-      totalPages
+      totalPages,
     };
   } catch (error) {
     throw new Error(error);
@@ -38,7 +38,7 @@ const AdminSwitchResolver = async (_, args, context) => {
     await updateRoleForUser(userId, role);
 
     return {
-      success: true
+      success: true,
     };
   } catch (error) {
     throw new Error(error);

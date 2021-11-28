@@ -1,16 +1,16 @@
 const RedemptionRequestStatus = {
   PENDING: "PENDING",
   DECLINED: "DECLINED",
-  SETTLED: "SETTLED"
+  SETTLED: "SETTLED",
 };
 
 const getRedemptionRequestStatus = () => [
   RedemptionRequestStatus.PENDING,
   RedemptionRequestStatus.DECLINED,
-  RedemptionRequestStatus.SETTLED
+  RedemptionRequestStatus.SETTLED,
 ];
 
 module.exports = {
   RedemptionRequestStatus,
-  getRedemptionRequestStatus
+  getRedemptionRequestStatus,
 };

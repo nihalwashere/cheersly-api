@@ -5,12 +5,12 @@ const { APP_NAME, SLACK_APP_ID } = require("../global/config");
 const { PROD_APP_URL, DEV_APP_URL } = require("../global/constants");
 const {
   addSubscription,
-  getSubscriptionBySlackTeamId
+  getSubscriptionBySlackTeamId,
 } = require("../mongo/helper/subscriptions");
 const { getUserDataBySlackUserId } = require("../mongo/helper/user");
 const { getAuthDataForSlackTeam } = require("../mongo/helper/auth");
 const {
-  SubscriptionMessageType
+  SubscriptionMessageType,
 } = require("../enums/subscriptionMessageTypes");
 const logger = require("../global/logger");
 
@@ -23,7 +23,7 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, rawBody) => {
       return {
         error: true,
         status: 403,
-        message: "You can't replay me!"
+        message: "You can't replay me!",
       };
     }
 
@@ -45,25 +45,25 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, rawBody) => {
       return {
         error: true,
         status: 403,
-        message: "Nice try buddy!"
+        message: "Nice try buddy!",
       };
     }
 
     return {
-      error: false
+      error: false,
     };
   } catch (error) {
     logger.error("verifySlackRequest() -> error : ", error);
   }
 };
 
-const waitForMilliSeconds = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+const waitForMilliSeconds = ms =>
+  new Promise(resolve => setTimeout(resolve, ms));
 
 // return date + 14 days
-const getTrialEndDate = (date) => new Date(date.setDate(date.getDate() + 14));
+const getTrialEndDate = date => new Date(date.setDate(date.getDate() + 14));
 
-const createTrialSubscription = async (slackTeamId) => {
+const createTrialSubscription = async slackTeamId => {
   try {
     const now = new Date();
     const subscribedOn = new Date(now);
@@ -78,21 +78,21 @@ const createTrialSubscription = async (slackTeamId) => {
       ultimateDueDate,
       totalUsers: null,
       users: [],
-      slackTeamId
+      slackTeamId,
     });
   } catch (error) {
     logger.error("createTrialSubscription() -> ", error);
   }
 };
 
-const isSubscriptionValidForSlack = async (slackTeamId) => {
+const isSubscriptionValidForSlack = async slackTeamId => {
   try {
     const subscription = await getSubscriptionBySlackTeamId(slackTeamId);
 
     if (!subscription) {
       return {
         hasSubscription: false,
-        messageType: SubscriptionMessageType.TRIAL
+        messageType: SubscriptionMessageType.TRIAL,
       };
     }
 
@@ -104,7 +104,7 @@ const isSubscriptionValidForSlack = async (slackTeamId) => {
     ) {
       return {
         hasSubscription: true,
-        messageType: null
+        messageType: null,
       };
     }
 
@@ -114,7 +114,7 @@ const isSubscriptionValidForSlack = async (slackTeamId) => {
     ) {
       return {
         hasSubscription: true,
-        messageType: null
+        messageType: null,
       };
     }
 
@@ -124,7 +124,7 @@ const isSubscriptionValidForSlack = async (slackTeamId) => {
     ) {
       return {
         hasSubscription: false,
-        messageType: SubscriptionMessageType.TRIAL
+        messageType: SubscriptionMessageType.TRIAL,
       };
     }
 
@@ -134,7 +134,7 @@ const isSubscriptionValidForSlack = async (slackTeamId) => {
     ) {
       return {
         hasSubscription: false,
-        messageType: SubscriptionMessageType.UPGRADE
+        messageType: SubscriptionMessageType.UPGRADE,
       };
     }
   } catch (error) {
@@ -147,13 +147,13 @@ const isSubscriptionValidForSlack = async (slackTeamId) => {
 
 const sortLeaders = R.sortWith([R.descend(R.prop("cheersReceived"))]);
 
-const validateToken = async (headers) => {
+const validateToken = async headers => {
   const token = headers["x-access-token"];
 
   if (!token) {
     return {
       status: 401,
-      message: "Token is required!"
+      message: "Token is required!",
     };
   }
 
@@ -166,14 +166,14 @@ const validateToken = async (headers) => {
   if (!slackUserId) {
     return {
       status: 401,
-      message: "Invalid token - Slack userId is required!"
+      message: "Invalid token - Slack userId is required!",
     };
   }
 
   if (!slackTeamId) {
     return {
       status: 401,
-      message: "Invalid token - Slack teamId is required!"
+      message: "Invalid token - Slack teamId is required!",
     };
   }
 
@@ -182,7 +182,7 @@ const validateToken = async (headers) => {
   if (!user) {
     return {
       status: 401,
-      message: "Slack user not found!"
+      message: "Slack user not found!",
     };
   }
 
@@ -191,7 +191,7 @@ const validateToken = async (headers) => {
   if (!auth) {
     return {
       status: 401,
-      message: "Auth not found!"
+      message: "Auth not found!",
     };
   }
 
@@ -203,11 +203,11 @@ const validateToken = async (headers) => {
     slackTeamId,
     role: user.role,
     slackUserData: user.slackUserData,
-    slackInstallation: auth.slackInstallation
+    slackInstallation: auth.slackInstallation,
   };
 };
 
-const getMedalType = (place) => {
+const getMedalType = place => {
   switch (place) {
     case 0:
       return ":first_place_medal:";
@@ -223,13 +223,13 @@ const getMedalType = (place) => {
   }
 };
 
-const processTopCheersReceivers = (cheers) => {
+const processTopCheersReceivers = cheers => {
   const leaders = [];
 
   const uniqueUsers = [];
 
-  cheers.map((cheer) => {
-    const foundUser = uniqueUsers.find((user) => user === cheer.to);
+  cheers.map(cheer => {
+    const foundUser = uniqueUsers.find(user => user === cheer.to);
 
     if (!foundUser) {
       uniqueUsers.push(cheer.to);
@@ -238,10 +238,10 @@ const processTopCheersReceivers = (cheers) => {
 
   // count cheers for each unique user
 
-  uniqueUsers.map((user) => {
+  uniqueUsers.map(user => {
     let cheersReceived = 0;
 
-    cheers.map((cheer) => {
+    cheers.map(cheer => {
       if (cheer.to === user) {
         cheersReceived += 1;
       }
@@ -255,12 +255,12 @@ const processTopCheersReceivers = (cheers) => {
   return sortedLeaders;
 };
 
-const getUnique = (data) => R.uniq(data);
+const getUnique = data => R.uniq(data);
 
 const getAppUrl = () =>
   String(APP_NAME).includes("-dev") ? DEV_APP_URL : PROD_APP_URL;
 
-const getAppHomeLink = (teamId) =>
+const getAppHomeLink = teamId =>
   `<slack://app?team=${teamId}&id=${SLACK_APP_ID}&tab=home|home>`;
 
 module.exports = {
@@ -275,5 +275,5 @@ module.exports = {
   processTopCheersReceivers,
   getUnique,
   getAppUrl,
-  getAppHomeLink
+  getAppHomeLink,
 };

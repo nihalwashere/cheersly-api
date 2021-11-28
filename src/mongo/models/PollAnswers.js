@@ -6,19 +6,19 @@ const PollAnswersSchema = new mongoose.Schema(
   {
     slackUserId: {
       type: String,
-      index: true
+      index: true,
     },
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     pollId: {
       type: String,
-      index: true
+      index: true,
     },
     answer: {
-      type: String
-    }
+      type: String,
+    },
   },
   { timestamps: true }
 );

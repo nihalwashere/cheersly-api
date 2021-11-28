@@ -1,5 +1,9 @@
-const isHelpCommand = (text) => {
-  if (String(text).trim().includes("he")) {
+const isHelpCommand = text => {
+  if (
+    String(text)
+      .trim()
+      .includes("he")
+  ) {
     return true;
   }
 

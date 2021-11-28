@@ -1,10 +1,10 @@
 const express = require("express");
 const logger = require("../../global/logger");
 const {
-  SLACK_ACTIONS: { BLOCK_SUGGESTION }
+  SLACK_ACTIONS: { BLOCK_SUGGESTION },
 } = require("../../global/constants");
 const {
-  blockSuggestionsHandler
+  blockSuggestionsHandler,
 } = require("../../slack/block-suggestions/handler");
 
 const router = express.Router();

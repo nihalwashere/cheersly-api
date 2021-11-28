@@ -1,6 +1,6 @@
 const UserRoles = {
   ADMIN: "ADMIN",
-  MEMBER: "MEMBER"
+  MEMBER: "MEMBER",
 };
 
 const getUserRoles = () => [UserRoles.ADMIN, UserRoles.MEMBER];

@@ -4,7 +4,7 @@ const R = require("ramda");
 const { MONGO_URL, MONGO_OPTIONS } = require("../global/config");
 const {
   getClosedPolls,
-  markPollAsClosed
+  markPollAsClosed,
 } = require("../mongo/helper/pollQuestions");
 const { getUserDataBySlackUserName } = require("../mongo/helper/user");
 const { getAllPollAnswers } = require("../mongo/helper/pollAnswers");
@@ -12,7 +12,7 @@ const { slackPostMessageToChannel, updateChat } = require("../slack/api");
 
 const logger = require("../global/logger");
 
-const createNotifyPollResultsToCreatorTemplate = (pollCompletedTemplate) => {
+const createNotifyPollResultsToCreatorTemplate = pollCompletedTemplate => {
   const blocks = pollCompletedTemplate;
 
   blocks[0].text.text = "*Results for poll submission*";
@@ -32,20 +32,20 @@ const service = async () => {
 
     // update all closed polls and send results to poll creator
 
-    const handler = async (poll) => {
+    const handler = async poll => {
       const {
         createdBy,
         pollSubmittedTemplate,
         channel,
         messageTimestamp,
-        pollId
+        pollId,
       } = poll;
 
       const user = await getUserDataBySlackUserName(createdBy);
 
       if (user) {
         const {
-          slackUserData: { id: slackUserId, team_id }
+          slackUserData: { id: slackUserId, team_id },
         } = user;
 
         const pollAnswers = await getAllPollAnswers(pollId);
@@ -58,7 +58,7 @@ const service = async () => {
 
         const results = {};
 
-        uniquePollOptions.map((option) => {
+        uniquePollOptions.map(option => {
           results[option] = 0;
         });
 
@@ -86,16 +86,16 @@ const service = async () => {
               type: section.type,
               text: {
                 type: section.text.type,
-                text: section.text.text + " = *" + percentageResult + "%*"
-              }
+                text: section.text.text + " = *" + percentageResult + "%*",
+              },
             });
           } else if (parsedPollSubmittedTemplate.length === index + 1) {
             pollCompletedTemplate.push({
               type: "section",
               text: {
                 type: "mrkdwn",
-                text: "_*Polling is closed*_"
-              }
+                text: "_*Polling is closed*_",
+              },
             });
           } else {
             pollCompletedTemplate.push(section);
@@ -133,7 +133,7 @@ const service = async () => {
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL, {
   keepAlive: true,
-  ...MONGO_OPTIONS
+  ...MONGO_OPTIONS,
 });
 
 // On Connection
@@ -152,6 +152,6 @@ mongoose.connection.on("connected", async () => {
 });
 
 // On Error
-mongoose.connection.on("error", (error) => {
+mongoose.connection.on("error", error => {
   logger.error("Database error from polls cron service -> error : ", error);
 });

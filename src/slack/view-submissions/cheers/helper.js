@@ -1,7 +1,7 @@
 const pMap = require("p-map");
 const {
   addUser,
-  getUserDataBySlackUserId
+  getUserDataBySlackUserId,
 } = require("../../../mongo/helper/user");
 const { getSlackUser } = require("../../api");
 const { UserRoles } = require("../../../enums/userRoles");
@@ -11,7 +11,7 @@ const validateRecipients = async (teamId, recipients, senderUsername) => {
   try {
     const validRecipients = [];
 
-    const handler = async (recipient) => {
+    const handler = async recipient => {
       const user = await getUserDataBySlackUserId(recipient);
 
       if (user && user.slackUserData.name !== senderUsername) {
@@ -32,7 +32,7 @@ const validateRecipients = async (teamId, recipients, senderUsername) => {
             slackUserData,
             slackDeleted: false,
             appHomePublished: false,
-            role: slackUserData.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER
+            role: slackUserData.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER,
           });
 
           validRecipients.push(slackUserData.name);

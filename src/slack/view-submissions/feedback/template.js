@@ -9,8 +9,8 @@ const createUserSection = (user_name, isAnonymous) => {
     type: "section",
     text: {
       type: "mrkdwn",
-      text
-    }
+      text,
+    },
   };
 };
 
@@ -21,9 +21,9 @@ const createFeedbackSubmittedTemplate = (user_name, feedback, isAnonymous) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: feedback
-      }
-    }
+        text: feedback,
+      },
+    },
   ];
 };
 

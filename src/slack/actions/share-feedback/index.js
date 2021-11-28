@@ -2,12 +2,12 @@ const { openModal } = require("../../api");
 const { createShareFeedbackTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
-const handleShareFeedback = async (payload) => {
+const handleShareFeedback = async payload => {
   try {
     logger.info("handleShareFeedback");
     const {
       trigger_id,
-      team: { id: teamId }
+      team: { id: teamId },
     } = payload;
 
     const viewTemplate = createShareFeedbackTemplate();

@@ -4,7 +4,7 @@ const {
   GraphQLString,
   GraphQLList,
   GraphQLInt,
-  GraphQLFloat
+  GraphQLFloat,
 } = require("graphql");
 const { GraphQLDateTime } = require("graphql-iso-date");
 const { UserType } = require("../common/types");
@@ -16,39 +16,39 @@ const RewardType = new GraphQLObjectType({
     title: { type: GraphQLString },
     description: { type: GraphQLString },
     price: { type: GraphQLString },
-    deleted: { type: GraphQLBoolean }
-  })
+    deleted: { type: GraphQLBoolean },
+  }),
 });
 
 const RewardListType = new GraphQLObjectType({
   name: "RewardListType",
   fields: () => ({
-    data: { type: new GraphQLList(RewardType) }
-  })
+    data: { type: new GraphQLList(RewardType) },
+  }),
 });
 
 const CreateRewardType = new GraphQLObjectType({
   name: "CreateRewardType",
   fields: () => ({
     success: { type: GraphQLBoolean },
-    message: { type: GraphQLString }
-  })
+    message: { type: GraphQLString },
+  }),
 });
 
 const UpdateRewardType = new GraphQLObjectType({
   name: "UpdateRewardType",
   fields: () => ({
     success: { type: GraphQLBoolean },
-    message: { type: GraphQLString }
-  })
+    message: { type: GraphQLString },
+  }),
 });
 
 const DeleteRewardType = new GraphQLObjectType({
   name: "DeleteRewardType",
   fields: () => ({
     success: { type: GraphQLBoolean },
-    message: { type: GraphQLString }
-  })
+    message: { type: GraphQLString },
+  }),
 });
 
 const RedemptionRequestType = new GraphQLObjectType({
@@ -60,8 +60,8 @@ const RedemptionRequestType = new GraphQLObjectType({
     status: { type: GraphQLString },
     teamId: { type: GraphQLString },
     createdAt: { type: GraphQLDateTime },
-    updatedAt: { type: GraphQLDateTime }
-  })
+    updatedAt: { type: GraphQLDateTime },
+  }),
 });
 
 const RedemptionRequestListType = new GraphQLObjectType({
@@ -69,32 +69,32 @@ const RedemptionRequestListType = new GraphQLObjectType({
   fields: () => ({
     data: { type: new GraphQLList(RedemptionRequestType) },
     totalCount: { type: GraphQLInt },
-    totalPages: { type: GraphQLFloat }
-  })
+    totalPages: { type: GraphQLFloat },
+  }),
 });
 
 const CreateRedemptionRequestType = new GraphQLObjectType({
   name: "CreateRedemptionRequestType",
   fields: () => ({
     success: { type: GraphQLBoolean },
-    message: { type: GraphQLString }
-  })
+    message: { type: GraphQLString },
+  }),
 });
 
 const SettleRedemptionRequestType = new GraphQLObjectType({
   name: "SettleRedemptionRequestType",
   fields: () => ({
     success: { type: GraphQLBoolean },
-    message: { type: GraphQLString }
-  })
+    message: { type: GraphQLString },
+  }),
 });
 
 const DeclineRedemptionRequestType = new GraphQLObjectType({
   name: "DeclineRedemptionRequestType",
   fields: () => ({
     success: { type: GraphQLBoolean },
-    message: { type: GraphQLString }
-  })
+    message: { type: GraphQLString },
+  }),
 });
 
 const RewardsHistoryListType = new GraphQLObjectType({
@@ -102,8 +102,8 @@ const RewardsHistoryListType = new GraphQLObjectType({
   fields: () => ({
     data: { type: new GraphQLList(RedemptionRequestType) },
     totalCount: { type: GraphQLInt },
-    totalPages: { type: GraphQLFloat }
-  })
+    totalPages: { type: GraphQLFloat },
+  }),
 });
 
 module.exports = {
@@ -115,5 +115,5 @@ module.exports = {
   CreateRedemptionRequestType,
   SettleRedemptionRequestType,
   DeclineRedemptionRequestType,
-  RewardsHistoryListType
+  RewardsHistoryListType,
 };

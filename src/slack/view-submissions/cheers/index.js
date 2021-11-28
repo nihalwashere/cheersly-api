@@ -4,23 +4,23 @@ const {
     SUBMIT_CHEERS_TO_CHANNEL,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_FOR_REASON,
-    SHOULD_SHARE_GIPHY
+    SHOULD_SHARE_GIPHY,
   },
   ACTION_IDS: {
     SUBMIT_CHEERS_TO_USERS_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
-    SHOULD_SHARE_GIPHY_VALUE
-  }
+    SHOULD_SHARE_GIPHY_VALUE,
+  },
 } = require("../../../global/constants");
 const {
   slackPostMessageToChannel,
-  postEphemeralMessage
+  postEphemeralMessage,
 } = require("../../api");
 const {
   createCheersSubmittedTemplate,
-  createSelectPeersTemplate
+  createSelectPeersTemplate,
 } = require("./template");
 const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
 const { upsertAppHpmeBlocks } = require("../../../mongo/helper/appHomeBlocks");
@@ -28,7 +28,7 @@ const {
   addCheersStats,
   getCheersStatsForTeam,
   getCheersStatsForUser,
-  updateCheersStatsForUser
+  updateCheersStatsForUser,
 } = require("../../../mongo/helper/cheersStats");
 const { addCheers } = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
@@ -37,14 +37,14 @@ const { getRandomGif } = require("../../../giphy/api");
 const { validateRecipients } = require("./helper");
 const logger = require("../../../global/logger");
 
-const processCheers = async (payload) => {
+const processCheers = async payload => {
   try {
     logger.debug("processCheers : ", JSON.stringify(payload));
 
     const {
       team: { id: teamId },
       user: { id: senderUserId },
-      view: { state, private_metadata: senderUsername }
+      view: { state, private_metadata: senderUsername },
     } = payload;
 
     const recipients =
@@ -57,7 +57,7 @@ const processCheers = async (payload) => {
 
     const companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
       SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
-    ].selected_options.map((option) => option.value);
+    ].selected_options.map(option => option.value);
 
     const reason =
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
@@ -93,7 +93,7 @@ const processCheers = async (payload) => {
       if (cheersStatsSender) {
         const { cheersGiven } = cheersStatsSender;
         await updateCheersStatsForUser(senderUsername, {
-          cheersGiven: cheersGiven + validRecipients.length
+          cheersGiven: cheersGiven + validRecipients.length,
         });
       } else {
         await addCheersStats({
@@ -101,18 +101,18 @@ const processCheers = async (payload) => {
           teamId,
           cheersGiven: validRecipients.length,
           cheersReceived: 0,
-          cheersRedeemable: 0
+          cheersRedeemable: 0,
         });
       }
 
       // save to cheers for filters
       await Promise.all(
-        validRecipients.map(async (recipient) => {
+        validRecipients.map(async recipient => {
           await addCheers({
             from: senderUsername,
             to: recipient,
             teamId,
-            reason
+            reason,
           });
         })
       );
@@ -120,7 +120,7 @@ const processCheers = async (payload) => {
       const notifyRecipients = [];
       // for receivers
       await Promise.all(
-        validRecipients.map(async (recipient) => {
+        validRecipients.map(async recipient => {
           const cheersStatsRecipient = await getCheersStatsForUser(
             teamId,
             recipient
@@ -131,12 +131,12 @@ const processCheers = async (payload) => {
 
             await updateCheersStatsForUser(recipient, {
               cheersReceived: cheersReceived + 1,
-              cheersRedeemable: cheersRedeemable + 1
+              cheersRedeemable: cheersRedeemable + 1,
             });
 
             notifyRecipients.push({
               recipient,
-              cheersReceived: cheersReceived + 1
+              cheersReceived: cheersReceived + 1,
             });
           } else {
             await addCheersStats({
@@ -144,12 +144,12 @@ const processCheers = async (payload) => {
               teamId,
               cheersGiven: 0,
               cheersReceived: 1,
-              cheersRedeemable: 1
+              cheersRedeemable: 1,
             });
 
             notifyRecipients.push({
               recipient,
-              cheersReceived: 1
+              cheersReceived: 1,
             });
           }
         })
@@ -193,7 +193,7 @@ const processCheers = async (payload) => {
 
       const leaders = [];
 
-      cheersStatsForTeam.map((stat) => {
+      cheersStatsForTeam.map(stat => {
         const { slackUsername, cheersReceived } = stat;
         leaders.push({ slackUsername, cheersReceived });
       });

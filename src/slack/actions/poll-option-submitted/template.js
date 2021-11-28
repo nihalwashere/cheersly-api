@@ -4,9 +4,9 @@ const createPollOptionSubmittedTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "Your poll has been submitted. Thanks!"
-      }
-    }
+        text: "Your poll has been submitted. Thanks!",
+      },
+    },
   ];
 };
 
@@ -16,9 +16,9 @@ const createPollOptionAlreadySubmittedTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "You have already polled for this option!"
-      }
-    }
+        text: "You have already polled for this option!",
+      },
+    },
   ];
 };
 
@@ -28,14 +28,14 @@ const createPollOptionUpdatedTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "Your poll has been updated!"
-      }
-    }
+        text: "Your poll has been updated!",
+      },
+    },
   ];
 };
 
 module.exports = {
   createPollOptionSubmittedTemplate,
   createPollOptionAlreadySubmittedTemplate,
-  createPollOptionUpdatedTemplate
+  createPollOptionUpdatedTemplate,
 };

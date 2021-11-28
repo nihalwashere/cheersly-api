@@ -2,7 +2,7 @@ const Rewards = require("../models/Rewards");
 const DefaultRewards = require("../../utils/defaults/rewards");
 const logger = require("../../global/logger");
 
-const getRewardsByTeamId = async (teamId) => {
+const getRewardsByTeamId = async teamId => {
   try {
     return await Rewards.find({ teamId, deleted: { $ne: true } });
   } catch (error) {
@@ -10,7 +10,7 @@ const getRewardsByTeamId = async (teamId) => {
   }
 };
 
-const getRewardById = async (_id) => {
+const getRewardById = async _id => {
   try {
     return await Rewards.findOne({ _id });
   } catch (error) {
@@ -18,7 +18,7 @@ const getRewardById = async (_id) => {
   }
 };
 
-const addRewards = async (payload) => {
+const addRewards = async payload => {
   try {
     return await new Rewards(payload).save();
   } catch (error) {
@@ -34,8 +34,8 @@ const updateRewardsById = async (_id, title, description, price) => {
         $set: {
           title,
           description,
-          price
-        }
+          price,
+        },
       }
     );
   } catch (error) {
@@ -43,7 +43,7 @@ const updateRewardsById = async (_id, title, description, price) => {
   }
 };
 
-const deleteRewardsById = async (_id) => {
+const deleteRewardsById = async _id => {
   try {
     return await Rewards.updateOne({ _id }, { $set: { deleted: true } });
   } catch (error) {
@@ -51,10 +51,10 @@ const deleteRewardsById = async (_id) => {
   }
 };
 
-const addDefaultRewardsForTeam = async (teamId) => {
+const addDefaultRewardsForTeam = async teamId => {
   try {
     return await Rewards.insertMany(
-      DefaultRewards.map((reward) => ({ ...reward, teamId }))
+      DefaultRewards.map(reward => ({ ...reward, teamId }))
     );
   } catch (error) {
     logger.error(`addDefaultRewardsForTeam() -> error : `, error);
@@ -67,5 +67,5 @@ module.exports = {
   addRewards,
   updateRewardsById,
   deleteRewardsById,
-  addDefaultRewardsForTeam
+  addDefaultRewardsForTeam,
 };

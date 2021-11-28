@@ -1,6 +1,6 @@
 const {
   SLACK_ACTIONS: { ADD_NEW_TOPIC },
-  BLOCK_IDS: { TOPICS_CHANGE, INTERESTS_CHANGE }
+  BLOCK_IDS: { TOPICS_CHANGE, INTERESTS_CHANGE },
 } = require("../../../global/constants");
 
 const noTopicsAvailableBlock = () => ({
@@ -9,9 +9,9 @@ const noTopicsAvailableBlock = () => ({
     {
       type: "plain_text",
       text: "There are no topics yet, start with adding a new topic first.",
-      emoji: true
-    }
-  ]
+      emoji: true,
+    },
+  ],
 });
 
 const noCurrentInterestsAvailable = () => ({
@@ -20,9 +20,9 @@ const noCurrentInterestsAvailable = () => ({
     {
       type: "plain_text",
       text: "You don't have any interests yet.",
-      emoji: true
-    }
-  ]
+      emoji: true,
+    },
+  ],
 });
 
 const allTopicsSelectedBlock = () => ({
@@ -31,21 +31,21 @@ const allTopicsSelectedBlock = () => ({
     {
       type: "plain_text",
       text: "You are interested in all topics already.",
-      emoji: true
-    }
-  ]
+      emoji: true,
+    },
+  ],
 });
 
-const getActions = (data) =>
-  data.map((elem) => ({
+const getActions = data =>
+  data.map(elem => ({
     type: "button",
     text: {
       type: "plain_text",
       text: elem.value,
-      emoji: true
+      emoji: true,
     },
     value: elem.value,
-    action_id: elem.id
+    action_id: elem.id,
   }));
 
 const createInterestsTemplate = (
@@ -79,19 +79,20 @@ const createInterestsTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "Explore and click on the topics that you find interesting or add a new topic yourself!"
-      }
+        text:
+          "Explore and click on the topics that you find interesting or add a new topic yourself!",
+      },
     },
     {
-      type: "divider"
+      type: "divider",
     },
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*Explore topics*"
-      }
-    }
+        text: "*Explore topics*",
+      },
+    },
   ];
 
   if (noTopicsAvailable) {
@@ -102,7 +103,7 @@ const createInterestsTemplate = (
     blocks.push({
       type: "actions",
       block_id: TOPICS_CHANGE,
-      elements: getActions(unSelectedTopics)
+      elements: getActions(unSelectedTopics),
     });
   }
 
@@ -118,24 +119,24 @@ const createInterestsTemplate = (
         text: {
           type: "plain_text",
           text: "Add new topic",
-          emoji: true
+          emoji: true,
         },
         value: "Add new topic",
-        action_id: ADD_NEW_TOPIC
-      }
-    ]
+        action_id: ADD_NEW_TOPIC,
+      },
+    ],
   });
 
   blocks.push({
-    type: "divider"
+    type: "divider",
   });
 
   blocks.push({
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "*Current Interests*"
-    }
+      text: "*Current Interests*",
+    },
   });
 
   if (noInterestsAvailable) {
@@ -144,7 +145,7 @@ const createInterestsTemplate = (
     blocks.push({
       type: "actions",
       block_id: INTERESTS_CHANGE,
-      elements: getActions(interests)
+      elements: getActions(interests),
     });
   }
 
@@ -154,19 +155,19 @@ const createInterestsTemplate = (
     title: {
       type: "plain_text",
       text: "Explore Interests",
-      emoji: true
+      emoji: true,
     },
     submit: {
       type: "plain_text",
       text: "Done",
-      emoji: true
+      emoji: true,
     },
     close: {
       type: "plain_text",
       text: "Cancel",
-      emoji: true
+      emoji: true,
     },
-    blocks
+    blocks,
   };
 };
 

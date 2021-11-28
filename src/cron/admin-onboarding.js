@@ -15,10 +15,10 @@ const service = async () => {
 
     const auths = await AuthModel.find({
       slackDeleted: false,
-      adminOnboardingDone: false
+      adminOnboardingDone: false,
     });
 
-    const handler = async (auth) => {
+    const handler = async auth => {
       if (
         !(new Date().getDate() - new Date(auth.createdAt).getDate() > 3) &&
         auth.adminOnboardingDone
@@ -29,18 +29,18 @@ const service = async () => {
       const {
         slackInstallation: {
           authed_user: { id: authed_user_id },
-          team: { id: team_id }
-        }
+          team: { id: team_id },
+        },
       } = auth;
 
       const users = [authed_user_id];
 
       const admins = await UserModel.find({
         "slackUserData.team_id": team_id,
-        role: UserRoles.ADMIN
+        role: UserRoles.ADMIN,
       });
 
-      admins.map((admin) => {
+      admins.map(admin => {
         if (!users.includes(admin.slackUserData.id)) {
           users.push(admin.slackUserData.id);
         }
@@ -72,7 +72,7 @@ const service = async () => {
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL, {
   keepAlive: true,
-  ...MONGO_OPTIONS
+  ...MONGO_OPTIONS,
 });
 
 // On Connection
@@ -91,7 +91,7 @@ mongoose.connection.on("connected", async () => {
 });
 
 // On Error
-mongoose.connection.on("error", (error) => {
+mongoose.connection.on("error", error => {
   logger.error(
     "Database error from admin onboarding cron service -> error : ",
     error

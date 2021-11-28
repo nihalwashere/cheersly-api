@@ -2,7 +2,7 @@ const {
   getCompanyValuesByTeamId,
   addCompanyValues,
   updateCompanyValuesById,
-  deleteCompanyValuesById
+  deleteCompanyValuesById,
 } = require("../../mongo/helper/companyValues");
 const { validateToken } = require("../../utils/common");
 
@@ -13,7 +13,7 @@ const CompanyValuesListResolver = async (_, args, context) => {
     const data = await getCompanyValuesByTeamId(teamId);
 
     return {
-      data
+      data,
     };
   } catch (error) {
     throw new Error(error);
@@ -37,7 +37,7 @@ const CreateCompanyValuesResolver = async (_, args, context) => {
     await addCompanyValues({ title, description, teamId });
 
     return {
-      success: true
+      success: true,
     };
   } catch (error) {
     throw new Error(error);
@@ -65,7 +65,7 @@ const UpdateCompanyValuesResolver = async (_, args, context) => {
     await updateCompanyValuesById(id, title, description);
 
     return {
-      success: true
+      success: true,
     };
   } catch (error) {
     throw new Error(error);
@@ -85,7 +85,7 @@ const DeleteCompanyValuesResolver = async (_, args, context) => {
     await deleteCompanyValuesById(id);
 
     return {
-      success: true
+      success: true,
     };
   } catch (error) {
     throw new Error(error);
@@ -96,5 +96,5 @@ module.exports = {
   CompanyValuesListResolver,
   CreateCompanyValuesResolver,
   UpdateCompanyValuesResolver,
-  DeleteCompanyValuesResolver
+  DeleteCompanyValuesResolver,
 };

@@ -1,47 +1,44 @@
 const express = require("express");
-const crypto = require("crypto");
 
 const router = express.Router();
 
-const logger = require("../../global/logger");
 const {
   APP_HOME_OPENED,
   APP_UNINSTALLED,
   TOKENS_REVOKED,
   APP_MENTION,
   MESSAGE,
-  IM_CHANNEL_TYPE
+  IM_CHANNEL_TYPE,
 } = require("../../global/constants");
 const {
   INTERNAL_SLACK_TEAM_ID,
-  INTERNAL_SLACK_CHANNEL_ID
+  INTERNAL_SLACK_CHANNEL_ID,
 } = require("../../global/config");
 const { deleteSlackAuthByTeamId } = require("../../mongo/helper/auth");
 const {
   getUserDataBySlackUserId,
   deleteSlackUsersByTeamId,
-  updateAppHomePublishedForUser
+  updateAppHomePublishedForUser,
 } = require("../../mongo/helper/user");
 const { postInternalMessage, publishView } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
 const { publishStats } = require("../../slack/app-home");
 const {
   isSubscriptionValidForSlack,
-  verifySlackRequest
+  verifySlackRequest,
 } = require("../../utils/common");
 const {
   createAPITokensRevokedTemplate,
-  createAppUninstalledTemplate
+  createAppUninstalledTemplate,
 } = require("../../slack/templates");
 const {
   createTrialEndedTemplate,
-  createUpgradeSubscriptionTemplate
+  createUpgradeSubscriptionTemplate,
 } = require("../../slack/subscription-handlers/template");
 const {
-  SubscriptionMessageType
+  SubscriptionMessageType,
 } = require("../../enums/subscriptionMessageTypes");
-
-// HELPER
+const logger = require("../../global/logger");
 
 router.post("/", async (req, res) => {
   try {
@@ -95,7 +92,7 @@ router.post("/", async (req, res) => {
           if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
             await publishView(team_id, slackUserId, {
               type: "home",
-              blocks: createTrialEndedTemplate()
+              blocks: createTrialEndedTemplate(),
             });
 
             return await updateAppHomePublishedForUser(slackUserId, true);
@@ -103,7 +100,7 @@ router.post("/", async (req, res) => {
 
           await publishView(team_id, slackUserId, {
             type: "home",
-            blocks: createUpgradeSubscriptionTemplate()
+            blocks: createUpgradeSubscriptionTemplate(),
           });
 
           return await updateAppHomePublishedForUser(slackUserId, true);

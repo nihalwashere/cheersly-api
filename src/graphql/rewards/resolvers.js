@@ -3,27 +3,27 @@ const {
   getRewardsByTeamId,
   addRewards,
   updateRewardsById,
-  deleteRewardsById
+  deleteRewardsById,
 } = require("../../mongo/helper/rewards");
 const { slackPostMessageToChannel } = require("../../slack/api");
 const { getUserDataById } = require("../../mongo/helper/user");
 const {
   getCheersStatsForUser,
-  updateCheersStatsForUser
+  updateCheersStatsForUser,
 } = require("../../mongo/helper/cheersStats");
 const {
   addRedemptionRequest,
   getRedemptionRequestById,
   updateRedemptionRequestById,
   declineRedemptionRequestByRewardId,
-  paginateRedemptionRequests
+  paginateRedemptionRequests,
 } = require("../../mongo/helper/redemptionRequests");
 const {
-  RedemptionRequestStatus
+  RedemptionRequestStatus,
 } = require("../../enums/redemptionRequestStatus");
 const {
   createRedemptionRequestSettledTemplate,
-  createRedemptionRequestDeclinedTemplate
+  createRedemptionRequestDeclinedTemplate,
 } = require("./template");
 const { validateToken } = require("../../utils/common");
 
@@ -40,7 +40,7 @@ const RewardListResolver = async (_, args, context) => {
     const data = await getRewardsByTeamId(slackTeamId);
 
     return {
-      data
+      data,
     };
   } catch (error) {
     throw new Error(error);
@@ -75,7 +75,7 @@ const CreateRewardResolver = async (_, args, context) => {
 
     return {
       success: true,
-      message: "Reward created successfully."
+      message: "Reward created successfully.",
     };
   } catch (error) {
     throw new Error(error);
@@ -112,7 +112,7 @@ const UpdateRewardResolver = async (_, args, context) => {
 
     return {
       success: true,
-      message: "Reward updated successfully."
+      message: "Reward updated successfully.",
     };
   } catch (error) {
     throw new Error(error);
@@ -139,7 +139,7 @@ const DeleteRewardResolver = async (_, args, context) => {
 
     return {
       success: true,
-      message: "Reward deleted successfully."
+      message: "Reward deleted successfully.",
     };
   } catch (error) {
     throw new Error(error);
@@ -163,14 +163,14 @@ const RedemptionRequestListResolver = async (_, args, context) => {
       pageSize,
       filter: {
         teamId: slackTeamId,
-        status: RedemptionRequestStatus.PENDING
-      }
+        status: RedemptionRequestStatus.PENDING,
+      },
     });
 
     return {
       data,
       totalCount,
-      totalPages
+      totalPages,
     };
   } catch (error) {
     throw new Error(error);
@@ -210,7 +210,7 @@ const CreateRedemptionRequestResolver = async (_, args, context) => {
     }
 
     const {
-      slackUserData: { name: slackUsername }
+      slackUserData: { name: slackUsername },
     } = user;
 
     const { price } = reward;
@@ -231,16 +231,16 @@ const CreateRedemptionRequestResolver = async (_, args, context) => {
       teamId,
       user: userId,
       reward: rewardId,
-      status: RedemptionRequestStatus.PENDING
+      status: RedemptionRequestStatus.PENDING,
     });
 
     await updateCheersStatsForUser(slackUsername, {
-      cheersRedeemable: cheersRedeemable - price
+      cheersRedeemable: cheersRedeemable - price,
     });
 
     return {
       success: true,
-      message: "Redemption request created successfully."
+      message: "Redemption request created successfully.",
     };
   } catch (error) {
     throw new Error(error);
@@ -269,13 +269,13 @@ const SettleRedemptionRequestResolver = async (_, args, context) => {
 
     const {
       user: {
-        slackUserData: { id: channel, team_id }
+        slackUserData: { id: channel, team_id },
       },
-      reward: { title, price }
+      reward: { title, price },
     } = redemptionRequest;
 
     await updateRedemptionRequestById(id, {
-      status: RedemptionRequestStatus.SETTLED
+      status: RedemptionRequestStatus.SETTLED,
     });
 
     // notify user in Slack
@@ -288,7 +288,7 @@ const SettleRedemptionRequestResolver = async (_, args, context) => {
 
     return {
       success: true,
-      message: "Redemption request settled successfully."
+      message: "Redemption request settled successfully.",
     };
   } catch (error) {
     throw new Error(error);
@@ -319,9 +319,9 @@ const DeclineRedemptionRequestResolver = async (_, args, context) => {
 
     const {
       user: {
-        slackUserData: { id: channel, name: slackUsername }
+        slackUserData: { id: channel, name: slackUsername },
       },
-      reward: { title, price }
+      reward: { title, price },
     } = redemptionRequest;
 
     const cheersStat = await getCheersStatsForUser(slackTeamId, slackUsername);
@@ -331,13 +331,13 @@ const DeclineRedemptionRequestResolver = async (_, args, context) => {
     }
 
     await updateRedemptionRequestById(id, {
-      status: RedemptionRequestStatus.DECLINED
+      status: RedemptionRequestStatus.DECLINED,
     });
 
     const { cheersRedeemable } = cheersStat;
 
     await updateCheersStatsForUser(slackUsername, {
-      cheersRedeemable: cheersRedeemable + price
+      cheersRedeemable: cheersRedeemable + price,
     });
 
     // notify user in Slack
@@ -349,7 +349,7 @@ const DeclineRedemptionRequestResolver = async (_, args, context) => {
 
     return {
       success: true,
-      message: "Redemption request declined successfully."
+      message: "Redemption request declined successfully.",
     };
   } catch (error) {
     throw new Error(error);
@@ -375,15 +375,15 @@ const RewardsHistoryListResolver = async (_, args, context) => {
         teamId: slackTeamId,
         $or: [
           { status: RedemptionRequestStatus.DECLINED },
-          { status: RedemptionRequestStatus.SETTLED }
-        ]
-      }
+          { status: RedemptionRequestStatus.SETTLED },
+        ],
+      },
     });
 
     return {
       data,
       totalCount,
-      totalPages
+      totalPages,
     };
   } catch (error) {
     throw new Error(error);
@@ -399,5 +399,5 @@ module.exports = {
   CreateRedemptionRequestResolver,
   SettleRedemptionRequestResolver,
   DeclineRedemptionRequestResolver,
-  RewardsHistoryListResolver
+  RewardsHistoryListResolver,
 };

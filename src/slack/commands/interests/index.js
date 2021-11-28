@@ -3,7 +3,7 @@ const InterestsModel = require("../../../mongo/models/Interests");
 const { openModal } = require("../../api");
 const { createInterestsTemplate } = require("./template");
 const {
-  VIEW_SUBMISSIONS: { INTERESTS }
+  VIEW_SUBMISSIONS: { INTERESTS },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
@@ -27,8 +27,8 @@ const handleInterestsCommand = async (teamId, userId, trigger_id) => {
 
     const unSelectedTopics = [];
 
-    topics.forEach((elem) => {
-      if (!interests.some((item) => item.id === elem.id)) {
+    topics.forEach(elem => {
+      if (!interests.some(item => item.id === elem.id)) {
         unSelectedTopics.push(elem);
       }
     });
@@ -43,8 +43,12 @@ const handleInterestsCommand = async (teamId, userId, trigger_id) => {
   }
 };
 
-const isInterestsCommand = (text) => {
-  if (String(text).trim().includes("in")) {
+const isInterestsCommand = text => {
+  if (
+    String(text)
+      .trim()
+      .includes("in")
+  ) {
     return true;
   }
 

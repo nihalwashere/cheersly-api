@@ -6,11 +6,11 @@ const TopicsSchema = new mongoose.Schema(
   {
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     topics: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   { timestamps: true }
 );

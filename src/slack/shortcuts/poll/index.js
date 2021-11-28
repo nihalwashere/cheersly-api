@@ -1,18 +1,18 @@
 const { openModal } = require("../../api");
 const { createSubmitAPollTemplate } = require("../../templates");
 const {
-  VIEW_SUBMISSIONS: { POLL }
+  VIEW_SUBMISSIONS: { POLL },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const processPollShortcut = async (payload) => {
+const processPollShortcut = async payload => {
   try {
     logger.debug("processPollShortcut");
 
     const {
       team: { id: teamId },
       user: { username },
-      trigger_id
+      trigger_id,
     } = payload;
 
     const viewTemplate = createSubmitAPollTemplate(username, POLL);

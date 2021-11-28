@@ -1,6 +1,6 @@
 const SubscriptionMessageType = {
   TRIAL: "TRIAL",
-  UPGRADE: "UPGRADE"
+  UPGRADE: "UPGRADE",
 };
 
 module.exports = { SubscriptionMessageType };

@@ -1,6 +1,6 @@
 const {
   createTrialEndedTemplate,
-  createUpgradeSubscriptionTemplate
+  createUpgradeSubscriptionTemplate,
 } = require("./template");
 const { slackPostMessageToChannel } = require("../api");
 const logger = require("../../global/logger");

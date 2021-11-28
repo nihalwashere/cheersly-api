@@ -2,7 +2,7 @@ const { openModal } = require("../../api");
 const { submitCheersTemplate } = require("../../templates");
 const { wrapCompanyValueOptionsForTeam } = require("../../helper");
 const {
-  VIEW_SUBMISSIONS: { SAY_CHEERS }
+  VIEW_SUBMISSIONS: { SAY_CHEERS },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
@@ -24,8 +24,13 @@ const handleCheersCommand = async (team_id, user_name, trigger_id) => {
   }
 };
 
-const isCheersCommand = (text) => {
-  if (String(text).trim().includes("@") || String(text).trim() === "") {
+const isCheersCommand = text => {
+  if (
+    String(text)
+      .trim()
+      .includes("@") ||
+    String(text).trim() === ""
+  ) {
     return true;
   }
 

@@ -6,15 +6,15 @@ const InterestsSchema = new mongoose.Schema(
   {
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     userId: {
       type: String,
-      index: true
+      index: true,
     },
     interests: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   { timestamps: true }
 );

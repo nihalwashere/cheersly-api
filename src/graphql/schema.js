@@ -8,7 +8,7 @@ const {
   CompanyValuesList,
   CreateCompanyValues,
   UpdateCompanyValues,
-  DeleteCompanyValues
+  DeleteCompanyValues,
 } = require("./company-values");
 const {
   RewardList,
@@ -19,7 +19,7 @@ const {
   CreateRedemptionRequest,
   SettleRedemptionRequest,
   DeclineRedemptionRequest,
-  RewardsHistoryList
+  RewardsHistoryList,
 } = require("./rewards");
 const { AdminSettingsList, AdminSwitch } = require("./admin-settings");
 
@@ -35,8 +35,8 @@ const query = new GraphQLObjectType({
     RewardList,
     AdminSettingsList,
     RedemptionRequestList,
-    RewardsHistoryList
-  })
+    RewardsHistoryList,
+  }),
 });
 
 /*
@@ -58,11 +58,11 @@ const mutation = new GraphQLObjectType({
     DeleteReward,
     CreateRedemptionRequest,
     SettleRedemptionRequest,
-    DeclineRedemptionRequest
-  })
+    DeclineRedemptionRequest,
+  }),
 });
 
 module.exports = new GraphQLSchema({
   query,
-  mutation
+  mutation,
 });

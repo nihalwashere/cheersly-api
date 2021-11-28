@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const {
-  getRedemptionRequestStatus
+  getRedemptionRequestStatus,
 } = require("../../enums/redemptionRequestStatus");
 
 const collection = "RedemptionRequests";
@@ -12,20 +12,20 @@ const RedemptionRequestsSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
     },
     reward: {
       type: Schema.Types.ObjectId,
-      ref: "Rewards"
+      ref: "Rewards",
     },
     status: {
       type: String,
-      enum: getRedemptionRequestStatus()
+      enum: getRedemptionRequestStatus(),
     },
     teamId: {
       type: String,
-      index: true
-    }
+      index: true,
+    },
   },
   { timestamps: true }
 );

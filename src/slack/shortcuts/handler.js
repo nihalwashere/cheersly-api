@@ -1,5 +1,5 @@
 const {
-  SHORTCUTS: { POLL, FEEDBACK, CHEERS }
+  SHORTCUTS: { POLL, FEEDBACK, CHEERS },
 } = require("../../global/constants");
 const { processPollShortcut } = require("./poll");
 const { processFeedbackShortcut } = require("./feedback");
@@ -12,7 +12,7 @@ const shortcutsMapper = async (callback_id, payload) => {
     const mapper = {
       [POLL]: async () => await processPollShortcut(payload),
       [FEEDBACK]: async () => await processFeedbackShortcut(payload),
-      [CHEERS]: async () => await processCheersShortcut(payload)
+      [CHEERS]: async () => await processCheersShortcut(payload),
     };
 
     const applyMapper = mapper[callback_id];
@@ -22,7 +22,7 @@ const shortcutsMapper = async (callback_id, payload) => {
   }
 };
 
-const shortcutsHandler = async (payload) => {
+const shortcutsHandler = async payload => {
   try {
     logger.info("shortcutsHandler");
     const { callback_id } = payload;

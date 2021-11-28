@@ -8,16 +8,16 @@ const LIMIT = 100;
 
 // HELPERS
 
-const wrapMembers = (members) => {
+const wrapMembers = members => {
   const wrappedMembers = [];
 
-  members.map((member) => {
+  members.map(member => {
     if (!member.deleted && !member.is_bot && member.name !== "slackbot") {
       wrappedMembers.push({
         slackUserData: member,
         slackDeleted: false,
         appHomePublished: false,
-        role: member.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER
+        role: member.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER,
       });
     }
   });
@@ -25,9 +25,9 @@ const wrapMembers = (members) => {
   return wrappedMembers;
 };
 
-const addUsers = async (users) =>
+const addUsers = async users =>
   await Promise.all(
-    users.map(async (user) => {
+    users.map(async user => {
       await upsertUser(user.slackUserData.id, user);
     })
   );
@@ -45,8 +45,8 @@ const getUsersList = async (limit, token, next_cursor) => {
     const req = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const res = await req.json();

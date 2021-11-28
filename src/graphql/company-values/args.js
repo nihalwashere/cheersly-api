@@ -4,22 +4,22 @@ const CompanyValuesListArgs = {};
 
 const CreateCompanyValuesArgs = {
   title: { type: GraphQLString },
-  description: { type: GraphQLString }
+  description: { type: GraphQLString },
 };
 
 const UpdateCompanyValuesArgs = {
   id: { type: GraphQLString },
   title: { type: GraphQLString },
-  description: { type: GraphQLString }
+  description: { type: GraphQLString },
 };
 
 const DeleteCompanyValuesArgs = {
-  id: { type: GraphQLString }
+  id: { type: GraphQLString },
 };
 
 module.exports = {
   CompanyValuesListArgs,
   CreateCompanyValuesArgs,
   UpdateCompanyValuesArgs,
-  DeleteCompanyValuesArgs
+  DeleteCompanyValuesArgs,
 };

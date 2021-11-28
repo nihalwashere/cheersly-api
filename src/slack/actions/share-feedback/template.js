@@ -2,7 +2,7 @@ const {
   BLOCK_IDS: { SELECT_OPTION_FOR_FEEDBACK, CUSTOMER_FEEDBACK_DESCRIPTION },
   ACTION_IDS: {
     SELECTED_OPTION_FOR_FEEDBACK,
-    CUSTOMER_FEEDBACK_DESCRIPTION_TEXT
+    CUSTOMER_FEEDBACK_DESCRIPTION_TEXT,
   },
   VIEW_SUBMISSIONS: { CUSTOMER_FEEDBACK },
   CUSTOMER_FEEDBACK_OPTIONS: {
@@ -10,8 +10,8 @@ const {
     REQUEST_A_FEATURE,
     RAISE_A_BUG,
     FEEDBACK,
-    SOMETHING_ELSE
-  }
+    SOMETHING_ELSE,
+  },
 } = require("../../../global/constants");
 
 const createShareFeedbackTemplate = () => {
@@ -21,17 +21,17 @@ const createShareFeedbackTemplate = () => {
     title: {
       type: "plain_text",
       text: "We are all ears!",
-      emoji: true
+      emoji: true,
     },
     submit: {
       type: "plain_text",
       text: "Send",
-      emoji: true
+      emoji: true,
     },
     close: {
       type: "plain_text",
       text: "Cancel",
-      emoji: true
+      emoji: true,
     },
     blocks: [
       {
@@ -43,56 +43,56 @@ const createShareFeedbackTemplate = () => {
           placeholder: {
             type: "plain_text",
             text: "Choose an option...",
-            emoji: true
+            emoji: true,
           },
           options: [
             {
               text: {
                 type: "plain_text",
                 text: ":rocket: Help with getting started",
-                emoji: true
+                emoji: true,
               },
-              value: HELP_WITH_GETTING_STARTED
+              value: HELP_WITH_GETTING_STARTED,
             },
             {
               text: {
                 type: "plain_text",
                 text: ":pray: Request a feature",
-                emoji: true
+                emoji: true,
               },
-              value: REQUEST_A_FEATURE
+              value: REQUEST_A_FEATURE,
             },
             {
               text: {
                 type: "plain_text",
                 text: ":beetle: Raise a bug",
-                emoji: true
+                emoji: true,
               },
-              value: RAISE_A_BUG
+              value: RAISE_A_BUG,
             },
             {
               text: {
                 type: "plain_text",
                 text: ":raised_hand: Give constructive feedback",
-                emoji: true
+                emoji: true,
               },
-              value: FEEDBACK
+              value: FEEDBACK,
             },
             {
               text: {
                 type: "plain_text",
                 text: ":jack_o_lantern: Something else",
-                emoji: true
+                emoji: true,
               },
-              value: SOMETHING_ELSE
-            }
-          ]
+              value: SOMETHING_ELSE,
+            },
+          ],
         },
         label: {
           type: "plain_text",
           text: "Regarding...",
-          emoji: true
-        }
+          emoji: true,
+        },
       },
       {
         type: "input",
@@ -101,13 +101,13 @@ const createShareFeedbackTemplate = () => {
         element: {
           type: "plain_text_input",
           action_id: CUSTOMER_FEEDBACK_DESCRIPTION_TEXT,
-          multiline: true
+          multiline: true,
         },
         label: {
           type: "plain_text",
           text: "Your thoughts :",
-          emoji: true
-        }
+          emoji: true,
+        },
       },
       {
         type: "context",
@@ -115,11 +115,11 @@ const createShareFeedbackTemplate = () => {
           {
             type: "plain_text",
             text: "Some details would really help :smiley:",
-            emoji: true
-          }
-        ]
-      }
-    ]
+            emoji: true,
+          },
+        ],
+      },
+    ],
   };
 };
 

@@ -1,18 +1,18 @@
 const { pushViewToModal } = require("../../api");
 const { createAddNewTopicView } = require("./template");
 const {
-  VIEW_SUBMISSIONS: { ADD_NEW_INTEREST }
+  VIEW_SUBMISSIONS: { ADD_NEW_INTEREST },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleAddNewTopic = async (payload) => {
+const handleAddNewTopic = async payload => {
   try {
     logger.info("handleAddNewTopic");
 
     const {
       trigger_id,
       //   user: { id: userId },
-      team: { id: teamId }
+      team: { id: teamId },
       //   channel: { id: channelId },
     } = payload;
 

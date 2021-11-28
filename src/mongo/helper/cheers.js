@@ -1,7 +1,7 @@
 const Cheers = require("../models/Cheers");
 const logger = require("../../global/logger");
 
-const addCheers = async (payload) => {
+const addCheers = async payload => {
   try {
     return await new Cheers(payload).save();
   } catch (error) {
@@ -16,7 +16,7 @@ const getCheersForTeam = async (teamId, from, to) => {
     if (from && to) {
       query.$and = [
         { createdAt: { $gte: new Date(from) } },
-        { createdAt: { $lte: new Date(to) } }
+        { createdAt: { $lte: new Date(to) } },
       ];
     }
 
@@ -46,5 +46,5 @@ module.exports = {
   addCheers,
   getCheersForTeam,
   getCheersGivenForUser,
-  getCheersReceivedForUser
+  getCheersReceivedForUser,
 };

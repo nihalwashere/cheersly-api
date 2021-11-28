@@ -3,11 +3,11 @@ const pMap = require("p-map");
 const { MONGO_URL, MONGO_OPTIONS } = require("../../global/config");
 const { getAllAuths } = require("../../mongo/helper/auth");
 const {
-  getTrialSubscriptionForSlackTeam
+  getTrialSubscriptionForSlackTeam,
 } = require("../../mongo/helper/subscriptions");
 const { postMessageToHook } = require("../../slack/api");
 const {
-  createUpgradeTrialSubscriptionReminderTemplate
+  createUpgradeTrialSubscriptionReminderTemplate,
 } = require("./template");
 const { waitForMilliSeconds } = require("../../utils/common");
 const logger = require("../../global/logger");
@@ -18,11 +18,11 @@ const service = async () => {
 
     const auths = await getAllAuths();
 
-    const handler = async (auth) => {
+    const handler = async auth => {
       const {
         slackInstallation: {
-          team: { id: teamId }
-        }
+          team: { id: teamId },
+        },
       } = auth;
 
       const subscription = await getTrialSubscriptionForSlackTeam(teamId);
@@ -82,7 +82,7 @@ const service = async () => {
 // Connect To Database
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL, {
-  ...MONGO_OPTIONS
+  ...MONGO_OPTIONS,
 });
 
 // On Connection
@@ -103,7 +103,7 @@ mongoose.connection.on("connected", async () => {
 });
 
 // On Error
-mongoose.connection.on("error", (error) => {
+mongoose.connection.on("error", error => {
   logger.error(
     "Database error from upgrade trial subscription cron service -> error : ",
     error

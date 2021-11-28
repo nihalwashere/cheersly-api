@@ -2,12 +2,12 @@ const express = require("express");
 const logger = require("../../global/logger");
 const { actionsHandler } = require("../../slack/actions/handler");
 const {
-  viewSubmissionHandler
+  viewSubmissionHandler,
 } = require("../../slack/view-submissions/handler");
 const { shortcutsHandler } = require("../../slack/shortcuts/handler");
 const { verifySlackRequest } = require("../../utils/common");
 const {
-  SLACK_ACTIONS: { BLOCK_ACTIONS, VIEW_SUBMISSION, SHORTCUT }
+  SLACK_ACTIONS: { BLOCK_ACTIONS, VIEW_SUBMISSION, SHORTCUT },
 } = require("../../global/constants");
 
 const router = express.Router();

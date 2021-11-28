@@ -5,7 +5,7 @@ const { LeaderBoardListResolver } = require("./resolvers");
 const LeaderBoardList = {
   type: LeaderBoardListType,
   args: LeaderBoardListArgs,
-  resolve: LeaderBoardListResolver
+  resolve: LeaderBoardListResolver,
 };
 
 module.exports = { LeaderBoardList };

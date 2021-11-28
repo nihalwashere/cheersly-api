@@ -1,4 +1,4 @@
-const createUpgradeTrialSubscriptionReminderTemplate = (days) => {
+const createUpgradeTrialSubscriptionReminderTemplate = days => {
   const dayOrDays = days > 1 ? "days" : "day";
 
   return [
@@ -6,18 +6,18 @@ const createUpgradeTrialSubscriptionReminderTemplate = (days) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `Hey there :wave:! Your *Cheersly* trial is about to end in ${days} ${dayOrDays}. Upgrade now to the PRO plan so that you can keep sharing cheers with your peers!`
-      }
+        text: `Hey there :wave:! Your *Cheersly* trial is about to end in ${days} ${dayOrDays}. Upgrade now to the PRO plan so that you can keep sharing cheers with your peers!`,
+      },
     },
     {
       type: "context",
       elements: [
         {
           type: "mrkdwn",
-          text: "Want to upgrade? contact support@cheersly.club"
-        }
-      ]
-    }
+          text: "Want to upgrade? contact support@cheersly.club",
+        },
+      ],
+    },
   ];
 };
 

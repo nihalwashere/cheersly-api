@@ -5,22 +5,22 @@ const collection = "Rewards";
 const RewardsSchema = new mongoose.Schema(
   {
     title: {
-      type: String
+      type: String,
     },
     description: {
-      type: String
+      type: String,
     },
     price: {
-      type: Number
+      type: Number,
     },
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     deleted: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   { timestamps: true }
 );

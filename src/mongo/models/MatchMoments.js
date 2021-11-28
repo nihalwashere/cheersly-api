@@ -6,17 +6,17 @@ const MatchMomentsSchema = new mongoose.Schema(
   {
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     day: {
-      type: String
+      type: String,
     },
     time: {
-      type: String
+      type: String,
     },
     timezone: {
-      type: String
-    }
+      type: String,
+    },
   },
   { timestamps: true }
 );

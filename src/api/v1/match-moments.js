@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
       teamId,
       day,
       time,
-      timezone
+      timezone,
     }).save();
 
     return res.json({ data: matchMoment, success: true }).status(200);

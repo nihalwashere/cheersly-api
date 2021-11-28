@@ -3,7 +3,7 @@ const {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLFloat,
-  GraphQLBoolean
+  GraphQLBoolean,
 } = require("graphql");
 const { UserType } = require("../common/types");
 
@@ -12,15 +12,15 @@ const AdminSettingsListType = new GraphQLObjectType({
   fields: () => ({
     data: { type: new GraphQLList(UserType) },
     totalCount: { type: GraphQLInt },
-    totalPages: { type: GraphQLFloat }
-  })
+    totalPages: { type: GraphQLFloat },
+  }),
 });
 
 const AdminSwitchType = new GraphQLObjectType({
   name: "AdminSwitchType",
   fields: () => ({
-    success: { type: GraphQLBoolean }
-  })
+    success: { type: GraphQLBoolean },
+  }),
 });
 
 module.exports = { AdminSettingsListType, AdminSwitchType };

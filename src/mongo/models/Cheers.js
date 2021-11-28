@@ -6,19 +6,19 @@ const CheersSchema = new mongoose.Schema(
   {
     from: {
       type: String,
-      index: true
+      index: true,
     },
     to: {
       type: String,
-      index: true
+      index: true,
     },
     reason: {
-      type: String
+      type: String,
     },
     teamId: {
       type: String,
-      index: true
-    }
+      index: true,
+    },
   },
   { timestamps: true }
 );

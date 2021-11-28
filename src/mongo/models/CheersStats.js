@@ -6,21 +6,21 @@ const CheersStatsSchema = new mongoose.Schema(
   {
     slackUsername: {
       type: String,
-      index: true
+      index: true,
     },
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     cheersGiven: {
-      type: Number
+      type: Number,
     },
     cheersReceived: {
-      type: Number
+      type: Number,
     },
     cheersRedeemable: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   { timestamps: true }
 );

@@ -5,15 +5,15 @@ const collection = "CompanyValues";
 const CompanyValuesSchema = new mongoose.Schema(
   {
     title: {
-      type: String
+      type: String,
     },
     description: {
-      type: String
+      type: String,
     },
     teamId: {
       type: String,
-      index: true
-    }
+      index: true,
+    },
   },
   { timestamps: true }
 );

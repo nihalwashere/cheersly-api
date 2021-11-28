@@ -16,5 +16,5 @@ const sendOnBoardingInstructions = async (teamId, authedUserId) => {
 };
 
 module.exports = {
-  sendOnBoardingInstructions
+  sendOnBoardingInstructions,
 };

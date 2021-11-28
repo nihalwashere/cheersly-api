@@ -16,14 +16,14 @@ const {
   SLACK_CLIENT_SECRET,
   SLACK_SIGNING_SECRET,
   MONGO_URL,
-  APP_NAME
+  APP_NAME,
 } = process.env;
 
 const MONGO_OPTIONS = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  useCreateIndex: true
+  useCreateIndex: true,
 };
 
 module.exports = {
@@ -40,5 +40,5 @@ module.exports = {
   SLACK_SIGNING_SECRET,
   PORT,
   MONGO_OPTIONS,
-  APP_NAME
+  APP_NAME,
 };

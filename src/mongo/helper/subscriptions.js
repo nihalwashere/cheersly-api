@@ -1,7 +1,7 @@
 const Subscriptions = require("../models/Subscriptions");
 const logger = require("../../global/logger");
 
-const addSubscription = async (payload) => {
+const addSubscription = async payload => {
   try {
     return await new Subscriptions(payload).save();
   } catch (error) {
@@ -12,11 +12,11 @@ const addSubscription = async (payload) => {
   }
 };
 
-const getTrialSubscriptionForSlackTeam = async (slackTeamId) => {
+const getTrialSubscriptionForSlackTeam = async slackTeamId => {
   try {
     return await Subscriptions.findOne({
       slackTeamId,
-      isTrialPeriod: true
+      isTrialPeriod: true,
     });
   } catch (error) {
     logger.error(
@@ -26,10 +26,10 @@ const getTrialSubscriptionForSlackTeam = async (slackTeamId) => {
   }
 };
 
-const getSubscriptionBySlackTeamId = async (slackTeamId) => {
+const getSubscriptionBySlackTeamId = async slackTeamId => {
   try {
     return await Subscriptions.findOne({ slackTeamId }).sort({
-      nextDueDate: -1
+      nextDueDate: -1,
     });
   } catch (error) {
     logger.error(
@@ -42,5 +42,5 @@ const getSubscriptionBySlackTeamId = async (slackTeamId) => {
 module.exports = {
   addSubscription,
   getSubscriptionBySlackTeamId,
-  getTrialSubscriptionForSlackTeam
+  getTrialSubscriptionForSlackTeam,
 };

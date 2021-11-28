@@ -1,5 +1,5 @@
 const {
-  ACTION_IDS: { STONE_PLAYED, PAPER_PLAYED, SCISSORS_PLAYED }
+  ACTION_IDS: { STONE_PLAYED, PAPER_PLAYED, SCISSORS_PLAYED },
 } = require("../../../global/constants");
 const StonePaperScissorsModel = require("../../../mongo/models/StonePaperScissors");
 const { postMessageToResponseUrl, openModal } = require("../../api");
@@ -7,21 +7,21 @@ const {
   createMovePlayedTemplate,
   createGameFinishedTemplate,
   createGameDrawedTemplate,
-  moveAlreadyPlayedModalTemplate
+  moveAlreadyPlayedModalTemplate,
 } = require("./template");
 const logger = require("../../../global/logger");
 
-const mapGameActionToEmoji = (move) => {
+const mapGameActionToEmoji = move => {
   const mapper = {
     [STONE_PLAYED]: ":punch:",
     [PAPER_PLAYED]: ":raised_hand_with_fingers_splayed:",
-    [SCISSORS_PLAYED]: ":v:"
+    [SCISSORS_PLAYED]: ":v:",
   };
 
   return mapper[move];
 };
 
-const handleStonePaperScissors = async (payload) => {
+const handleStonePaperScissors = async payload => {
   try {
     logger.info("handleStonePaperScissors");
 
@@ -30,7 +30,7 @@ const handleStonePaperScissors = async (payload) => {
       team: { id: teamId },
       trigger_id,
       response_url,
-      actions
+      actions,
     } = payload;
 
     const gameId = actions[0].value;
@@ -54,15 +54,15 @@ const handleStonePaperScissors = async (payload) => {
           $set: {
             playerOne: userId,
             playerOneMove: currentMove,
-            blocks
-          }
+            blocks,
+          },
         }
       );
 
       return await postMessageToResponseUrl({
         responseUrl: response_url,
         replaceOriginal: true,
-        message: blocks
+        message: blocks,
       });
     }
 
@@ -153,8 +153,8 @@ const handleStonePaperScissors = async (payload) => {
           playerTwoMove,
           winner,
           draw,
-          finished: true
-        }
+          finished: true,
+        },
       }
     );
 
@@ -185,8 +185,8 @@ const handleStonePaperScissors = async (payload) => {
             winner,
             winnerMoveEmoji: mapGameActionToEmoji(winnerMove),
             loser,
-            loserMoveEmoji: mapGameActionToEmoji(loserMove)
-          })
+            loserMoveEmoji: mapGameActionToEmoji(loserMove),
+          }),
     });
   } catch (error) {
     logger.error("handleStonePaperScissors() -> error : ", error);

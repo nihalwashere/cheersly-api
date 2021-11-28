@@ -5,8 +5,8 @@ const createTopSection = () => ({
   type: "section",
   text: {
     type: "mrkdwn",
-    text: "*Top Cheer Receivers*"
-  }
+    text: "*Top Cheer Receivers*",
+  },
 });
 
 const createFromSection = (from, to) => {
@@ -15,8 +15,8 @@ const createFromSection = (from, to) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*All time*"
-      }
+        text: "*All time*",
+      },
     };
   }
 
@@ -29,12 +29,12 @@ const createFromSection = (from, to) => {
         moment(from).format("Do MMM") +
         "  To " +
         moment(to).format("Do MMM") +
-        "_"
-    }
+        "_",
+    },
   };
 };
 
-const createTopCheersReceiversSection = (cheers) => {
+const createTopCheersReceiversSection = cheers => {
   const cheerReceivers = [];
 
   if (cheers.length === 0) {
@@ -45,9 +45,9 @@ const createTopCheersReceiversSection = (cheers) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "No cheers shared during this period :cry:"
-        }
-      }
+          text: "No cheers shared during this period :cry:",
+        },
+      },
     ];
   }
 
@@ -65,8 +65,8 @@ const createTopCheersReceiversSection = (cheers) => {
             slackUserName +
             "  (" +
             cheersReceived +
-            ")"
-        }
+            ")",
+        },
       });
     }
   }
@@ -78,7 +78,7 @@ const createStatsTemplate = (cheers, from, to) => {
   return [
     createTopSection(),
     createFromSection(from, to),
-    ...createTopCheersReceiversSection(cheers)
+    ...createTopCheersReceiversSection(cheers),
   ];
 };
 

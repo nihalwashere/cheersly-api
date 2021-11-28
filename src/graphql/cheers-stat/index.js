@@ -5,7 +5,7 @@ const { CheersStatResolver } = require("./resolvers");
 const CheersStat = {
   type: CheersStatType,
   args: CheersStatArgs,
-  resolve: CheersStatResolver
+  resolve: CheersStatResolver,
 };
 
 module.exports = { CheersStat };

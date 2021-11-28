@@ -1,7 +1,7 @@
 const PollQuestions = require("../models/PollQuestions");
 const logger = require("../../global/logger");
 
-const addPollQuestions = async (payload) => {
+const addPollQuestions = async payload => {
   try {
     return await new PollQuestions(payload).save();
   } catch (error) {
@@ -17,7 +17,7 @@ const getClosedPolls = async () => {
   }
 };
 
-const markPollAsClosed = async (pollId) => {
+const markPollAsClosed = async pollId => {
   try {
     return await PollQuestions.updateOne(
       { pollId },
@@ -31,5 +31,5 @@ const markPollAsClosed = async (pollId) => {
 module.exports = {
   addPollQuestions,
   getClosedPolls,
-  markPollAsClosed
+  markPollAsClosed,
 };

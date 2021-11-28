@@ -4,20 +4,20 @@ const router = express.Router();
 
 const {
   INTERNAL_SLACK_TEAM_ID,
-  INTERNAL_SLACK_CHANNEL_ID
+  INTERNAL_SLACK_CHANNEL_ID,
 } = require("../../global/config");
 const { createAppInstalledTemplate } = require("../../slack/templates");
 const {
   getSlackTokenForUser,
-  postInternalMessage
+  postInternalMessage,
 } = require("../../slack/api");
 const { paginateUsersList } = require("../../slack/pagination/users-list");
 const {
   upsertAuth,
-  getAuthDeletedOrNotDeleted
+  getAuthDeletedOrNotDeleted,
 } = require("../../mongo/helper/auth");
 const {
-  addDefaultCompanyValuesForTeam
+  addDefaultCompanyValuesForTeam,
 } = require("../../mongo/helper/companyValues");
 const { addDefaultRewardsForTeam } = require("../../mongo/helper/rewards");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
@@ -38,7 +38,7 @@ router.post("/slack-install", async (req, res) => {
         const {
           team: { id: teamId },
           access_token,
-          authed_user: { id: authedUserId }
+          authed_user: { id: authedUserId },
         } = slackTokenPayload;
 
         // check if installation already exists
@@ -54,7 +54,7 @@ router.post("/slack-install", async (req, res) => {
         await upsertAuth(teamId, {
           slackInstallation: slackTokenPayload,
           slackDeleted: false,
-          adminOnboardingDone: false
+          adminOnboardingDone: false,
         });
 
         await paginateUsersList(access_token);

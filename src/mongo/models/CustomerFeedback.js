@@ -10,10 +10,10 @@ const CustomerFeedbackSchema = new Schema(
     teamId: { type: String },
     regarding: { type: String },
     description: { type: String },
-    resolved: { type: Boolean, default: false }
+    resolved: { type: Boolean, default: false },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

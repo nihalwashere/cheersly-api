@@ -11,7 +11,7 @@ const CheersStatResolver = async (_, args, context) => {
 
     const {
       slackTeamId,
-      slackUserData: { name: slackUserName }
+      slackUserData: { name: slackUserName },
     } = token;
 
     const cheersStat = await getCheersStatsForUser(slackTeamId, slackUserName);
@@ -24,7 +24,7 @@ const CheersStatResolver = async (_, args, context) => {
       cheersRedeemable:
         cheersStat && cheersStat.cheersRedeemable
           ? cheersStat.cheersRedeemable
-          : 0
+          : 0,
     };
   } catch (error) {
     throw new Error(error);

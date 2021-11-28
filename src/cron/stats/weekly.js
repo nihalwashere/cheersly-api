@@ -15,15 +15,20 @@ const service = async () => {
 
     const auths = await getAllAuths();
 
-    const handler = async (auth) => {
+    const handler = async auth => {
       const {
         slackInstallation: {
-          team: { id: teamId }
-        }
+          team: { id: teamId },
+        },
       } = auth;
 
-      const fromDate = moment().subtract(7, "day").startOf("day").toDate();
-      const toDate = moment().startOf("day").toDate();
+      const fromDate = moment()
+        .subtract(7, "day")
+        .startOf("day")
+        .toDate();
+      const toDate = moment()
+        .startOf("day")
+        .toDate();
 
       // get cheers for past week
       const cheers = await getCheersForTeam(teamId, fromDate, toDate);
@@ -48,7 +53,7 @@ const service = async () => {
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL, {
   keepAlive: true,
-  ...MONGO_OPTIONS
+  ...MONGO_OPTIONS,
 });
 
 // On Connection
@@ -67,7 +72,7 @@ mongoose.connection.on("connected", async () => {
 });
 
 // On Error
-mongoose.connection.on("error", (error) => {
+mongoose.connection.on("error", error => {
   logger.error(
     "Database error from weekly stats cron service -> error : ",
     error

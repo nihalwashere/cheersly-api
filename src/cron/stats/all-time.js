@@ -13,11 +13,11 @@ const service = async () => {
     logger.info("STARTING ALL TIME STATS CRON SERVICE");
     const auths = await getAllAuths();
 
-    const handler = async (auth) => {
+    const handler = async auth => {
       const {
         slackInstallation: {
-          team: { id: teamId }
-        }
+          team: { id: teamId },
+        },
       } = auth;
 
       // get cheers for past week
@@ -40,7 +40,7 @@ const service = async () => {
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL, {
   keepAlive: true,
-  ...MONGO_OPTIONS
+  ...MONGO_OPTIONS,
 });
 
 // On Connection
@@ -59,7 +59,7 @@ mongoose.connection.on("connected", async () => {
 });
 
 // On Error
-mongoose.connection.on("error", (error) => {
+mongoose.connection.on("error", error => {
   logger.error(
     "Database error from all time stats cron service -> error : ",
     error

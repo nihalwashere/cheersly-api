@@ -2,11 +2,11 @@ const fetch = require("node-fetch");
 const {
   SLACK_API,
   SLACK_CLIENT_ID,
-  SLACK_CLIENT_SECRET
+  SLACK_CLIENT_SECRET,
 } = require("../global/config");
 const {
   getAuthDataForSlackTeam,
-  getSlackBotTokenForTeam
+  getSlackBotTokenForTeam,
 } = require("../mongo/helper/auth");
 const logger = require("../global/logger");
 
@@ -19,8 +19,8 @@ const postMessage = async (messagePayload, bot_access_token) => {
       body: JSON.stringify(messagePayload),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     return await req.json();
@@ -40,9 +40,9 @@ const openDialog = async (messagePayload, bot_access_token) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
+        Authorization: `Bearer ${bot_access_token}`,
       },
-      body: JSON.stringify(messagePayload)
+      body: JSON.stringify(messagePayload),
     });
 
     const res = await req.json();
@@ -69,8 +69,8 @@ const getSlackUser = async (teamId, user) => {
       {
         method: "GET",
         headers: {
-          "Content-Type": "x-www-form-urlencoded"
-        }
+          "Content-Type": "x-www-form-urlencoded",
+        },
       }
     );
     const res = await req.json();
@@ -85,12 +85,12 @@ const getSlackUser = async (teamId, user) => {
   }
 };
 
-const getSlackTokenForUser = async (code) => {
+const getSlackTokenForUser = async code => {
   try {
     const details = {
       client_id: SLACK_CLIENT_ID,
       client_secret: SLACK_CLIENT_SECRET,
-      code
+      code,
     };
 
     let formBody = [];
@@ -105,8 +105,8 @@ const getSlackTokenForUser = async (code) => {
       method: "POST",
       body: formBody,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     });
 
     const res = await req.json();
@@ -131,7 +131,7 @@ const slackPostMessageToChannel = async (
       channel,
       blocks,
       unfurl_links: false,
-      unfurl_media: false
+      unfurl_media: false,
     };
 
     const response = await postMessage(messagePayload, bot_access_token);
@@ -158,8 +158,8 @@ const openModal = async (teamId, trigger_id, view) => {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     const res = await req.json();
@@ -183,8 +183,8 @@ const updateModal = async ({ teamId, viewId, hash, view }) => {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     const res = await req.json();
@@ -208,8 +208,8 @@ const pushViewToModal = async (teamId, trigger_id, view) => {
       body: JSON.stringify(payload),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     const res = await req.json();
@@ -231,8 +231,8 @@ const conversationsInvite = async (teamId, channel) => {
       body: JSON.stringify({ channel }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     const res = await req.json();
@@ -251,7 +251,7 @@ const postInternalMessage = async (teamId, channel, message) => {
 
     const messagePayload = {
       channel,
-      blocks: message
+      blocks: message,
     };
 
     const response = await postMessage(messagePayload, bot_access_token);
@@ -270,20 +270,20 @@ const postMessageToHook = async (teamId, message) => {
 
     const {
       slackInstallation: {
-        incoming_webhook: { url }
-      }
+        incoming_webhook: { url },
+      },
     } = auth;
 
     const messagePayload = {
-      blocks: message
+      blocks: message,
     };
 
     const req = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(messagePayload)
+      body: JSON.stringify(messagePayload),
     });
 
     const res = await req.text();
@@ -300,19 +300,19 @@ const postMessageToResponseUrl = async ({
   responseUrl,
   message,
   replaceOriginal = false,
-  responseType = "in_channel"
+  responseType = "in_channel",
 }) => {
   try {
     const req = await fetch(responseUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         blocks: message,
         replace_original: replaceOriginal,
-        response_type: responseType
-      })
+        response_type: responseType,
+      }),
     });
 
     const res = await req.json();
@@ -334,8 +334,8 @@ const publishView = async (teamId, user_id, view) => {
       body: JSON.stringify({ user_id, view }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     const res = await req.json();
@@ -357,8 +357,8 @@ const updateChat = async (teamId, channel, ts, blocks) => {
       body: JSON.stringify({ channel, ts, blocks }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     const res = await req.json();
@@ -378,7 +378,7 @@ const postEphemeralMessage = async (channel, user, teamId, blocks) => {
     const messagePayload = {
       channel,
       user,
-      blocks
+      blocks,
     };
 
     const req = await fetch(`${SLACK_API}/chat.postEphemeral`, {
@@ -386,8 +386,8 @@ const postEphemeralMessage = async (channel, user, teamId, blocks) => {
       body: JSON.stringify(messagePayload),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`
-      }
+        Authorization: `Bearer ${bot_access_token}`,
+      },
     });
 
     const res = await req.json();
@@ -414,5 +414,5 @@ module.exports = {
   conversationsInvite,
   publishView,
   updateChat,
-  postEphemeralMessage
+  postEphemeralMessage,
 };

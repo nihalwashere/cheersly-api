@@ -2,16 +2,16 @@ const { postEphemeralMessage } = require("../../api");
 const {
   addPollAnswers,
   getPollAnswerForUser,
-  updatePollAnswerForUser
+  updatePollAnswerForUser,
 } = require("../../../mongo/helper/pollAnswers");
 const {
   createPollOptionSubmittedTemplate,
   createPollOptionAlreadySubmittedTemplate,
-  createPollOptionUpdatedTemplate
+  createPollOptionUpdatedTemplate,
 } = require("./template");
 const logger = require("../../../global/logger");
 
-const handlePollOptionSubmitted = async (payload) => {
+const handlePollOptionSubmitted = async payload => {
   try {
     logger.info("handlePollOptionSubmitted");
 
@@ -19,7 +19,7 @@ const handlePollOptionSubmitted = async (payload) => {
       user: { id: userId },
       team: { id: teamId },
       channel: { id: channelId },
-      actions
+      actions,
     } = payload;
 
     const pollAnswer = actions[0].value;
@@ -65,7 +65,7 @@ const handlePollOptionSubmitted = async (payload) => {
       slackUserId: userId,
       teamId,
       pollId,
-      answer: pollOption
+      answer: pollOption,
     });
 
     await postEphemeralMessage(

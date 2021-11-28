@@ -5,40 +5,40 @@ const router = express.Router();
 const {
   verifySlackRequest,
   getAppUrl,
-  isSubscriptionValidForSlack
+  isSubscriptionValidForSlack,
 } = require("../../utils/common");
 const { isHelpCommand } = require("../../slack/commands/help");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
 const {
   isOnboardCommand,
-  handleOnboardCommand
+  handleOnboardCommand,
 } = require("../../slack/commands/onboard");
 const {
   isCheersCommand,
-  handleCheersCommand
+  handleCheersCommand,
 } = require("../../slack/commands/cheers");
 const {
   isPollCommand,
-  handlePollCommand
+  handlePollCommand,
 } = require("../../slack/commands/poll");
 const {
   isFeedbackCommand,
-  handleFeedbackCommand
+  handleFeedbackCommand,
 } = require("../../slack/commands/feedback");
 const {
   isSPSCommand,
-  handleStonePaperScissorsCommand
+  handleStonePaperScissorsCommand,
 } = require("../../slack/commands/sps");
 const {
   isInterestsCommand,
-  handleInterestsCommand
+  handleInterestsCommand,
 } = require("../../slack/commands/interests");
 const {
   upgradeSubscriptionMessage,
-  trialEndedMessage
+  trialEndedMessage,
 } = require("../../slack/subscription-handlers");
 const {
-  SubscriptionMessageType
+  SubscriptionMessageType,
 } = require("../../enums/subscriptionMessageTypes");
 const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
 const logger = require("../../global/logger");
@@ -63,15 +63,21 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const { team_id, channel_id, user_id, user_name, trigger_id, text } =
-      req.body;
+    const {
+      team_id,
+      channel_id,
+      user_id,
+      user_name,
+      trigger_id,
+      text,
+    } = req.body;
 
     if (isHelpCommand(text)) {
       // /cheers help
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate(team_id, getAppUrl())
+        blocks: createHelpTemplate(team_id, getAppUrl()),
       });
     }
 
@@ -158,7 +164,7 @@ router.post("/", async (req, res) => {
 
       return res.status(200).json({
         response_type: "ephemeral",
-        blocks: createHelpTemplate(team_id, getAppUrl())
+        blocks: createHelpTemplate(team_id, getAppUrl()),
       });
     }
   } catch (error) {

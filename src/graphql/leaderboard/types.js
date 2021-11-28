@@ -2,7 +2,7 @@ const {
   GraphQLList,
   GraphQLObjectType,
   GraphQLInt,
-  GraphQLFloat
+  GraphQLFloat,
 } = require("graphql");
 const { UserType } = require("../common/types");
 
@@ -11,8 +11,8 @@ const LeaderBoardType = new GraphQLObjectType({
   fields: () => ({
     slackUser: { type: UserType },
     cheersGiven: { type: GraphQLInt },
-    cheersReceived: { type: GraphQLInt }
-  })
+    cheersReceived: { type: GraphQLInt },
+  }),
 });
 
 const LeaderBoardListType = new GraphQLObjectType({
@@ -20,8 +20,8 @@ const LeaderBoardListType = new GraphQLObjectType({
   fields: () => ({
     data: { type: new GraphQLList(LeaderBoardType) },
     totalCount: { type: GraphQLInt },
-    totalPages: { type: GraphQLFloat }
-  })
+    totalPages: { type: GraphQLFloat },
+  }),
 });
 
 module.exports = { LeaderBoardListType };

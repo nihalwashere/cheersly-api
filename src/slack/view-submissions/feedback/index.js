@@ -3,21 +3,21 @@ const {
   ACTION_IDS: {
     FEEDBACK_DESCRIPTION_VALUE,
     FEEDBACK_CHANNEL_VALUE,
-    FEEDBACK_IS_ANONYMOUS_VALUE
-  }
+    FEEDBACK_IS_ANONYMOUS_VALUE,
+  },
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
 const { createFeedbackSubmittedTemplate } = require("./template");
 const { addFeedback } = require("../../../mongo/helper/feedback");
 const logger = require("../../../global/logger");
 
-const processFeedback = async (payload) => {
+const processFeedback = async payload => {
   try {
     logger.debug("processFeedback : ", JSON.stringify(payload));
 
     const {
       team: { id: teamId },
-      view: { state, private_metadata: user_name }
+      view: { state, private_metadata: user_name },
     } = payload;
 
     const feedback =
@@ -41,7 +41,7 @@ const processFeedback = async (payload) => {
       slackUserName: user_name,
       teamId,
       feedback,
-      isAnonymous
+      isAnonymous,
     });
 
     return await slackPostMessageToChannel(

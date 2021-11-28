@@ -2,18 +2,18 @@ const { openModal } = require("../../api");
 const { submitCheersTemplate } = require("../../templates");
 const { wrapCompanyValueOptionsForTeam } = require("../../helper");
 const {
-  VIEW_SUBMISSIONS: { SAY_CHEERS }
+  VIEW_SUBMISSIONS: { SAY_CHEERS },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const processCheersShortcut = async (payload) => {
+const processCheersShortcut = async payload => {
   try {
     logger.debug("processCheersShortcut");
 
     const {
       team: { id: teamId },
       user: { username },
-      trigger_id
+      trigger_id,
     } = payload;
 
     const companyValueOptions = await wrapCompanyValueOptionsForTeam(teamId);

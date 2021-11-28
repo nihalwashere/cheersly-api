@@ -7,7 +7,7 @@ const {
   CreateRedemptionRequestType,
   SettleRedemptionRequestType,
   DeclineRedemptionRequestType,
-  RewardsHistoryListType
+  RewardsHistoryListType,
 } = require("./types");
 const {
   RewardListArgs,
@@ -18,7 +18,7 @@ const {
   CreateRedemptionRequestArgs,
   SettleRedemptionRequestArgs,
   DeclineRedemptionRequestArgs,
-  RewardsHistoryListArgs
+  RewardsHistoryListArgs,
 } = require("./args");
 const {
   RewardListResolver,
@@ -29,61 +29,61 @@ const {
   CreateRedemptionRequestResolver,
   SettleRedemptionRequestResolver,
   DeclineRedemptionRequestResolver,
-  RewardsHistoryListResolver
+  RewardsHistoryListResolver,
 } = require("./resolvers");
 
 const RewardList = {
   type: RewardListType,
   args: RewardListArgs,
-  resolve: RewardListResolver
+  resolve: RewardListResolver,
 };
 
 const CreateReward = {
   type: CreateRewardType,
   args: CreateRewardArgs,
-  resolve: CreateRewardResolver
+  resolve: CreateRewardResolver,
 };
 
 const UpdateReward = {
   type: UpdateRewardType,
   args: UpdateRewardArgs,
-  resolve: UpdateRewardResolver
+  resolve: UpdateRewardResolver,
 };
 
 const DeleteReward = {
   type: DeleteRewardType,
   args: DeleteRewardArgs,
-  resolve: DeleteRewardResolver
+  resolve: DeleteRewardResolver,
 };
 
 const RedemptionRequestList = {
   type: RedemptionRequestListType,
   args: RedemptionRequestListArgs,
-  resolve: RedemptionRequestListResolver
+  resolve: RedemptionRequestListResolver,
 };
 
 const CreateRedemptionRequest = {
   type: CreateRedemptionRequestType,
   args: CreateRedemptionRequestArgs,
-  resolve: CreateRedemptionRequestResolver
+  resolve: CreateRedemptionRequestResolver,
 };
 
 const SettleRedemptionRequest = {
   type: SettleRedemptionRequestType,
   args: SettleRedemptionRequestArgs,
-  resolve: SettleRedemptionRequestResolver
+  resolve: SettleRedemptionRequestResolver,
 };
 
 const DeclineRedemptionRequest = {
   type: DeclineRedemptionRequestType,
   args: DeclineRedemptionRequestArgs,
-  resolve: DeclineRedemptionRequestResolver
+  resolve: DeclineRedemptionRequestResolver,
 };
 
 const RewardsHistoryList = {
   type: RewardsHistoryListType,
   args: RewardsHistoryListArgs,
-  resolve: RewardsHistoryListResolver
+  resolve: RewardsHistoryListResolver,
 };
 
 module.exports = {
@@ -95,5 +95,5 @@ module.exports = {
   CreateRedemptionRequest,
   SettleRedemptionRequest,
   DeclineRedemptionRequest,
-  RewardsHistoryList
+  RewardsHistoryList,
 };

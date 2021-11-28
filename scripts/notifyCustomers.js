@@ -15,11 +15,11 @@ const service = async () => {
 
     const auths = await getAllAuths();
 
-    const handler = async (auth) => {
+    const handler = async auth => {
       const {
         slackInstallation: {
-          team: { id: teamId }
-        }
+          team: { id: teamId },
+        },
       } = auth;
 
       await postMessageToHook(teamId, [
@@ -27,39 +27,42 @@ const service = async () => {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: "Hey there! :wave: \n\n This is to inform that we are taking *Cheersly* off from the Slack app directory and will be manually distributing it (not through the Slack app directory)."
-          }
+            text:
+              "Hey there! :wave: \n\n This is to inform that we are taking *Cheersly* off from the Slack app directory and will be manually distributing it (not through the Slack app directory).",
+          },
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: "*Why are we moving off from the Slack app directory?* \n Whenever we submit any changes to the app, we need the changes to get approved by the Slack team, this often takes too long which we cannot afford at the moment. We are moving fast and committed to solving the problems of our customers."
-          }
+            text:
+              "*Why are we moving off from the Slack app directory?* \n Whenever we submit any changes to the app, we need the changes to get approved by the Slack team, this often takes too long which we cannot afford at the moment. We are moving fast and committed to solving the problems of our customers.",
+          },
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: "*How does this impact you?* \n Your current installation of Cheersly will no longer work. But the good news is that you can use Cheersly by joining our private beta program. We're prioritizing people ops managers at fast-growing startups that use Slack. If you're a fit, you'll get access to Cheersly and help us improve remote team connection. Just send an email to support@cheersly.club with your interest and we will take it forward from there."
-          }
+            text:
+              "*How does this impact you?* \n Your current installation of Cheersly will no longer work. But the good news is that you can use Cheersly by joining our private beta program. We're prioritizing people ops managers at fast-growing startups that use Slack. If you're a fit, you'll get access to Cheersly and help us improve remote team connection. Just send an email to support@cheersly.club with your interest and we will take it forward from there.",
+          },
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: "Cheers :beers:"
-          }
+            text: "Cheers :beers:",
+          },
         },
         {
           type: "context",
           elements: [
             {
               type: "mrkdwn",
-              text: "Need help? contact support@cheersly.club"
-            }
-          ]
-        }
+              text: "Need help? contact support@cheersly.club",
+            },
+          ],
+        },
       ]);
     };
 
@@ -76,7 +79,7 @@ mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  useCreateIndex: true
+  useCreateIndex: true,
 });
 
 // On Connection
@@ -95,7 +98,7 @@ mongoose.connection.on("connected", async () => {
 });
 
 // On Error
-mongoose.connection.on("error", (error) => {
+mongoose.connection.on("error", error => {
   logger.error(
     "Database error from notify customers script -> error : ",
     error

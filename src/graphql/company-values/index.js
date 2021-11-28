@@ -2,48 +2,48 @@ const {
   CompanyValuesListType,
   CreateCompanyValuesType,
   UpdateCompanyValuesType,
-  DeleteCompanyValuesType
+  DeleteCompanyValuesType,
 } = require("./types");
 const {
   CompanyValuesListArgs,
   CreateCompanyValuesArgs,
   UpdateCompanyValuesArgs,
-  DeleteCompanyValuesArgs
+  DeleteCompanyValuesArgs,
 } = require("./args");
 const {
   CompanyValuesListResolver,
   CreateCompanyValuesResolver,
   UpdateCompanyValuesResolver,
-  DeleteCompanyValuesResolver
+  DeleteCompanyValuesResolver,
 } = require("./resolvers");
 
 const CompanyValuesList = {
   type: CompanyValuesListType,
   args: CompanyValuesListArgs,
-  resolve: CompanyValuesListResolver
+  resolve: CompanyValuesListResolver,
 };
 
 const CreateCompanyValues = {
   type: CreateCompanyValuesType,
   args: CreateCompanyValuesArgs,
-  resolve: CreateCompanyValuesResolver
+  resolve: CreateCompanyValuesResolver,
 };
 
 const UpdateCompanyValues = {
   type: UpdateCompanyValuesType,
   args: UpdateCompanyValuesArgs,
-  resolve: UpdateCompanyValuesResolver
+  resolve: UpdateCompanyValuesResolver,
 };
 
 const DeleteCompanyValues = {
   type: DeleteCompanyValuesType,
   args: DeleteCompanyValuesArgs,
-  resolve: DeleteCompanyValuesResolver
+  resolve: DeleteCompanyValuesResolver,
 };
 
 module.exports = {
   CompanyValuesList,
   CreateCompanyValues,
   UpdateCompanyValues,
-  DeleteCompanyValues
+  DeleteCompanyValues,
 };

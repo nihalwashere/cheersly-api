@@ -3,9 +3,9 @@ const {
     POLL_OPTION_SUBMITTED,
     CUSTOMER_FEEDBACK,
     SAY_CHEERS,
-    ADD_NEW_TOPIC
+    ADD_NEW_TOPIC,
   },
-  BLOCK_IDS: { STONE_PAPER_SCISSORS, TOPICS_CHANGE, INTERESTS_CHANGE }
+  BLOCK_IDS: { STONE_PAPER_SCISSORS, TOPICS_CHANGE, INTERESTS_CHANGE },
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
 const { handleShareFeedback } = require("./share-feedback");
@@ -16,19 +16,19 @@ const { handleTopicsChange } = require("./topics");
 const { handleInterestsChange } = require("./interests");
 const logger = require("../../global/logger");
 
-const actionsMapper = async (payload) => {
+const actionsMapper = async payload => {
   try {
     const actionIdMapper = {
       [POLL_OPTION_SUBMITTED]: () => handlePollOptionSubmitted(payload),
       [CUSTOMER_FEEDBACK]: () => handleShareFeedback(payload),
       [SAY_CHEERS]: () => handleSayCheers(payload),
-      [ADD_NEW_TOPIC]: () => handleAddNewTopic(payload)
+      [ADD_NEW_TOPIC]: () => handleAddNewTopic(payload),
     };
 
     const blockIdMapper = {
       [STONE_PAPER_SCISSORS]: () => handleStonePaperScissors(payload),
       [TOPICS_CHANGE]: () => handleTopicsChange(payload),
-      [INTERESTS_CHANGE]: () => handleInterestsChange(payload)
+      [INTERESTS_CHANGE]: () => handleInterestsChange(payload),
     };
 
     let applyMapper = null;
@@ -50,7 +50,7 @@ const actionsMapper = async (payload) => {
   }
 };
 
-const actionsHandler = async (payload) => {
+const actionsHandler = async payload => {
   try {
     const { actions } = payload;
 

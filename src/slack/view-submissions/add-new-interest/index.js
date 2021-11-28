@@ -3,22 +3,22 @@ const TopicsModel = require("../../../mongo/models/Topics");
 const InterestsModel = require("../../../mongo/models/Interests");
 const { updateModal } = require("../../api");
 const {
-  createInterestsTemplate
+  createInterestsTemplate,
 } = require("../../commands/interests/template");
 const {
   BLOCK_IDS: { NEW_INTEREST },
   ACTION_IDS: { NEW_INTEREST_VALUE },
-  VIEW_SUBMISSIONS: { INTERESTS }
+  VIEW_SUBMISSIONS: { INTERESTS },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const processAddNewInterest = async (payload) => {
+const processAddNewInterest = async payload => {
   try {
     const {
       user: { id: userId },
       team: { id: teamId },
       view: { previous_view_id, state },
-      hash
+      hash,
     } = payload;
 
     const newInterest = state.values[NEW_INTEREST][NEW_INTEREST_VALUE].value;
@@ -45,7 +45,7 @@ const processAddNewInterest = async (payload) => {
       // create new topic record for team
       updatedTopic = await new TopicsModel({
         teamId,
-        topics: [{ id: topicId, value: newInterest }]
+        topics: [{ id: topicId, value: newInterest }],
       }).save();
     }
 
@@ -65,7 +65,7 @@ const processAddNewInterest = async (payload) => {
       updatedInterest = await new InterestsModel({
         teamId,
         userId,
-        interests: [{ id: topicId, value: newInterest }]
+        interests: [{ id: topicId, value: newInterest }],
       }).save();
     }
 
@@ -76,8 +76,8 @@ const processAddNewInterest = async (payload) => {
 
       const unSelectedTopics = [];
 
-      updatedTopics.forEach((elem) => {
-        if (!updatedInterests.some((item) => item.id === elem.id)) {
+      updatedTopics.forEach(elem => {
+        if (!updatedInterests.some(item => item.id === elem.id)) {
           unSelectedTopics.push(elem);
         }
       });
@@ -91,7 +91,7 @@ const processAddNewInterest = async (payload) => {
           updatedTopics,
           unSelectedTopics,
           updatedInterests
-        )
+        ),
       });
     }
   } catch (error) {

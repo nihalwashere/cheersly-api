@@ -2,11 +2,11 @@ const { slackPostMessageToChannel } = require("../../api");
 const { createDirectMessageHelpTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
-const handleDirectMessage = async (payload) => {
+const handleDirectMessage = async payload => {
   try {
     const {
       team_id,
-      event: { channel }
+      event: { channel },
     } = payload;
 
     await slackPostMessageToChannel(

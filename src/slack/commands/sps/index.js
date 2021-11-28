@@ -2,7 +2,7 @@ const { nanoid } = require("nanoid");
 const StonePaperScissorsModel = require("../../../mongo/models/StonePaperScissors");
 const {
   createAllowedOnlyInDMTemplate,
-  createPlayStonePaperScissorsTemplate
+  createPlayStonePaperScissorsTemplate,
 } = require("./template");
 const logger = require("../../../global/logger");
 
@@ -18,7 +18,7 @@ const handleStonePaperScissorsCommand = async (
       // command executed in channel or multi person chat
       return {
         response_type: "ephemeral",
-        blocks: createAllowedOnlyInDMTemplate()
+        blocks: createAllowedOnlyInDMTemplate(),
       };
     }
 
@@ -29,20 +29,24 @@ const handleStonePaperScissorsCommand = async (
     await new StonePaperScissorsModel({
       teamId: team_id,
       gameId,
-      blocks
+      blocks,
     }).save();
 
     return {
       response_type: "in_channel",
-      blocks
+      blocks,
     };
   } catch (error) {
     logger.error("handleStonePaperScissorsCommand() -> error : ", error);
   }
 };
 
-const isSPSCommand = (text) => {
-  if (String(text).trim().includes("sp")) {
+const isSPSCommand = text => {
+  if (
+    String(text)
+      .trim()
+      .includes("sp")
+  ) {
     return true;
   }
 

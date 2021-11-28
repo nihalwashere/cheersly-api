@@ -1,7 +1,7 @@
 const AppHomeBlocks = require("../models/AppHomeBlocks");
 const logger = require("../../global/logger");
 
-const getAppHpmeBlocksForTeam = async (teamId) => {
+const getAppHpmeBlocksForTeam = async teamId => {
   try {
     return await AppHomeBlocks.findOne({ teamId });
   } catch (error) {
@@ -23,5 +23,5 @@ const upsertAppHpmeBlocks = async (teamId, payload) => {
 
 module.exports = {
   getAppHpmeBlocksForTeam,
-  upsertAppHpmeBlocks
+  upsertAppHpmeBlocks,
 };

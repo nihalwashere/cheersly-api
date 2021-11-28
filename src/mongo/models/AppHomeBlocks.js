@@ -6,11 +6,11 @@ const AppHomeBlocksSchema = new mongoose.Schema(
   {
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     blocks: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   { timestamps: true }
 );

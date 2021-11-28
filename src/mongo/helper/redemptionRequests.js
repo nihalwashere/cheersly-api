@@ -1,10 +1,10 @@
 const RedemptionRequests = require("../models/RedemptionRequests");
 const logger = require("../../global/logger");
 const {
-  RedemptionRequestStatus
+  RedemptionRequestStatus,
 } = require("../../enums/redemptionRequestStatus");
 
-const getRedemptionRequestsByTeamId = async (teamId) => {
+const getRedemptionRequestsByTeamId = async teamId => {
   try {
     return await RedemptionRequests.find({ teamId });
   } catch (error) {
@@ -12,7 +12,7 @@ const getRedemptionRequestsByTeamId = async (teamId) => {
   }
 };
 
-const addRedemptionRequest = async (payload) => {
+const addRedemptionRequest = async payload => {
   try {
     return await new RedemptionRequests(payload).save();
   } catch (error) {
@@ -20,7 +20,7 @@ const addRedemptionRequest = async (payload) => {
   }
 };
 
-const getRedemptionRequestById = async (_id) => {
+const getRedemptionRequestById = async _id => {
   try {
     return await RedemptionRequests.findOne({ _id }).populate("user reward");
   } catch (error) {
@@ -34,8 +34,8 @@ const updateRedemptionRequestById = async (_id, payload) => {
       { _id },
       {
         $set: {
-          ...payload
-        }
+          ...payload,
+        },
       }
     );
   } catch (error) {
@@ -46,11 +46,11 @@ const updateRedemptionRequestById = async (_id, payload) => {
 const paginateRedemptionRequests = async ({ pageIndex, pageSize, filter }) => {
   try {
     const totalCount = await RedemptionRequests.find({
-      ...filter
+      ...filter,
     }).countDocuments({});
 
     const data = await RedemptionRequests.find({
-      ...filter
+      ...filter,
     })
       .populate("user reward")
       .sort({ createdAt: -1 })
@@ -60,14 +60,14 @@ const paginateRedemptionRequests = async ({ pageIndex, pageSize, filter }) => {
     return {
       data,
       totalCount: Number(totalCount),
-      totalPages: Math.ceil(totalCount / pageSize)
+      totalPages: Math.ceil(totalCount / pageSize),
     };
   } catch (error) {
     logger.error(`paginateRedemptionRequests() -> error : `, error);
   }
 };
 
-const declineRedemptionRequestByRewardId = async (reward) => {
+const declineRedemptionRequestByRewardId = async reward => {
   try {
     return await RedemptionRequests.updateMany(
       { reward },
@@ -84,5 +84,5 @@ module.exports = {
   getRedemptionRequestById,
   updateRedemptionRequestById,
   paginateRedemptionRequests,
-  declineRedemptionRequestByRewardId
+  declineRedemptionRequestByRewardId,
 };

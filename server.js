@@ -39,7 +39,7 @@ const whitelist = [
   "https://app.cheersly.club",
   "https://app-dev.cheersly.club",
   "http://localhost:7000",
-  "http://localhost:3000"
+  "http://localhost:3000",
 ];
 
 app.use(
@@ -59,7 +59,7 @@ app.use(
       }
 
       return callback(null, true);
-    }
+    },
   })
 );
 
@@ -89,7 +89,7 @@ app.use(
   graphqlHTTP({
     schema,
     graphiql: true,
-    pretty: true
+    pretty: true,
   })
 );
 
@@ -97,7 +97,7 @@ app.use(
 mongoose
   .connect(MONGO_URL, MONGO_OPTIONS)
   .then(() => logger.info("MongoDB Connected!!!"))
-  .catch((err) => logger.error("MongoDB Connection Failed -> error ", err));
+  .catch(err => logger.error("MongoDB Connection Failed -> error ", err));
 
 app.get("/logo.png", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.png"));
@@ -118,7 +118,7 @@ const server = app.listen(PORT, () => {
       "00 */5 * * * *",
       () => {
         spawn(process.execPath, ["./src/cron/polls.js"], {
-          stdio: "inherit"
+          stdio: "inherit",
         });
       },
       null,
@@ -131,7 +131,7 @@ const server = app.listen(PORT, () => {
       "00 00 12 * * *",
       () => {
         spawn(process.execPath, ["./src/cron/admin-onboarding.js"], {
-          stdio: "inherit"
+          stdio: "inherit",
         });
       },
       null,

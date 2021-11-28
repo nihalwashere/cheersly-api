@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const moment = require("moment-timezone");
 
 // const text =
@@ -83,31 +85,31 @@ const now = new Date();
 const topics = [
   {
     id: "Tzbnzan_9P",
-    value: "Tech"
+    value: "Tech",
   },
   {
     id: "jmkhzWOb0O",
-    value: "Cars"
+    value: "Cars",
   },
   {
     id: "V6jDx9DFAD",
-    value: "Bikes"
+    value: "Bikes",
   },
   {
     id: "LUIpMPVjgb",
-    value: "Crypto"
-  }
+    value: "Crypto",
+  },
 ];
 
 const interests = [
   {
     id: "jmkhzWOb0O",
-    value: "Cars"
+    value: "Cars",
   },
   {
     id: "LUIpMPVjgb",
-    value: "Crypto"
-  }
+    value: "Crypto",
+  },
 ];
 
 const unSelectedTopics = [];
@@ -120,8 +122,8 @@ const unSelectedTopics = [];
 //   }
 // });
 
-topics.forEach((elem) => {
-  if (!interests.some((item) => item.id === elem.id)) {
+topics.forEach(elem => {
+  if (!interests.some(item => item.id === elem.id)) {
     unSelectedTopics.push(elem);
   }
 });

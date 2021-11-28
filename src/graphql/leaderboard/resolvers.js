@@ -10,12 +10,12 @@ const paginate = (data, page_size, page_number) =>
 
 const sortByKey = (data, sortKey, sortOrder) => {
   const withData = data.filter(
-    (obj) =>
+    obj =>
       obj[sortKey] !== undefined && obj[sortKey] !== null && obj[sortKey] !== ""
   );
 
   const withoutData = data.filter(
-    (obj) =>
+    obj =>
       obj[sortKey] === undefined || obj[sortKey] === null || obj[sortKey] === ""
   );
 
@@ -30,44 +30,88 @@ const sortByKey = (data, sortKey, sortOrder) => {
   return sortedData.concat(withoutData);
 };
 
-const resolveDuration = (duration) => {
+const resolveDuration = duration => {
   const mapper = {
     CURRENT_WEEK: () => ({
-      from: moment().startOf("weeks").toDate(),
-      to: moment().toDate()
+      from: moment()
+        .startOf("weeks")
+        .toDate(),
+      to: moment().toDate(),
     }),
     PAST_WEEK: () => ({
-      from: moment().subtract(1, "weeks").startOf("weeks").toDate(),
-      to: moment().subtract(1, "weeks").endOf("weeks").toDate()
+      from: moment()
+        .subtract(1, "weeks")
+        .startOf("weeks")
+        .toDate(),
+      to: moment()
+        .subtract(1, "weeks")
+        .endOf("weeks")
+        .toDate(),
     }),
     PAST_2_WEEKS: () => ({
-      from: moment().subtract(2, "weeks").startOf("weeks").toDate(),
-      to: moment().subtract(1, "weeks").endOf("weeks").toDate()
+      from: moment()
+        .subtract(2, "weeks")
+        .startOf("weeks")
+        .toDate(),
+      to: moment()
+        .subtract(1, "weeks")
+        .endOf("weeks")
+        .toDate(),
     }),
     PAST_3_WEEKS: () => ({
-      from: moment().subtract(3, "weeks").startOf("weeks").toDate(),
-      to: moment().subtract(1, "weeks").endOf("weeks").toDate()
+      from: moment()
+        .subtract(3, "weeks")
+        .startOf("weeks")
+        .toDate(),
+      to: moment()
+        .subtract(1, "weeks")
+        .endOf("weeks")
+        .toDate(),
     }),
     LAST_MONTH: () => ({
-      from: moment().subtract(1, "months").startOf("month").toDate(),
-      to: moment().subtract(1, "months").endOf("month").toDate()
+      from: moment()
+        .subtract(1, "months")
+        .startOf("month")
+        .toDate(),
+      to: moment()
+        .subtract(1, "months")
+        .endOf("month")
+        .toDate(),
     }),
     LAST_2_MONTHS: () => ({
-      from: moment().subtract(2, "months").startOf("month").toDate(),
-      to: moment().subtract(1, "months").endOf("month").toDate()
+      from: moment()
+        .subtract(2, "months")
+        .startOf("month")
+        .toDate(),
+      to: moment()
+        .subtract(1, "months")
+        .endOf("month")
+        .toDate(),
     }),
     LAST_3_MONTHS: () => ({
-      from: moment().subtract(3, "months").startOf("month").toDate(),
-      to: moment().subtract(1, "months").endOf("month").toDate()
+      from: moment()
+        .subtract(3, "months")
+        .startOf("month")
+        .toDate(),
+      to: moment()
+        .subtract(1, "months")
+        .endOf("month")
+        .toDate(),
     }),
     LAST_6_MONTHS: () => ({
-      from: moment().subtract(6, "months").startOf("month").toDate(),
-      to: moment().subtract(1, "months").endOf("month").toDate()
+      from: moment()
+        .subtract(6, "months")
+        .startOf("month")
+        .toDate(),
+      to: moment()
+        .subtract(1, "months")
+        .endOf("month")
+        .toDate(),
     }),
     ALL_TIME: () => ({
       from: null,
-      to: null
-    })
+      to: null,
+    }),
   };
 
   const applyMapper = mapper[duration];
@@ -76,11 +120,11 @@ const resolveDuration = (duration) => {
     ? applyMapper()
     : {
         from: "",
-        to: ""
+        to: "",
       };
 };
 
-const findLeaders = (cheers) => {
+const findLeaders = cheers => {
   const cheerGivers = [];
   const cheerReceivers = [];
 
@@ -89,18 +133,18 @@ const findLeaders = (cheers) => {
 
   // cheers given
 
-  cheers.map((cheer) => {
-    const foundUser = uniqueCheerGivers.find((user) => user === cheer.from);
+  cheers.map(cheer => {
+    const foundUser = uniqueCheerGivers.find(user => user === cheer.from);
 
     if (!foundUser) {
       uniqueCheerGivers.push(cheer.from);
     }
   });
 
-  uniqueCheerGivers.map((user) => {
+  uniqueCheerGivers.map(user => {
     let cheersGiven = 0;
 
-    cheers.map((cheer) => {
+    cheers.map(cheer => {
       if (cheer.from === user) {
         cheersGiven += 1;
       }
@@ -111,18 +155,18 @@ const findLeaders = (cheers) => {
 
   // cheers received
 
-  cheers.map((cheer) => {
-    const foundUser = uniqueCheerReceivers.find((user) => user === cheer.to);
+  cheers.map(cheer => {
+    const foundUser = uniqueCheerReceivers.find(user => user === cheer.to);
 
     if (!foundUser) {
       uniqueCheerReceivers.push(cheer.to);
     }
   });
 
-  uniqueCheerReceivers.map((user) => {
+  uniqueCheerReceivers.map(user => {
     let cheersReceived = 0;
 
-    cheers.map((cheer) => {
+    cheers.map(cheer => {
       if (cheer.to === user) {
         cheersReceived += 1;
       }
@@ -136,20 +180,20 @@ const findLeaders = (cheers) => {
 
   const leaders = [];
 
-  uniqueUsers.map((user) => {
+  uniqueUsers.map(user => {
     const hasGivenCheers = cheerGivers.find(
-      (cheer) => cheer.slackUserName === user
+      cheer => cheer.slackUserName === user
     );
 
     const hasReceivedCheers = cheerReceivers.find(
-      (cheer) => cheer.slackUserName === user
+      cheer => cheer.slackUserName === user
     );
 
     if (hasGivenCheers && hasReceivedCheers) {
       leaders.push({
         slackUserName: user,
         cheersGiven: hasGivenCheers.cheersGiven,
-        cheersReceived: hasReceivedCheers.cheersReceived
+        cheersReceived: hasReceivedCheers.cheersReceived,
       });
     }
 
@@ -157,7 +201,7 @@ const findLeaders = (cheers) => {
       leaders.push({
         slackUserName: user,
         cheersGiven: 0,
-        cheersReceived: hasReceivedCheers.cheersReceived
+        cheersReceived: hasReceivedCheers.cheersReceived,
       });
     }
 
@@ -165,7 +209,7 @@ const findLeaders = (cheers) => {
       leaders.push({
         slackUserName: user,
         cheersGiven: hasGivenCheers.cheersGiven,
-        cheersReceived: 0
+        cheersReceived: 0,
       });
     }
   });
@@ -198,7 +242,7 @@ const LeaderBoardListResolver = async (_, args, context) => {
     const mappedData = [];
 
     await Promise.all(
-      data.map(async (item) => {
+      data.map(async item => {
         const { slackUserName, cheersGiven, cheersReceived } = item;
 
         const slackUserData = await getUserDataBySlackUserName(slackUserName);
@@ -207,7 +251,7 @@ const LeaderBoardListResolver = async (_, args, context) => {
           mappedData.push({
             slackUser: slackUserData,
             cheersGiven,
-            cheersReceived
+            cheersReceived,
           });
         }
       })
@@ -226,7 +270,7 @@ const LeaderBoardListResolver = async (_, args, context) => {
     return {
       data: sortedData,
       totalCount: Number(totalCount),
-      totalPages: Math.ceil(totalCount / pageSize)
+      totalPages: Math.ceil(totalCount / pageSize),
     };
   } catch (error) {
     throw new Error(error);

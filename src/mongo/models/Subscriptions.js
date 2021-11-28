@@ -5,31 +5,31 @@ const collection = "Subscriptions";
 const SubscriptionSchema = new mongoose.Schema(
   {
     subscribedBy: {
-      type: mongoose.Schema.Types.Mixed
+      type: mongoose.Schema.Types.Mixed,
     },
     slackTeamId: {
       type: String,
-      index: true
+      index: true,
     },
     isTrialPeriod: {
       type: Boolean,
-      default: false
+      default: false,
     },
     subscribedOn: {
-      type: Date
+      type: Date,
     },
     nextDueDate: {
-      type: Date
+      type: Date,
     },
     ultimateDueDate: {
-      type: Date
+      type: Date,
     },
     totalUsers: {
-      type: String
+      type: String,
     },
     users: {
-      type: mongoose.Schema.Types.Mixed
-    }
+      type: mongoose.Schema.Types.Mixed,
+    },
   },
   { timestamps: true }
 );

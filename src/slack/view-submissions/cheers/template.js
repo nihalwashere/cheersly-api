@@ -10,9 +10,9 @@ const createCheersSubmittedTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `@${senderUsername} just shared in some cheers :heart:`
-      }
-    }
+        text: `@${senderUsername} just shared in some cheers :heart:`,
+      },
+    },
   ];
 
   const n = 5;
@@ -38,8 +38,8 @@ const createCheersSubmittedTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: wrappedText
-      }
+        text: wrappedText,
+      },
     });
   }
 
@@ -48,8 +48,8 @@ const createCheersSubmittedTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*For reason:*\n" + "```" + `${reason}` + "```"
-      }
+        text: "*For reason:*\n" + "```" + `${reason}` + "```",
+      },
     });
   }
 
@@ -62,8 +62,8 @@ const createCheersSubmittedTemplate = (
           "*Company values favored :*\n" +
           "```" +
           `${companyValues.join(" ")}` +
-          "```"
-      }
+          "```",
+      },
     });
   }
 
@@ -71,7 +71,7 @@ const createCheersSubmittedTemplate = (
     blocks.push({
       type: "image",
       image_url: giphyUrl,
-      alt_text: "cheers"
+      alt_text: "cheers",
     });
   }
 
@@ -84,13 +84,14 @@ const createSelectPeersTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "Hey there! Please select your peers while sharing cheers, you should not share cheers with yourself! :smile:"
-      }
-    }
+        text:
+          "Hey there! Please select your peers while sharing cheers, you should not share cheers with yourself! :smile:",
+      },
+    },
   ];
 };
 
 module.exports = {
   createCheersSubmittedTemplate,
-  createSelectPeersTemplate
+  createSelectPeersTemplate,
 };

@@ -1,7 +1,7 @@
 const CheersStats = require("../models/CheersStats");
 const logger = require("../../global/logger");
 
-const addCheersStats = async (payload) => {
+const addCheersStats = async payload => {
   try {
     return await new CheersStats(payload).save();
   } catch (error) {
@@ -9,7 +9,7 @@ const addCheersStats = async (payload) => {
   }
 };
 
-const getCheersStatsForTeam = async (teamId) => {
+const getCheersStatsForTeam = async teamId => {
   try {
     return await CheersStats.find({ teamId });
   } catch (error) {
@@ -30,7 +30,7 @@ const updateCheersStatsForUser = async (slackUsername, payload) => {
     return await CheersStats.updateOne(
       { slackUsername },
       {
-        $set: payload
+        $set: payload,
       }
     );
   } catch (error) {
@@ -38,7 +38,7 @@ const updateCheersStatsForUser = async (slackUsername, payload) => {
   }
 };
 
-const getTopCheersReceiversForTeam = async (teamId) => {
+const getTopCheersReceiversForTeam = async teamId => {
   try {
     return await CheersStats.find({ teamId }).sort({ cheersReceived: -1 });
   } catch (error) {
@@ -49,7 +49,7 @@ const getTopCheersReceiversForTeam = async (teamId) => {
 const paginateCheersStatsForTeam = async (teamId, pageIndex, pageSize) => {
   try {
     const totalCount = await CheersStats.find({
-      teamId
+      teamId,
     }).countDocuments({});
 
     const data = await CheersStats.find({ teamId })
@@ -60,7 +60,7 @@ const paginateCheersStatsForTeam = async (teamId, pageIndex, pageSize) => {
     return {
       data,
       totalCount: Number(totalCount),
-      totalPages: Math.ceil(totalCount / pageSize)
+      totalPages: Math.ceil(totalCount / pageSize),
     };
   } catch (error) {
     logger.error(`paginateCheersStatsForTeam() -> error : `, error);
@@ -73,5 +73,5 @@ module.exports = {
   getCheersStatsForUser,
   updateCheersStatsForUser,
   getTopCheersReceiversForTeam,
-  paginateCheersStatsForTeam
+  paginateCheersStatsForTeam,
 };

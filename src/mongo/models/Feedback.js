@@ -9,10 +9,10 @@ const FeedbackSchema = new Schema(
     slackUserName: { type: String },
     teamId: { type: String },
     feedback: { type: String },
-    isAnonymous: { type: Boolean }
+    isAnonymous: { type: Boolean },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

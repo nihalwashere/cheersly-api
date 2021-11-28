@@ -3,7 +3,7 @@ const {
   GraphQLBoolean,
   GraphQLID,
   GraphQLString,
-  GraphQLEnumType
+  GraphQLEnumType,
 } = require("graphql");
 const { UserRoles } = require("../../enums/userRoles");
 
@@ -19,23 +19,23 @@ const SlackUserDataType = new GraphQLObjectType({
       type: new GraphQLObjectType({
         name: "SlackUserProfileType",
         fields: () => ({
-          image_192: { type: GraphQLString }
-        })
-      })
-    }
-  })
+          image_192: { type: GraphQLString },
+        }),
+      }),
+    },
+  }),
 });
 
 const UserRolesEnumType = new GraphQLEnumType({
   name: "UserRolesEnumType",
   values: {
     [UserRoles.ADMIN]: {
-      value: UserRoles.ADMIN
+      value: UserRoles.ADMIN,
     },
     [UserRoles.MEMBER]: {
-      value: UserRoles.MEMBER
-    }
-  }
+      value: UserRoles.MEMBER,
+    },
+  },
 });
 
 const UserType = new GraphQLObjectType({
@@ -45,10 +45,10 @@ const UserType = new GraphQLObjectType({
     slackUserData: { type: SlackUserDataType },
     slackDeleted: { type: GraphQLBoolean },
     appHomePublished: { type: GraphQLBoolean },
-    role: { type: UserRolesEnumType }
-  })
+    role: { type: UserRolesEnumType },
+  }),
 });
 
 module.exports = {
-  UserType
+  UserType,
 };

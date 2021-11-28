@@ -32,7 +32,7 @@ router.post("/app-home", async (req, res) => {
 
 router.post("/cron-all-time", async (req, res) => {
   spawn(process.execPath, ["./src/cron/stats/all-time.js"], {
-    stdio: "inherit"
+    stdio: "inherit",
   });
 
   return res.status(200).json({ success: true });
@@ -40,7 +40,7 @@ router.post("/cron-all-time", async (req, res) => {
 
 router.post("/cron-weekly", async (req, res) => {
   spawn(process.execPath, ["./src/cron/stats/weekly.js"], {
-    stdio: "inherit"
+    stdio: "inherit",
   });
 
   return res.status(200).json({ success: true });
@@ -48,7 +48,7 @@ router.post("/cron-weekly", async (req, res) => {
 
 router.post("/cron-monthly", async (req, res) => {
   spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
-    stdio: "inherit"
+    stdio: "inherit",
   });
 
   return res.status(200).json({ success: true });
@@ -56,7 +56,7 @@ router.post("/cron-monthly", async (req, res) => {
 
 router.post("/cron-cheers", async (req, res) => {
   spawn(process.execPath, ["./src/cron/say-cheers/index.js"], {
-    stdio: "inherit"
+    stdio: "inherit",
   });
 
   return res.status(200).json({ success: true });
@@ -64,7 +64,7 @@ router.post("/cron-cheers", async (req, res) => {
 
 router.post("/cron-upgrade-trial-subscription", async (req, res) => {
   spawn(process.execPath, ["./src/cron/upgrade-trial-subscription/index.js"], {
-    stdio: "inherit"
+    stdio: "inherit",
   });
 
   return res.status(200).json({ success: true });

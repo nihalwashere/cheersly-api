@@ -4,12 +4,12 @@ const logger = require("../global/logger");
 
 //  GIPHY API
 
-const getRandomGif = async (tag) => {
+const getRandomGif = async tag => {
   try {
     const req = await fetch(
       `${GIPHY_API}/random?api_key=${GIPHY_API_KEY}&tag=${tag}`,
       {
-        method: "GET"
+        method: "GET",
       }
     );
 

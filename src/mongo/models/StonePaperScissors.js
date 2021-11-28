@@ -6,43 +6,43 @@ const StonePaperScissorsSchema = new mongoose.Schema(
   {
     teamId: {
       type: String,
-      index: true
+      index: true,
     },
     gameId: {
       type: String,
-      index: true
+      index: true,
     },
     playerOne: {
       type: String,
-      default: null
+      default: null,
     },
     playerTwo: {
       type: String,
-      default: null
+      default: null,
     },
     playerOneMove: {
       type: String,
-      default: null
+      default: null,
     },
     playerTwoMove: {
       type: String,
-      default: null
+      default: null,
     },
     winner: {
       type: String,
-      default: null
+      default: null,
     },
     blocks: {
-      type: Array
+      type: Array,
     },
     draw: {
       type: Boolean,
-      default: false
+      default: false,
     },
     finished: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   { timestamps: true }
 );

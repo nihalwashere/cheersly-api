@@ -1,7 +1,7 @@
 const { openModal } = require("../../api");
 const { createSubmitAFeedbackTemplate } = require("../../templates");
 const {
-  VIEW_SUBMISSIONS: { FEEDBACK }
+  VIEW_SUBMISSIONS: { FEEDBACK },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
@@ -17,8 +17,12 @@ const handleFeedbackCommand = async (team_id, user_name, trigger_id) => {
   }
 };
 
-const isFeedbackCommand = (text) => {
-  if (String(text).trim().includes("fe")) {
+const isFeedbackCommand = text => {
+  if (
+    String(text)
+      .trim()
+      .includes("fe")
+  ) {
     return true;
   }
 

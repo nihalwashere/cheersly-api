@@ -5,8 +5,8 @@ const CheersStatType = new GraphQLObjectType({
   fields: () => ({
     cheersGiven: { type: GraphQLInt },
     cheersReceived: { type: GraphQLInt },
-    cheersRedeemable: { type: GraphQLInt }
-  })
+    cheersRedeemable: { type: GraphQLInt },
+  }),
 });
 
 module.exports = { CheersStatType };

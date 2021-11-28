@@ -1,7 +1,7 @@
 const Auth = require("../models/Auth");
 const logger = require("../../global/logger");
 
-const addAuth = async (payload) => {
+const addAuth = async payload => {
   try {
     return await new Auth(payload).save();
   } catch (error) {
@@ -40,11 +40,11 @@ const upsertAuth = async (teamId, payload) => {
   }
 };
 
-const getAuthDataForSlackTeam = async (teamId) => {
+const getAuthDataForSlackTeam = async teamId => {
   try {
     return await Auth.findOne({
       "slackInstallation.team.id": teamId,
-      slackDeleted: false
+      slackDeleted: false,
     });
   } catch (error) {
     logger.error(
@@ -54,23 +54,23 @@ const getAuthDataForSlackTeam = async (teamId) => {
   }
 };
 
-const getAuthDeletedOrNotDeleted = async (teamId) => {
+const getAuthDeletedOrNotDeleted = async teamId => {
   try {
     return await Auth.findOne({
-      "slackInstallation.team.id": teamId
+      "slackInstallation.team.id": teamId,
     });
   } catch (error) {
     logger.error(`getAuthDeletedOrNotDeleted() -> error : `, error);
   }
 };
 
-const getSlackBotTokenForTeam = async (team_id) => {
+const getSlackBotTokenForTeam = async team_id => {
   try {
     const auth = await getAuthDataForSlackTeam(team_id);
 
     if (auth) {
       const {
-        slackInstallation: { access_token: bot_access_token }
+        slackInstallation: { access_token: bot_access_token },
       } = auth;
 
       return bot_access_token;
@@ -85,7 +85,7 @@ const getSlackBotTokenForTeam = async (team_id) => {
   }
 };
 
-const deleteSlackAuthByTeamId = async (teamId) => {
+const deleteSlackAuthByTeamId = async teamId => {
   try {
     await Auth.updateMany(
       { "slackInstallation.team.id": teamId },
@@ -107,5 +107,5 @@ module.exports = {
   getAuthDataForSlackTeam,
   getSlackBotTokenForTeam,
   deleteSlackAuthByTeamId,
-  getAuthDeletedOrNotDeleted
+  getAuthDeletedOrNotDeleted,
 };

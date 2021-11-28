@@ -1,9 +1,9 @@
 const { getCompanyValuesByTeamId } = require("../mongo/helper/companyValues");
 
-const wrapCompanyValueOptionsForTeam = async (teamId) => {
+const wrapCompanyValueOptionsForTeam = async teamId => {
   const companyValues = await getCompanyValuesByTeamId(teamId);
 
-  return companyValues.map((companyValue) => {
+  return companyValues.map(companyValue => {
     const { title } = companyValue;
 
     const tag = `#${String(title).toLowerCase()}`;
@@ -12,9 +12,9 @@ const wrapCompanyValueOptionsForTeam = async (teamId) => {
       text: {
         type: "plain_text",
         text: tag,
-        emoji: true
+        emoji: true,
       },
-      value: tag
+      value: tag,
     };
   });
 };

@@ -2,29 +2,29 @@ const {
   BLOCK_IDS: { SELECT_OPTION_FOR_FEEDBACK, CUSTOMER_FEEDBACK_DESCRIPTION },
   ACTION_IDS: {
     SELECTED_OPTION_FOR_FEEDBACK,
-    CUSTOMER_FEEDBACK_DESCRIPTION_TEXT
-  }
+    CUSTOMER_FEEDBACK_DESCRIPTION_TEXT,
+  },
 } = require("../../../global/constants");
 const { createFeedbackSubmissionSuccessTemplate } = require("./template");
 const {
-  addCustomerFeedback
+  addCustomerFeedback,
 } = require("../../../mongo/helper/customerFeedback");
 const { slackPostMessageToChannel, postInternalMessage } = require("../../api");
 const { getUserDataBySlackUserId } = require("../../../mongo/helper/user");
 const { createInternalFeedbackTemplate } = require("../../templates");
 const {
   INTERNAL_SLACK_TEAM_ID,
-  INTERNAL_SLACK_CHANNEL_ID
+  INTERNAL_SLACK_CHANNEL_ID,
 } = require("../../../global/config");
 const logger = require("../../../global/logger");
 
-const processCustomerFeedback = async (payload) => {
+const processCustomerFeedback = async payload => {
   try {
     logger.info("processCustomerFeedback");
     const {
       user: { id: slackUserId },
       team: { id: teamId },
-      view: { state }
+      view: { state },
     } = payload;
 
     const regarding =
@@ -41,7 +41,7 @@ const processCustomerFeedback = async (payload) => {
       slackUserId,
       teamId,
       regarding,
-      description: description || ""
+      description: description || "",
     });
 
     const template = createFeedbackSubmissionSuccessTemplate();
