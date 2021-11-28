@@ -27,24 +27,21 @@ const service = async () => {
           type: "section",
           text: {
             type: "mrkdwn",
-            text:
-              "Hey there! :wave: \n\n This is to inform that we are taking *Cheersly* off from the Slack app directory and will be manually distributing it (not through the Slack app directory)."
+            text: "Hey there! :wave: \n\n This is to inform that we are taking *Cheersly* off from the Slack app directory and will be manually distributing it (not through the Slack app directory)."
           }
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text:
-              "*Why are we moving off from the Slack app directory?* \n Whenever we submit any changes to the app, we need the changes to get approved by the Slack team, this often takes too long which we cannot afford at the moment. We are moving fast and committed to solving the problems of our customers."
+            text: "*Why are we moving off from the Slack app directory?* \n Whenever we submit any changes to the app, we need the changes to get approved by the Slack team, this often takes too long which we cannot afford at the moment. We are moving fast and committed to solving the problems of our customers."
           }
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text:
-              "*How does this impact you?* \n Your current installation of Cheersly will no longer work. But the good news is that you can use Cheersly by joining our private beta program. We're prioritizing people ops managers at fast-growing startups that use Slack. If you're a fit, you'll get access to Cheersly and help us improve remote team connection. Just send an email to support@cheersly.club with your interest and we will take it forward from there."
+            text: "*How does this impact you?* \n Your current installation of Cheersly will no longer work. But the good news is that you can use Cheersly by joining our private beta program. We're prioritizing people ops managers at fast-growing startups that use Slack. If you're a fit, you'll get access to Cheersly and help us improve remote team connection. Just send an email to support@cheersly.club with your interest and we will take it forward from there."
           }
         },
         {

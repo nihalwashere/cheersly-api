@@ -52,8 +52,6 @@ const actionsMapper = async (payload) => {
 
 const actionsHandler = async (payload) => {
   try {
-    logger.info("actionsHandler");
-
     const { actions } = payload;
 
     if (actions.length && actions[0].action_id) {

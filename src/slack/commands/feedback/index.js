@@ -18,12 +18,7 @@ const handleFeedbackCommand = async (team_id, user_name, trigger_id) => {
 };
 
 const isFeedbackCommand = (text) => {
-  if (
-    String(text).trim().includes("fe") ||
-    String(text).trim().includes("fee") ||
-    String(text).trim().includes("feed") ||
-    String(text).trim().includes("feedback")
-  ) {
+  if (String(text).trim().includes("fe")) {
     return true;
   }
 

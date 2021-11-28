@@ -4,8 +4,8 @@ const router = express.Router();
 
 const {
   verifySlackRequest,
-  getAppUrl
-  // isSubscriptionValidForSlack
+  getAppUrl,
+  isSubscriptionValidForSlack
 } = require("../../utils/common");
 const { isHelpCommand } = require("../../slack/commands/help");
 const { createHelpTemplate } = require("../../slack/commands/help/template");
@@ -33,14 +33,14 @@ const {
   isInterestsCommand,
   handleInterestsCommand
 } = require("../../slack/commands/interests");
-// const {
-//   upgradeSubscriptionMessage,
-//   trialEndedMessage
-// } = require("../../slack/subscription-handlers");
-// const {
-//   SubscriptionMessageType
-// } = require("../../enums/subscriptionMessageTypes");
-// const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
+const {
+  upgradeSubscriptionMessage,
+  trialEndedMessage
+} = require("../../slack/subscription-handlers");
+const {
+  SubscriptionMessageType
+} = require("../../enums/subscriptionMessageTypes");
+const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
 const logger = require("../../global/logger");
 
 router.post("/", async (req, res) => {
@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
     const isLegitRequest = verifySlackRequest(
       slackRequestTimestamp,
       slackSignature,
-      req.body
+      req.rawBody
     );
 
     if (isLegitRequest.error) {
@@ -63,14 +63,8 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const {
-      team_id,
-      channel_id,
-      user_id,
-      user_name,
-      trigger_id,
-      text
-    } = req.body;
+    const { team_id, channel_id, user_id, user_name, trigger_id, text } =
+      req.body;
 
     if (isHelpCommand(text)) {
       // /cheers help
@@ -91,21 +85,21 @@ router.post("/", async (req, res) => {
       return await handleOnboardCommand(team_id, channel_id);
     }
 
-    // // verify subscription
+    // verify subscription
 
-    // const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+    const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
 
-    // if (!subscriptionInfo.hasSubscription) {
-    //   res.send("");
+    if (!subscriptionInfo.hasSubscription) {
+      res.send("");
 
-    //   await updateAppHomePublishedForTeam(team_id, false);
+      await updateAppHomePublishedForTeam(team_id, false);
 
-    //   if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
-    //     return await trialEndedMessage(team_id, channel_id);
-    //   }
+      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+        return await trialEndedMessage(team_id, channel_id);
+      }
 
-    //   return await upgradeSubscriptionMessage(team_id, channel_id);
-    // }
+      return await upgradeSubscriptionMessage(team_id, channel_id);
+    }
 
     if (isCheersCommand(text)) {
       // /cheers

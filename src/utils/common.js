@@ -1,7 +1,6 @@
 const R = require("ramda");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const qs = require("qs");
 const { APP_NAME, SLACK_APP_ID } = require("../global/config");
 const { PROD_APP_URL, DEV_APP_URL } = require("../global/constants");
 const {
@@ -17,7 +16,7 @@ const logger = require("../global/logger");
 
 const newIdString = () => mongoose.Types.ObjectId().toHexString();
 
-const verifySlackRequest = (slackRequestTimestamp, slackSignature, body) => {
+const verifySlackRequest = (slackRequestTimestamp, slackSignature, rawBody) => {
   try {
     const currentTime = Math.floor(new Date().getTime() / 1000);
     if (Math.abs(currentTime - slackRequestTimestamp) > 5 * 60) {
@@ -28,9 +27,7 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, body) => {
       };
     }
 
-    const baseString = `v0:${slackRequestTimestamp}:${qs.stringify(body, {
-      format: "RFC1738"
-    })}`;
+    const baseString = `v0:${slackRequestTimestamp}:${rawBody}`;
 
     // logger.debug("baseString : ", baseString);
 

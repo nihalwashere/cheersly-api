@@ -4,8 +4,7 @@ const createFeedbackSubmissionSuccessTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "Thanks for writing to us! We will get in touch shortly... :smiley:"
+        text: "Thanks for writing to us! We will get in touch shortly... :smiley:"
       }
     }
   ];

@@ -33,7 +33,6 @@ const submissionsMapper = async (callback_id, payload) => {
 
 const viewSubmissionHandler = async (payload) => {
   try {
-    logger.info("viewSubmissionHandler");
     const {
       view: { callback_id }
     } = payload;

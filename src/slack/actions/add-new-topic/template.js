@@ -26,8 +26,7 @@ const createAddNewTopicView = (callback_id) => ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "Add your interest by typing it below, once submitted, others can select it as their interest too!"
+        text: "Add your interest by typing it below, once submitted, others can select it as their interest too!"
       }
     },
     {

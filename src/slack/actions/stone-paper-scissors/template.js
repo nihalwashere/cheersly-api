@@ -66,8 +66,7 @@ const moveAlreadyPlayedModalTemplate = () => ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "*You have already played your move, it's your opponent's chance to play!*"
+        text: "*You have already played your move, it's your opponent's chance to play!*"
       }
     },
     {

@@ -79,8 +79,7 @@ const createInterestsTemplate = (
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "Explore and click on the topics that you find interesting or add a new topic yourself!"
+        text: "Explore and click on the topics that you find interesting or add a new topic yourself!"
       }
     },
     {

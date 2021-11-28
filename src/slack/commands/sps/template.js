@@ -62,16 +62,14 @@ const createAllowedOnlyInDMTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "*Oops! Stone Paper Scissors can be only be played in direct messages.*"
+        text: "*Oops! Stone Paper Scissors can be only be played in direct messages.*"
       }
     },
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "Enter `/cheers sps` in a direct message with your co-worker to play."
+        text: "Enter `/cheers sps` in a direct message with your co-worker to play."
       }
     }
   ];

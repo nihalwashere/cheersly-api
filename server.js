@@ -1,14 +1,12 @@
 const express = require("express");
 const { CronJob } = require("cron");
 const { spawn } = require("child_process");
-const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./src/graphql/schema");
-
 const logger = require("./src/global/logger");
 
 const { PORT, MONGO_URL, MONGO_OPTIONS } = require("./src/global/config");
@@ -19,12 +17,18 @@ const PUBLIC_DIR = "src/public";
 const app = express();
 
 app.use(morgan("combined"));
+
+const rawBodySaver = (req, res, buf, encoding) => {
+  if (buf && buf.length) {
+    req.rawBody = buf.toString(encoding || "utf8");
+  }
+};
+
+app.use(express.json({ verify: rawBodySaver, limit: "50mb" }));
 app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
+  express.urlencoded({ verify: rawBodySaver, extended: true, limit: "50mb" })
 );
-app.use(bodyParser.json());
+app.use(express.raw({ verify: rawBodySaver, type: "*/*", limit: "50mb" }));
 
 const whitelist = [
   "https://www.cheersly.club",

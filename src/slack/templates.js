@@ -143,8 +143,7 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         elements: [
           {
             type: "plain_text",
-            text:
-              "Note: Please make sure that Cheersly is invited to the channel you selected.",
+            text: "Note: Please make sure that Cheersly is invited to the channel you selected.",
             emoji: true
           }
         ]
@@ -423,8 +422,7 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
         elements: [
           {
             type: "plain_text",
-            text:
-              "Note: Please make sure that Cheersly is invited to the channel you selected.",
+            text: "Note: Please make sure that Cheersly is invited to the channel you selected.",
             emoji: true
           }
         ]
@@ -525,8 +523,7 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
         elements: [
           {
             type: "plain_text",
-            text:
-              "Note: Please make sure that Cheersly is invited to the channel you selected.",
+            text: "Note: Please make sure that Cheersly is invited to the channel you selected.",
             emoji: true
           }
         ]
@@ -628,8 +625,7 @@ const createSupportContextTemplate = () => ({
   elements: [
     {
       type: "mrkdwn",
-      text:
-        "Need help? contact support@cheersly.club or check our <https://cheersly.club/faq|FAQ's>"
+      text: "Need help? contact support@cheersly.club or check our <https://cheersly.club/faq|FAQ's>"
     }
   ]
 });
@@ -649,8 +645,7 @@ const createAdminOnboardingMessageTemplate = (appUrl, teamId) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "Hey there :wave: Hope you are doing good! I am *Cheersly*, you recently installed me to your workspace, remember?"
+      text: "Hey there :wave: Hope you are doing good! I am *Cheersly*, you recently installed me to your workspace, remember?"
     }
   },
   {
@@ -658,8 +653,7 @@ const createAdminOnboardingMessageTemplate = (appUrl, teamId) => [
     elements: [
       {
         type: "plain_text",
-        text:
-          "Note: You are seeing this message because either you installed the app to this workspace or you are an admin.",
+        text: "Note: You are seeing this message because either you installed the app to this workspace or you are an admin.",
         emoji: true
       }
     ]
@@ -668,8 +662,7 @@ const createAdminOnboardingMessageTemplate = (appUrl, teamId) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "Wanted to check in if you have setup *Cheersly* for your team yet? If you haven't, let me guide you through!"
+      text: "Wanted to check in if you have setup *Cheersly* for your team yet? If you haven't, let me guide you through!"
     }
   },
   {
@@ -690,24 +683,21 @@ const createAdminOnboardingMessageTemplate = (appUrl, teamId) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "3) Constantly share cheers with your peer team members using the command `/cheers`. Team building activities help to bridge gaps and build relationships."
+      text: "3) Constantly share cheers with your peer team members using the command `/cheers`. Team building activities help to bridge gaps and build relationships."
     }
   },
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "4) Cheersly provides opportunities to share anonymous feedback. To share feedback use the command `/cheers feedback`."
+      text: "4) Cheersly provides opportunities to share anonymous feedback. To share feedback use the command `/cheers feedback`."
     }
   },
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "5) Ask questions and receive insights that help you make a decision. Conduct polls using the command `/cheers poll`."
+      text: "5) Ask questions and receive insights that help you make a decision. Conduct polls using the command `/cheers poll`."
     }
   },
   createHomeSneakPeakTemplate(teamId),
@@ -715,8 +705,7 @@ const createAdminOnboardingMessageTemplate = (appUrl, teamId) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "Please feel free to share any feedback, we are all ears and we would sincerely value your input!"
+      text: "Please feel free to share any feedback, we are all ears and we would sincerely value your input!"
     },
     accessory: {
       type: "button",

@@ -18,10 +18,7 @@ const handleOnboardCommand = async (team_id, channel_id) => {
 };
 
 const isOnboardCommand = (text) => {
-  if (
-    String(text).trim().includes("on") ||
-    String(text).trim().includes("onboard")
-  ) {
+  if (String(text).trim().includes("on")) {
     return true;
   }
 

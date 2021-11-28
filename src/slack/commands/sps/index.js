@@ -42,11 +42,7 @@ const handleStonePaperScissorsCommand = async (
 };
 
 const isSPSCommand = (text) => {
-  if (
-    String(text)
-      .trim()
-      .includes("sp" || String(text).trim().includes("sps"))
-  ) {
+  if (String(text).trim().includes("sp")) {
     return true;
   }
 

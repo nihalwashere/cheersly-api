@@ -16,19 +16,18 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    logger.debug("slack-actions -> req.body : ", JSON.stringify(req.body));
-
-    const { payload } = req.body;
-    const parsedPayload = JSON.parse(payload);
-
     const slackRequestTimestamp = req.headers["x-slack-request-timestamp"];
     const slackSignature = req.headers["x-slack-signature"];
 
     const isLegitRequest = verifySlackRequest(
       slackRequestTimestamp,
       slackSignature,
-      req.body
+      req.rawBody
     );
+
+    const { payload } = req.body;
+
+    const parsedPayload = JSON.parse(payload);
 
     if (isLegitRequest.error) {
       const { status, message } = isLegitRequest;

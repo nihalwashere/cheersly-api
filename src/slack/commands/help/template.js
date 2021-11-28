@@ -32,16 +32,21 @@ const createHelpTemplate = (teamId, appUrl) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "*/cheers poll* \n Ask a question to your peers and get a poll (anonymous/non-anonymous)"
+      text: "*/cheers poll* \n Ask a question to your peers and get a poll (anonymous/non-anonymous)"
     }
   },
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "*/cheers feedback* \n Share feedback with your team (anonymous/non-anonymous)"
+      text: "*/cheers feedback* \n Share feedback with your team (anonymous/non-anonymous)"
+    }
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*/cheers sps* \n Play Stone Paper Scissors with your friend"
     }
   },
   {
@@ -80,8 +85,7 @@ const createHelpTemplate = (teamId, appUrl) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "*Question or Feedback?* \n Let us know if you have any questions or feedback"
+      text: "*Question or Feedback?* \n Let us know if you have any questions or feedback"
     },
     accessory: {
       type: "button",

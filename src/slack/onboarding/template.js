@@ -6,8 +6,7 @@ const createOnboardingTemplate = (teamId, appUrl) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        ":wave: *Hey there!* \n\n *I am Cheersly!* Nice to meet you! I am here to build an awesome cheerful team!"
+      text: ":wave: *Hey there!* \n\n *I am Cheersly!* Nice to meet you! I am here to build an awesome cheerful team!"
     }
   },
   {
@@ -21,40 +20,35 @@ const createOnboardingTemplate = (teamId, appUrl) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        ":point_right: You can cheer your peers by using the command `/cheers`"
+      text: ":point_right: You can cheer your peers by using the command `/cheers`"
     }
   },
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        ":point_right: You can ask a question to your peers and get a poll (anonymous/non-anonymous) using the command `/cheers poll`"
+      text: ":point_right: You can ask a question to your peers and get a poll (anonymous/non-anonymous) using the command `/cheers poll`"
     }
   },
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        ":point_right: You can share feedback (anoymous/non-anonymous) with your team and get heard. To submit a feedback, use the command `/cheers feedback`"
+      text: ":point_right: You can share feedback (anoymous/non-anonymous) with your team and get heard. To submit a feedback, use the command `/cheers feedback`"
     }
   },
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "You can also run all of the above commands through shortcuts in Slack."
+      text: "You can also run all of the above commands through shortcuts in Slack."
     }
   },
   {
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "You can use me in channels where I am in and in the app's DM. To invite me to a channel, use the command `/invite @Cheersly` and get onboarding instructions using \n `/cheers onboard`"
+      text: "You can use me in channels where I am in and in the app's DM. To invite me to a channel, use the command `/invite @Cheersly` and get onboarding instructions using \n `/cheers onboard`"
     }
   },
   {
@@ -62,8 +56,7 @@ const createOnboardingTemplate = (teamId, appUrl) => [
     elements: [
       {
         type: "mrkdwn",
-        text:
-          "Note: Please invite Cheersly to all the public and private channels you would like to use Cheersly in."
+        text: "Note: Please invite Cheersly to all the public and private channels you would like to use Cheersly in."
       }
     ]
   },
@@ -121,8 +114,7 @@ const createPersonalOnboardingTemplate = (name, teamId) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "Your team added *Cheersly* to this workspace. Cheersly is an employee engagement and peer recognition platform to build cheerful teams. You can give cheers, conduct anonymous polls and share feedback."
+      text: "Your team added *Cheersly* to this workspace. Cheersly is an employee engagement and peer recognition platform to build cheerful teams. You can give cheers, conduct anonymous polls and share feedback."
     }
   },
   {

@@ -4,8 +4,7 @@ const createRedemptionRequestSettledTemplate = ({ title, price }) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "Hurray! Your redemption request has been settled :money_mouth_face:"
+        text: "Hurray! Your redemption request has been settled :money_mouth_face:"
       }
     },
     {
