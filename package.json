@@ -63,8 +63,8 @@
   },
   "lint-staged": {
     "*.js": [
-      "npm run lint",
       "npm run prettier",
+      "npm run lint",
       "git add ."
     ]
   }

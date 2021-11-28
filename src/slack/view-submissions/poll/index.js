@@ -29,8 +29,6 @@ const logger = require("../../../global/logger");
 
 const processPoll = async payload => {
   try {
-    logger.debug("processPoll : ", JSON.stringify(payload));
-
     const {
       team: { id: teamId },
       view: { state, private_metadata: user_name },
@@ -59,16 +57,6 @@ const processPoll = async payload => {
     const pollOptionD = state.values[POLL_OPTION_D][POLL_OPTION_D_VALUE].value;
 
     const pollId = newIdString();
-
-    logger.debug("pollQuestion : ", pollQuestion);
-    logger.debug("pollChannel : ", pollChannel);
-    logger.debug("pollDuration : ", pollDuration);
-    logger.debug("isAnonymous : ", isAnonymous);
-    logger.debug("pollOptionA : ", pollOptionA);
-    logger.debug("pollOptionB : ", pollOptionB);
-    logger.debug("pollOptionC : ", pollOptionC);
-    logger.debug("pollOptionD : ", pollOptionD);
-    logger.debug("pollId : ", pollId);
 
     const pollOptions = [pollOptionA, pollOptionB];
 
