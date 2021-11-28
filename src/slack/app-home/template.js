@@ -1,3 +1,12 @@
+const {
+  SLACK_ACTIONS: {
+    THIS_OR_THAT,
+    ICEBREAKER_QUESTION,
+    TIC_TAC_TOE_HELP,
+    STONE_PAPER_SCISSORS_HELP,
+  },
+} = require("../../global/constants");
+
 const { createSupportContextTemplate } = require("../templates");
 
 const createMyStatsSection = (
@@ -69,7 +78,6 @@ const createAppHomeLeaderBoard = leaders => {
         text: "\n \n",
       },
     },
-    createSupportContextTemplate(),
   ];
 };
 
@@ -142,8 +150,8 @@ const createAppHomeTemplate = (
               text: ":fencer: This or that",
               emoji: true,
             },
-            value: "click_me_123",
-            action_id: "actionId-0",
+            value: THIS_OR_THAT,
+            action_id: THIS_OR_THAT,
           },
           {
             type: "button",
@@ -152,8 +160,8 @@ const createAppHomeTemplate = (
               text: ":question: Icebreaker question",
               emoji: true,
             },
-            value: "click_me_123",
-            action_id: "actionId-1",
+            value: ICEBREAKER_QUESTION,
+            action_id: ICEBREAKER_QUESTION,
           },
         ],
       },
@@ -177,8 +185,8 @@ const createAppHomeTemplate = (
               text: ":x: Tic Tac Toe :o:",
               emoji: true,
             },
-            value: "click_me_123",
-            action_id: "actionId-2",
+            value: TIC_TAC_TOE_HELP,
+            action_id: TIC_TAC_TOE_HELP,
           },
           {
             type: "button",
@@ -187,11 +195,12 @@ const createAppHomeTemplate = (
               text: ":v: Stone Paper Scissors",
               emoji: true,
             },
-            value: "click_me_123",
-            action_id: "actionId-3",
+            value: STONE_PAPER_SCISSORS_HELP,
+            action_id: STONE_PAPER_SCISSORS_HELP,
           },
         ],
       },
+      createSupportContextTemplate(),
     ],
   ];
 

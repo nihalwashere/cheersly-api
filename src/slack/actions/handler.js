@@ -4,6 +4,10 @@ const {
     CUSTOMER_FEEDBACK,
     SAY_CHEERS,
     ADD_NEW_TOPIC,
+    THIS_OR_THAT,
+    ICEBREAKER_QUESTION,
+    TIC_TAC_TOE_HELP,
+    STONE_PAPER_SCISSORS_HELP,
   },
   BLOCK_IDS: { STONE_PAPER_SCISSORS, TOPICS_CHANGE, INTERESTS_CHANGE },
 } = require("../../global/constants");
@@ -14,6 +18,10 @@ const { handleStonePaperScissors } = require("./stone-paper-scissors");
 const { handleAddNewTopic } = require("./add-new-topic");
 const { handleTopicsChange } = require("./topics");
 const { handleInterestsChange } = require("./interests");
+const { handleThisOrThat } = require("./this-or-that");
+const { handleIcebreakerQuestion } = require("./icebreaker-question");
+const { handleTicTacToeHelp } = require("./tic-tac-toe-help");
+const { handleStonePaperScissorsHelp } = require("./stone-paper-scissors-help");
 const logger = require("../../global/logger");
 
 const actionsMapper = async payload => {
@@ -23,6 +31,10 @@ const actionsMapper = async payload => {
       [CUSTOMER_FEEDBACK]: () => handleShareFeedback(payload),
       [SAY_CHEERS]: () => handleSayCheers(payload),
       [ADD_NEW_TOPIC]: () => handleAddNewTopic(payload),
+      [THIS_OR_THAT]: () => handleThisOrThat(payload),
+      [ICEBREAKER_QUESTION]: () => handleIcebreakerQuestion(payload),
+      [TIC_TAC_TOE_HELP]: () => handleTicTacToeHelp(payload),
+      [STONE_PAPER_SCISSORS_HELP]: () => handleStonePaperScissorsHelp(payload),
     };
 
     const blockIdMapper = {
