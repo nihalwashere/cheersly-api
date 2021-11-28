@@ -2,7 +2,7 @@ const createStonePaperScissorsHelpView = () => ({
   type: "modal",
   title: {
     type: "plain_text",
-    text: "Stone Paper Scissors Help",
+    text: "SPS Help",
     emoji: true,
   },
   close: {

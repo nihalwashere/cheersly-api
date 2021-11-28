@@ -1,5 +1,5 @@
 const { openModal } = require("../../api");
-const { createIcebreakerQuestionView } = require("./template");
+const { createTicTacToeHelpView } = require("./template");
 const logger = require("../../../global/logger");
 
 const handleTicTacToeHelp = async payload => {
@@ -9,7 +9,7 @@ const handleTicTacToeHelp = async payload => {
       team: { id: teamId },
     } = payload;
 
-    await openModal(teamId, trigger_id, createIcebreakerQuestionView());
+    await openModal(teamId, trigger_id, createTicTacToeHelpView());
   } catch (error) {
     logger.error("handleTicTacToeHelp() -> error : ", error);
   }
