@@ -119,8 +119,8 @@ const createAppHomeTemplate = (
     });
   }
 
-  appHomeTemplate.blocks(
-    ...appHomeTemplate,
+  appHomeTemplate.blocks = [
+    ...appHomeTemplate.blocks,
     ...[
       {
         type: "divider",
@@ -192,8 +192,8 @@ const createAppHomeTemplate = (
           },
         ],
       },
-    ]
-  );
+    ],
+  ];
 
   return appHomeTemplate;
 };
