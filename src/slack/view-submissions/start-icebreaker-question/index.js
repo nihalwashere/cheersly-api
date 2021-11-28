@@ -1,6 +1,6 @@
 const {
-  BLOCK_IDS: { SELECT_ICEBREAKER_QUESTION_CHANNEL },
-  ACTION_IDS: { SELECT_ICEBREAKER_QUESTION_CHANNEL_VALUE },
+  BLOCK_IDS: { ICEBREAKER_QUESTION_CHANNEL },
+  ACTION_IDS: { ICEBREAKER_QUESTION_CHANNEL_VALUE },
 } = require("../../../global/constants");
 const { IceBreakerQuestions } = require("../../../data-source/ice-breaker");
 const { slackPostMessageToChannel } = require("../../api");
@@ -16,9 +16,9 @@ const processStartIcebreakerQuestion = async payload => {
     } = payload;
 
     const gameChannel =
-      state.values[SELECT_ICEBREAKER_QUESTION_CHANNEL][
-        SELECT_ICEBREAKER_QUESTION_CHANNEL_VALUE
-      ].value;
+      state.values[ICEBREAKER_QUESTION_CHANNEL][
+        ICEBREAKER_QUESTION_CHANNEL_VALUE
+      ].selected_conversation;
 
     await slackPostMessageToChannel(
       gameChannel,

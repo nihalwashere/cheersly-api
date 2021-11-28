@@ -1,7 +1,7 @@
 // const { updateModal } = require("../../api");
 const {
-  BLOCK_IDS: { SELECT_THIS_OR_THAT_CHANNEL },
-  ACTION_IDS: { SELECT_THIS_OR_THAT_CHANNEL_VALUE },
+  BLOCK_IDS: { THIS_OR_THAT_CHANNEL },
+  ACTION_IDS: { THIS_OR_THAT_CHANNEL_VALUE },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
@@ -14,9 +14,8 @@ const processStartThisOrThat = async payload => {
     } = payload;
 
     const gameChannel =
-      state.values[SELECT_THIS_OR_THAT_CHANNEL][
-        SELECT_THIS_OR_THAT_CHANNEL_VALUE
-      ].value;
+      state.values[THIS_OR_THAT_CHANNEL][THIS_OR_THAT_CHANNEL_VALUE]
+        .selected_conversation;
 
     logger.debug("gameChannel : ", gameChannel);
   } catch (error) {
