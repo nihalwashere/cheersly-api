@@ -2,7 +2,9 @@ const {
   BLOCK_IDS: { SELECT_ICEBREAKER_QUESTION_CHANNEL },
   ACTION_IDS: { SELECT_ICEBREAKER_QUESTION_CHANNEL_VALUE },
 } = require("../../../global/constants");
-const IceBreakerQuestions = require("../../../data-source/IcebreakerQuestions");
+const {
+  IceBreakerQuestions,
+} = require("../../../data-source/IcebreakerQuestions");
 const { slackPostMessageToChannel } = require("../../api");
 const { createIcebreakerQuestionSubmittedTemplate } = require("./template");
 const logger = require("../../../global/logger");

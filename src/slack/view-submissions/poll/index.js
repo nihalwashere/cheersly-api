@@ -124,11 +124,8 @@ const processPoll = async payload => {
     const slackMessageResponse = await slackPostMessageToChannel(
       pollChannel,
       teamId,
-      pollSubmittedTemplate,
-      true
+      pollSubmittedTemplate
     );
-
-    logger.debug("slackMessageResponse : ", slackMessageResponse);
 
     if (slackMessageResponse && slackMessageResponse.ok) {
       poll.messageTimestamp = slackMessageResponse.ts;

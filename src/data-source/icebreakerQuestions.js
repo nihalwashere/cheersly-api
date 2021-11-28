@@ -1,4 +1,4 @@
-module.exports = [
+const IceBreakerQuestions = [
   {
     id: "1",
     question:
@@ -108,3 +108,5 @@ module.exports = [
     question: "If you could learn one new personal skill, what would it be?",
   },
 ];
+
+module.exports = { IceBreakerQuestions };
