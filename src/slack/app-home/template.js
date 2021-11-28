@@ -119,6 +119,82 @@ const createAppHomeTemplate = (
     });
   }
 
+  appHomeTemplate.blocks(
+    ...appHomeTemplate,
+    ...[
+      {
+        type: "divider",
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: ":ice_cube: *Icebreakers*",
+        },
+      },
+      {
+        type: "actions",
+        elements: [
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":fencer: This or that",
+              emoji: true,
+            },
+            value: "click_me_123",
+            action_id: "actionId-0",
+          },
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":question: Icebreaker question",
+              emoji: true,
+            },
+            value: "click_me_123",
+            action_id: "actionId-1",
+          },
+        ],
+      },
+      {
+        type: "divider",
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "*:video_game:  2-player games*",
+        },
+      },
+      {
+        type: "actions",
+        elements: [
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":x: Tic Tac Toe :o:",
+              emoji: true,
+            },
+            value: "click_me_123",
+            action_id: "actionId-2",
+          },
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":v: Stone Paper Scissors",
+              emoji: true,
+            },
+            value: "click_me_123",
+            action_id: "actionId-3",
+          },
+        ],
+      },
+    ]
+  );
+
   return appHomeTemplate;
 };
 
