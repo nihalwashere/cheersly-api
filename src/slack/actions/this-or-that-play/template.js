@@ -1,12 +1,28 @@
+const getVoters = votes => {
+  let voters = "";
+
+  votes.forEach((vote, index) => {
+    voters += index === 0 ? `<@${vote}>` : `, <@${vote}>`;
+  });
+
+  return voters;
+};
+
 const createThisOrThatResultsView = (blocks, question, votes) => {
   return [
-    ...blocks,
+    { ...blocks[0] },
+    { ...blocks[1] },
+    {
+      type: "divider",
+    },
     {
       type: "section",
       text: {
         type: "mrkdwn",
         text: `*${question.this.value}*: ${
-          votes.length === 0 ? `No votes yet` : `${votes.this.length} vote`
+          votes.length === 0
+            ? `No votes yet`
+            : `${votes.this.length} vote - ${getVoters(votes.this)}`
         }`,
       },
     },
@@ -15,7 +31,9 @@ const createThisOrThatResultsView = (blocks, question, votes) => {
       text: {
         type: "mrkdwn",
         text: `*${question.that.value}*: ${
-          votes.length === 0 ? `No votes yet` : `${votes.that.length} vote`
+          votes.length === 0
+            ? `No votes yet`
+            : `${votes.that.length} vote - ${getVoters(votes.that)}`
         }`,
       },
     },
