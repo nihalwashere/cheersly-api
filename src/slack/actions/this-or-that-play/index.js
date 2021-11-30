@@ -30,33 +30,25 @@ const handleThisOrThatPlayed = async payload => {
     if (thisOrThat) {
       const { question, blocks, votes, messageTimestamp } = thisOrThat;
 
+      const voters = [...votes.this, ...votes.that];
+
+      if (voters.includes(userId)) {
+        return await openModal(
+          teamId,
+          trigger_id,
+          createResponseAlreadySubmittedView()
+        );
+      }
+
       let thisVotes = [];
       let thatVotes = [];
 
       if (action === THIS) {
         thisVotes = [...votes.this];
-
-        if (thisVotes.includes(userId)) {
-          await openModal(
-            teamId,
-            trigger_id,
-            createResponseAlreadySubmittedView()
-          );
-        } else {
-          thisVotes.push(userId);
-        }
+        thisVotes.push(userId);
       } else {
         thatVotes = [...votes.that];
-
-        if (thatVotes.includes(userId)) {
-          await openModal(
-            teamId,
-            trigger_id,
-            createResponseAlreadySubmittedView()
-          );
-        } else {
-          thatVotes.push(userId);
-        }
+        thatVotes.push(userId);
       }
 
       let updatedVotes = {};
@@ -81,7 +73,7 @@ const handleThisOrThatPlayed = async payload => {
         }
       );
 
-      await updateChat(teamId, channelId, messageTimestamp, blocks);
+      await updateChat(teamId, channelId, messageTimestamp, resultBlocks);
     }
   } catch (error) {
     logger.error("handleThisOrThatPlayed() -> error : ", error);

@@ -6,7 +6,7 @@ const createThisOrThatResultsView = (blocks, question, votes) => {
       text: {
         type: "mrkdwn",
         text: `*${question.this.value}*: ${
-          votes.length === 0 ? `No votes yet` : `${votes.length} vote`
+          votes.length === 0 ? `No votes yet` : `${votes.this.length} vote`
         }`,
       },
     },
@@ -15,7 +15,7 @@ const createThisOrThatResultsView = (blocks, question, votes) => {
       text: {
         type: "mrkdwn",
         text: `*${question.that.value}*: ${
-          votes.length === 0 ? `No votes yet` : `${votes.length} vote`
+          votes.length === 0 ? `No votes yet` : `${votes.that.length} vote`
         }`,
       },
     },
