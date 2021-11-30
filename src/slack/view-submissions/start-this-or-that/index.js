@@ -23,9 +23,11 @@ const processStartThisOrThat = async payload => {
 
     const gameId = nanoid(10);
 
-    const blocks = createThisOrThatSubmittedTemplate(userId, gameId, [
-      ThisOrThatQuestions[0],
-    ]);
+    const blocks = createThisOrThatSubmittedTemplate(
+      userId,
+      gameId,
+      ThisOrThatQuestions[0]
+    );
 
     const response = await slackPostMessageToChannel(
       gameChannel,
