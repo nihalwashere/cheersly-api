@@ -5,7 +5,7 @@
 // } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleThisOrThatPlayed = async payload => {
+const handleThisOrThatPlayed = async (payload, blockId) => {
   try {
     // const {
     // trigger_id,
@@ -15,6 +15,7 @@ const handleThisOrThatPlayed = async payload => {
     // } = payload;
 
     logger.debug("handleThisOrThatPlayed : ", payload);
+    logger.debug("blockId : ", blockId);
   } catch (error) {
     logger.error("handleThisOrThatPlayed() -> error : ", error);
   }

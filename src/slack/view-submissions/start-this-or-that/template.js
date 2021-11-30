@@ -1,6 +1,24 @@
 const {
-  BLOCK_IDS: { THIS_OR_THAT_PLAYED },
+  BLOCK_IDS: {
+    THIS_OR_THAT_PLAYED_SET_ONE,
+    THIS_OR_THAT_PLAYED_SET_TWO,
+    THIS_OR_THAT_PLAYED_SET_THREE,
+  },
 } = require("../../../global/constants");
+
+const mapSetToIndex = index => {
+  if (index === 0) {
+    return THIS_OR_THAT_PLAYED_SET_ONE;
+  }
+
+  if (index === 1) {
+    return THIS_OR_THAT_PLAYED_SET_TWO;
+  }
+
+  if (index === 2) {
+    return THIS_OR_THAT_PLAYED_SET_THREE;
+  }
+};
 
 const createThisOrThatSubmittedTemplate = (userId, questions) => {
   const blocks = [
@@ -16,12 +34,12 @@ const createThisOrThatSubmittedTemplate = (userId, questions) => {
     },
   ];
 
-  questions.map(question => {
+  questions.map((question, index) => {
     const { this: thisQuestion, that: thatQuestion } = question;
 
     blocks.push({
       type: "actions",
-      block_id: THIS_OR_THAT_PLAYED,
+      block_id: mapSetToIndex(index),
       elements: [
         {
           type: "button",
@@ -31,7 +49,7 @@ const createThisOrThatSubmittedTemplate = (userId, questions) => {
             emoji: true,
           },
           value: thisQuestion,
-          action_id: thisQuestion,
+          action_id: `${thisQuestion}-${index}`,
         },
         {
           type: "button",
@@ -41,7 +59,7 @@ const createThisOrThatSubmittedTemplate = (userId, questions) => {
             emoji: true,
           },
           value: thatQuestion,
-          action_id: thatQuestion,
+          action_id: `${thatQuestion}-${index}`,
         },
       ],
     });
