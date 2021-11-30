@@ -65,8 +65,6 @@ const handleThisOrThatPlayed = async payload => {
         updatedVotes
       );
 
-      logger.debug("resultBlocks : ", resultBlocks);
-
       await ThisOrThatModel.findOneAndUpdate(
         { gameId },
         {
