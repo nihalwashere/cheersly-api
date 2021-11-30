@@ -2,6 +2,8 @@
 
 const moment = require("moment-timezone");
 
+const { nanoid } = require("nanoid");
+
 // const text =
 //   "@user1 @user2 @user3      Thanks for all the help \n      dasdsad dasdsada \n dasdsa :beers:";
 
@@ -82,52 +84,4 @@ const now = new Date();
 
 // console.log("days : ", new Date().getDate() - new Date(date).getDate());
 
-const topics = [
-  {
-    id: "Tzbnzan_9P",
-    value: "Tech",
-  },
-  {
-    id: "jmkhzWOb0O",
-    value: "Cars",
-  },
-  {
-    id: "V6jDx9DFAD",
-    value: "Bikes",
-  },
-  {
-    id: "LUIpMPVjgb",
-    value: "Crypto",
-  },
-];
-
-const interests = [
-  {
-    id: "jmkhzWOb0O",
-    value: "Cars",
-  },
-  {
-    id: "LUIpMPVjgb",
-    value: "Crypto",
-  },
-];
-
-const unSelectedTopics = [];
-
-// interests.forEach((elem) => {
-//   console.log("elem : ", elem);
-//   console.log("topicIds.includes(elem.id : ", topicIds.includes(elem.id));
-//   if (!topicIds.includes(elem.id)) {
-//     unSelectedTopics.push(elem);
-//   }
-// });
-
-topics.forEach(elem => {
-  if (!interests.some(item => item.id === elem.id)) {
-    unSelectedTopics.push(elem);
-  }
-});
-
-console.log("topics : ", topics);
-console.log("interests : ", interests);
-console.log("unSelectedTopics : ", unSelectedTopics);
+console.log(nanoid(10));

@@ -4,6 +4,7 @@ const {
     THIS_OR_THAT_PLAYED_SET_TWO,
     THIS_OR_THAT_PLAYED_SET_THREE,
   },
+  ACTION_IDS: { THIS, THAT },
 } = require("../../../global/constants");
 
 const mapSetToIndex = index => {
@@ -45,21 +46,21 @@ const createThisOrThatSubmittedTemplate = (userId, questions) => {
           type: "button",
           text: {
             type: "plain_text",
-            text: thisQuestion,
+            text: thisQuestion.value,
             emoji: true,
           },
-          value: thisQuestion,
-          action_id: `${thisQuestion}-${index}`,
+          value: thisQuestion.id,
+          action_id: THIS,
         },
         {
           type: "button",
           text: {
             type: "plain_text",
-            text: thatQuestion,
+            text: thatQuestion.value,
             emoji: true,
           },
-          value: thatQuestion,
-          action_id: `${thatQuestion}-${index}`,
+          value: thatQuestion.id,
+          action_id: THAT,
         },
       ],
     });

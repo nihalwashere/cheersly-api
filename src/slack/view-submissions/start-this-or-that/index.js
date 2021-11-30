@@ -19,20 +19,11 @@ const processStartThisOrThat = async payload => {
       state.values[THIS_OR_THAT_CHANNEL][THIS_OR_THAT_CHANNEL_VALUE]
         .selected_conversation;
 
-    const question1 =
-      ThisOrThatQuestions[
-        Math.floor(Math.random() * ThisOrThatQuestions.length)
-      ];
+    const question1 = ThisOrThatQuestions[0];
 
-    const question2 =
-      ThisOrThatQuestions[
-        Math.floor(Math.random() * ThisOrThatQuestions.length)
-      ];
+    const question2 = ThisOrThatQuestions[1];
 
-    const question3 =
-      ThisOrThatQuestions[
-        Math.floor(Math.random() * ThisOrThatQuestions.length)
-      ];
+    const question3 = ThisOrThatQuestions[2];
 
     await slackPostMessageToChannel(
       gameChannel,
