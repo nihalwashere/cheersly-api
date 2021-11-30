@@ -9,7 +9,12 @@ const {
     TIC_TAC_TOE_HELP,
     STONE_PAPER_SCISSORS_HELP,
   },
-  BLOCK_IDS: { STONE_PAPER_SCISSORS, TOPICS_CHANGE, INTERESTS_CHANGE },
+  BLOCK_IDS: {
+    STONE_PAPER_SCISSORS,
+    TOPICS_CHANGE,
+    INTERESTS_CHANGE,
+    THIS_OR_THAT_PLAYED,
+  },
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
 const { handleShareFeedback } = require("./share-feedback");
@@ -22,6 +27,7 @@ const { handleThisOrThat } = require("./this-or-that");
 const { handleIcebreakerQuestion } = require("./icebreaker-question");
 const { handleTicTacToeHelp } = require("./tic-tac-toe-help");
 const { handleStonePaperScissorsHelp } = require("./stone-paper-scissors-help");
+const { handleThisOrThatPlayed } = require("./this-or-that-play");
 const logger = require("../../global/logger");
 
 const actionsMapper = async payload => {
@@ -41,6 +47,7 @@ const actionsMapper = async payload => {
       [STONE_PAPER_SCISSORS]: () => handleStonePaperScissors(payload),
       [TOPICS_CHANGE]: () => handleTopicsChange(payload),
       [INTERESTS_CHANGE]: () => handleInterestsChange(payload),
+      [THIS_OR_THAT_PLAYED]: () => handleThisOrThatPlayed(payload),
     };
 
     let applyMapper = null;
@@ -49,7 +56,8 @@ const actionsMapper = async payload => {
       payload.actions[0].block_id &&
       (payload.actions[0].block_id === STONE_PAPER_SCISSORS ||
         payload.actions[0].block_id === TOPICS_CHANGE ||
-        payload.actions[0].block_id === INTERESTS_CHANGE)
+        payload.actions[0].block_id === INTERESTS_CHANGE ||
+        payload.actions[0].block_id === THIS_OR_THAT_PLAYED)
     ) {
       applyMapper = blockIdMapper[payload.actions[0].block_id];
     } else {

@@ -4,7 +4,7 @@ const createIcebreakerQuestionSubmittedTemplate = (userId, question) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `<@${userId}> wants you to answer an ice-breaker question:`,
+        text: `<@${userId}> has asked an ice-breaker question, share your thoughts!`,
       },
     },
     {

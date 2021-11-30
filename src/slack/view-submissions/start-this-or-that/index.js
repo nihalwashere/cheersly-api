@@ -1,8 +1,10 @@
-// const { updateModal } = require("../../api");
+const { slackPostMessageToChannel } = require("../../api");
 const {
   BLOCK_IDS: { THIS_OR_THAT_CHANNEL },
   ACTION_IDS: { THIS_OR_THAT_CHANNEL_VALUE },
 } = require("../../../global/constants");
+const { ThisOrThatQuestions } = require("../../../data-source/this-or-that");
+const { createThisOrThatSubmittedTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
 const processStartThisOrThat = async payload => {
@@ -17,7 +19,30 @@ const processStartThisOrThat = async payload => {
       state.values[THIS_OR_THAT_CHANNEL][THIS_OR_THAT_CHANNEL_VALUE]
         .selected_conversation;
 
-    logger.debug("gameChannel : ", gameChannel);
+    const question1 =
+      ThisOrThatQuestions[
+        Math.floor(Math.random() * ThisOrThatQuestions.length)
+      ];
+
+    const question2 =
+      ThisOrThatQuestions[
+        Math.floor(Math.random() * ThisOrThatQuestions.length)
+      ];
+
+    const question3 =
+      ThisOrThatQuestions[
+        Math.floor(Math.random() * ThisOrThatQuestions.length)
+      ];
+
+    await slackPostMessageToChannel(
+      gameChannel,
+      teamId,
+      createThisOrThatSubmittedTemplate(userId, [
+        question1,
+        question2,
+        question3,
+      ])
+    );
   } catch (error) {
     logger.error("processStartThisOrThat() -> error : ", error);
   }

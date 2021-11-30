@@ -23,8 +23,6 @@ const mapGameActionToEmoji = move => {
 
 const handleStonePaperScissors = async payload => {
   try {
-    logger.info("handleStonePaperScissors");
-
     const {
       user: { id: userId },
       team: { id: teamId },
@@ -34,10 +32,8 @@ const handleStonePaperScissors = async payload => {
     } = payload;
 
     const gameId = actions[0].value;
-    logger.debug("gameId : ", gameId);
 
     const currentMove = actions[0].action_id;
-    logger.debug("currentMove : ", currentMove);
 
     const game = await StonePaperScissorsModel.findOne({ gameId });
 
@@ -88,13 +84,11 @@ const handleStonePaperScissors = async payload => {
 
     if (playerOneMove === STONE_PLAYED && playerTwoMove === STONE_PLAYED) {
       // case 1
-      logger.debug("DRAW CASE 1");
       draw = true;
     }
 
     if (playerOneMove === PAPER_PLAYED && playerTwoMove === PAPER_PLAYED) {
       // case 2
-      logger.debug("DRAW CASE 2");
       draw = true;
     }
 
@@ -103,7 +97,6 @@ const handleStonePaperScissors = async payload => {
       playerTwoMove === SCISSORS_PLAYED
     ) {
       // case 3
-      logger.debug("DRAW CASE 3");
       draw = true;
     }
 
@@ -111,37 +104,31 @@ const handleStonePaperScissors = async payload => {
 
     if (playerOneMove === STONE_PLAYED && playerTwoMove === PAPER_PLAYED) {
       // case 4
-      logger.debug("PLAYER 2 WINS CASE 4");
       winner = playerTwo;
     }
 
     if (playerOneMove === STONE_PLAYED && playerTwoMove === SCISSORS_PLAYED) {
       // case 5
-      logger.debug("PLAYER 1 WINS CASE 5");
       winner = playerOne;
     }
 
     if (playerOneMove === PAPER_PLAYED && playerTwoMove === STONE_PLAYED) {
       // case 6
-      logger.debug("PLAYER 1 WINS CASE 6");
       winner = playerOne;
     }
 
     if (playerOneMove === PAPER_PLAYED && playerTwoMove === SCISSORS_PLAYED) {
       // case 7
-      logger.debug("PLAYER 2 WINS CASE 7");
       winner = playerTwo;
     }
 
     if (playerOneMove === SCISSORS_PLAYED && playerTwoMove === STONE_PLAYED) {
       // case 8
-      logger.debug("PLAYER 2 WINS CASE 8");
       winner = playerTwo;
     }
 
     if (playerOneMove === SCISSORS_PLAYED && playerTwoMove === PAPER_PLAYED) {
       // case 9
-      logger.debug("PLAYER 1 WINS CASE 9");
       winner = playerOne;
     }
 
