@@ -13,9 +13,7 @@ const {
     STONE_PAPER_SCISSORS,
     TOPICS_CHANGE,
     INTERESTS_CHANGE,
-    THIS_OR_THAT_PLAYED_SET_ONE,
-    THIS_OR_THAT_PLAYED_SET_TWO,
-    THIS_OR_THAT_PLAYED_SET_THREE,
+    THIS_OR_THAT_PLAYED,
   },
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
@@ -49,12 +47,7 @@ const actionsMapper = async payload => {
       [STONE_PAPER_SCISSORS]: () => handleStonePaperScissors(payload),
       [TOPICS_CHANGE]: () => handleTopicsChange(payload),
       [INTERESTS_CHANGE]: () => handleInterestsChange(payload),
-      [THIS_OR_THAT_PLAYED_SET_ONE]: () =>
-        handleThisOrThatPlayed(payload, THIS_OR_THAT_PLAYED_SET_ONE),
-      [THIS_OR_THAT_PLAYED_SET_TWO]: () =>
-        handleThisOrThatPlayed(payload, THIS_OR_THAT_PLAYED_SET_TWO),
-      [THIS_OR_THAT_PLAYED_SET_THREE]: () =>
-        handleThisOrThatPlayed(payload, THIS_OR_THAT_PLAYED_SET_THREE),
+      [THIS_OR_THAT_PLAYED]: () => handleThisOrThatPlayed(payload),
     };
 
     let applyMapper = null;
@@ -64,7 +57,7 @@ const actionsMapper = async payload => {
       (payload.actions[0].block_id === STONE_PAPER_SCISSORS ||
         payload.actions[0].block_id === TOPICS_CHANGE ||
         payload.actions[0].block_id === INTERESTS_CHANGE ||
-        payload.actions[0].block_id.includes("THIS_OR_THAT_PLAYED"))
+        payload.actions[0].block_id === THIS_OR_THAT_PLAYED)
     ) {
       applyMapper = blockIdMapper[payload.actions[0].block_id];
     } else {

@@ -1,28 +1,12 @@
 const {
-  BLOCK_IDS: {
-    THIS_OR_THAT_PLAYED_SET_ONE,
-    THIS_OR_THAT_PLAYED_SET_TWO,
-    THIS_OR_THAT_PLAYED_SET_THREE,
-  },
+  BLOCK_IDS: { THIS_OR_THAT_PLAYED },
   ACTION_IDS: { THIS, THAT },
 } = require("../../../global/constants");
 
-const mapSetToIndex = index => {
-  if (index === 0) {
-    return THIS_OR_THAT_PLAYED_SET_ONE;
-  }
+const createThisOrThatSubmittedTemplate = (userId, gameId, question) => {
+  const { this: thisQuestion, that: thatQuestion } = question;
 
-  if (index === 1) {
-    return THIS_OR_THAT_PLAYED_SET_TWO;
-  }
-
-  if (index === 2) {
-    return THIS_OR_THAT_PLAYED_SET_THREE;
-  }
-};
-
-const createThisOrThatSubmittedTemplate = (userId, questions) => {
-  const blocks = [
+  return [
     {
       type: "section",
       text: {
@@ -31,16 +15,8 @@ const createThisOrThatSubmittedTemplate = (userId, questions) => {
       },
     },
     {
-      type: "divider",
-    },
-  ];
-
-  questions.map((question, index) => {
-    const { this: thisQuestion, that: thatQuestion } = question;
-
-    blocks.push({
       type: "actions",
-      block_id: mapSetToIndex(index),
+      block_id: THIS_OR_THAT_PLAYED,
       elements: [
         {
           type: "button",
@@ -50,7 +26,7 @@ const createThisOrThatSubmittedTemplate = (userId, questions) => {
             emoji: true,
           },
           value: thisQuestion.id,
-          action_id: THIS,
+          action_id: `${THIS}-${gameId}`,
         },
         {
           type: "button",
@@ -60,17 +36,11 @@ const createThisOrThatSubmittedTemplate = (userId, questions) => {
             emoji: true,
           },
           value: thatQuestion.id,
-          action_id: THAT,
+          action_id: `${THAT}-${gameId}`,
         },
       ],
-    });
-
-    blocks.push({
-      type: "divider",
-    });
-  });
-
-  return blocks;
+    },
+  ];
 };
 
 module.exports = { createThisOrThatSubmittedTemplate };
