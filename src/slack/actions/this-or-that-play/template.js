@@ -5,6 +5,8 @@ const getVoters = votes => {
     voters += index === 0 ? `<@${vote}>` : `, <@${vote}>`;
   });
 
+  console.log("voters : ", voters);
+
   return voters;
 };
 
