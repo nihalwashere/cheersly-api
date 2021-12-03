@@ -22,9 +22,9 @@ const processStartThisOrThat = async payload => {
 
     const gameId = nanoid(10);
 
-    const thisOrThatQuestion = await ThisOrThatModel.aggregate([
-      { $sample: { size: 1 } },
-    ]);
+    const thisOrThatQuestion = await ThisOrThatModel.aggregate().sample(1);
+
+    logger.debug("thisOrThatQuestion : ", thisOrThatQuestion);
 
     const blocks = createThisOrThatSubmittedTemplate(
       userId,
