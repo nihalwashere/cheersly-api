@@ -52,8 +52,6 @@ router.post("/", async (req, res) => {
       if (response.success) {
         return res.status(200).send({});
       }
-
-      return res.sendStatus(200);
     }
 
     if (type === SHORTCUT) {
