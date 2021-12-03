@@ -45,9 +45,13 @@ router.post("/", async (req, res) => {
     }
 
     if (type === VIEW_SUBMISSION) {
-      res.status(200).send({});
+      const response = await viewSubmissionHandler(parsedPayload);
 
-      return await viewSubmissionHandler(parsedPayload);
+      logger.debug("response : ", response);
+
+      if (response.success) {
+        return res.status(200).send({});
+      }
     }
 
     if (type === SHORTCUT) {

@@ -43,6 +43,8 @@ const processStartIcebreakerQuestion = async payload => {
         view: createNotInChannelTemplate(),
       });
     }
+
+    return { success: true };
   } catch (error) {
     logger.error("processStartIcebreakerQuestion() -> error : ", error);
   }

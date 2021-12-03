@@ -47,7 +47,7 @@ const viewSubmissionHandler = async payload => {
     } = payload;
 
     if (callback_id) {
-      await submissionsMapper(callback_id, payload);
+      return await submissionsMapper(callback_id, payload);
     }
   } catch (error) {
     logger.error("viewSubmissionHandler() -> error : ", error);
