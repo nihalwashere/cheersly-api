@@ -8,6 +8,8 @@ const getVoters = votes => {
   return voters;
 };
 
+const voteOrVotes = votes => (votes.length > 1 ? "votes" : "vote");
+
 const createThisOrThatResultsView = (blocks, question, votes) => {
   return [
     { ...blocks[0] },
@@ -22,7 +24,9 @@ const createThisOrThatResultsView = (blocks, question, votes) => {
         text: `*${question.this.value}*: ${
           votes.this.length === 0
             ? `No votes yet`
-            : `${votes.this.length} vote - ${getVoters(votes.this)}`
+            : `${votes.this.length} ${voteOrVotes(votes)} - ${getVoters(
+                votes.this
+              )}`
         }`,
       },
     },
@@ -33,7 +37,9 @@ const createThisOrThatResultsView = (blocks, question, votes) => {
         text: `*${question.that.value}*: ${
           votes.that.length === 0
             ? `No votes yet`
-            : `${votes.that.length} vote - ${getVoters(votes.that)}`
+            : `${votes.that.length} ${voteOrVotes(votes)} - ${getVoters(
+                votes.that
+              )}`
         }`,
       },
     },

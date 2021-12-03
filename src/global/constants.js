@@ -100,6 +100,8 @@ const CUSTOMER_FEEDBACK_OPTIONS = {
   SOMETHING_ELSE: "SOMETHING_ELSE",
 };
 
+const SLACK_ERROR = { CHANNEL_NOT_FOUND: "channel_not_found" };
+
 const DEFAULT_TIME_ZONE = "America/Los_Angeles";
 
 const SHORTCUTS = {
@@ -127,6 +129,7 @@ module.exports = {
   SLACK_ACTIONS,
   DEFAULT_TIME_ZONE,
   CUSTOMER_FEEDBACK_OPTIONS,
+  SLACK_ERROR,
   SHORTCUTS,
   PROD_APP_URL,
   DEV_APP_URL,

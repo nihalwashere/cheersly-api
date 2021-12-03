@@ -27,8 +27,6 @@ const processStartThisOrThat = async payload => {
       1
     );
 
-    logger.debug("thisOrThatQuestion : ", thisOrThatQuestion);
-
     const blocks = createThisOrThatSubmittedTemplate(
       userId,
       gameId,

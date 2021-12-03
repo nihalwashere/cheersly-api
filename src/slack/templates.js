@@ -731,6 +731,38 @@ const createAdminOnboardingMessageTemplate = (appUrl, teamId) => [
   createSupportContextTemplate(),
 ];
 
+const createNotInChannelTemplate = () => ({
+  type: "modal",
+  title: {
+    type: "plain_text",
+    text: "Cheersly",
+    emoji: true,
+  },
+  close: {
+    type: "plain_text",
+    text: "Okie Dokie",
+    emoji: true,
+  },
+  blocks: [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "Oops, Cheersly is not in that private channel. Invite Cheersly to this private channel to start playing!",
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text:
+          "To invite Cheersly to a channel, enter `/invite @Cheersly` in that channel.",
+      },
+    },
+  ],
+});
+
 module.exports = {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
@@ -742,4 +774,5 @@ module.exports = {
   createSupportContextTemplate,
   createHomeSneakPeakTemplate,
   createAdminOnboardingMessageTemplate,
+  createNotInChannelTemplate,
 };

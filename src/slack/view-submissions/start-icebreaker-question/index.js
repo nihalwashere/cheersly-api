@@ -1,15 +1,18 @@
 const {
   BLOCK_IDS: { ICEBREAKER_QUESTION_CHANNEL },
   ACTION_IDS: { ICEBREAKER_QUESTION_CHANNEL_VALUE },
+  SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
 const IceBreakerQuestionsModel = require("../../../mongo/models/IceBreakerQuestions");
-const { slackPostMessageToChannel } = require("../../api");
+const { slackPostMessageToChannel, pushViewToModal } = require("../../api");
 const { createIcebreakerQuestionSubmittedTemplate } = require("./template");
+const { createNotInChannelTemplate } = require("../../templates");
 const logger = require("../../../global/logger");
 
 const processStartIcebreakerQuestion = async payload => {
   try {
     const {
+      trigger_id,
       user: { id: userId },
       team: { id: teamId },
       view: { state },
@@ -24,9 +27,7 @@ const processStartIcebreakerQuestion = async payload => {
       1
     );
 
-    logger.debug("iceBreakerQuestion : ", iceBreakerQuestion);
-
-    await slackPostMessageToChannel(
+    const response = await slackPostMessageToChannel(
       gameChannel,
       teamId,
       createIcebreakerQuestionSubmittedTemplate(
@@ -34,6 +35,10 @@ const processStartIcebreakerQuestion = async payload => {
         iceBreakerQuestion[0].question
       )
     );
+
+    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      await pushViewToModal(teamId, trigger_id, createNotInChannelTemplate());
+    }
   } catch (error) {
     logger.error("processStartIcebreakerQuestion() -> error : ", error);
   }
