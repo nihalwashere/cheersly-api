@@ -5,7 +5,6 @@ const {
   BLOCK_IDS: { THIS_OR_THAT_CHANNEL },
   ACTION_IDS: { THIS_OR_THAT_CHANNEL_VALUE },
 } = require("../../../global/constants");
-const { ThisOrThatQuestions } = require("../../../data-source/this-or-that");
 const { createThisOrThatSubmittedTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
@@ -23,10 +22,14 @@ const processStartThisOrThat = async payload => {
 
     const gameId = nanoid(10);
 
+    const thisOrThatQuestion = await ThisOrThatModel.aggregate([
+      { $sample: { size: 1 } },
+    ]);
+
     const blocks = createThisOrThatSubmittedTemplate(
       userId,
       gameId,
-      ThisOrThatQuestions[0]
+      thisOrThatQuestion
     );
 
     const response = await slackPostMessageToChannel(
@@ -39,7 +42,7 @@ const processStartThisOrThat = async payload => {
       await new ThisOrThatModel({
         teamId,
         gameId,
-        question: ThisOrThatQuestions[0],
+        question: thisOrThatQuestion,
         blocks,
         messageTimestamp: response.ts,
       }).save();

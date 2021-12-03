@@ -2,6 +2,7 @@ const fs = require("fs");
 const readline = require("readline");
 const { MongoClient } = require("mongodb");
 const { nanoid } = require("nanoid");
+const logger = require("../src/global/logger");
 
 const capitalizeFirstLetter = string =>
   string.charAt(0).toUpperCase() + string.slice(1);
@@ -21,11 +22,6 @@ async function processLineByLine() {
       .db("cheersly")
       .collection("ThisOrThatQuestions");
 
-    // console.log(
-    //   "result : ",
-    //   await ThisOrThatQuestionsCollection.find().toArray()
-    // );
-
     const fileStream = fs.createReadStream("./scripts/thisOrThat.txt");
 
     const rl = readline.createInterface({
@@ -37,7 +33,7 @@ async function processLineByLine() {
     // ('\r\n') in input.txt as a single line break.
 
     for await (const line of rl) {
-      console.log(line);
+      logger.debug(line);
 
       const thisQuestion = String(String(line).split(" or ")[0]).trim();
       const thatQuestion = capitalizeFirstLetter(
@@ -58,7 +54,7 @@ async function processLineByLine() {
       await ThisOrThatQuestionsCollection.insertOne(payload);
     }
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   } finally {
     await client.close();
   }

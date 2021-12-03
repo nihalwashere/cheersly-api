@@ -38,6 +38,7 @@ const service = async () => {
       const admins = await UserModel.find({
         "slackUserData.team_id": team_id,
         role: UserRoles.ADMIN,
+        slackDeleted: false,
       });
 
       admins.map(admin => {
