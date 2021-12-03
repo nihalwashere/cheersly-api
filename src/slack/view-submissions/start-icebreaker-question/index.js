@@ -4,7 +4,11 @@ const {
   SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
 const IceBreakerQuestionsModel = require("../../../mongo/models/IceBreakerQuestions");
-const { slackPostMessageToChannel, pushViewToModal } = require("../../api");
+const {
+  slackPostMessageToChannel,
+  pushViewToModal,
+  updateModal,
+} = require("../../api");
 const { createIcebreakerQuestionSubmittedTemplate } = require("./template");
 const { createNotInChannelTemplate } = require("../../templates");
 const logger = require("../../../global/logger");
@@ -37,14 +41,13 @@ const processStartIcebreakerQuestion = async payload => {
     );
 
     if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
-      // await updateModal({
-      //   teamId,
-      //   viewId,
-      //   hash,
-      //   view: createNotInChannelTemplate(),
-      // });
-
-      await pushViewToModal(teamId, trigger_id, createNotInChannelTemplate());
+      await updateModal({
+        teamId,
+        viewId,
+        hash,
+        view: createNotInChannelTemplate(),
+      });
+      // await pushViewToModal(teamId, trigger_id, createNotInChannelTemplate());
     }
 
     return { success: true };
