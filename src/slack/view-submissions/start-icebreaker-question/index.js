@@ -42,6 +42,8 @@ const processStartIcebreakerQuestion = async payload => {
         hash,
         view: createNotInChannelTemplate(),
       });
+
+      return { success: false };
     }
 
     return { success: true };
