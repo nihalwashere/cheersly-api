@@ -1,5 +1,6 @@
 const { nanoid } = require("nanoid");
 const ThisOrThatModel = require("../../../mongo/models/ThisOrThat");
+const ThisOrThatQuestionsModel = require("../../../mongo/models/ThisOrThatQuestions");
 const { slackPostMessageToChannel } = require("../../api");
 const {
   BLOCK_IDS: { THIS_OR_THAT_CHANNEL },
@@ -22,14 +23,16 @@ const processStartThisOrThat = async payload => {
 
     const gameId = nanoid(10);
 
-    const thisOrThatQuestion = await ThisOrThatModel.aggregate().sample(1);
+    const thisOrThatQuestion = await ThisOrThatQuestionsModel.aggregate().sample(
+      1
+    );
 
     logger.debug("thisOrThatQuestion : ", thisOrThatQuestion);
 
     const blocks = createThisOrThatSubmittedTemplate(
       userId,
       gameId,
-      thisOrThatQuestion
+      thisOrThatQuestion[0]
     );
 
     const response = await slackPostMessageToChannel(
@@ -42,7 +45,7 @@ const processStartThisOrThat = async payload => {
       await new ThisOrThatModel({
         teamId,
         gameId,
-        question: thisOrThatQuestion,
+        question: thisOrThatQuestion[0],
         blocks,
         messageTimestamp: response.ts,
       }).save();

@@ -2,7 +2,7 @@ const {
   BLOCK_IDS: { ICEBREAKER_QUESTION_CHANNEL },
   ACTION_IDS: { ICEBREAKER_QUESTION_CHANNEL_VALUE },
 } = require("../../../global/constants");
-const { IceBreakerQuestions } = require("../../../data-source/ice-breaker");
+const IceBreakerQuestionsModel = require("../../../mongo/models/IceBreakerQuestions");
 const { slackPostMessageToChannel } = require("../../api");
 const { createIcebreakerQuestionSubmittedTemplate } = require("./template");
 const logger = require("../../../global/logger");
@@ -20,14 +20,18 @@ const processStartIcebreakerQuestion = async payload => {
         ICEBREAKER_QUESTION_CHANNEL_VALUE
       ].selected_conversation;
 
+    const iceBreakerQuestion = await IceBreakerQuestionsModel.aggregate().sample(
+      1
+    );
+
+    logger.debug("iceBreakerQuestion : ", iceBreakerQuestion);
+
     await slackPostMessageToChannel(
       gameChannel,
       teamId,
       createIcebreakerQuestionSubmittedTemplate(
         userId,
-        IceBreakerQuestions[
-          Math.floor(Math.random() * IceBreakerQuestions.length)
-        ].question
+        iceBreakerQuestion[0].question
       )
     );
   } catch (error) {

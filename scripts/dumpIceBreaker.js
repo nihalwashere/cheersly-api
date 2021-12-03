@@ -1,13 +1,9 @@
 const fs = require("fs");
 const readline = require("readline");
 const mongoose = require("mongoose");
-const { nanoid } = require("nanoid");
 // const { MONGO_URL, MONGO_OPTIONS } = require("../src/global/config");
-const ThisOrThatQuestionsModel = require("../src/mongo/models/ThisOrThatQuestions");
+const IceBreakerQuestionsModel = require("../src/mongo/models/IceBreakerQuestions");
 const logger = require("../src/global/logger");
-
-const capitalizeFirstLetter = string =>
-  string.charAt(0).toUpperCase() + string.slice(1);
 
 async function processLineByLine() {
   // const url = "mongodb://localhost:27017/cheersly";
@@ -18,7 +14,7 @@ async function processLineByLine() {
   //   .catch(err => logger.error("MongoDB Connection Failed -> error ", err));
 
   try {
-    const fileStream = fs.createReadStream("./scripts/thisOrThat.txt");
+    const fileStream = fs.createReadStream("./scripts/iceBreaker.txt");
 
     const rl = readline.createInterface({
       input: fileStream,
@@ -31,23 +27,9 @@ async function processLineByLine() {
     for await (const line of rl) {
       logger.debug(line);
 
-      const thisQuestion = String(String(line).split(" or ")[0]).trim();
-      const thatQuestion = capitalizeFirstLetter(
-        String(String(line).split(" or ")[1]).trim()
-      );
+      const question = String(line).trim();
 
-      const payload = {
-        this: {
-          id: nanoid(10),
-          value: thisQuestion,
-        },
-        that: {
-          id: nanoid(10),
-          value: thatQuestion,
-        },
-      };
-
-      await new ThisOrThatQuestionsModel(payload).save();
+      await new IceBreakerQuestionsModel({ question }).save();
     }
   } catch (error) {
     logger.error(error);
