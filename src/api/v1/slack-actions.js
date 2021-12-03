@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
     }
 
     if (type === VIEW_SUBMISSION) {
-      // res.status(200).send({});
+      res.status(200).send({});
 
       return await viewSubmissionHandler(parsedPayload);
     }
