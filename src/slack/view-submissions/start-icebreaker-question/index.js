@@ -36,6 +36,8 @@ const processStartIcebreakerQuestion = async payload => {
       )
     );
 
+    logger.debug("trigger_id : ", trigger_id);
+
     if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
       await pushViewToModal(teamId, trigger_id, createNotInChannelTemplate());
     }
