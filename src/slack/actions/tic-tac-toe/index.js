@@ -138,10 +138,16 @@ const handleTicTacToe = async payload => {
       }
     }
 
+    const game = await TicTacToeModel.findOne({ gameId });
+
+    const totalMoves = [...game.playerOneMoves, ...game.playerTwoMoves];
+
+    if (totalMoves.includes(currentMove)) {
+      return;
+    }
+
     logger.debug("currentPlayer : ", currentPlayer);
     logger.debug("currentMove : ", currentMove);
-
-    const game = await TicTacToeModel.findOne({ gameId });
 
     if (!game.playerOne) {
       // first move
@@ -266,13 +272,19 @@ const handleTicTacToe = async payload => {
       }
     }
 
-    const updatedBlocks = updateTicTacToeTemplate({
-      row,
-      column,
-      blocks,
-      currentTurn: turn === PLAYER_ONE ? ":x:" : ":o:",
-      nextTurn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
-    });
+    let updatedBlocks = [];
+
+    if (winner && finished) {
+      updatedBlocks = createGameFinishedTemplate({ winner, row, blocks });
+    } else {
+      updatedBlocks = updateTicTacToeTemplate({
+        row,
+        column,
+        blocks,
+        currentTurn: turn === PLAYER_ONE ? ":x:" : ":o:",
+        nextTurn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
+      });
+    }
 
     await TicTacToeModel.updateOne(
       { gameId },
