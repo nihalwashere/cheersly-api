@@ -152,6 +152,14 @@ const handleTicTacToe = async payload => {
       return;
     }
 
+    if (game.turn === PLAYER_TWO && currentPlayer === game.playerOne) {
+      return await openModal(
+        teamId,
+        trigger_id,
+        moveAlreadyPlayedModalTemplate()
+      );
+    }
+
     if (game.playerOne && !game.playerTwo) {
       // second move
 
