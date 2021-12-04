@@ -77,45 +77,62 @@ const handleTicTacToe = async payload => {
     logger.debug("movePosition : ", movePosition);
 
     let currentMove = 0;
+    let row = 0;
+    let column = 0;
 
     if (block === TIC_TAC_TOE_ROW_1) {
+      row = 1;
+
       if (movePosition === TIC_TAC_TOE_COLUMN_1) {
+        column = 1;
         currentMove = 1;
       }
 
       if (movePosition === TIC_TAC_TOE_COLUMN_2) {
+        column = 2;
         currentMove = 2;
       }
 
       if (movePosition === TIC_TAC_TOE_COLUMN_3) {
+        column = 3;
         currentMove = 3;
       }
     }
 
     if (block === TIC_TAC_TOE_ROW_2) {
+      row = 2;
+
       if (movePosition === TIC_TAC_TOE_COLUMN_1) {
+        column = 1;
         currentMove = 4;
       }
 
       if (movePosition === TIC_TAC_TOE_COLUMN_2) {
+        column = 2;
         currentMove = 5;
       }
 
       if (movePosition === TIC_TAC_TOE_COLUMN_3) {
+        column = 3;
         currentMove = 6;
       }
     }
 
     if (block === TIC_TAC_TOE_ROW_3) {
+      row = 3;
+
       if (movePosition === TIC_TAC_TOE_COLUMN_1) {
+        column = 1;
         currentMove = 7;
       }
 
       if (movePosition === TIC_TAC_TOE_COLUMN_2) {
+        column = 2;
         currentMove = 8;
       }
 
       if (movePosition === TIC_TAC_TOE_COLUMN_3) {
+        column = 3;
         currentMove = 9;
       }
     }
@@ -130,10 +147,12 @@ const handleTicTacToe = async payload => {
 
       const { blocks } = game;
 
-      const updatedBlocks = createFirstMovePlayedTemplate(
+      const updatedBlocks = createFirstMovePlayedTemplate({
         currentPlayer,
-        blocks
-      );
+        row,
+        column,
+        blocks,
+      });
 
       await TicTacToeModel.updateOne(
         { gameId },

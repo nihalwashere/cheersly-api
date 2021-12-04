@@ -91,8 +91,7 @@ const blocks = [
     type: "section",
     text: {
       type: "mrkdwn",
-      text:
-        "<@U018RT0Q4F7> has challenged you to play a round of *Tic Tac Toe*",
+      text: "<@U018RT0Q4F7> :x: v/s <@U019H3WJLL8> :o:",
     },
   },
   {
@@ -113,7 +112,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_1",
       },
       {
@@ -123,7 +122,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_2",
       },
       {
@@ -133,7 +132,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_3",
       },
     ],
@@ -149,7 +148,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_1",
       },
       {
@@ -159,7 +158,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_2",
       },
       {
@@ -169,7 +168,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_3",
       },
     ],
@@ -185,7 +184,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_1",
       },
       {
@@ -195,7 +194,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_2",
       },
       {
@@ -205,24 +204,9 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "WjvCzfxcMY",
+        value: "6X8q8chbyw",
         action_id: "TIC_TAC_TOE_COLUMN_3",
       },
     ],
   },
 ];
-
-blocks.splice(1, 0, {
-  type: "section",
-  text: {
-    type: "mrkdwn",
-    text: `<@> has made their move. Waiting for the opponent to play.`,
-  },
-});
-
-console.log("test : ", blocks);
-
-const months = ["Jan", "March", "April", "June"];
-months.splice(1, 0, "Feb");
-
-console.log("months : ", months);

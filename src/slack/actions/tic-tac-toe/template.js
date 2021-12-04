@@ -1,4 +1,9 @@
-const createFirstMovePlayedTemplate = (currentPlayer, blocks) => {
+const createFirstMovePlayedTemplate = ({
+  currentPlayer,
+  row,
+  column,
+  blocks,
+}) => {
   blocks.splice(1, 0, {
     type: "section",
     text: {
@@ -14,6 +19,51 @@ const createFirstMovePlayedTemplate = (currentPlayer, blocks) => {
       text: ":o:'s turn",
     },
   });
+
+  if (row === 1) {
+    // first row
+
+    blocks.splice(4, 1, {
+      ...blocks[4],
+      elements: blocks.elements.splice(column - 1, 1, {
+        ...blocks.elements[column - 1],
+        text: {
+          ...blocks.elements[column - 1].text,
+          text: ":x:",
+        },
+      }),
+    });
+  }
+
+  if (row === 2) {
+    // second row
+
+    blocks.splice(5, 1, {
+      ...blocks[5],
+      elements: blocks.elements.splice(column - 1, 1, {
+        ...blocks.elements[column - 1],
+        text: {
+          ...blocks.elements[column - 1].text,
+          text: ":x:",
+        },
+      }),
+    });
+  }
+
+  if (row === 3) {
+    // third row
+
+    blocks.splice(6, 1, {
+      ...blocks[6],
+      elements: blocks.elements.splice(column - 1, 1, {
+        ...blocks.elements[column - 1],
+        text: {
+          ...blocks.elements[column - 1].text,
+          text: ":x:",
+        },
+      }),
+    });
+  }
 
   return blocks;
 };
@@ -114,10 +164,15 @@ const moveAlreadyPlayedModalTemplate = () => ({
   ],
 });
 
+const updateTicTacToeTemplate = blocks => {
+  return [];
+};
+
 module.exports = {
   createFirstMovePlayedTemplate,
   createSecondMovePlayedTemplate,
   createGameFinishedTemplate,
   createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate,
+  updateTicTacToeTemplate,
 };
