@@ -275,7 +275,7 @@ const handleTicTacToe = async payload => {
     let updatedBlocks = [];
 
     if (winner && finished) {
-      updatedBlocks = createGameFinishedTemplate({ winner, row, blocks });
+      updatedBlocks = createGameFinishedTemplate({ winner, blocks });
     } else {
       updatedBlocks = updateTicTacToeTemplate({
         row,

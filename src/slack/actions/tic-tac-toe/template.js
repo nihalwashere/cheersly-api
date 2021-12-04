@@ -166,11 +166,9 @@ const updateTicTacToeTemplate = ({
 };
 
 const createGameFinishedRow = elements => {
-  let result = {};
+  let text = "";
 
   elements.map(elem => {
-    let text = "";
-
     if (elem.text.text === ":x:") {
       text += ":x:            ";
     }
@@ -182,20 +180,18 @@ const createGameFinishedRow = elements => {
     if (elem.text.text === ":question:") {
       text += ":question:            ";
     }
-
-    result = {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text,
-      },
-    };
   });
 
-  return result;
+  return {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text,
+    },
+  };
 };
 
-const createGameFinishedTemplate = ({ winner, row, blocks }) => {
+const createGameFinishedTemplate = ({ winner, blocks }) => {
   blocks.splice(1, 1, {
     type: "section",
     text: {
@@ -204,29 +200,20 @@ const createGameFinishedTemplate = ({ winner, row, blocks }) => {
     },
   });
 
-  if (row === 1) {
-    // first row
+  // first row
+  blocks.splice(2, 1, {
+    ...createGameFinishedRow(blocks[2].elements),
+  });
 
-    blocks.splice(2, 1, {
-      ...createGameFinishedRow(blocks[2].elements),
-    });
-  }
+  // second row
+  blocks.splice(3, 1, {
+    ...createGameFinishedRow(blocks[3].elements),
+  });
 
-  if (row === 2) {
-    // second row
-
-    blocks.splice(3, 1, {
-      ...createGameFinishedRow(blocks[3].elements),
-    });
-  }
-
-  if (row === 3) {
-    // third row
-
-    blocks.splice(4, 1, {
-      ...createGameFinishedRow(blocks[4].elements),
-    });
-  }
+  // third row
+  blocks.splice(4, 1, {
+    ...createGameFinishedRow(blocks[4].elements),
+  });
 
   return blocks;
 };
