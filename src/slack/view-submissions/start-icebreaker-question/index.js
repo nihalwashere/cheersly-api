@@ -6,7 +6,7 @@ const {
 const IceBreakerQuestionsModel = require("../../../mongo/models/IceBreakerQuestions");
 const {
   slackPostMessageToChannel,
-  pushViewToModal,
+  // pushViewToModal,
   updateModal,
 } = require("../../api");
 const { createIcebreakerQuestionSubmittedTemplate } = require("./template");
@@ -16,7 +16,7 @@ const logger = require("../../../global/logger");
 const processStartIcebreakerQuestion = async payload => {
   try {
     const {
-      trigger_id,
+      // trigger_id,
       user: { id: userId },
       team: { id: teamId },
       view: { id: viewId, hash, state },
@@ -40,17 +40,15 @@ const processStartIcebreakerQuestion = async payload => {
       )
     );
 
-    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
-      await updateModal({
-        teamId,
-        viewId,
-        hash,
-        view: createNotInChannelTemplate(),
-      });
-      // await pushViewToModal(teamId, trigger_id, createNotInChannelTemplate());
-    }
-
-    return { success: true };
+    // if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+    //   await updateModal({
+    //     teamId,
+    //     viewId,
+    //     hash,
+    //     view: createNotInChannelTemplate(),
+    //   });
+    //   // await pushViewToModal(teamId, trigger_id, createNotInChannelTemplate());
+    // }
   } catch (error) {
     logger.error("processStartIcebreakerQuestion() -> error : ", error);
   }
