@@ -275,7 +275,16 @@ const handleTicTacToe = async payload => {
     let updatedBlocks = [];
 
     if (winner && finished) {
-      updatedBlocks = createGameFinishedTemplate({ winner, blocks });
+      updatedBlocks = createGameFinishedTemplate({
+        winner,
+        blocks: updateTicTacToeTemplate({
+          row,
+          column,
+          blocks,
+          currentTurn: turn === PLAYER_ONE ? ":x:" : ":o:",
+          nextTurn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
+        }),
+      });
     } else {
       updatedBlocks = updateTicTacToeTemplate({
         row,
