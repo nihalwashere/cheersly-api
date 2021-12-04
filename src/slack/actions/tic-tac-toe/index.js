@@ -11,6 +11,7 @@ const { postMessageToResponseUrl, openModal } = require("../../api");
 const {
   createFirstMovePlayedTemplate,
   createSecondMovePlayedTemplate,
+  updateTicTacToeTemplate,
   createGameFinishedTemplate,
   createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate,
@@ -215,7 +216,14 @@ const handleTicTacToe = async payload => {
 
     // alternate moves
 
-    const { turn, playerOne, playerOneMoves, playerTwo, playerTwoMoves } = game;
+    const {
+      turn,
+      playerOne,
+      playerOneMoves,
+      playerTwo,
+      playerTwoMoves,
+      blocks,
+    } = game;
 
     if (
       (turn === PLAYER_ONE && currentPlayer !== playerOne) ||
@@ -258,6 +266,13 @@ const handleTicTacToe = async payload => {
       }
     }
 
+    const updatedBlocks = updateTicTacToeTemplate({
+      row,
+      column,
+      blocks,
+      turn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
+    });
+
     await TicTacToeModel.updateOne(
       { gameId },
       {
@@ -268,9 +283,16 @@ const handleTicTacToe = async payload => {
           turn: updatedTurn,
           playerOneMoves: updatedPlayerOneMoves,
           playerTwoMoves: updatedPlayerTwoMoves,
+          blocks: updatedBlocks,
         },
       }
     );
+
+    return await postMessageToResponseUrl({
+      responseUrl: response_url,
+      replaceOriginal: true,
+      message: updatedBlocks,
+    });
   } catch (error) {
     logger.error("handleTicTacToe() -> error : ", error);
   }
