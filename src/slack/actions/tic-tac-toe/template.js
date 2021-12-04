@@ -35,6 +35,8 @@ const createSecondMovePlayedTemplate = (playerOne, playerTwo, blocks) => {
     },
   });
 
+  blocks.splice(2, 1);
+
   return blocks;
 };
 
