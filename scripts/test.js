@@ -84,4 +84,145 @@ const now = new Date();
 
 // console.log("days : ", new Date().getDate() - new Date(date).getDate());
 
-console.log(nanoid(10));
+// console.log(nanoid(10));
+
+const blocks = [
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "<@U018RT0Q4F7> has challenged you to play a round of *Tic Tac Toe*",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: ":x:'s turn",
+    },
+  },
+  {
+    type: "actions",
+    block_id: "TIC_TAC_TOE_ROW_1",
+    elements: [
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_1",
+      },
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_2",
+      },
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_3",
+      },
+    ],
+  },
+  {
+    type: "actions",
+    block_id: "TIC_TAC_TOE_ROW_2",
+    elements: [
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_1",
+      },
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_2",
+      },
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_3",
+      },
+    ],
+  },
+  {
+    type: "actions",
+    block_id: "TIC_TAC_TOE_ROW_3",
+    elements: [
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_1",
+      },
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_2",
+      },
+      {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":question:",
+          emoji: true,
+        },
+        value: "WjvCzfxcMY",
+        action_id: "TIC_TAC_TOE_COLUMN_3",
+      },
+    ],
+  },
+];
+
+blocks.splice(1, 0, {
+  type: "section",
+  text: {
+    type: "mrkdwn",
+    text: `<@> has made their move. Waiting for the opponent to play.`,
+  },
+});
+
+console.log("test : ", blocks);
+
+const months = ["Jan", "March", "April", "June"];
+months.splice(1, 0, "Feb");
+
+console.log("months : ", months);

@@ -1,15 +1,17 @@
 const createFirstMovePlayedTemplate = (currentPlayer, blocks) => {
-  return blocks.splice(1, 0, {
+  blocks.splice(1, 0, {
     type: "section",
     text: {
       type: "mrkdwn",
       text: `<@${currentPlayer}> has made their move. Waiting for the opponent to play.`,
     },
   });
+
+  return blocks;
 };
 
 const createSecondMovePlayedTemplate = (playerOne, playerTwo, blocks) => {
-  blocks.splice(0, 0, {
+  blocks.splice(0, 1, {
     type: "section",
     text: {
       type: "mrkdwn",
@@ -17,13 +19,15 @@ const createSecondMovePlayedTemplate = (playerOne, playerTwo, blocks) => {
     },
   });
 
-  blocks.splice(1, 0, {
+  blocks.splice(1, 1, {
     type: "section",
     text: {
       type: "mrkdwn",
       text: ":x:'s turn",
     },
   });
+
+  return blocks;
 };
 
 const createGameFinishedTemplate = ({
