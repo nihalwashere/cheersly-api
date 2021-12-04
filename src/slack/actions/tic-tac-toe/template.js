@@ -7,6 +7,14 @@ const createFirstMovePlayedTemplate = (currentPlayer, blocks) => {
     },
   });
 
+  blocks.splice(2, 1, {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: ":o:'s turn",
+    },
+  });
+
   return blocks;
 };
 
