@@ -16,10 +16,51 @@ const {
 } = require("./template");
 const logger = require("../../../global/logger");
 
+const PLAYER_ONE = "PLAYER_ONE";
+const PLAYER_TWO = "PLAYER_TWO";
+
+const checkWin = moves => {
+  let win = false;
+
+  if (moves.includes(1) && moves.includes(2) && moves.includes(3)) {
+    win = true;
+  }
+
+  if (moves.includes(4) && moves.includes(5) && moves.includes(6)) {
+    win = true;
+  }
+
+  if (moves.includes(7) && moves.includes(8) && moves.includes(9)) {
+    win = true;
+  }
+
+  if (moves.includes(1) && moves.includes(4) && moves.includes(7)) {
+    win = true;
+  }
+
+  if (moves.includes(2) && moves.includes(5) && moves.includes(8)) {
+    win = true;
+  }
+
+  if (moves.includes(3) && moves.includes(6) && moves.includes(9)) {
+    win = true;
+  }
+
+  if (moves.includes(1) && moves.includes(5) && moves.includes(9)) {
+    win = true;
+  }
+
+  if (moves.includes(3) && moves.includes(5) && moves.includes(7)) {
+    win = true;
+  }
+
+  return win;
+};
+
 const handleTicTacToe = async payload => {
   try {
     const {
-      user: { id: userId },
+      user: { id: currentPlayer },
       team: { id: teamId },
       trigger_id,
       response_url,
@@ -78,6 +119,7 @@ const handleTicTacToe = async payload => {
       }
     }
 
+    logger.debug("currentPlayer : ", currentPlayer);
     logger.debug("currentMove : ", currentMove);
 
     const game = await TicTacToeModel.findOne({ gameId });
@@ -93,8 +135,9 @@ const handleTicTacToe = async payload => {
         { gameId },
         {
           $set: {
-            playerOne: userId,
-            playerOneMove: currentMove,
+            playerOne: currentPlayer,
+            playerOneMoves: [currentMove],
+            turn: PLAYER_TWO, // next player to play
             // blocks,
           },
         }
@@ -109,9 +152,12 @@ const handleTicTacToe = async payload => {
 
     // second move
 
-    const { playerOne, playerOneMove } = game;
+    const { turn, playerOne, playerOneMoves, playerTwo, playerTwoMoves } = game;
 
-    if (playerOne === userId) {
+    if (
+      (turn === PLAYER_ONE && currentPlayer !== playerOne) ||
+      (turn === PLAYER_TWO && currentPlayer !== playerTwo)
+    ) {
       return await openModal(
         teamId,
         trigger_id,
@@ -119,11 +165,49 @@ const handleTicTacToe = async payload => {
       );
     }
 
-    // let winner = null;
-    // let draw = false;
+    let winner = null;
+    const draw = false;
+    let finished = true;
+    let updatedTurn = null;
 
-    const playerTwo = userId;
-    const playerTwoMove = currentMove;
+    // WIN CASES
+
+    const updatedPlayerOneMoves = [...playerOneMoves];
+    const updatedPlayerTwoMoves = [...playerTwoMoves];
+
+    if (currentPlayer === playerOne) {
+      updatedPlayerOneMoves.push(currentMove);
+      updatedTurn = PLAYER_TWO;
+
+      if (checkWin(updatedPlayerOneMoves)) {
+        winner = playerOne;
+        finished = true;
+      }
+    }
+
+    if (currentPlayer === playerTwo) {
+      updatedPlayerTwoMoves.push(currentMove);
+      updatedTurn = PLAYER_ONE;
+
+      if (checkWin(updatedPlayerTwoMoves)) {
+        winner = playerTwo;
+        finished = true;
+      }
+    }
+
+    await TicTacToeModel.updateOne(
+      { gameId },
+      {
+        $set: {
+          winner,
+          draw,
+          finished,
+          turn: updatedTurn,
+          playerOneMoves: updatedPlayerOneMoves,
+          playerTwoMoves: updatedPlayerTwoMoves,
+        },
+      }
+    );
   } catch (error) {
     logger.error("handleTicTacToe() -> error : ", error);
   }
