@@ -23,7 +23,7 @@ const createFirstMovePlayedTemplate = ({
   if (row === 1) {
     // first row
 
-    blocks.splice(4, 1, {
+    blocks.splice(3, 1, {
       ...blocks[3],
       elements: blocks[3].elements.splice(column - 1, 1, {
         ...blocks[3].elements[column - 1],
