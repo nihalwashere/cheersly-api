@@ -24,6 +24,21 @@ const createFirstMovePlayedTemplate = ({
     // first row
 
     blocks.splice(4, 1, {
+      ...blocks[3],
+      elements: blocks[3].elements.splice(column - 1, 1, {
+        ...blocks[3].elements[column - 1],
+        text: {
+          ...blocks[3].elements[column - 1].text,
+          text: ":x:",
+        },
+      }),
+    });
+  }
+
+  if (row === 2) {
+    // second row
+
+    blocks.splice(4, 1, {
       ...blocks[4],
       elements: blocks[4].elements.splice(column - 1, 1, {
         ...blocks[4].elements[column - 1],
@@ -35,8 +50,8 @@ const createFirstMovePlayedTemplate = ({
     });
   }
 
-  if (row === 2) {
-    // second row
+  if (row === 3) {
+    // third row
 
     blocks.splice(5, 1, {
       ...blocks[5],
@@ -44,21 +59,6 @@ const createFirstMovePlayedTemplate = ({
         ...blocks[5].elements[column - 1],
         text: {
           ...blocks[5].elements[column - 1].text,
-          text: ":x:",
-        },
-      }),
-    });
-  }
-
-  if (row === 3) {
-    // third row
-
-    blocks.splice(6, 1, {
-      ...blocks[6],
-      elements: blocks[6].elements.splice(column - 1, 1, {
-        ...blocks[6].elements[column - 1],
-        text: {
-          ...blocks[6].elements[column - 1].text,
           text: ":x:",
         },
       }),

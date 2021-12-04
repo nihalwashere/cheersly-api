@@ -91,7 +91,8 @@ const blocks = [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "<@U018RT0Q4F7> :x: v/s <@U019H3WJLL8> :o:",
+      text:
+        "<@U018RT0Q4F7> has challenged you to play a round of *Tic Tac Toe*",
     },
   },
   {
@@ -112,7 +113,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_1",
       },
       {
@@ -122,7 +123,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_2",
       },
       {
@@ -132,7 +133,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_3",
       },
     ],
@@ -148,7 +149,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_1",
       },
       {
@@ -158,7 +159,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_2",
       },
       {
@@ -168,7 +169,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_3",
       },
     ],
@@ -184,7 +185,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_1",
       },
       {
@@ -194,7 +195,7 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_2",
       },
       {
@@ -204,9 +205,75 @@ const blocks = [
           text: ":question:",
           emoji: true,
         },
-        value: "6X8q8chbyw",
+        value: "8cSc-lO48B",
         action_id: "TIC_TAC_TOE_COLUMN_3",
       },
     ],
   },
 ];
+
+const row = 1;
+const column = 1;
+
+blocks.splice(1, 0, {
+  type: "section",
+  text: {
+    type: "mrkdwn",
+    text: `<@> has made their move. Waiting for the opponent to play.`,
+  },
+});
+
+blocks.splice(2, 1, {
+  type: "section",
+  text: {
+    type: "mrkdwn",
+    text: ":o:'s turn",
+  },
+});
+
+if (row === 1) {
+  // first row
+
+  blocks.splice(3, 1, {
+    ...blocks[3],
+    elements: blocks[3].elements.splice(column - 1, 1, {
+      ...blocks[3].elements[column - 1],
+      text: {
+        ...blocks[3].elements[column - 1].text,
+        text: ":x:",
+      },
+    }),
+  });
+}
+
+if (row === 2) {
+  // second row
+
+  blocks.splice(4, 1, {
+    ...blocks[4],
+    elements: blocks[4].elements.splice(column - 1, 1, {
+      ...blocks[4].elements[column - 1],
+      text: {
+        ...blocks[4].elements[column - 1].text,
+        text: ":x:",
+      },
+    }),
+  });
+}
+
+if (row === 3) {
+  // third row
+
+  blocks.splice(5, 1, {
+    ...blocks[5],
+    elements: blocks[5].elements.splice(column - 1, 1, {
+      ...blocks[5].elements[column - 1],
+      text: {
+        ...blocks[5].elements[column - 1].text,
+        text: ":x:",
+      },
+    }),
+  });
+}
+
+console.log("blocks final : ", JSON.stringify(blocks, 1));
