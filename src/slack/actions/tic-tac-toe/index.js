@@ -1,4 +1,5 @@
 const {
+  BLOCK_IDS: { TIC_TAC_TOE_ROW_1, TIC_TAC_TOE_ROW_2, TIC_TAC_TOE_ROW_3 },
   ACTION_IDS: {
     TIC_TAC_TOE_COLUMN_1,
     TIC_TAC_TOE_COLUMN_2,
@@ -35,44 +36,44 @@ const handleTicTacToe = async payload => {
 
     let currentMove = 0;
 
-    if (String(block).includes(1)) {
-      if (String(movePosition).includes("_1")) {
+    if (block === TIC_TAC_TOE_ROW_1) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_1) {
         currentMove = 1;
       }
 
-      if (String(movePosition).includes("_2")) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_2) {
         currentMove = 2;
       }
 
-      if (String(movePosition).includes("_3")) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_3) {
         currentMove = 3;
       }
     }
 
-    if (String(block.includes(2))) {
-      if (String(movePosition).includes("_1")) {
+    if (block === TIC_TAC_TOE_ROW_2) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_1) {
         currentMove = 4;
       }
 
-      if (String(movePosition).includes("_2")) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_2) {
         currentMove = 5;
       }
 
-      if (String(movePosition).includes("_3")) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_3) {
         currentMove = 6;
       }
     }
 
-    if (String(block.includes(3))) {
-      if (String(movePosition).includes("_1")) {
+    if (block === TIC_TAC_TOE_ROW_3) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_1) {
         currentMove = 7;
       }
 
-      if (String(movePosition).includes("_2")) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_2) {
         currentMove = 8;
       }
 
-      if (String(movePosition).includes("_3")) {
+      if (movePosition === TIC_TAC_TOE_COLUMN_3) {
         currentMove = 9;
       }
     }
