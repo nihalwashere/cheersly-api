@@ -19,7 +19,7 @@ const createPlayTicTacToeTemplate = (userId, gameId) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `<@${userId}> :x:'s turn`,
+      text: ":x:'s turn",
     },
   },
   {

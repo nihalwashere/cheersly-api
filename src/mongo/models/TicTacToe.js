@@ -20,6 +20,14 @@ const TicTacToeSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    playerOneMove: {
+      type: String,
+      default: null,
+    },
+    playerTwoMove: {
+      type: String,
+      default: null,
+    },
     turn: {
       type: String,
       default: null,

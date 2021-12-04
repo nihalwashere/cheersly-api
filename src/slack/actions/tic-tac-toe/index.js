@@ -27,9 +27,102 @@ const handleTicTacToe = async payload => {
 
     const gameId = actions[0].value;
 
-    const currentMove = actions[0].action_id;
+    const block = actions[0].block_id;
+
+    const movePosition = actions[0].action_id;
+
+    logger.debug("movePosition : ", movePosition);
+
+    let currentMove = 0;
+
+    if (String(block).includes(1)) {
+      if (String(movePosition).includes("_1")) {
+        currentMove = 1;
+      }
+
+      if (String(movePosition).includes("_2")) {
+        currentMove = 2;
+      }
+
+      if (String(movePosition).includes("_3")) {
+        currentMove = 3;
+      }
+    }
+
+    if (String(block.includes(2))) {
+      if (String(movePosition).includes("_1")) {
+        currentMove = 4;
+      }
+
+      if (String(movePosition).includes("_2")) {
+        currentMove = 5;
+      }
+
+      if (String(movePosition).includes("_3")) {
+        currentMove = 6;
+      }
+    }
+
+    if (String(block.includes(3))) {
+      if (String(movePosition).includes("_1")) {
+        currentMove = 7;
+      }
+
+      if (String(movePosition).includes("_2")) {
+        currentMove = 8;
+      }
+
+      if (String(movePosition).includes("_3")) {
+        currentMove = 9;
+      }
+    }
 
     logger.debug("currentMove : ", currentMove);
+
+    const game = await TicTacToeModel.findOne({ gameId });
+
+    if (!game.playerOne) {
+      // first move
+
+      //   const { blocks } = game;
+
+      //   blocks.push(createMovePlayedTemplate(userId));
+
+      await TicTacToeModel.updateOne(
+        { gameId },
+        {
+          $set: {
+            playerOne: userId,
+            playerOneMove: currentMove,
+            // blocks,
+          },
+        }
+      );
+
+      //   return await postMessageToResponseUrl({
+      //     responseUrl: response_url,
+      //     replaceOriginal: true,
+      //     message: blocks,
+      //   });
+    }
+
+    // second move
+
+    const { playerOne, playerOneMove } = game;
+
+    if (playerOne === userId) {
+      return await openModal(
+        teamId,
+        trigger_id,
+        moveAlreadyPlayedModalTemplate()
+      );
+    }
+
+    // let winner = null;
+    // let draw = false;
+
+    const playerTwo = userId;
+    const playerTwoMove = currentMove;
   } catch (error) {
     logger.error("handleTicTacToe() -> error : ", error);
   }

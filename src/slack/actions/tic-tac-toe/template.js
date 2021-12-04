@@ -53,12 +53,12 @@ const moveAlreadyPlayedModalTemplate = () => ({
   type: "modal",
   title: {
     type: "plain_text",
-    text: "Stone Paper Scissors",
+    text: "Tic Tac Toe",
     emoji: true,
   },
   close: {
     type: "plain_text",
-    text: "OK",
+    text: "Okie Dokie",
     emoji: true,
   },
   blocks: [
