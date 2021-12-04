@@ -30,6 +30,10 @@ const {
   handleStonePaperScissorsCommand,
 } = require("../../slack/commands/sps");
 const {
+  isTTTCommand,
+  handleTicTacToeCommand,
+} = require("../../slack/commands/ttt");
+const {
   isInterestsCommand,
   handleInterestsCommand,
 } = require("../../slack/commands/interests");
@@ -147,6 +151,16 @@ router.post("/", async (req, res) => {
         .json(
           await handleStonePaperScissorsCommand(team_id, user_id, channel_id)
         );
+    }
+
+    if (isTTTCommand(text)) {
+      // /cheers ttt
+
+      isCommandValid = true;
+
+      return res
+        .status(200)
+        .json(await handleTicTacToeCommand(team_id, user_id, channel_id));
     }
 
     if (isInterestsCommand(text)) {

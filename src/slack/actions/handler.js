@@ -11,6 +11,9 @@ const {
   },
   BLOCK_IDS: {
     STONE_PAPER_SCISSORS,
+    TIC_TAC_TOE_ROW_1,
+    TIC_TAC_TOE_ROW_2,
+    TIC_TAC_TOE_ROW_3,
     TOPICS_CHANGE,
     INTERESTS_CHANGE,
     THIS_OR_THAT_PLAYED,
@@ -20,6 +23,7 @@ const { handlePollOptionSubmitted } = require("./poll-option-submitted");
 const { handleShareFeedback } = require("./share-feedback");
 const { handleSayCheers } = require("./say-cheers");
 const { handleStonePaperScissors } = require("./stone-paper-scissors");
+const { handleTicTacToe } = require("./tic-tac-toe");
 const { handleAddNewTopic } = require("./add-new-topic");
 const { handleTopicsChange } = require("./topics");
 const { handleInterestsChange } = require("./interests");
@@ -45,6 +49,9 @@ const actionsMapper = async payload => {
 
     const blockIdMapper = {
       [STONE_PAPER_SCISSORS]: () => handleStonePaperScissors(payload),
+      [TIC_TAC_TOE_ROW_1]: () => handleTicTacToe(payload),
+      [TIC_TAC_TOE_ROW_2]: () => handleTicTacToe(payload),
+      [TIC_TAC_TOE_ROW_3]: () => handleTicTacToe(payload),
       [TOPICS_CHANGE]: () => handleTopicsChange(payload),
       [INTERESTS_CHANGE]: () => handleInterestsChange(payload),
       [THIS_OR_THAT_PLAYED]: () => handleThisOrThatPlayed(payload),
@@ -55,6 +62,9 @@ const actionsMapper = async payload => {
     if (
       payload.actions[0].block_id &&
       (payload.actions[0].block_id === STONE_PAPER_SCISSORS ||
+        payload.actions[0].block_id === TIC_TAC_TOE_ROW_1 ||
+        payload.actions[0].block_id === TIC_TAC_TOE_ROW_2 ||
+        payload.actions[0].block_id === TIC_TAC_TOE_ROW_3 ||
         payload.actions[0].block_id === TOPICS_CHANGE ||
         payload.actions[0].block_id === INTERESTS_CHANGE ||
         payload.actions[0].block_id === THIS_OR_THAT_PLAYED)
@@ -75,7 +85,7 @@ const actionsHandler = async payload => {
     const { actions } = payload;
 
     if (actions.length && actions[0].action_id) {
-      await actionsMapper(payload);
+      return await actionsMapper(payload);
     }
   } catch (error) {
     logger.error("actionsHandler() -> error : ", error);
