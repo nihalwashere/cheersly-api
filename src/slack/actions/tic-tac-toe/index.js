@@ -148,9 +148,39 @@ const handleTicTacToe = async payload => {
       //     replaceOriginal: true,
       //     message: blocks,
       //   });
+
+      return;
     }
 
-    // second move
+    if (game.playerOne && !game.playerTwo) {
+      // second move
+
+      //   const { blocks } = game;
+
+      //   blocks.push(createMovePlayedTemplate(userId));
+
+      await TicTacToeModel.updateOne(
+        { gameId },
+        {
+          $set: {
+            playerTwo: currentPlayer,
+            playerTwoMoves: [currentMove],
+            turn: PLAYER_ONE, // next player to play
+            // blocks,
+          },
+        }
+      );
+
+      //   return await postMessageToResponseUrl({
+      //     responseUrl: response_url,
+      //     replaceOriginal: true,
+      //     message: blocks,
+      //   });
+
+      return;
+    }
+
+    // alternate moves
 
     const { turn, playerOne, playerOneMoves, playerTwo, playerTwoMoves } = game;
 
