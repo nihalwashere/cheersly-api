@@ -1,3 +1,18 @@
+const updateElements = (elements, column, turn) =>
+  elements.map((elem, index) => {
+    if (index === column) {
+      return {
+        ...elem,
+        text: {
+          ...elem.text,
+          text: turn,
+        },
+      };
+    }
+
+    return { ...elem };
+  });
+
 const createFirstMovePlayedTemplate = ({
   currentPlayer,
   row,
@@ -25,13 +40,7 @@ const createFirstMovePlayedTemplate = ({
 
     blocks.splice(3, 1, {
       ...blocks[3],
-      elements: blocks[3].elements.splice(column - 1, 1, {
-        ...blocks[3].elements[column - 1],
-        text: {
-          ...blocks[3].elements[column - 1].text,
-          text: ":x:",
-        },
-      }),
+      elements: updateElements(blocks[3].elements, column - 1, ":x:"),
     });
   }
 
@@ -40,13 +49,7 @@ const createFirstMovePlayedTemplate = ({
 
     blocks.splice(4, 1, {
       ...blocks[4],
-      elements: blocks[4].elements.splice(column - 1, 1, {
-        ...blocks[4].elements[column - 1],
-        text: {
-          ...blocks[4].elements[column - 1].text,
-          text: ":x:",
-        },
-      }),
+      elements: updateElements(blocks[4].elements, column - 1, ":x:"),
     });
   }
 
@@ -55,13 +58,7 @@ const createFirstMovePlayedTemplate = ({
 
     blocks.splice(5, 1, {
       ...blocks[5],
-      elements: blocks[5].elements.splice(column - 1, 1, {
-        ...blocks[5].elements[column - 1],
-        text: {
-          ...blocks[5].elements[column - 1].text,
-          text: ":x:",
-        },
-      }),
+      elements: updateElements(blocks[5].elements, column - 1, ":x:"),
     });
   }
 
