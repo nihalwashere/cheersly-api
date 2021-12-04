@@ -2,7 +2,7 @@ const { nanoid } = require("nanoid");
 const TicTacToeModel = require("../../../mongo/models/TicTacToe");
 const {
   createAllowedOnlyInDMTemplate,
-  createPlayStonePaperScissorsTemplate,
+  createPlayTicTacToeTemplate,
 } = require("./template");
 const logger = require("../../../global/logger");
 
@@ -20,7 +20,7 @@ const handleTicTacToeCommand = async (teamId, userId, channelId) => {
 
     const gameId = nanoid(10);
 
-    const blocks = createPlayStonePaperScissorsTemplate(userId, gameId);
+    const blocks = createPlayTicTacToeTemplate(userId, gameId);
 
     await new TicTacToeModel({
       teamId,
