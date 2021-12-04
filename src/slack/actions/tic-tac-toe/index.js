@@ -9,7 +9,8 @@ const {
 const TicTacToeModel = require("../../../mongo/models/TicTacToe");
 const { postMessageToResponseUrl, openModal } = require("../../api");
 const {
-  createMovePlayedTemplate,
+  createFirstMovePlayedTemplate,
+  createSecondMovePlayedTemplate,
   createGameFinishedTemplate,
   createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate,
@@ -127,9 +128,12 @@ const handleTicTacToe = async payload => {
     if (!game.playerOne) {
       // first move
 
-      //   const { blocks } = game;
+      const { blocks } = game;
 
-      //   blocks.push(createMovePlayedTemplate(userId));
+      const updatedBlocks = createFirstMovePlayedTemplate(
+        currentPlayer,
+        blocks
+      );
 
       await TicTacToeModel.updateOne(
         { gameId },
@@ -138,34 +142,36 @@ const handleTicTacToe = async payload => {
             playerOne: currentPlayer,
             playerOneMoves: [currentMove],
             turn: PLAYER_TWO, // next player to play
-            // blocks,
+            blocks: updatedBlocks,
           },
         }
       );
 
-      //   return await postMessageToResponseUrl({
-      //     responseUrl: response_url,
-      //     replaceOriginal: true,
-      //     message: blocks,
-      //   });
-
-      return;
+      return await postMessageToResponseUrl({
+        responseUrl: response_url,
+        replaceOriginal: true,
+        message: updatedBlocks,
+      });
     }
 
-    if (game.turn === PLAYER_TWO && currentPlayer === game.playerOne) {
-      return await openModal(
-        teamId,
-        trigger_id,
-        moveAlreadyPlayedModalTemplate()
-      );
-    }
-
-    if (game.playerOne && !game.playerTwo) {
+    if (!game.playerTwo) {
       // second move
 
-      //   const { blocks } = game;
+      if (game.turn === PLAYER_TWO && currentPlayer === game.playerOne) {
+        return await openModal(
+          teamId,
+          trigger_id,
+          moveAlreadyPlayedModalTemplate()
+        );
+      }
 
-      //   blocks.push(createMovePlayedTemplate(userId));
+      const { blocks } = game;
+
+      const updatedBlocks = createSecondMovePlayedTemplate(
+        game.playerOne,
+        currentPlayer,
+        blocks
+      );
 
       await TicTacToeModel.updateOne(
         { gameId },
@@ -174,18 +180,16 @@ const handleTicTacToe = async payload => {
             playerTwo: currentPlayer,
             playerTwoMoves: [currentMove],
             turn: PLAYER_ONE, // next player to play
-            // blocks,
+            blocks: updatedBlocks,
           },
         }
       );
 
-      //   return await postMessageToResponseUrl({
-      //     responseUrl: response_url,
-      //     replaceOriginal: true,
-      //     message: blocks,
-      //   });
-
-      return;
+      return await postMessageToResponseUrl({
+        responseUrl: response_url,
+        replaceOriginal: true,
+        message: updatedBlocks,
+      });
     }
 
     // alternate moves

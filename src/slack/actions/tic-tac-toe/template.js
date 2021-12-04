@@ -1,10 +1,30 @@
-const createMovePlayedTemplate = userId => ({
-  type: "section",
-  text: {
-    type: "mrkdwn",
-    text: `<@${userId}> has made their move. Waiting for the opponent to play.`,
-  },
-});
+const createFirstMovePlayedTemplate = (currentPlayer, blocks) => {
+  return blocks.splice(1, 0, {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `<@${currentPlayer}> has made their move. Waiting for the opponent to play.`,
+    },
+  });
+};
+
+const createSecondMovePlayedTemplate = (playerOne, playerTwo, blocks) => {
+  blocks.splice(0, 0, {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `<@${playerOne}> :x: v/s <@${playerTwo}> :o:`,
+    },
+  });
+
+  blocks.splice(1, 0, {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: ":x:'s turn",
+    },
+  });
+};
 
 const createGameFinishedTemplate = ({
   winner,
@@ -81,7 +101,8 @@ const moveAlreadyPlayedModalTemplate = () => ({
 });
 
 module.exports = {
-  createMovePlayedTemplate,
+  createFirstMovePlayedTemplate,
+  createSecondMovePlayedTemplate,
   createGameFinishedTemplate,
   createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate,
