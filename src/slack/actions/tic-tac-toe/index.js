@@ -270,7 +270,8 @@ const handleTicTacToe = async payload => {
       row,
       column,
       blocks,
-      turn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
+      currentTurn: turn === PLAYER_ONE ? ":x:" : ":o:",
+      nextTurn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
     });
 
     await TicTacToeModel.updateOne(

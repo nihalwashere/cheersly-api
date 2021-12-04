@@ -120,12 +120,18 @@ const createSecondMovePlayedTemplate = ({
   return blocks;
 };
 
-const updateTicTacToeTemplate = ({ row, column, blocks, turn }) => {
+const updateTicTacToeTemplate = ({
+  row,
+  column,
+  blocks,
+  currentTurn,
+  nextTurn,
+}) => {
   blocks.splice(1, 1, {
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `${turn}'s turn`,
+      text: `${nextTurn}'s turn`,
     },
   });
 
@@ -134,7 +140,7 @@ const updateTicTacToeTemplate = ({ row, column, blocks, turn }) => {
 
     blocks.splice(2, 1, {
       ...blocks[2],
-      elements: updateElements(blocks[2].elements, column - 1, turn),
+      elements: updateElements(blocks[2].elements, column - 1, currentTurn),
     });
   }
 
@@ -143,7 +149,7 @@ const updateTicTacToeTemplate = ({ row, column, blocks, turn }) => {
 
     blocks.splice(3, 1, {
       ...blocks[3],
-      elements: updateElements(blocks[3].elements, column - 1, turn),
+      elements: updateElements(blocks[3].elements, column - 1, currentTurn),
     });
   }
 
@@ -152,7 +158,7 @@ const updateTicTacToeTemplate = ({ row, column, blocks, turn }) => {
 
     blocks.splice(4, 1, {
       ...blocks[4],
-      elements: updateElements(blocks[4].elements, column - 1, turn),
+      elements: updateElements(blocks[4].elements, column - 1, currentTurn),
     });
   }
 
