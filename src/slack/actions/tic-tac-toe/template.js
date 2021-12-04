@@ -65,7 +65,13 @@ const createFirstMovePlayedTemplate = ({
   return blocks;
 };
 
-const createSecondMovePlayedTemplate = (playerOne, playerTwo, blocks) => {
+const createSecondMovePlayedTemplate = ({
+  playerOne,
+  playerTwo,
+  row,
+  column,
+  blocks,
+}) => {
   blocks.splice(0, 1, {
     type: "section",
     text: {
@@ -83,6 +89,33 @@ const createSecondMovePlayedTemplate = (playerOne, playerTwo, blocks) => {
   });
 
   blocks.splice(2, 1);
+
+  if (row === 1) {
+    // first row
+
+    blocks.splice(2, 1, {
+      ...blocks[2],
+      elements: updateElements(blocks[2].elements, column - 1, ":o:"),
+    });
+  }
+
+  if (row === 2) {
+    // second row
+
+    blocks.splice(3, 1, {
+      ...blocks[3],
+      elements: updateElements(blocks[3].elements, column - 1, ":o:"),
+    });
+  }
+
+  if (row === 3) {
+    // third row
+
+    blocks.splice(4, 1, {
+      ...blocks[4],
+      elements: updateElements(blocks[4].elements, column - 1, ":o:"),
+    });
+  }
 
   return blocks;
 };

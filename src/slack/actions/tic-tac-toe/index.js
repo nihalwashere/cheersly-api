@@ -186,11 +186,13 @@ const handleTicTacToe = async payload => {
 
       const { blocks } = game;
 
-      const updatedBlocks = createSecondMovePlayedTemplate(
-        game.playerOne,
-        currentPlayer,
-        blocks
-      );
+      const updatedBlocks = createSecondMovePlayedTemplate({
+        playerOne: game.playerOne,
+        playerTwo: currentPlayer,
+        row,
+        column,
+        blocks,
+      });
 
       await TicTacToeModel.updateOne(
         { gameId },
