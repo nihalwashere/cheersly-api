@@ -165,7 +165,9 @@ const updateTicTacToeTemplate = ({
   return blocks;
 };
 
-const createGameFinishedRow = elements =>
+const createGameFinishedRow = elements => {
+  let result = {};
+
   elements.map(elem => {
     let text = "";
 
@@ -181,7 +183,7 @@ const createGameFinishedRow = elements =>
       text += ":question:            ";
     }
 
-    return {
+    result = {
       type: "section",
       text: {
         type: "mrkdwn",
@@ -189,6 +191,9 @@ const createGameFinishedRow = elements =>
       },
     };
   });
+
+  return result;
+};
 
 const createGameFinishedTemplate = ({ winner, row, blocks }) => {
   blocks.splice(1, 1, {
