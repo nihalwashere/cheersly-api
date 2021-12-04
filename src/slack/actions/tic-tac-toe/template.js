@@ -25,10 +25,10 @@ const createFirstMovePlayedTemplate = ({
 
     blocks.splice(4, 1, {
       ...blocks[4],
-      elements: blocks.elements.splice(column - 1, 1, {
-        ...blocks.elements[column - 1],
+      elements: blocks[4].elements.splice(column - 1, 1, {
+        ...blocks[4].elements[column - 1],
         text: {
-          ...blocks.elements[column - 1].text,
+          ...blocks[4].elements[column - 1].text,
           text: ":x:",
         },
       }),
@@ -40,10 +40,10 @@ const createFirstMovePlayedTemplate = ({
 
     blocks.splice(5, 1, {
       ...blocks[5],
-      elements: blocks.elements.splice(column - 1, 1, {
-        ...blocks.elements[column - 1],
+      elements: blocks[5].elements.splice(column - 1, 1, {
+        ...blocks[5].elements[column - 1],
         text: {
-          ...blocks.elements[column - 1].text,
+          ...blocks[5].elements[column - 1].text,
           text: ":x:",
         },
       }),
@@ -55,10 +55,10 @@ const createFirstMovePlayedTemplate = ({
 
     blocks.splice(6, 1, {
       ...blocks[6],
-      elements: blocks.elements.splice(column - 1, 1, {
-        ...blocks.elements[column - 1],
+      elements: blocks[6].elements.splice(column - 1, 1, {
+        ...blocks[6].elements[column - 1],
         text: {
-          ...blocks.elements[column - 1].text,
+          ...blocks[6].elements[column - 1].text,
           text: ":x:",
         },
       }),
