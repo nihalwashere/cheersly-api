@@ -138,7 +138,8 @@ const createAllowedOnlyInDMTemplate = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*Oops! Tic Tac Toe can only be played in direct messages.*",
+        text:
+          "*Oops! Tic Tac Toe is a two player game and can only be played in a direct message with one person.*",
       },
     },
     {

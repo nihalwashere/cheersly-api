@@ -58,7 +58,7 @@ const moveAlreadyPlayedModalTemplate = () => ({
   },
   close: {
     type: "plain_text",
-    text: "OK",
+    text: "Okie Dokie",
     emoji: true,
   },
   blocks: [

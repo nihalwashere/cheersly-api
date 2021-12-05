@@ -76,8 +76,6 @@ const handleTicTacToe = async payload => {
 
     const movePosition = actions[0].action_id;
 
-    logger.debug("movePosition : ", movePosition);
-
     let currentMove = 0;
     let row = 0;
     let column = 0;
@@ -150,9 +148,6 @@ const handleTicTacToe = async payload => {
         positionAlreadyTakenModalTemplate()
       );
     }
-
-    logger.debug("currentPlayer : ", currentPlayer);
-    logger.debug("currentMove : ", currentMove);
 
     if (!game.playerOne) {
       // first move

@@ -63,7 +63,7 @@ const createAllowedOnlyInDMTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "*Oops! Stone Paper Scissors can only be played in direct messages.*",
+          "*Oops! Stone Paper Scissors is a two player game and can only be played in a direct message with one person.*",
       },
     },
     {
