@@ -218,23 +218,31 @@ const createGameFinishedTemplate = ({ winner, blocks }) => {
   return blocks;
 };
 
-const createGameDrawedTemplate = (playerOne, playerTwo, move) => {
-  return [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `<@${playerOne}> and <@${playerTwo}> both played ${move}`,
-      },
+const createGameDrawedTemplate = blocks => {
+  blocks.splice(1, 1, {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Game is drawed :zany_face:",
     },
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "Game is drawed :handshake:",
-      },
-    },
-  ];
+  });
+
+  // first row
+  blocks.splice(2, 1, {
+    ...createGameFinishedRow(blocks[2].elements),
+  });
+
+  // second row
+  blocks.splice(3, 1, {
+    ...createGameFinishedRow(blocks[3].elements),
+  });
+
+  // third row
+  blocks.splice(4, 1, {
+    ...createGameFinishedRow(blocks[4].elements),
+  });
+
+  return blocks;
 };
 
 const moveAlreadyPlayedModalTemplate = () => ({
@@ -268,6 +276,29 @@ const moveAlreadyPlayedModalTemplate = () => ({
   ],
 });
 
+const positionAlreadyTakenModalTemplate = () => ({
+  type: "modal",
+  title: {
+    type: "plain_text",
+    text: "Tic Tac Toe",
+    emoji: true,
+  },
+  close: {
+    type: "plain_text",
+    text: "Okie Dokie",
+    emoji: true,
+  },
+  blocks: [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*That position is already taken, please play a different move!*",
+      },
+    },
+  ],
+});
+
 module.exports = {
   createFirstMovePlayedTemplate,
   createSecondMovePlayedTemplate,
@@ -275,4 +306,5 @@ module.exports = {
   createGameFinishedTemplate,
   createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate,
+  positionAlreadyTakenModalTemplate,
 };

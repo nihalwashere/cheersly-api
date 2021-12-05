@@ -15,6 +15,7 @@ const {
   createGameFinishedTemplate,
   createGameDrawedTemplate,
   moveAlreadyPlayedModalTemplate,
+  positionAlreadyTakenModalTemplate,
 } = require("./template");
 const logger = require("../../../global/logger");
 
@@ -143,7 +144,11 @@ const handleTicTacToe = async payload => {
     const totalMoves = [...game.playerOneMoves, ...game.playerTwoMoves];
 
     if (totalMoves.includes(currentMove)) {
-      return;
+      return await openModal(
+        teamId,
+        trigger_id,
+        positionAlreadyTakenModalTemplate()
+      );
     }
 
     logger.debug("currentPlayer : ", currentPlayer);
@@ -243,11 +248,9 @@ const handleTicTacToe = async payload => {
     }
 
     let winner = null;
-    const draw = false;
+    let draw = false;
     let finished = true;
     let updatedTurn = null;
-
-    // WIN CASES
 
     const updatedPlayerOneMoves = [...playerOneMoves];
     const updatedPlayerTwoMoves = [...playerTwoMoves];
@@ -272,27 +275,30 @@ const handleTicTacToe = async payload => {
       }
     }
 
-    let updatedBlocks = [];
+    let updatedBlocks = updateTicTacToeTemplate({
+      row,
+      column,
+      blocks,
+      currentTurn: turn === PLAYER_ONE ? ":x:" : ":o:",
+      nextTurn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
+    });
 
     if (winner && finished) {
+      // WIN CASE
       updatedBlocks = createGameFinishedTemplate({
         winner,
-        blocks: updateTicTacToeTemplate({
-          row,
-          column,
-          blocks,
-          currentTurn: turn === PLAYER_ONE ? ":x:" : ":o:",
-          nextTurn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
-        }),
+        blocks: updatedBlocks,
       });
-    } else {
-      updatedBlocks = updateTicTacToeTemplate({
-        row,
-        column,
-        blocks,
-        currentTurn: turn === PLAYER_ONE ? ":x:" : ":o:",
-        nextTurn: updatedTurn === PLAYER_ONE ? ":x:" : ":o:",
-      });
+    }
+
+    if (
+      [...updatedPlayerOneMoves, ...updatedPlayerTwoMoves].length >= 8 &&
+      !winner &&
+      !finished
+    ) {
+      // DRAW CASE
+      draw = true;
+      updatedBlocks = createGameDrawedTemplate(updatedBlocks);
     }
 
     await TicTacToeModel.updateOne(
