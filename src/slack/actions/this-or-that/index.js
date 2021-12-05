@@ -9,9 +9,7 @@ const handleThisOrThat = async payload => {
   try {
     const {
       trigger_id,
-      //   user: { id: userId },
       team: { id: teamId },
-      //   channel: { id: channelId },
     } = payload;
 
     await openModal(

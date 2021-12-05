@@ -1,12 +1,12 @@
 const {
   SLACK_ACTIONS: {
+    SAY_CHEERS,
     THIS_OR_THAT,
     ICEBREAKER_QUESTION,
     TIC_TAC_TOE_HELP,
     STONE_PAPER_SCISSORS_HELP,
   },
 } = require("../../global/constants");
-
 const { createSupportContextTemplate } = require("../templates");
 
 const createMyStatsSection = (
@@ -26,7 +26,7 @@ const createMyStatsSection = (
 const createAppHomeLeadersSection = leaders => {
   const blocks = [];
 
-  const n = 10;
+  const n = 3;
 
   const result = new Array(Math.ceil(leaders.length / n))
     .fill()
@@ -58,13 +58,22 @@ const createAppHomeLeadersSection = leaders => {
   return blocks;
 };
 
-const createAppHomeLeaderBoard = leaders => {
+const createAppHomeLeaderBoard = ({ leaders, leaderBoardUrl }) => {
   return [
     {
       type: "section",
       text: {
         type: "mrkdwn",
         text: "*Leaderboard* :trophy:",
+      },
+      accessory: {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: "View full leaderboard",
+          emoji: true,
+        },
+        url: leaderBoardUrl,
       },
     },
     {
@@ -81,13 +90,13 @@ const createAppHomeLeaderBoard = leaders => {
   ];
 };
 
-const createAppHomeTemplate = (
-  url,
+const createAppHomeTemplate = ({
+  appUrl,
   cheersGiven,
   cheersReceived,
   cheersRedeemable,
-  appHomeBlocks
-) => {
+  appHomeBlocks,
+}) => {
   const appHomeTemplate = {
     type: "home",
     blocks: [
@@ -104,7 +113,7 @@ const createAppHomeTemplate = (
             text: "App Dashboard",
             emoji: true,
           },
-          url,
+          appUrl,
         },
       },
       {
@@ -130,6 +139,24 @@ const createAppHomeTemplate = (
   appHomeTemplate.blocks = [
     ...appHomeTemplate.blocks,
     ...[
+      {
+        type: "divider",
+      },
+      {
+        type: "actions",
+        elements: [
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":beers: Say cheers to your peers",
+              emoji: true,
+            },
+            value: SAY_CHEERS,
+            action_id: SAY_CHEERS,
+          },
+        ],
+      },
       {
         type: "divider",
       },

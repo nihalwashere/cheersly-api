@@ -8,8 +8,6 @@ const logger = require("../../../global/logger");
 
 const processCheersShortcut = async payload => {
   try {
-    logger.debug("processCheersShortcut");
-
     const {
       team: { id: teamId },
       user: { username },

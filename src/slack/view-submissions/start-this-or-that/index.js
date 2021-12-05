@@ -5,8 +5,10 @@ const { slackPostMessageToChannel } = require("../../api");
 const {
   BLOCK_IDS: { THIS_OR_THAT_CHANNEL },
   ACTION_IDS: { THIS_OR_THAT_CHANNEL_VALUE },
+  SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
 const { createThisOrThatSubmittedTemplate } = require("./template");
+const { createNotInChannelTemplate } = require("../../templates");
 const logger = require("../../../global/logger");
 
 const processStartThisOrThat = async payload => {
@@ -47,6 +49,13 @@ const processStartThisOrThat = async payload => {
         blocks,
         messageTimestamp: response.ts,
       }).save();
+    }
+
+    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      return {
+        push: true,
+        view: createNotInChannelTemplate(),
+      };
     }
   } catch (error) {
     logger.error("processStartThisOrThat() -> error : ", error);

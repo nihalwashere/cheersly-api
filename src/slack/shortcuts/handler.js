@@ -4,15 +4,14 @@ const {
 const { processPollShortcut } = require("./poll");
 const { processFeedbackShortcut } = require("./feedback");
 const { processCheersShortcut } = require("./cheers");
-
 const logger = require("../../global/logger");
 
 const shortcutsMapper = async (callback_id, payload) => {
   try {
     const mapper = {
-      [POLL]: async () => await processPollShortcut(payload),
-      [FEEDBACK]: async () => await processFeedbackShortcut(payload),
-      [CHEERS]: async () => await processCheersShortcut(payload),
+      [POLL]: () => processPollShortcut(payload),
+      [FEEDBACK]: () => processFeedbackShortcut(payload),
+      [CHEERS]: () => processCheersShortcut(payload),
     };
 
     const applyMapper = mapper[callback_id];
@@ -28,7 +27,7 @@ const shortcutsHandler = async payload => {
     const { callback_id } = payload;
 
     if (callback_id) {
-      await shortcutsMapper(callback_id, payload);
+      return await shortcutsMapper(callback_id, payload);
     }
   } catch (error) {
     logger.error("shortcutsHandler() -> error : ", error);

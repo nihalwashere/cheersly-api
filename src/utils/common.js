@@ -1,8 +1,7 @@
 const R = require("ramda");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const { APP_NAME, SLACK_APP_ID } = require("../global/config");
-const { PROD_APP_URL, DEV_APP_URL } = require("../global/constants");
+const { APP_URL, SLACK_APP_ID } = require("../global/config");
 const {
   addSubscription,
   getSubscriptionBySlackTeamId,
@@ -257,8 +256,7 @@ const processTopCheersReceivers = cheers => {
 
 const getUnique = data => R.uniq(data);
 
-const getAppUrl = () =>
-  String(APP_NAME).includes("-dev") ? DEV_APP_URL : PROD_APP_URL;
+const getAppUrl = () => APP_URL;
 
 const getAppHomeLink = teamId =>
   `<slack://app?team=${teamId}&id=${SLACK_APP_ID}&tab=home|home>`;

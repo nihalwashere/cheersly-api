@@ -12,10 +12,9 @@ const logger = require("../../../global/logger");
 const processStartIcebreakerQuestion = async payload => {
   try {
     const {
-      // trigger_id,
       user: { id: userId },
       team: { id: teamId },
-      view: { id: viewId, hash, state },
+      view: { state },
     } = payload;
 
     const gameChannel =

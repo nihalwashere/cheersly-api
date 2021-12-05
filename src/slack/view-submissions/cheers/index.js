@@ -32,15 +32,13 @@ const {
 } = require("../../../mongo/helper/cheersStats");
 const { addCheers } = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
-const { sortLeaders } = require("../../../utils/common");
+const { sortLeaders, getAppUrl } = require("../../../utils/common");
 const { getRandomGif } = require("../../../giphy/api");
 const { validateRecipients } = require("./helper");
 const logger = require("../../../global/logger");
 
 const processCheers = async payload => {
   try {
-    logger.debug("processCheers : ", JSON.stringify(payload));
-
     const {
       team: { id: teamId },
       user: { id: senderUserId },
@@ -68,12 +66,6 @@ const processCheers = async payload => {
     ].selected_options.length
       ? true // eslint-disable-line
       : false;
-
-    logger.debug("recipients : ", recipients);
-    logger.debug("channel : ", channel);
-    logger.debug("companyValues : ", companyValues);
-    logger.debug("reason : ", reason);
-    logger.debug("shouldShareGiphy : ", shouldShareGiphy);
 
     // first check if stats exist for user, if it exist then update else create
 
@@ -155,13 +147,10 @@ const processCheers = async payload => {
         })
       );
 
-      logger.debug("notifyRecipients : ", notifyRecipients);
-
       let giphyUrl = "";
 
       if (shouldShareGiphy) {
         const giphy = await getRandomGif("cheers");
-        // logger.debug("giphy : ", JSON.stringify(giphy));
 
         if (
           giphy &&
@@ -189,8 +178,6 @@ const processCheers = async payload => {
       // compute leaderboard
       const cheersStatsForTeam = await getCheersStatsForTeam(teamId);
 
-      logger.debug("cheersStatsForTeam : ", cheersStatsForTeam);
-
       const leaders = [];
 
       cheersStatsForTeam.map(stat => {
@@ -198,12 +185,13 @@ const processCheers = async payload => {
         leaders.push({ slackUsername, cheersReceived });
       });
 
-      logger.debug("leaders : ", leaders);
-
       const sortedLeaders = sortLeaders(leaders);
-      logger.debug("sortedLeaders : ", sortedLeaders);
 
-      const leaderBoardBlocks = createAppHomeLeaderBoard(sortedLeaders);
+      const leaderBoardBlocks = createAppHomeLeaderBoard({
+        leaders: sortedLeaders,
+        leaderBoardUrl: `${getAppUrl()}/leaderboard`,
+      });
+
       await upsertAppHpmeBlocks(teamId, { blocks: leaderBoardBlocks });
       await updateAppHomePublishedForTeam(teamId, false);
     } else {

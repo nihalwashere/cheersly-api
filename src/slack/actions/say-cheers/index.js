@@ -8,8 +8,6 @@ const logger = require("../../../global/logger");
 
 const handleSayCheers = async payload => {
   try {
-    logger.info("handleSayCheers");
-
     const {
       trigger_id,
       user: { name: slackUserName },

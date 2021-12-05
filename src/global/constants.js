@@ -116,10 +116,6 @@ const SHORTCUTS = {
   CHEERS: "CHEERS",
 };
 
-const PROD_APP_URL = "https://app.cheersly.club";
-
-const DEV_APP_URL = "https://app-dev.cheersly.club";
-
 const COLOR = "ff8c00";
 
 module.exports = {
@@ -137,7 +133,5 @@ module.exports = {
   CUSTOMER_FEEDBACK_OPTIONS,
   SLACK_ERROR,
   SHORTCUTS,
-  PROD_APP_URL,
-  DEV_APP_URL,
   COLOR,
 };

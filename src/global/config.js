@@ -17,6 +17,7 @@ const {
   SLACK_SIGNING_SECRET,
   MONGO_URL,
   APP_NAME,
+  APP_URL,
 } = process.env;
 
 const MONGO_OPTIONS = {
@@ -41,4 +42,5 @@ module.exports = {
   PORT,
   MONGO_OPTIONS,
   APP_NAME,
+  APP_URL,
 };
