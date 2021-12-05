@@ -113,7 +113,7 @@ const createAppHomeTemplate = ({
             text: "App Dashboard",
             emoji: true,
           },
-          appUrl,
+          url: appUrl,
         },
       },
       {
