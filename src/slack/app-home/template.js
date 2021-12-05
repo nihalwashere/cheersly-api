@@ -76,17 +76,7 @@ const createAppHomeLeaderBoard = ({ leaders, leaderBoardUrl }) => {
         url: leaderBoardUrl,
       },
     },
-    {
-      type: "divider",
-    },
     ...createAppHomeLeadersSection(leaders),
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "\n \n",
-      },
-    },
   ];
 };
 
@@ -116,16 +106,9 @@ const createAppHomeTemplate = ({
           url: appUrl,
         },
       },
-      {
-        type: "divider",
-      },
       createMyStatsSection(cheersGiven, cheersReceived, cheersRedeemable),
       {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "\n \n",
-        },
+        type: "divider",
       },
     ],
   };
