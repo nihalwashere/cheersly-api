@@ -3,6 +3,8 @@ const {
     POLL_OPTION_SUBMITTED,
     CUSTOMER_FEEDBACK,
     SAY_CHEERS,
+    START_A_POLL,
+    SHARE_FEEDBACK_WITH_TEAM,
     ADD_NEW_TOPIC,
     THIS_OR_THAT,
     ICEBREAKER_QUESTION,
@@ -20,8 +22,10 @@ const {
   },
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
-const { handleShareFeedback } = require("./share-feedback");
+const { handleCustomerFeedback } = require("./customer-feedback");
 const { handleSayCheers } = require("./say-cheers");
+const { handleStartAPoll } = require("./start-a-poll");
+const { handleShareFeedbackWithTeam } = require("./share-feedback-with-team");
 const { handleStonePaperScissors } = require("./stone-paper-scissors");
 const { handleTicTacToe } = require("./tic-tac-toe");
 const { handleAddNewTopic } = require("./add-new-topic");
@@ -38,8 +42,10 @@ const actionsMapper = async payload => {
   try {
     const actionIdMapper = {
       [POLL_OPTION_SUBMITTED]: () => handlePollOptionSubmitted(payload),
-      [CUSTOMER_FEEDBACK]: () => handleShareFeedback(payload),
+      [CUSTOMER_FEEDBACK]: () => handleCustomerFeedback(payload),
       [SAY_CHEERS]: () => handleSayCheers(payload),
+      [START_A_POLL]: () => handleStartAPoll(payload),
+      [SHARE_FEEDBACK_WITH_TEAM]: () => handleShareFeedbackWithTeam(payload),
       [ADD_NEW_TOPIC]: () => handleAddNewTopic(payload),
       [THIS_OR_THAT]: () => handleThisOrThat(payload),
       [ICEBREAKER_QUESTION]: () => handleIcebreakerQuestion(payload),

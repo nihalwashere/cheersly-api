@@ -9,9 +9,11 @@ const handlePollCommand = async (team_id, user_name, trigger_id) => {
   try {
     // /cheers poll
 
-    const viewTemplate = createSubmitAPollTemplate(user_name, POLL);
-
-    await openModal(team_id, trigger_id, viewTemplate);
+    await openModal(
+      team_id,
+      trigger_id,
+      createSubmitAPollTemplate(user_name, POLL)
+    );
   } catch (error) {
     logger.error("handlePollCommand() -> error : ", error);
   }

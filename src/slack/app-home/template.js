@@ -1,6 +1,8 @@
 const {
   SLACK_ACTIONS: {
     SAY_CHEERS,
+    START_A_POLL,
+    SHARE_FEEDBACK_WITH_TEAM,
     THIS_OR_THAT,
     ICEBREAKER_QUESTION,
     TIC_TAC_TOE_HELP,
@@ -126,6 +128,13 @@ const createAppHomeTemplate = ({
         type: "divider",
       },
       {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: ":people_hugging: *Culture*",
+        },
+      },
+      {
         type: "actions",
         elements: [
           {
@@ -137,6 +146,26 @@ const createAppHomeTemplate = ({
             },
             value: SAY_CHEERS,
             action_id: SAY_CHEERS,
+          },
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":bar_chart: Start a poll",
+              emoji: true,
+            },
+            value: START_A_POLL,
+            action_id: START_A_POLL,
+          },
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":speech_balloon: Share feedback with team",
+              emoji: true,
+            },
+            value: SHARE_FEEDBACK_WITH_TEAM,
+            action_id: SHARE_FEEDBACK_WITH_TEAM,
           },
         ],
       },

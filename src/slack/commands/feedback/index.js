@@ -9,9 +9,11 @@ const handleFeedbackCommand = async (team_id, user_name, trigger_id) => {
   try {
     // /cheers feedback
 
-    const viewTemplate = createSubmitAFeedbackTemplate(user_name, FEEDBACK);
-
-    await openModal(team_id, trigger_id, viewTemplate);
+    await openModal(
+      team_id,
+      trigger_id,
+      createSubmitAFeedbackTemplate(user_name, FEEDBACK)
+    );
   } catch (error) {
     logger.error("handleFeedbackCommand() -> error : ", error);
   }
