@@ -249,7 +249,7 @@ const handleTicTacToe = async payload => {
 
     let winner = null;
     let draw = false;
-    let finished = true;
+    let finished = false;
     let updatedTurn = null;
 
     const updatedPlayerOneMoves = [...playerOneMoves];
@@ -298,6 +298,7 @@ const handleTicTacToe = async payload => {
     ) {
       // DRAW CASE
       draw = true;
+      finished = true;
       updatedBlocks = createGameDrawedTemplate(updatedBlocks);
     }
 
