@@ -221,21 +221,21 @@ const createAppHomeTemplate = ({
             type: "button",
             text: {
               type: "plain_text",
-              text: ":x: Tic Tac Toe :o:",
-              emoji: true,
-            },
-            value: TIC_TAC_TOE_HELP,
-            action_id: TIC_TAC_TOE_HELP,
-          },
-          {
-            type: "button",
-            text: {
-              type: "plain_text",
               text: ":punch: Stone Paper Scissors",
               emoji: true,
             },
             value: STONE_PAPER_SCISSORS_HELP,
             action_id: STONE_PAPER_SCISSORS_HELP,
+          },
+          {
+            type: "button",
+            text: {
+              type: "plain_text",
+              text: ":x: Tic Tac Toe :o:",
+              emoji: true,
+            },
+            value: TIC_TAC_TOE_HELP,
+            action_id: TIC_TAC_TOE_HELP,
           },
         ],
       },
