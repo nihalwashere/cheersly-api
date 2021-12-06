@@ -26,7 +26,10 @@ const { slackPostMessageToChannel } = require("../../api");
 const { addPollQuestions } = require("../../../mongo/helper/pollQuestions");
 const { newIdString } = require("../../../utils/common");
 const { createPollSubmittedTemplate } = require("./template");
-const { createNotInChannelTemplate } = require("../../templates");
+const {
+  createNotInChannelTemplate,
+  createGamePostedSuccessModalTemplate,
+} = require("../../templates");
 const logger = require("../../../global/logger");
 
 const processPoll = async payload => {
@@ -115,6 +118,13 @@ const processPoll = async payload => {
       pollSubmittedTemplate
     );
 
+    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      return {
+        push: true,
+        view: createNotInChannelTemplate(),
+      };
+    }
+
     if (response && response.ok) {
       await addPollQuestions({
         createdBy: user_name,
@@ -130,12 +140,14 @@ const processPoll = async payload => {
         pollSubmittedTemplate: JSON.stringify(pollSubmittedTemplate),
         messageTimestamp: response.ts,
       });
-    }
 
-    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
       return {
-        push: true,
-        view: createNotInChannelTemplate(),
+        update: true,
+        view: createGamePostedSuccessModalTemplate({
+          teamId,
+          channelId: pollChannel,
+          message: "*Poll posted successfully!*",
+        }),
       };
     }
   } catch (error) {

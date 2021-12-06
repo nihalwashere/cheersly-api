@@ -9,7 +9,10 @@ const {
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
 const { createFeedbackSubmittedTemplate } = require("./template");
-const { createNotInChannelTemplate } = require("../../templates");
+const {
+  createNotInChannelTemplate,
+  createGamePostedSuccessModalTemplate,
+} = require("../../templates");
 const { addFeedback } = require("../../../mongo/helper/feedback");
 const logger = require("../../../global/logger");
 
@@ -39,6 +42,13 @@ const processFeedback = async payload => {
       createFeedbackSubmittedTemplate(user_name, feedback, isAnonymous)
     );
 
+    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      return {
+        push: true,
+        view: createNotInChannelTemplate(),
+      };
+    }
+
     if (response && response.ok) {
       await addFeedback({
         slackUserName: user_name,
@@ -46,12 +56,14 @@ const processFeedback = async payload => {
         feedback,
         isAnonymous,
       });
-    }
 
-    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
       return {
-        push: true,
-        view: createNotInChannelTemplate(),
+        update: true,
+        view: createGamePostedSuccessModalTemplate({
+          teamId,
+          channelId: channel,
+          message: "*Feedback posted successfully!*",
+        }),
       };
     }
   } catch (error) {

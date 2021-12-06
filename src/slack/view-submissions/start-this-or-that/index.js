@@ -8,7 +8,10 @@ const {
   SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
 const { createThisOrThatSubmittedTemplate } = require("./template");
-const { createNotInChannelTemplate } = require("../../templates");
+const {
+  createNotInChannelTemplate,
+  createGamePostedSuccessModalTemplate,
+} = require("../../templates");
 const logger = require("../../../global/logger");
 
 const processStartThisOrThat = async payload => {
@@ -41,6 +44,13 @@ const processStartThisOrThat = async payload => {
       blocks
     );
 
+    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      return {
+        push: true,
+        view: createNotInChannelTemplate(),
+      };
+    }
+
     if (response && response.ok) {
       await new ThisOrThatModel({
         teamId,
@@ -49,12 +59,14 @@ const processStartThisOrThat = async payload => {
         blocks,
         messageTimestamp: response.ts,
       }).save();
-    }
 
-    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
       return {
-        push: true,
-        view: createNotInChannelTemplate(),
+        update: true,
+        view: createGamePostedSuccessModalTemplate({
+          teamId,
+          channelId: gameChannel,
+          message: "*This or that question posted successfully!*",
+        }),
       };
     }
   } catch (error) {
