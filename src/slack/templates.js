@@ -749,7 +749,7 @@ const createNotInChannelTemplate = () => ({
       text: {
         type: "mrkdwn",
         text:
-          "Oops, Cheersly is not in that private channel. Invite Cheersly to this private channel to start playing!",
+          "Oops, Cheersly is not in that private channel. Invite Cheersly to this private channel and try again!",
       },
     },
     {
@@ -759,6 +759,47 @@ const createNotInChannelTemplate = () => ({
         text:
           "To invite Cheersly to a channel, enter `/invite @Cheersly` in that channel.",
       },
+    },
+  ],
+});
+
+const createGamePostedSuccessModalTemplate = ({
+  teamId,
+  channelId,
+  message,
+}) => ({
+  type: "modal",
+  title: {
+    type: "plain_text",
+    text: "Cheersly",
+    emoji: true,
+  },
+  close: {
+    type: "plain_text",
+    text: "Done",
+    emoji: true,
+  },
+  blocks: [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: message,
+      },
+    },
+    {
+      type: "actions",
+      elements: [
+        {
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: ":beach_with_umbrella: Take me there",
+            emoji: true,
+          },
+          url: `slack://channel?team=${teamId}&id=${channelId}`,
+        },
+      ],
     },
   ],
 });
@@ -775,4 +816,5 @@ module.exports = {
   createHomeSneakPeakTemplate,
   createAdminOnboardingMessageTemplate,
   createNotInChannelTemplate,
+  createGamePostedSuccessModalTemplate,
 };

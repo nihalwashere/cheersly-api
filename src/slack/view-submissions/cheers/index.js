@@ -13,6 +13,7 @@ const {
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SHOULD_SHARE_GIPHY_VALUE,
   },
+  SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
 const {
   slackPostMessageToChannel,
@@ -32,6 +33,7 @@ const {
 } = require("../../../mongo/helper/cheersStats");
 const { addCheers } = require("../../../mongo/helper/cheers");
 const { createAppHomeLeaderBoard } = require("../../app-home/template");
+const { createNotInChannelTemplate } = require("../../templates");
 const { sortLeaders, getAppUrl } = require("../../../utils/common");
 const { getRandomGif } = require("../../../giphy/api");
 const { validateRecipients } = require("./helper");
@@ -163,7 +165,7 @@ const processCheers = async payload => {
         }
       }
 
-      await slackPostMessageToChannel(
+      const response = await slackPostMessageToChannel(
         channel,
         teamId,
         createCheersSubmittedTemplate(
@@ -174,6 +176,13 @@ const processCheers = async payload => {
           companyValues
         )
       );
+
+      // if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      //   return {
+      //     push: true,
+      //     view: createNotInChannelTemplate(),
+      //   };
+      // }
 
       // compute leaderboard
       const cheersStatsForTeam = await getCheersStatsForTeam(teamId);

@@ -6,7 +6,10 @@ const {
 const IceBreakerQuestionsModel = require("../../../mongo/models/IceBreakerQuestions");
 const { slackPostMessageToChannel } = require("../../api");
 const { createIcebreakerQuestionSubmittedTemplate } = require("./template");
-const { createNotInChannelTemplate } = require("../../templates");
+const {
+  createNotInChannelTemplate,
+  createGamePostedSuccessModalTemplate,
+} = require("../../templates");
 const logger = require("../../../global/logger");
 
 const processStartIcebreakerQuestion = async payload => {
@@ -39,6 +42,17 @@ const processStartIcebreakerQuestion = async payload => {
       return {
         push: true,
         view: createNotInChannelTemplate(),
+      };
+    }
+
+    if (response && response.ok) {
+      return {
+        update: true,
+        view: createGamePostedSuccessModalTemplate({
+          teamId,
+          gameChannel,
+          message: "*Ice breaker question posted successfully!*",
+        }),
       };
     }
   } catch (error) {

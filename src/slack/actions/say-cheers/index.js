@@ -16,13 +16,11 @@ const handleSayCheers = async payload => {
 
     const companyValueOptions = await wrapCompanyValueOptionsForTeam(teamId);
 
-    const viewTemplate = submitCheersTemplate(
-      slackUserName,
-      SAY_CHEERS,
-      companyValueOptions
+    await openModal(
+      teamId,
+      trigger_id,
+      submitCheersTemplate(slackUserName, SAY_CHEERS, companyValueOptions)
     );
-
-    await openModal(teamId, trigger_id, viewTemplate);
   } catch (error) {
     logger.error("handleSayCheers() -> error : ", error);
   }

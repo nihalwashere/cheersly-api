@@ -20,11 +20,13 @@ const {
     POLL_OPTION_C_VALUE,
     POLL_OPTION_D_VALUE,
   },
+  SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
 const { addPollQuestions } = require("../../../mongo/helper/pollQuestions");
 const { newIdString } = require("../../../utils/common");
 const { createPollSubmittedTemplate } = require("./template");
+const { createNotInChannelTemplate } = require("../../templates");
 const logger = require("../../../global/logger");
 
 const processPoll = async payload => {
@@ -107,29 +109,34 @@ const processPoll = async payload => {
       isAnonymous
     );
 
-    const poll = await addPollQuestions({
-      createdBy: user_name,
-      teamId,
-      question: pollQuestion,
-      channel: pollChannel,
-      duration: pollDurationString,
-      options: pollOptions,
-      pollId,
-      closeAt: moment()
-        .add(pollDurationNumber, "minutes")
-        .toDate(),
-      pollSubmittedTemplate: JSON.stringify(pollSubmittedTemplate),
-    });
-
-    const slackMessageResponse = await slackPostMessageToChannel(
+    const response = await slackPostMessageToChannel(
       pollChannel,
       teamId,
       pollSubmittedTemplate
     );
 
-    if (slackMessageResponse && slackMessageResponse.ok) {
-      poll.messageTimestamp = slackMessageResponse.ts;
-      poll.save();
+    if (response && response.ok) {
+      await addPollQuestions({
+        createdBy: user_name,
+        teamId,
+        question: pollQuestion,
+        channel: pollChannel,
+        duration: pollDurationString,
+        options: pollOptions,
+        pollId,
+        closeAt: moment()
+          .add(pollDurationNumber, "minutes")
+          .toDate(),
+        pollSubmittedTemplate: JSON.stringify(pollSubmittedTemplate),
+        messageTimestamp: response.ts,
+      });
+    }
+
+    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      return {
+        push: true,
+        view: createNotInChannelTemplate(),
+      };
     }
   } catch (error) {
     logger.error("processPoll() -> error : ", error);

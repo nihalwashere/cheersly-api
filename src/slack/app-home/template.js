@@ -231,7 +231,7 @@ const createAppHomeTemplate = ({
             type: "button",
             text: {
               type: "plain_text",
-              text: ":v: Stone Paper Scissors",
+              text: ":punch: Stone Paper Scissors",
               emoji: true,
             },
             value: STONE_PAPER_SCISSORS_HELP,

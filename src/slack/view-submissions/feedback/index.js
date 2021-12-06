@@ -5,16 +5,16 @@ const {
     FEEDBACK_CHANNEL_VALUE,
     FEEDBACK_IS_ANONYMOUS_VALUE,
   },
+  SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
 const { createFeedbackSubmittedTemplate } = require("./template");
+const { createNotInChannelTemplate } = require("../../templates");
 const { addFeedback } = require("../../../mongo/helper/feedback");
 const logger = require("../../../global/logger");
 
 const processFeedback = async payload => {
   try {
-    logger.debug("processFeedback : ", JSON.stringify(payload));
-
     const {
       team: { id: teamId },
       view: { state, private_metadata: user_name },
@@ -33,22 +33,27 @@ const processFeedback = async payload => {
       ? true // eslint-disable-line
       : false;
 
-    logger.debug("feedback : ", feedback);
-    logger.debug("channel : ", channel);
-    logger.debug("isAnonymous : ", isAnonymous);
-
-    await addFeedback({
-      slackUserName: user_name,
-      teamId,
-      feedback,
-      isAnonymous,
-    });
-
-    return await slackPostMessageToChannel(
+    const response = await slackPostMessageToChannel(
       channel,
       teamId,
       createFeedbackSubmittedTemplate(user_name, feedback, isAnonymous)
     );
+
+    if (response && response.ok) {
+      await addFeedback({
+        slackUserName: user_name,
+        teamId,
+        feedback,
+        isAnonymous,
+      });
+    }
+
+    if (response && !response.ok && response.error === CHANNEL_NOT_FOUND) {
+      return {
+        push: true,
+        view: createNotInChannelTemplate(),
+      };
+    }
   } catch (error) {
     logger.error("processFeedback() -> error : ", error);
   }
