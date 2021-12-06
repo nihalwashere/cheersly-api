@@ -477,16 +477,6 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
         },
       },
       {
-        type: "context",
-        elements: [
-          {
-            type: "plain_text",
-            text: "You can select upto 3 users.",
-            emoji: true,
-          },
-        ],
-      },
-      {
         type: "input",
         block_id: SUBMIT_CHEERS_TO_CHANNEL,
         label: {

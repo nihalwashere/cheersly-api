@@ -195,6 +195,26 @@ const processCheers = async payload => {
       }
     }
 
+    // compute leaderboard
+    const cheersStatsForTeam = await getCheersStatsForTeam(teamId);
+
+    const leaders = [];
+
+    cheersStatsForTeam.map(stat => {
+      const { slackUsername, cheersReceived } = stat;
+      leaders.push({ slackUsername, cheersReceived });
+    });
+
+    const sortedLeaders = sortLeaders(leaders);
+
+    const leaderBoardBlocks = createAppHomeLeaderBoard({
+      leaders: sortedLeaders,
+      leaderBoardUrl: `${getAppUrl()}/leaderboard`,
+    });
+
+    await upsertAppHpmeBlocks(teamId, { blocks: leaderBoardBlocks });
+    await updateAppHomePublishedForTeam(teamId, false);
+
     const cheersPostedResponse = await slackPostMessageToChannel(
       channel,
       teamId,
@@ -216,26 +236,6 @@ const processCheers = async payload => {
         }),
       };
     }
-
-    // compute leaderboard
-    const cheersStatsForTeam = await getCheersStatsForTeam(teamId);
-
-    const leaders = [];
-
-    cheersStatsForTeam.map(stat => {
-      const { slackUsername, cheersReceived } = stat;
-      leaders.push({ slackUsername, cheersReceived });
-    });
-
-    const sortedLeaders = sortLeaders(leaders);
-
-    const leaderBoardBlocks = createAppHomeLeaderBoard({
-      leaders: sortedLeaders,
-      leaderBoardUrl: `${getAppUrl()}/leaderboard`,
-    });
-
-    await upsertAppHpmeBlocks(teamId, { blocks: leaderBoardBlocks });
-    await updateAppHomePublishedForTeam(teamId, false);
   } catch (error) {
     logger.error("processCheers() -> error : ", error);
   }
