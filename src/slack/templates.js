@@ -786,20 +786,15 @@ const createGamePostedSuccessModalTemplate = ({
         type: "mrkdwn",
         text: message,
       },
-    },
-    {
-      type: "actions",
-      elements: [
-        {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: ":beach_with_umbrella: Take me there",
-            emoji: true,
-          },
-          url: `slack://channel?team=${teamId}&id=${channelId}`,
+      accessory: {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: ":beach_with_umbrella: Take me there",
+          emoji: true,
         },
-      ],
+        url: `slack://channel?team=${teamId}&id=${channelId}`,
+      },
     },
   ],
 });
