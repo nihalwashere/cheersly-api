@@ -50,7 +50,7 @@ const processStartIcebreakerQuestion = async payload => {
         update: true,
         view: createGamePostedSuccessModalTemplate({
           teamId,
-          gameChannel,
+          channelId: gameChannel,
           message: "*Ice breaker question posted successfully!*",
         }),
       };
