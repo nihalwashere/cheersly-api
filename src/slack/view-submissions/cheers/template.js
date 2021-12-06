@@ -1,11 +1,5 @@
-const createCheersSubmittedTemplate = (
-  senderUsername,
-  users,
-  reason,
-  giphyUrl,
-  companyValues
-) => {
-  const blocks = [
+const createSenderCheersSubmittedTemplate = senderUsername => {
+  return [
     {
       type: "section",
       text: {
@@ -14,34 +8,25 @@ const createCheersSubmittedTemplate = (
       },
     },
   ];
+};
 
-  const n = 5;
+const createCheersSubmittedTemplate = ({
+  users,
+  reason,
+  giphyUrl,
+  companyValues,
+}) => {
+  const blocks = [];
 
-  const result = new Array(Math.ceil(users.length / n))
-    .fill()
-    .map(() => users.splice(0, n));
-
-  for (let i = 0; i < result.length; i++) {
-    const userArr = result[i];
-
-    let wrappedText = "";
-
-    for (let j = 0; j < userArr.length; j++) {
-      const user = userArr[j];
-
-      const message = `@${user.recipient} now has ${user.cheersReceived} cheers :beers:`;
-
-      wrappedText += message + "\n";
-    }
-
+  users.map(user => {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: wrappedText,
+        text: `@${user.recipient} now has ${user.cheersReceived} cheers :beers:`,
       },
     });
-  }
+  });
 
   if (reason) {
     blocks.push({
@@ -85,13 +70,14 @@ const createSelectPeersTemplate = () => {
       text: {
         type: "mrkdwn",
         text:
-          "Hey there! Please select your peers while sharing cheers, you should not share cheers with yourself! :smile:",
+          "Please select your peers while sharing cheers, you should not share cheers with yourself! :smile:",
       },
     },
   ];
 };
 
 module.exports = {
+  createSenderCheersSubmittedTemplate,
   createCheersSubmittedTemplate,
   createSelectPeersTemplate,
 };

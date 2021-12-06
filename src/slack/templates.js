@@ -139,17 +139,6 @@ const createSubmitAPollTemplate = (user_name, callback_id) => {
         },
       },
       {
-        type: "context",
-        elements: [
-          {
-            type: "plain_text",
-            text:
-              "Note: Please make sure that Cheersly is invited to the channel you selected.",
-            emoji: true,
-          },
-        ],
-      },
-      {
         type: "input",
         block_id: SELECT_DURATION,
         label: {
@@ -419,17 +408,6 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
         },
       },
       {
-        type: "context",
-        elements: [
-          {
-            type: "plain_text",
-            text:
-              "Note: Please make sure that Cheersly is invited to the channel you selected.",
-            emoji: true,
-          },
-        ],
-      },
-      {
         type: "section",
         text: {
           type: "mrkdwn",
@@ -485,6 +463,7 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
         element: {
           action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
           type: "multi_conversations_select",
+          max_selected_items: 3,
           placeholder: {
             type: "plain_text",
             text: "Select your peers",
@@ -496,6 +475,16 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
             exclude_external_shared_channels: true,
           },
         },
+      },
+      {
+        type: "context",
+        elements: [
+          {
+            type: "plain_text",
+            text: "You can select upto 3 users.",
+            emoji: true,
+          },
+        ],
       },
       {
         type: "input",
@@ -519,17 +508,6 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
             exclude_external_shared_channels: true,
           },
         },
-      },
-      {
-        type: "context",
-        elements: [
-          {
-            type: "plain_text",
-            text:
-              "Note: Please make sure that Cheersly is invited to the channel you selected.",
-            emoji: true,
-          },
-        ],
       },
       {
         type: "input",
