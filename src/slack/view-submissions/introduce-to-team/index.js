@@ -7,7 +7,7 @@ const {
   },
 } = require("../../../global/constants");
 const { createIntroduceToTeamMessageTemplate } = require("./template");
-const { getAppHomeLink } = require("../../../utils/common");
+const { getAppHomeUrl } = require("../../../utils/common");
 const logger = require("../../../global/logger");
 
 const processIntroduceToTeam = async payload => {
@@ -32,7 +32,7 @@ const processIntroduceToTeam = async payload => {
       createIntroduceToTeamMessageTemplate(
         message,
         userId,
-        getAppHomeLink(teamId)
+        getAppHomeUrl(teamId)
       )
     );
   } catch (error) {

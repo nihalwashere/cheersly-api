@@ -13,7 +13,7 @@ const handleOnboardCommand = async (teamId, channelId, userId) => {
       createOnboardingTemplate({
         user: userId,
         appUrl: getAppUrl(),
-        appHomeUrl: getAppHomeLink(teamId),
+        appHomeLink: getAppHomeLink(teamId),
       })
     );
   } catch (error) {

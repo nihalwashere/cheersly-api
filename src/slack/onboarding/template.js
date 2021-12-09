@@ -3,7 +3,7 @@ const {
 } = require("../../global/constants");
 const { createSupportContextTemplate } = require("../templates");
 
-const createOnboardingTemplate = ({ user, appUrl, appHomeUrl }) => [
+const createOnboardingTemplate = ({ user, appUrl, appHomeLink }) => [
   {
     type: "section",
     text: {
@@ -15,7 +15,7 @@ const createOnboardingTemplate = ({ user, appUrl, appHomeUrl }) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `Head over to the <${appHomeUrl}|home tab of Cheersly> to,`,
+      text: `Head over to the ${appHomeLink} tab of Cheersly to,`,
     },
   },
   {

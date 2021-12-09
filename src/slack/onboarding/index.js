@@ -11,7 +11,7 @@ const sendOnBoardingInstructions = async (teamId, authedUserId) => {
       createOnboardingTemplate({
         user: authedUserId,
         appUrl: getAppUrl(),
-        appHomeUrl: getAppHomeLink(teamId),
+        appHomeLink: getAppHomeLink(teamId),
       })
     );
   } catch (error) {

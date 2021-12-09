@@ -128,58 +128,6 @@ const server = app.listen(PORT, () => {
       DEFAULT_TIME_ZONE
     );
 
-    // admin onboarding cron scheduled every day at 12 AM
-    new CronJob(
-      "00 00 12 * * *",
-      () => {
-        spawn(process.execPath, ["./src/cron/admin-onboarding.js"], {
-          stdio: "inherit",
-        });
-      },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
-    );
-
-    // // weekly stats cron scheduled every Monday at 2 AM
-    // new CronJob(
-    //   "00 00 2 * * 1",
-    //   () => {
-    //     spawn(process.execPath, ["./src/cron/stats/weekly.js"], {
-    //       stdio: "inherit"
-    //     });
-    //   },
-    //   null,
-    //   true,
-    //   DEFAULT_TIME_ZONE
-    // );
-
-    // // monthly stats cron scheduled at first day of each month at 4 AM
-    // new CronJob(
-    //   "00 00 4 1 * *",
-    //   () => {
-    //     spawn(process.execPath, ["./src/cron/stats/monthly.js"], {
-    //       stdio: "inherit"
-    //     });
-    //   },
-    //   null,
-    //   true,
-    //   DEFAULT_TIME_ZONE
-    // );
-
-    // // all time stats cron scheduled at first day of each month at 6 AM
-    // new CronJob(
-    //   "00 00 6 1 * *",
-    //   () => {
-    //     spawn(process.execPath, ["./src/cron/stats/all-time.js"], {
-    //       stdio: "inherit"
-    //     });
-    //   },
-    //   null,
-    //   true,
-    //   DEFAULT_TIME_ZONE
-    // );
-
     // // upgrade trial subscription reminder cron scheduled at 12:00 PM daily
     // new CronJob(
     //   "00 00 12 * * *",

@@ -261,6 +261,9 @@ const getAppUrl = () => APP_URL;
 const getAppHomeLink = teamId =>
   `<slack://app?team=${teamId}&id=${SLACK_APP_ID}&tab=home|home>`;
 
+const getAppHomeUrl = teamId =>
+  `slack://app?team=${teamId}&id=${SLACK_APP_ID}&tab=home`;
+
 module.exports = {
   newIdString,
   verifySlackRequest,
@@ -274,4 +277,5 @@ module.exports = {
   getUnique,
   getAppUrl,
   getAppHomeLink,
+  getAppHomeUrl,
 };
