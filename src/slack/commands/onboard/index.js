@@ -1,16 +1,20 @@
 const { slackPostMessageToChannel } = require("../../api");
 const { createOnboardingTemplate } = require("../../onboarding/template");
-const { getAppUrl } = require("../../../utils/common");
+const { getAppUrl, getAppHomeLink } = require("../../../utils/common");
 const logger = require("../../../global/logger");
 
-const handleOnboardCommand = async (team_id, channel_id) => {
+const handleOnboardCommand = async (teamId, channelId, userId) => {
   try {
     // /cheers onboard
 
     await slackPostMessageToChannel(
-      channel_id,
-      team_id,
-      createOnboardingTemplate(team_id, getAppUrl())
+      channelId,
+      teamId,
+      createOnboardingTemplate({
+        user: userId,
+        appUrl: getAppUrl(),
+        appHomeUrl: getAppHomeLink(teamId),
+      })
     );
   } catch (error) {
     logger.error("handleOnboardCommand() -> error : ", error);

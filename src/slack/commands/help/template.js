@@ -48,7 +48,14 @@ const createHelpTemplate = (teamId, appUrl) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "*/cheers sps* \n Play Stone Paper Scissors with your friend",
+      text: "*/cheers sps* \n Play Stone Paper Scissors with your co-worker",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*/cheers ttt* \n Play Tic Tac Toe with your co-worker",
     },
   },
   {

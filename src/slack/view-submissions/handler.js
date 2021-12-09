@@ -7,6 +7,7 @@ const {
     ADD_NEW_INTEREST,
     START_THIS_OR_THAT,
     START_ICEBREAKER_QUESTION,
+    INTRODUCE_TO_TEAM,
   },
 } = require("../../global/constants");
 const { processPoll } = require("./poll");
@@ -18,6 +19,7 @@ const { processStartThisOrThat } = require("./start-this-or-that");
 const {
   processStartIcebreakerQuestion,
 } = require("./start-icebreaker-question");
+const { processIntroduceToTeam } = require("./introduce-to-team");
 const logger = require("../../global/logger");
 
 const submissionsMapper = async (callback_id, payload) => {
@@ -31,6 +33,7 @@ const submissionsMapper = async (callback_id, payload) => {
       [START_THIS_OR_THAT]: () => processStartThisOrThat(payload),
       [START_ICEBREAKER_QUESTION]: () =>
         processStartIcebreakerQuestion(payload),
+      [INTRODUCE_TO_TEAM]: () => processIntroduceToTeam(payload),
     };
 
     const applyMapper = mapper[callback_id];

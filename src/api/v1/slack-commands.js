@@ -92,7 +92,7 @@ router.post("/", async (req, res) => {
 
       res.send("");
 
-      return await handleOnboardCommand(team_id, channel_id);
+      return await handleOnboardCommand(team_id, channel_id, user_id);
     }
 
     // verify subscription

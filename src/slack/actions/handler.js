@@ -2,6 +2,7 @@ const {
   SLACK_ACTIONS: {
     POLL_OPTION_SUBMITTED,
     CUSTOMER_FEEDBACK,
+    INTRODUCE_TO_TEAM,
     SAY_CHEERS,
     START_A_POLL,
     SHARE_FEEDBACK_WITH_TEAM,
@@ -23,6 +24,7 @@ const {
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
 const { handleCustomerFeedback } = require("./customer-feedback");
+const { handleIntroduceToTeam } = require("./introduce-to-team");
 const { handleSayCheers } = require("./say-cheers");
 const { handleStartAPoll } = require("./start-a-poll");
 const { handleShareFeedbackWithTeam } = require("./share-feedback-with-team");
@@ -43,6 +45,7 @@ const actionsMapper = async payload => {
     const actionIdMapper = {
       [POLL_OPTION_SUBMITTED]: () => handlePollOptionSubmitted(payload),
       [CUSTOMER_FEEDBACK]: () => handleCustomerFeedback(payload),
+      [INTRODUCE_TO_TEAM]: () => handleIntroduceToTeam(payload),
       [SAY_CHEERS]: () => handleSayCheers(payload),
       [START_A_POLL]: () => handleStartAPoll(payload),
       [SHARE_FEEDBACK_WITH_TEAM]: () => handleShareFeedbackWithTeam(payload),
