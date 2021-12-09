@@ -33,10 +33,10 @@ const {
   isTTTCommand,
   handleTicTacToeCommand,
 } = require("../../slack/commands/ttt");
-const {
-  isInterestsCommand,
-  handleInterestsCommand,
-} = require("../../slack/commands/interests");
+// const {
+//   isInterestsCommand,
+//   handleInterestsCommand,
+// } = require("../../slack/commands/interests");
 const {
   upgradeSubscriptionMessage,
   trialEndedMessage,
@@ -163,15 +163,15 @@ router.post("/", async (req, res) => {
         .json(await handleTicTacToeCommand(team_id, user_id, channel_id));
     }
 
-    if (isInterestsCommand(text)) {
-      // /cheers interests
+    // if (isInterestsCommand(text)) {
+    //   // /cheers interests
 
-      isCommandValid = true;
+    //   isCommandValid = true;
 
-      res.send("");
+    //   res.send("");
 
-      return await handleInterestsCommand(team_id, user_id, trigger_id);
-    }
+    //   return await handleInterestsCommand(team_id, user_id, trigger_id);
+    // }
 
     if (!isCommandValid) {
       // /cheers help
