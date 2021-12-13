@@ -54,7 +54,6 @@ router.post("/slack-install", async (req, res) => {
         await upsertAuth(teamId, {
           slackInstallation: slackTokenPayload,
           slackDeleted: false,
-          adminOnboardingDone: false,
         });
 
         await paginateUsersList(access_token);
