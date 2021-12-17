@@ -9,6 +9,7 @@ const {
     ADD_NEW_TOPIC,
     THIS_OR_THAT,
     ICEBREAKER_QUESTION,
+    TWO_TRUTHS_AND_A_LIE,
     TIC_TAC_TOE_HELP,
     STONE_PAPER_SCISSORS_HELP,
   },
@@ -20,6 +21,7 @@ const {
     TOPICS_CHANGE,
     INTERESTS_CHANGE,
     THIS_OR_THAT_PLAYED,
+    TWO_TRUTHS_PLAYED,
   },
 } = require("../../global/constants");
 const { handlePollOptionSubmitted } = require("./poll-option-submitted");
@@ -35,9 +37,11 @@ const { handleTopicsChange } = require("./topics");
 const { handleInterestsChange } = require("./interests");
 const { handleThisOrThat } = require("./this-or-that");
 const { handleIcebreakerQuestion } = require("./icebreaker-question");
+const { handleTwoTruthsAndALie } = require("./two-truths-and-a-lie");
 const { handleTicTacToeHelp } = require("./tic-tac-toe-help");
 const { handleStonePaperScissorsHelp } = require("./stone-paper-scissors-help");
 const { handleThisOrThatPlayed } = require("./this-or-that-play");
+const { handleTwoTruthsAndALiePlayed } = require("./two-truths-and-a-lie-play");
 const logger = require("../../global/logger");
 
 const actionsMapper = async payload => {
@@ -52,6 +56,7 @@ const actionsMapper = async payload => {
       [ADD_NEW_TOPIC]: () => handleAddNewTopic(payload),
       [THIS_OR_THAT]: () => handleThisOrThat(payload),
       [ICEBREAKER_QUESTION]: () => handleIcebreakerQuestion(payload),
+      [TWO_TRUTHS_AND_A_LIE]: () => handleTwoTruthsAndALie(payload),
       [TIC_TAC_TOE_HELP]: () => handleTicTacToeHelp(payload),
       [STONE_PAPER_SCISSORS_HELP]: () => handleStonePaperScissorsHelp(payload),
     };
@@ -64,6 +69,7 @@ const actionsMapper = async payload => {
       [TOPICS_CHANGE]: () => handleTopicsChange(payload),
       [INTERESTS_CHANGE]: () => handleInterestsChange(payload),
       [THIS_OR_THAT_PLAYED]: () => handleThisOrThatPlayed(payload),
+      [TWO_TRUTHS_PLAYED]: () => handleTwoTruthsAndALiePlayed(payload),
     };
 
     let applyMapper = null;
@@ -76,7 +82,8 @@ const actionsMapper = async payload => {
         payload.actions[0].block_id === TIC_TAC_TOE_ROW_3 ||
         payload.actions[0].block_id === TOPICS_CHANGE ||
         payload.actions[0].block_id === INTERESTS_CHANGE ||
-        payload.actions[0].block_id === THIS_OR_THAT_PLAYED)
+        payload.actions[0].block_id === THIS_OR_THAT_PLAYED ||
+        payload.actions[0].block_id === TWO_TRUTHS_PLAYED)
     ) {
       applyMapper = blockIdMapper[payload.actions[0].block_id];
     } else {

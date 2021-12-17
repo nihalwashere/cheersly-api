@@ -86,194 +86,41 @@ const now = new Date();
 
 // console.log(nanoid(10));
 
-const blocks = [
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
+const arr = [
   {
-    type: "section",
-    text: {
-      type: "mrkdwn",
-      text:
-        "<@U018RT0Q4F7> has challenged you to play a round of *Tic Tac Toe*",
-    },
+    name: "A",
   },
   {
-    type: "section",
-    text: {
-      type: "mrkdwn",
-      text: ":x:'s turn",
-    },
+    name: "B",
   },
   {
-    type: "actions",
-    block_id: "TIC_TAC_TOE_ROW_1",
-    elements: [
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_1",
-      },
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_2",
-      },
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_3",
-      },
-    ],
+    name: "C",
   },
   {
-    type: "actions",
-    block_id: "TIC_TAC_TOE_ROW_2",
-    elements: [
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_1",
-      },
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_2",
-      },
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_3",
-      },
-    ],
-  },
-  {
-    type: "actions",
-    block_id: "TIC_TAC_TOE_ROW_3",
-    elements: [
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_1",
-      },
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_2",
-      },
-      {
-        type: "button",
-        text: {
-          type: "plain_text",
-          text: ":question:",
-          emoji: true,
-        },
-        value: "8cSc-lO48B",
-        action_id: "TIC_TAC_TOE_COLUMN_3",
-      },
-    ],
+    name: "D",
   },
 ];
 
-const row = 1;
-const column = 1;
+shuffle(arr);
 
-blocks.splice(1, 0, {
-  type: "section",
-  text: {
-    type: "mrkdwn",
-    text: `<@> has made their move. Waiting for the opponent to play.`,
-  },
-});
-
-blocks.splice(2, 1, {
-  type: "section",
-  text: {
-    type: "mrkdwn",
-    text: ":o:'s turn",
-  },
-});
-
-if (row === 1) {
-  // first row
-
-  blocks.splice(3, 1, {
-    ...blocks[3],
-    elements: blocks[3].elements.splice(column - 1, 1, {
-      ...blocks[3].elements[column - 1],
-      text: {
-        ...blocks[3].elements[column - 1].text,
-        text: ":x:",
-      },
-    }),
-  });
-}
-
-if (row === 2) {
-  // second row
-
-  blocks.splice(4, 1, {
-    ...blocks[4],
-    elements: blocks[4].elements.splice(column - 1, 1, {
-      ...blocks[4].elements[column - 1],
-      text: {
-        ...blocks[4].elements[column - 1].text,
-        text: ":x:",
-      },
-    }),
-  });
-}
-
-if (row === 3) {
-  // third row
-
-  blocks.splice(5, 1, {
-    ...blocks[5],
-    elements: blocks[5].elements.splice(column - 1, 1, {
-      ...blocks[5].elements[column - 1],
-      text: {
-        ...blocks[5].elements[column - 1].text,
-        text: ":x:",
-      },
-    }),
-  });
-}
-
-console.log("blocks final : ", JSON.stringify(blocks, 1));
+console.log(arr);

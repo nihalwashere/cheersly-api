@@ -264,6 +264,27 @@ const getAppHomeLink = teamId =>
 const getAppHomeUrl = teamId =>
   `slack://app?team=${teamId}&id=${SLACK_APP_ID}&tab=home`;
 
+const shuffle = array => {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    // eslint-disable-next-line
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+};
+
 module.exports = {
   newIdString,
   verifySlackRequest,
@@ -278,4 +299,5 @@ module.exports = {
   getAppUrl,
   getAppHomeLink,
   getAppHomeUrl,
+  shuffle,
 };

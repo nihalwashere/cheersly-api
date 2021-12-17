@@ -7,6 +7,7 @@ const {
     ADD_NEW_INTEREST,
     START_THIS_OR_THAT,
     START_ICEBREAKER_QUESTION,
+    START_TWO_TRUTHS_AND_A_LIE,
     INTRODUCE_TO_TEAM,
   },
 } = require("../../global/constants");
@@ -19,6 +20,9 @@ const { processStartThisOrThat } = require("./start-this-or-that");
 const {
   processStartIcebreakerQuestion,
 } = require("./start-icebreaker-question");
+const {
+  processStartTwoTruthsAndALie,
+} = require("./start-two-truths-and-a-lie");
 const { processIntroduceToTeam } = require("./introduce-to-team");
 const logger = require("../../global/logger");
 
@@ -33,10 +37,12 @@ const submissionsMapper = async (callback_id, payload) => {
       [START_THIS_OR_THAT]: () => processStartThisOrThat(payload),
       [START_ICEBREAKER_QUESTION]: () =>
         processStartIcebreakerQuestion(payload),
+      [START_TWO_TRUTHS_AND_A_LIE]: () => processStartTwoTruthsAndALie(payload),
       [INTRODUCE_TO_TEAM]: () => processIntroduceToTeam(payload),
     };
 
     const applyMapper = mapper[callback_id];
+
     return applyMapper ? applyMapper() : null;
   } catch (error) {
     logger.error("submissionsMapper() -> error : ", error);
