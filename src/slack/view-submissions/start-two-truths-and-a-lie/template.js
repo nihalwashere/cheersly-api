@@ -1,9 +1,8 @@
 const {
-  BLOCK_IDS: { TWO_TRUTHS_GUESS_STATEMENT },
   ACTION_IDS: {
-    TWO_TRUTHS_GUESS_STATEMENT_ONE,
-    TWO_TRUTHS_GUESS_STATEMENT_TWO,
-    TWO_TRUTHS_GUESS_STATEMENT_THREE,
+    TWO_TRUTHS_STATEMENT_ONE,
+    TWO_TRUTHS_STATEMENT_TWO,
+    TWO_TRUTHS_STATEMENT_THREE,
   },
 } = require("../../../global/constants");
 
@@ -39,7 +38,6 @@ const createTwoTruthsAndALieSubmittedTemplate = ({
     },
     {
       type: "actions",
-      block_id: TWO_TRUTHS_GUESS_STATEMENT,
       elements: [
         {
           type: "button",
@@ -49,7 +47,7 @@ const createTwoTruthsAndALieSubmittedTemplate = ({
             emoji: true,
           },
           value: statements[0].id,
-          action_id: `${gameId}-${TWO_TRUTHS_GUESS_STATEMENT_ONE}`,
+          action_id: `${gameId}-${TWO_TRUTHS_STATEMENT_ONE}`,
         },
         {
           type: "button",
@@ -59,7 +57,7 @@ const createTwoTruthsAndALieSubmittedTemplate = ({
             emoji: true,
           },
           value: statements[1].id,
-          action_id: `${gameId}-${TWO_TRUTHS_GUESS_STATEMENT_TWO}`,
+          action_id: `${gameId}-${TWO_TRUTHS_STATEMENT_TWO}`,
         },
         {
           type: "button",
@@ -69,7 +67,7 @@ const createTwoTruthsAndALieSubmittedTemplate = ({
             emoji: true,
           },
           value: statements[2].id,
-          action_id: `${gameId}-${TWO_TRUTHS_GUESS_STATEMENT_THREE}`,
+          action_id: `${gameId}-${TWO_TRUTHS_STATEMENT_THREE}`,
         },
       ],
     },
