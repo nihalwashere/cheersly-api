@@ -14,10 +14,7 @@ const createTwoTruthsAndALieResultsView = ({
   wrongVotes,
 }) => {
   return [
-    { ...blocks[0] },
-    { ...blocks[1] },
-    { ...blocks[2] },
-    { ...blocks[3] },
+    ...blocks,
     {
       type: "divider",
     },
@@ -27,7 +24,7 @@ const createTwoTruthsAndALieResultsView = ({
         type: "mrkdwn",
         text: `:white_check_mark: - ${
           correctVotes.length === 0
-            ? "No one has got it correct so far..."
+            ? "No one has got it correct so far."
             : `${getVoters(correctVotes)}`
         }`,
       },
@@ -38,7 +35,7 @@ const createTwoTruthsAndALieResultsView = ({
         type: "mrkdwn",
         text: `:x: - ${
           wrongVotes.length === 0
-            ? "No one has got it wrong so far..."
+            ? "No one has got it wrong so far."
             : `${getVoters(wrongVotes)}`
         }`,
       },

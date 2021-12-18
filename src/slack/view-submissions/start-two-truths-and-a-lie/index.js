@@ -44,12 +44,6 @@ const processStartTwoTruthsAndALie = async payload => {
 
     const lie = state.values[TWO_TRUTHS_LIE][TWO_TRUTHS_LIE_VALUE].value;
 
-    logger.debug("truthOne : ", truthOne);
-
-    logger.debug("truthTwo : ", truthTwo);
-
-    logger.debug("lie : ", lie);
-
     const gameId = nanoid(10);
 
     const statementOne = {
