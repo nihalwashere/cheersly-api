@@ -1,4 +1,5 @@
 const {
+  BLOCK_IDS: { TWO_TRUTHS_PLAYED },
   ACTION_IDS: {
     TWO_TRUTHS_STATEMENT_ONE,
     TWO_TRUTHS_STATEMENT_TWO,
@@ -11,7 +12,7 @@ const createStatementBlocks = statements =>
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `*Statement ${index + 1}: *${statement.value}`,
+      text: `*Statement ${index + 1}:* ${statement.value}`,
     },
   }));
 
@@ -38,6 +39,7 @@ const createTwoTruthsAndALieSubmittedTemplate = ({
     },
     {
       type: "actions",
+      block_id: TWO_TRUTHS_PLAYED,
       elements: [
         {
           type: "button",
