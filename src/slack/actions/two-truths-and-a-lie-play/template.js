@@ -14,7 +14,12 @@ const createTwoTruthsAndALieResultsView = ({
   wrongVotes,
 }) => {
   return [
-    ...blocks,
+    { ...blocks[0] },
+    { ...blocks[1] },
+    { ...blocks[2] },
+    { ...blocks[3] },
+    { ...blocks[4] },
+    { ...blocks[5] },
     {
       type: "divider",
     },
