@@ -67,7 +67,7 @@ const processStartTwoTruthsAndALie = async payload => {
       statementThree,
     ]);
 
-    const lieNumber = shuffledStatements.findIndex(
+    const lieIndex = shuffledStatements.findIndex(
       elem => elem.id === statementThree.id
     );
 
@@ -97,7 +97,7 @@ const processStartTwoTruthsAndALie = async payload => {
         statementOne,
         statementTwo,
         statementThree,
-        lie: { ...statementThree, number: lieNumber },
+        lie: { ...statementThree, number: lieIndex + 1 },
         messageTimestamp: response.ts,
         blocks,
       }).save();
