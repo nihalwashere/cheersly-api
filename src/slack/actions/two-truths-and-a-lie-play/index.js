@@ -1,11 +1,4 @@
 const TwoTruthsAndALieModel = require("../../../mongo/models/TwoTruthsAndALie");
-const {
-  ACTION_IDS: {
-    TWO_TRUTHS_STATEMENT_ONE,
-    TWO_TRUTHS_STATEMENT_TWO,
-    TWO_TRUTHS_STATEMENT_THREE,
-  },
-} = require("../../../global/constants");
 const { updateChat, openModal } = require("../../api");
 const {
   createTwoTruthsAndALieResultsView,
@@ -14,20 +7,6 @@ const {
   createWrongResponseView,
 } = require("./template");
 const logger = require("../../../global/logger");
-
-const getStatementNumber = action => {
-  if (action === TWO_TRUTHS_STATEMENT_ONE) {
-    return 1;
-  }
-
-  if (action === TWO_TRUTHS_STATEMENT_TWO) {
-    return 2;
-  }
-
-  if (action === TWO_TRUTHS_STATEMENT_THREE) {
-    return 3;
-  }
-};
 
 const handleTwoTruthsAndALiePlayed = async payload => {
   try {
@@ -43,8 +22,6 @@ const handleTwoTruthsAndALiePlayed = async payload => {
 
     const gameId = String(action_id).split("-")[0];
 
-    const action = String(action_id).split("-")[1];
-
     const twoTruthsAndALie = await TwoTruthsAndALieModel.findOne({ gameId });
 
     if (twoTruthsAndALie) {
@@ -57,7 +34,7 @@ const handleTwoTruthsAndALiePlayed = async payload => {
           teamId,
           trigger_id,
           createResponseAlreadySubmittedView({
-            number: getStatementNumber(action),
+            number: lie.number,
             lie: lie.value,
           })
         );
@@ -98,7 +75,7 @@ const handleTwoTruthsAndALiePlayed = async payload => {
           teamId,
           trigger_id,
           createCorrectResponseView({
-            number: getStatementNumber(action),
+            number: lie.number,
             lie: lie.value,
           })
         );
@@ -108,7 +85,7 @@ const handleTwoTruthsAndALiePlayed = async payload => {
         teamId,
         trigger_id,
         createWrongResponseView({
-          number: getStatementNumber(action),
+          number: lie.number,
           lie: lie.value,
         })
       );
