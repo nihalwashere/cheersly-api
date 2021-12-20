@@ -27,6 +27,7 @@ const TwoTruthsAndALieSchema = new mongoose.Schema(
     lie: {
       id: { type: String },
       value: { type: String },
+      number: { type: Number },
     },
     votes: {
       correct: {

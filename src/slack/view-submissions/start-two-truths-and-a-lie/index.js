@@ -61,10 +61,20 @@ const processStartTwoTruthsAndALie = async payload => {
       value: lie,
     };
 
+    const shuffledStatements = shuffle([
+      statementOne,
+      statementTwo,
+      statementThree,
+    ]);
+
+    const lieNumber = Array(shuffledStatements).findIndex(
+      elem => elem.id === statementThree.id
+    );
+
     const blocks = createTwoTruthsAndALieSubmittedTemplate({
       userId,
       gameId,
-      statements: shuffle([statementOne, statementTwo, statementThree]),
+      statements: shuffledStatements,
     });
 
     const response = await slackPostMessageToChannel(
@@ -87,7 +97,7 @@ const processStartTwoTruthsAndALie = async payload => {
         statementOne,
         statementTwo,
         statementThree,
-        lie: { ...statementThree },
+        lie: { ...statementThree, number: lieNumber },
         messageTimestamp: response.ts,
         blocks,
       }).save();
