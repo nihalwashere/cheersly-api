@@ -67,7 +67,9 @@ const processStartTwoTruthsAndALie = async payload => {
       statementThree,
     ]);
 
-    const lieNumber = Array(shuffledStatements).findIndex(
+    logger.debug("shuffledStatements : ", JSON.stringify(shuffledStatements));
+
+    const lieNumber = shuffledStatements.findIndex(
       elem => elem.id === statementThree.id
     );
 
