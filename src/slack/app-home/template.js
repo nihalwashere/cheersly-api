@@ -27,38 +27,22 @@ const createMyStatsSection = (
 };
 
 const createAppHomeLeadersSection = leaders => {
-  const blocks = [];
-
-  const n = 3;
-
-  const result = new Array(Math.ceil(leaders.length / n))
-    .fill()
-    .map(() => leaders.splice(0, n));
-
   let leaderBoardString = "";
 
-  for (let i = 0; i < result.length; i++) {
-    const leaderArr = result[i];
+  for (let i = 0; i < 3; i++) {
+    const { slackUsername, cheersReceived } = leaders[i];
 
-    for (let j = 0; j < leaderArr.length; j++) {
-      const leader = leaderArr[j];
-
-      const { slackUsername, cheersReceived } = leader;
-
-      leaderBoardString +=
-        "-  @" + slackUsername + "  (" + cheersReceived + ") \n";
-    }
-
-    blocks.push({
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: leaderBoardString,
-      },
-    });
+    leaderBoardString +=
+      "-  @" + slackUsername + "  (" + cheersReceived + ") \n";
   }
 
-  return blocks;
+  return {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: leaderBoardString,
+    },
+  };
 };
 
 const createAppHomeLeaderBoard = ({ leaders, leaderBoardUrl }) => {
@@ -79,7 +63,7 @@ const createAppHomeLeaderBoard = ({ leaders, leaderBoardUrl }) => {
         url: leaderBoardUrl,
       },
     },
-    ...createAppHomeLeadersSection(leaders),
+    createAppHomeLeadersSection(leaders),
   ];
 };
 
