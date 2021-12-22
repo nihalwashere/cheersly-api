@@ -97,19 +97,19 @@ router.post("/", async (req, res) => {
 
     // verify subscription
 
-    const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+    // const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
 
-    if (!subscriptionInfo.hasSubscription) {
-      res.send("");
+    // if (!subscriptionInfo.hasSubscription) {
+    //   res.send("");
 
-      await updateAppHomePublishedForTeam(team_id, false);
+    //   await updateAppHomePublishedForTeam(team_id, false);
 
-      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
-        return await trialEndedMessage(team_id, channel_id);
-      }
+    //   if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+    //     return await trialEndedMessage(team_id, channel_id);
+    //   }
 
-      return await upgradeSubscriptionMessage(team_id, channel_id);
-    }
+    //   return await upgradeSubscriptionMessage(team_id, channel_id);
+    // }
 
     if (isCheersCommand(text)) {
       // /cheers
