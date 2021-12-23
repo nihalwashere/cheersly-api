@@ -30,10 +30,12 @@ const createAppHomeLeadersSection = leaders => {
   let leaderBoardString = "";
 
   for (let i = 0; i < 3; i++) {
-    const { slackUsername, cheersReceived } = leaders[i];
+    if (leaders[i]) {
+      const { slackUsername, cheersReceived } = leaders[i];
 
-    leaderBoardString +=
-      "-  @" + slackUsername + "  (" + cheersReceived + ") \n";
+      leaderBoardString +=
+        "-  @" + slackUsername + "  (" + cheersReceived + ") \n";
+    }
   }
 
   return {
