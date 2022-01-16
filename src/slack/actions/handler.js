@@ -42,6 +42,7 @@ const { handleTicTacToeHelp } = require("./tic-tac-toe-help");
 const { handleStonePaperScissorsHelp } = require("./stone-paper-scissors-help");
 const { handleThisOrThatPlayed } = require("./this-or-that-play");
 const { handleTwoTruthsAndALiePlayed } = require("./two-truths-and-a-lie-play");
+const { handleUpgradeSubscription } = require("./upgrade-subscription");
 const logger = require("../../global/logger");
 
 const actionsMapper = async payload => {
@@ -87,6 +88,14 @@ const actionsMapper = async payload => {
     ) {
       applyMapper = blockIdMapper[payload.actions[0].block_id];
     } else {
+      if (
+        payload.actions[0].action_id === SAY_CHEERS ||
+        payload.actions[0].action_id === START_A_POLL ||
+        payload.actions[0].action_id === SHARE_FEEDBACK_WITH_TEAM
+      ) {
+        return await handleUpgradeSubscription(payload);
+      }
+
       applyMapper = actionIdMapper[payload.actions[0].action_id];
     }
 

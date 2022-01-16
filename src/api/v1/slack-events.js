@@ -20,7 +20,7 @@ const {
   deleteSlackUsersByTeamId,
   updateAppHomePublishedForUser,
 } = require("../../mongo/helper/user");
-const { postInternalMessage, publishView } = require("../../slack/api");
+const { postInternalMessage } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
 const { publishStats } = require("../../slack/app-home");
 const {
@@ -31,10 +31,6 @@ const {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
 } = require("../../slack/templates");
-const {
-  createTrialEndedTemplate,
-  createUpgradeSubscriptionTemplate,
-} = require("../../slack/subscription-handlers/template");
 const {
   SubscriptionMessageType,
 } = require("../../enums/subscriptionMessageTypes");
