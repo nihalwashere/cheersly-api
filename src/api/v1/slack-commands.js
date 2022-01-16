@@ -95,21 +95,43 @@ router.post("/", async (req, res) => {
       return await handleOnboardCommand(team_id, channel_id, user_id);
     }
 
+    if (isSPSCommand(text)) {
+      // /cheers sps
+
+      isCommandValid = true;
+
+      return res
+        .status(200)
+        .json(
+          await handleStonePaperScissorsCommand(team_id, user_id, channel_id)
+        );
+    }
+
+    if (isTTTCommand(text)) {
+      // /cheers ttt
+
+      isCommandValid = true;
+
+      return res
+        .status(200)
+        .json(await handleTicTacToeCommand(team_id, user_id, channel_id));
+    }
+
     // verify subscription
 
-    // const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+    const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
 
-    // if (!subscriptionInfo.hasSubscription) {
-    //   res.send("");
+    if (!subscriptionInfo.hasSubscription) {
+      res.send("");
 
-    //   await updateAppHomePublishedForTeam(team_id, false);
+      await updateAppHomePublishedForTeam(team_id, false);
 
-    //   if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
-    //     return await trialEndedMessage(team_id, channel_id);
-    //   }
+      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+        return await trialEndedMessage(team_id, channel_id);
+      }
 
-    //   return await upgradeSubscriptionMessage(team_id, channel_id);
-    // }
+      return await upgradeSubscriptionMessage(team_id, channel_id);
+    }
 
     if (isCheersCommand(text)) {
       // /cheers
@@ -139,28 +161,6 @@ router.post("/", async (req, res) => {
       res.send("");
 
       return await handleFeedbackCommand(team_id, user_name, trigger_id);
-    }
-
-    if (isSPSCommand(text)) {
-      // /cheers sps
-
-      isCommandValid = true;
-
-      return res
-        .status(200)
-        .json(
-          await handleStonePaperScissorsCommand(team_id, user_id, channel_id)
-        );
-    }
-
-    if (isTTTCommand(text)) {
-      // /cheers ttt
-
-      isCommandValid = true;
-
-      return res
-        .status(200)
-        .json(await handleTicTacToeCommand(team_id, user_id, channel_id));
     }
 
     // if (isInterestsCommand(text)) {

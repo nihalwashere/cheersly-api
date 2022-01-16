@@ -75,33 +75,60 @@ const createAppHomeTemplate = ({
   cheersReceived,
   cheersRedeemable,
   appHomeBlocks,
+  isSubscriptionExpired,
+  isTrialPlan,
 }) => {
   const appHomeTemplate = {
     type: "home",
-    blocks: [
+    blocks: [],
+  };
+
+  if (isSubscriptionExpired) {
+    let text = "";
+
+    if (isTrialPlan) {
+      text =
+        "_*Your Cheersly trial has ended! Cheersly misses your team dearly and his life is meaningless without you :heart:. You can check our pricing plans <https://cheersly.club/pricing|here>. Please contact support to upgrade your subscription and we will set you up!*_";
+    } else {
+      text =
+        "_*Your Cheersly subscription has expired! Cheersly misses your team dearly and he cannot stop thinking about you :heart:. You can check our pricing plans <https://cheersly.club/pricing|here>. Please contact support to upgrade your subscription and we will set you up!*_";
+    }
+
+    appHomeTemplate.blocks = [
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: "*My Cheers* :beers:",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "App Dashboard",
-            emoji: true,
-          },
-          url: appUrl,
+          text,
         },
       },
-      createMyStatsSection(cheersGiven, cheersReceived, cheersRedeemable),
-      {
-        type: "divider",
-      },
-    ],
-  };
+    ];
+  }
 
+  appHomeTemplate.blocks = [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*My Cheers* :beers:",
+      },
+      accessory: {
+        type: "button",
+        text: {
+          type: "plain_text",
+          text: "App Dashboard",
+          emoji: true,
+        },
+        url: appUrl,
+      },
+    },
+    createMyStatsSection(cheersGiven, cheersReceived, cheersRedeemable),
+    {
+      type: "divider",
+    },
+  ];
+
+  // for leaderboard
   if (appHomeBlocks && appHomeBlocks.blocks.length) {
     appHomeBlocks.blocks.map(block => {
       appHomeTemplate.blocks.push(block);
@@ -243,4 +270,10 @@ const createAppHomeTemplate = ({
   return appHomeTemplate;
 };
 
-module.exports = { createAppHomeLeaderBoard, createAppHomeTemplate };
+const createSubscriptionStatsTemplate = () => {};
+
+module.exports = {
+  createAppHomeLeaderBoard,
+  createAppHomeTemplate,
+  createSubscriptionStatsTemplate,
+};

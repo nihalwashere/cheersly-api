@@ -80,35 +80,32 @@ router.post("/", async (req, res) => {
       const user = await getUserDataBySlackUserId(slackUserId);
 
       if (!user) {
-        await publishStats(team_id, slackUserId);
+        await publishStats({ teamId: team_id, slackUserId });
 
         return await updateAppHomePublishedForUser(slackUserId, true);
       }
 
       if (user && !user.appHomePublished) {
-        // const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+        const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
 
-        // if (!subscriptionInfo.hasSubscription) {
-        //   if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
-        //     await publishView(team_id, slackUserId, {
-        //       type: "home",
-        //       blocks: createTrialEndedTemplate(),
-        //     });
+        let isSubscriptionExpired = false;
+        let isTrialPlan = true;
 
-        //     return await updateAppHomePublishedForUser(slackUserId, true);
-        //   }
+        if (!subscriptionInfo.hasSubscription) {
+          isSubscriptionExpired = true;
 
-        //   await publishView(team_id, slackUserId, {
-        //     type: "home",
-        //     blocks: createUpgradeSubscriptionTemplate(),
-        //   });
+          if (subscriptionInfo.messageType !== SubscriptionMessageType.TRIAL) {
+            isTrialPlan = false;
+          }
+        }
 
-        //   return await updateAppHomePublishedForUser(slackUserId, true);
-        // }
-
-        const slackUsername = user.slackUserData.name;
-
-        await publishStats(team_id, slackUserId, slackUsername);
+        await publishStats({
+          teamId: team_id,
+          slackUserId,
+          slackUsername: user.slackUserData.name,
+          isSubscriptionExpired,
+          isTrialPlan,
+        });
 
         return await updateAppHomePublishedForUser(slackUserId, true);
       }
