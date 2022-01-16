@@ -88,10 +88,10 @@ const createAppHomeTemplate = ({
 
     if (isTrialPlan) {
       text =
-        "_*Your Cheersly trial has ended! Cheersly misses your team dearly and his life is meaningless without you :heart:. You can check our pricing plans <https://cheersly.club/pricing|here>. Please contact support to upgrade your subscription and we will set you up!*_";
+        "*Your Cheersly trial has ended! Cheersly misses your team dearly and his life is meaningless without you :heart:. You can check our pricing plans <https://cheersly.club/pricing|here>. Please contact support to upgrade your subscription and we will set you up!*";
     } else {
       text =
-        "_*Your Cheersly subscription has expired! Cheersly misses your team dearly and he cannot stop thinking about you :heart:. You can check our pricing plans <https://cheersly.club/pricing|here>. Please contact support to upgrade your subscription and we will set you up!*_";
+        "*Your Cheersly subscription has expired! Cheersly misses your team dearly and he cannot stop thinking about you :heart:. You can check our pricing plans <https://cheersly.club/pricing|here>. Please contact support to upgrade your subscription and we will set you up!*";
     }
 
     appHomeTemplate.blocks = [
@@ -101,6 +101,9 @@ const createAppHomeTemplate = ({
           type: "mrkdwn",
           text,
         },
+      },
+      {
+        type: "divider",
       },
     ];
   }
