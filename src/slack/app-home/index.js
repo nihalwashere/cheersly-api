@@ -2,10 +2,7 @@ const logger = require("../../global/logger");
 const { getAppHpmeBlocksForTeam } = require("../../mongo/helper/appHomeBlocks");
 const { getCheersStatsForUser } = require("../../mongo/helper/cheersStats");
 const { publishView } = require("../api");
-const {
-  createAppHomeTemplate,
-  createSubscriptionStatsTemplate,
-} = require("./template");
+const { createAppHomeTemplate } = require("./template");
 const { getAppUrl } = require("../../utils/common");
 
 const publishStats = async ({
@@ -51,25 +48,4 @@ const publishStats = async ({
   }
 };
 
-const publishSubscriptionStats = async (
-  teamId,
-  slackUserId,
-  slackUsername = null
-) => {
-  try {
-    const appHomeBlocks = await getAppHpmeBlocksForTeam(teamId);
-
-    await publishView(
-      teamId,
-      slackUserId,
-      createSubscriptionStatsTemplate({
-        appUrl: getAppUrl(),
-        appHomeBlocks,
-      })
-    );
-  } catch (error) {
-    logger.error("publishSubscriptionStats() -> error : ", error);
-  }
-};
-
-module.exports = { publishStats, publishSubscriptionStats };
+module.exports = { publishStats };

@@ -105,7 +105,7 @@ const createAppHomeTemplate = ({
     ];
   }
 
-  appHomeTemplate.blocks = [
+  appHomeTemplate.blocks.push(
     {
       type: "section",
       text: {
@@ -125,8 +125,8 @@ const createAppHomeTemplate = ({
     createMyStatsSection(cheersGiven, cheersReceived, cheersRedeemable),
     {
       type: "divider",
-    },
-  ];
+    }
+  );
 
   // for leaderboard
   if (appHomeBlocks && appHomeBlocks.blocks.length) {
@@ -270,10 +270,7 @@ const createAppHomeTemplate = ({
   return appHomeTemplate;
 };
 
-const createSubscriptionStatsTemplate = () => {};
-
 module.exports = {
   createAppHomeLeaderBoard,
   createAppHomeTemplate,
-  createSubscriptionStatsTemplate,
 };
