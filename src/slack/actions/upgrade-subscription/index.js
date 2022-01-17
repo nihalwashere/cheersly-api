@@ -1,5 +1,4 @@
 const { openModal } = require("../../api");
-const { isSubscriptionValidForSlack } = require("../../../utils/common");
 const {
   SubscriptionMessageType,
 } = require("../../../enums/subscriptionMessageTypes");
