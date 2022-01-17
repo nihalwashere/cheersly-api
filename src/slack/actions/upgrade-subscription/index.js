@@ -15,6 +15,8 @@ const handleUpgradeSubscription = async payload => {
 
     const subscriptionInfo = await isSubscriptionValidForSlack(payload.team.id);
 
+    logger.debug("subscriptionInfo : ", subscriptionInfo);
+
     let isTrialPlan = true;
 
     if (subscriptionInfo.messageType !== SubscriptionMessageType.TRIAL) {
