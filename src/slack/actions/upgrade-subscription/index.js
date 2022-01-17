@@ -6,16 +6,12 @@ const {
 const { createUpgradeSubscriptionView } = require("./template");
 const logger = require("../../../global/logger");
 
-const handleUpgradeSubscription = async payload => {
+const handleUpgradeSubscription = async (payload, subscriptionInfo) => {
   try {
     const {
       trigger_id,
       team: { id: teamId },
     } = payload;
-
-    const subscriptionInfo = await isSubscriptionValidForSlack(payload.team.id);
-
-    logger.debug("subscriptionInfo : ", subscriptionInfo);
 
     let isTrialPlan = true;
 

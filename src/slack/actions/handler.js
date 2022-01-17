@@ -43,6 +43,7 @@ const { handleStonePaperScissorsHelp } = require("./stone-paper-scissors-help");
 const { handleThisOrThatPlayed } = require("./this-or-that-play");
 const { handleTwoTruthsAndALiePlayed } = require("./two-truths-and-a-lie-play");
 const { handleUpgradeSubscription } = require("./upgrade-subscription");
+const { isSubscriptionValidForSlack } = require("../../utils/common");
 const logger = require("../../global/logger");
 
 const actionsMapper = async payload => {
@@ -93,7 +94,16 @@ const actionsMapper = async payload => {
         payload.actions[0].action_id === START_A_POLL ||
         payload.actions[0].action_id === SHARE_FEEDBACK_WITH_TEAM
       ) {
-        return await handleUpgradeSubscription(payload);
+        const subscriptionInfo = await isSubscriptionValidForSlack(
+          payload.team.id
+        );
+
+        if (!subscriptionInfo.hasSubscription) {
+          return await handleUpgradeSubscription(
+            payload,
+            subscriptionInfo.hasSubscription
+          );
+        }
       }
 
       applyMapper = actionIdMapper[payload.actions[0].action_id];
