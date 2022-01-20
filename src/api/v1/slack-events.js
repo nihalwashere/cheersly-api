@@ -24,16 +24,16 @@ const { postInternalMessage } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
 const { publishStats } = require("../../slack/app-home");
 const {
-  isSubscriptionValidForSlack,
+  // isSubscriptionValidForSlack,
   verifySlackRequest,
 } = require("../../utils/common");
 const {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
 } = require("../../slack/templates");
-const {
-  SubscriptionMessageType,
-} = require("../../enums/subscriptionMessageTypes");
+// const {
+//   SubscriptionMessageType,
+// } = require("../../enums/subscriptionMessageTypes");
 const logger = require("../../global/logger");
 
 router.post("/", async (req, res) => {
@@ -82,18 +82,18 @@ router.post("/", async (req, res) => {
       }
 
       if (user && !user.appHomePublished) {
-        const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+        // const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
 
-        let isSubscriptionExpired = false;
-        let isTrialPlan = true;
+        const isSubscriptionExpired = false;
+        const isTrialPlan = true;
 
-        if (!subscriptionInfo.hasSubscription) {
-          isSubscriptionExpired = true;
+        // if (!subscriptionInfo.hasSubscription) {
+        //   isSubscriptionExpired = true;
 
-          if (subscriptionInfo.messageType !== SubscriptionMessageType.TRIAL) {
-            isTrialPlan = false;
-          }
-        }
+        //   if (subscriptionInfo.messageType !== SubscriptionMessageType.TRIAL) {
+        //     isTrialPlan = false;
+        //   }
+        // }
 
         await publishStats({
           teamId: team_id,
