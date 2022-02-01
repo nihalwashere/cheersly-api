@@ -18,6 +18,8 @@ const {
   MONGO_URL,
   APP_NAME,
   APP_URL,
+  SLACK_SIGNUP_REDIRECT_URI,
+  SLACK_LOGIN_REDIRECT_URI,
 } = process.env;
 
 const MONGO_OPTIONS = {
@@ -43,4 +45,6 @@ module.exports = {
   MONGO_OPTIONS,
   APP_NAME,
   APP_URL,
+  SLACK_SIGNUP_REDIRECT_URI,
+  SLACK_LOGIN_REDIRECT_URI,
 };

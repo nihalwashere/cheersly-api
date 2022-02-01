@@ -11,6 +11,7 @@ const { getAuthDataForSlackTeam } = require("../mongo/helper/auth");
 const {
   SubscriptionMessageType,
 } = require("../enums/subscriptionMessageTypes");
+const { decodeJWT } = require("./jwt");
 const logger = require("../global/logger");
 
 const newIdString = () => mongoose.Types.ObjectId().toHexString();
@@ -151,58 +152,48 @@ const validateToken = async headers => {
 
   if (!token) {
     return {
-      status: 401,
-      message: "Token is required!",
+      success: false,
+      message: "Token is required.",
     };
   }
 
-  const buffer = Buffer.from(token, "base64");
-  const decodedToken = buffer.toString("ascii");
+  const decodedToken = decodeJWT(token);
 
-  const slackUserId = decodedToken.split("$")[0];
-  const slackTeamId = decodedToken.split("$")[1];
+  const { userId = null, teamId = null } = decodedToken;
 
-  if (!slackUserId) {
+  if (!userId || !teamId) {
     return {
-      status: 401,
-      message: "Invalid token - Slack userId is required!",
+      success: false,
+      message: "Invalid token.",
     };
   }
 
-  if (!slackTeamId) {
-    return {
-      status: 401,
-      message: "Invalid token - Slack teamId is required!",
-    };
-  }
-
-  const user = await getUserDataBySlackUserId(slackUserId);
+  const user = await getUserDataBySlackUserId(userId);
 
   if (!user) {
     return {
-      status: 401,
-      message: "Slack user not found!",
+      success: false,
+      message: "User not found.",
     };
   }
 
-  const auth = await getAuthDataForSlackTeam(slackTeamId);
+  const auth = await getAuthDataForSlackTeam(teamId);
 
   if (!auth) {
     return {
-      status: 401,
-      message: "Auth not found!",
+      success: false,
+      message: "Team not found.",
     };
   }
 
   return {
-    status: 200,
-    message: "Success",
-    userId: user._id,
-    slackUserId,
-    slackTeamId,
-    role: user.role,
-    slackUserData: user.slackUserData,
-    slackInstallation: auth.slackInstallation,
+    success: true,
+    data: {
+      user: {
+        role: user.role,
+        slackUserData: user.slackUserData,
+      },
+    },
   };
 };
 

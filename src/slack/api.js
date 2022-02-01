@@ -3,6 +3,8 @@ const {
   SLACK_API,
   SLACK_CLIENT_ID,
   SLACK_CLIENT_SECRET,
+  SLACK_SIGNUP_REDIRECT_URI,
+  SLACK_LOGIN_REDIRECT_URI,
 } = require("../global/config");
 const {
   getAuthDataForSlackTeam,
@@ -85,20 +87,26 @@ const getSlackUser = async (teamId, user) => {
   }
 };
 
-const getSlackTokenForUser = async code => {
+const getSlackTokenForUser = async ({ code, isSignUp = false }) => {
   try {
     const details = {
+      code,
       client_id: SLACK_CLIENT_ID,
       client_secret: SLACK_CLIENT_SECRET,
-      code,
+      redirect_uri: isSignUp
+        ? SLACK_SIGNUP_REDIRECT_URI
+        : SLACK_LOGIN_REDIRECT_URI,
     };
 
     let formBody = [];
     for (const property in details) {
       const encodedKey = encodeURIComponent(property);
+
       const encodedValue = encodeURIComponent(details[property]);
+
       formBody.push(`${encodedKey}=${encodedValue}`);
     }
+
     formBody = formBody.join("&");
 
     const req = await fetch(`${SLACK_API}/oauth.v2.access`, {

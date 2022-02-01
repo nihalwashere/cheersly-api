@@ -1,6 +1,6 @@
 const express = require("express");
-const { CronJob } = require("cron");
-const { spawn } = require("child_process");
+// const { CronJob } = require("cron");
+// const { spawn } = require("child_process");
 const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -10,7 +10,7 @@ const schema = require("./src/graphql/schema");
 const logger = require("./src/global/logger");
 
 const { PORT, MONGO_URL, MONGO_OPTIONS } = require("./src/global/config");
-const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
+// const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
 
 const PUBLIC_DIR = "src/public";
 
@@ -39,7 +39,7 @@ const whitelist = [
   "https://app.cheersly.club",
   "https://app-dev.cheersly.club",
   "http://localhost:7000",
-  "http://localhost:3000",
+  "https://localhost:3000",
 ];
 
 app.use(
@@ -60,6 +60,7 @@ app.use(
 
       return callback(null, true);
     },
+    exposedHeaders: "x-access-token",
   })
 );
 
@@ -69,20 +70,18 @@ app.use(express.static(PUBLIC_DIR));
 const slackCommands = require("./src/api/v1/slack-commands");
 const slackEvents = require("./src/api/v1/slack-events");
 const slackActions = require("./src/api/v1/slack-actions");
-const slackInstallation = require("./src/api/v1/slack-installation");
 const loadOptions = require("./src/api/v1/load-options");
-// const matchMoments = require("./src/api/v1/match-moments");
 const auth = require("./src/api/v1/auth");
+const users = require("./src/api/v1/users");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
 app.use("/api/v1/slack-commands", slackCommands);
 app.use("/api/v1/slack-events", slackEvents);
 app.use("/api/v1/slack-actions", slackActions);
-app.use("/api/v1/slack-installation", slackInstallation);
 app.use("/api/v1/load-options", loadOptions);
-// app.use("/api/v1/match-moments", matchMoments);
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/users", users);
 app.use("/api/test", test);
 
 // GraphQL
@@ -116,17 +115,17 @@ const server = app.listen(PORT, () => {
     logger.info(`App is now running on port ${PORT}!!!`);
 
     // polls cron scheduled every 5 mins
-    new CronJob(
-      "00 */5 * * * *",
-      () => {
-        spawn(process.execPath, ["./src/cron/polls.js"], {
-          stdio: "inherit",
-        });
-      },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
-    );
+    // new CronJob(
+    //   "00 */5 * * * *",
+    //   () => {
+    //     spawn(process.execPath, ["./src/cron/polls.js"], {
+    //       stdio: "inherit",
+    //     });
+    //   },
+    //   null,
+    //   true,
+    //   DEFAULT_TIME_ZONE
+    // );
 
     // // upgrade trial subscription reminder cron scheduled at 12:00 PM daily
     // new CronJob(
