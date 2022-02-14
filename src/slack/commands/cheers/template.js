@@ -12,18 +12,20 @@ const createChannelNotSetupTemplate = (teamId, recognitionTeams) => {
     },
   ];
 
+  let channelString = "";
+
+  recognitionTeams.map((elem, index) => {
+    channelString += `<${getChannelDeepLink(teamId, elem.channel)}|#${
+      elem.channel
+    }>${recognitionTeams.length === index + 1 ? "" : " ,"}`;
+  });
+
   if (recognitionTeams.length) {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `Here are the channels you can share cheers in,\n${recognitionTeams
-          .map(
-            elem =>
-              `<${getChannelDeepLink(teamId, elem.channel)}|#${elem.channel}>`
-          )
-          .join(", ")
-          .replace(/, ([^,]*)$/, " and $1")}`,
+        text: `Here are the channels you can share cheers in,\n${channelString}`,
       },
     });
   }
