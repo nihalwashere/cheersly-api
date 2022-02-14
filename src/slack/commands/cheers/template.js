@@ -15,8 +15,8 @@ const createChannelNotSetupTemplate = (teamId, recognitionTeams) => {
   let channelString = "";
 
   recognitionTeams.map((elem, index) => {
-    channelString += `<${getChannelDeepLink(teamId, elem.channel)}|#${
-      elem.channel
+    channelString += `<${getChannelDeepLink(teamId, elem.channel.id)}|#${
+      elem.channel.name
     }>${recognitionTeams.length === index + 1 ? "" : " ,"}`;
   });
 

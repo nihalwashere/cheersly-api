@@ -26,7 +26,7 @@ const handleCheersCommand = async (
       teamId,
     });
 
-    if (!recognitionTeams.some(elem => elem.channel === channelId)) {
+    if (!recognitionTeams.some(elem => elem.channel.id === channelId)) {
       return await postEphemeralMessage(
         channelId,
         userId,
