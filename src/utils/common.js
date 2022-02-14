@@ -255,6 +255,9 @@ const getAppHomeLink = teamId =>
 const getAppHomeUrl = teamId =>
   `slack://app?team=${teamId}&id=${SLACK_APP_ID}&tab=home`;
 
+const getChannelDeepLink = (teamId, channelId) =>
+  `slack://channel?team=${teamId}&id=${channelId}`;
+
 const shuffle = array => {
   let currentIndex = array.length,
     randomIndex;
@@ -290,5 +293,6 @@ module.exports = {
   getAppUrl,
   getAppHomeLink,
   getAppHomeUrl,
+  getChannelDeepLink,
   shuffle,
 };

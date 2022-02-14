@@ -40,6 +40,7 @@ const whitelist = [
   "https://app-dev.cheersly.club",
   "http://localhost:7000",
   "https://localhost:3000",
+  "http://localhost:3000",
 ];
 
 app.use(
@@ -73,6 +74,8 @@ const slackActions = require("./src/api/v1/slack-actions");
 const loadOptions = require("./src/api/v1/load-options");
 const auth = require("./src/api/v1/auth");
 const users = require("./src/api/v1/users");
+const recognition = require("./src/api/v1/recognition");
+const slackChannels = require("./src/api/v1/slack/channels");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
@@ -80,8 +83,10 @@ app.use("/api/v1/slack-commands", slackCommands);
 app.use("/api/v1/slack-events", slackEvents);
 app.use("/api/v1/slack-actions", slackActions);
 app.use("/api/v1/load-options", loadOptions);
+app.use("/api/v1/slack/channels", slackChannels);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
+app.use("/api/v1/recognition", recognition);
 app.use("/api/test", test);
 
 // GraphQL

@@ -1,4 +1,6 @@
+const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const { openModal } = require("../../api");
+const { createChannelNotSetupTemplate } = require("./template");
 const { submitCheersTemplate } = require("../../templates");
 const { wrapCompanyValueOptionsForTeam } = require("../../helper");
 const {
@@ -6,19 +8,29 @@ const {
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleCheersCommand = async (team_id, user_name, trigger_id) => {
+const handleCheersCommand = async (teamId, userName, triggerId, channelId) => {
   try {
     // /cheers
 
-    const companyValueOptions = await wrapCompanyValueOptionsForTeam(team_id);
+    const companyValueOptions = await wrapCompanyValueOptionsForTeam(teamId);
+
+    // first check if there's a recognition team created for this channel
+
+    const recognitionTeams = await RecognitionTeamsModel.find({
+      teamId,
+    });
+
+    if (!recognitionTeams.some(elem => elem.channel === channelId)) {
+      return createChannelNotSetupTemplate(teamId, recognitionTeams);
+    }
 
     const viewTemplate = submitCheersTemplate(
-      user_name,
+      userName,
       SAY_CHEERS,
       companyValueOptions
     );
 
-    await openModal(team_id, trigger_id, viewTemplate);
+    await openModal(teamId, triggerId, viewTemplate);
   } catch (error) {
     logger.error("handleCheersCommand() -> error : ", error);
   }

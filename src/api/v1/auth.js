@@ -31,8 +31,6 @@ const logger = require("../../global/logger");
 
 router.post("/signup", async (req, res) => {
   try {
-    logger.debug("/signup -> req.body : ", req.body);
-
     const { code } = req.body;
 
     if (!code) {
@@ -45,8 +43,6 @@ router.post("/signup", async (req, res) => {
       code,
       isSignUp: true,
     });
-
-    logger.info("slackTokenPayload : ", slackTokenPayload);
 
     if (!slackTokenPayload || !slackTokenPayload.ok) {
       return res.status(400).json({ success: false, message: "Invaid auth." });
@@ -119,8 +115,6 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    logger.debug("/login -> req.body : ", req.body);
-
     const { code } = req.body;
 
     if (!code) {
@@ -132,8 +126,6 @@ router.post("/login", async (req, res) => {
     const slackTokenPayload = await getSlackTokenForUser({
       code,
     });
-
-    logger.info("slackTokenPayload : ", slackTokenPayload);
 
     if (!slackTokenPayload || !slackTokenPayload.ok) {
       return res.status(400).json({ success: false, message: "Invaid auth." });

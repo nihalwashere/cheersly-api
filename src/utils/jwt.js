@@ -3,17 +3,9 @@ const crypto = require("crypto");
 
 const SECRET_KEY = "this-is-our-secret-key";
 
-const encodeJWT = payload => {
-  const token = jwt.sign(payload, SECRET_KEY);
-  console.info("token : ", token);
-  return token;
-};
+const encodeJWT = payload => jwt.sign(payload, SECRET_KEY);
 
-const decodeJWT = token => {
-  const decoded = jwt.verify(token, SECRET_KEY);
-  console.info("decoded : ", decoded);
-  return decoded;
-};
+const decodeJWT = token => jwt.verify(token, SECRET_KEY);
 
 const createSalt = () => crypto.randomBytes(128).toString("hex");
 

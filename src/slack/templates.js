@@ -443,7 +443,7 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
     },
     submit: {
       type: "plain_text",
-      text: "Submit",
+      text: "Say Cheers :beers:",
       emoji: true,
     },
     close: {
