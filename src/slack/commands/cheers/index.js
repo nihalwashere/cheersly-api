@@ -1,5 +1,5 @@
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
-const { openModal } = require("../../api");
+const { postEphemeralMessage, openModal } = require("../../api");
 const { createChannelNotSetupTemplate } = require("./template");
 const { submitCheersTemplate } = require("../../templates");
 const { wrapCompanyValueOptionsForTeam } = require("../../helper");
@@ -8,7 +8,13 @@ const {
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleCheersCommand = async (teamId, userName, triggerId, channelId) => {
+const handleCheersCommand = async (
+  teamId,
+  userName,
+  userId,
+  triggerId,
+  channelId
+) => {
   try {
     // /cheers
 
@@ -21,7 +27,12 @@ const handleCheersCommand = async (teamId, userName, triggerId, channelId) => {
     });
 
     if (!recognitionTeams.some(elem => elem.channel === channelId)) {
-      return createChannelNotSetupTemplate(teamId, recognitionTeams);
+      return await postEphemeralMessage(
+        channelId,
+        userId,
+        teamId,
+        createChannelNotSetupTemplate(teamId, recognitionTeams)
+      );
     }
 
     const viewTemplate = submitCheersTemplate(
