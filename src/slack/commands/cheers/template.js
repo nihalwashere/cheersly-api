@@ -27,6 +27,8 @@ const createChannelNotSetupTemplate = (teamId, recognitionTeams) => {
       },
     });
   }
+
+  return blocks;
 };
 
 module.exports = { createChannelNotSetupTemplate };

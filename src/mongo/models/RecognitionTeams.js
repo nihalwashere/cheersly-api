@@ -15,8 +15,14 @@ const RecognitionTeamsSchema = new Schema(
       default: "",
     },
     channel: {
-      type: String,
-      default: "",
+      id: {
+        type: String,
+        default: "",
+      },
+      name: {
+        type: String,
+        default: "",
+      },
     },
     pointAllowance: {
       type: String,

@@ -136,7 +136,7 @@ router.put("/teams/:id", async (req, res) => {
 
     const {
       name = "",
-      channel = "",
+      channel = {},
       pointAllowance = "",
       pointAmountOptions = [],
       managers = [],
@@ -150,7 +150,7 @@ router.put("/teams/:id", async (req, res) => {
         .json({ success: false, message: "Name is required." });
     }
 
-    if (!channel) {
+    if (!channel.id) {
       return res
         .status(400)
         .json({ success: false, message: "Channel is required." });
