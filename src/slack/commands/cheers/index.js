@@ -35,13 +35,17 @@ const handleCheersCommand = async (
       );
     }
 
-    const viewTemplate = submitCheersTemplate(
-      userName,
-      SAY_CHEERS,
-      companyValueOptions
+    await openModal(
+      teamId,
+      triggerId,
+      submitCheersTemplate(
+        userName,
+        SAY_CHEERS,
+        companyValueOptions,
+        recognitionTeams.find(elem => elem.channel.id === channelId)
+          .pointAmountOptions
+      )
     );
-
-    await openModal(teamId, triggerId, viewTemplate);
   } catch (error) {
     logger.error("handleCheersCommand() -> error : ", error);
   }
