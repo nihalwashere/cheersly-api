@@ -2,6 +2,7 @@ const {
   BLOCK_IDS: {
     SUBMIT_CHEERS_TO_USERS,
     SUBMIT_CHEERS_TO_CHANNEL,
+    SUBMIT_CHEERS_FOR_POINTS,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_FOR_REASON,
     SHOULD_SHARE_GIPHY,
@@ -9,6 +10,7 @@ const {
   ACTION_IDS: {
     SUBMIT_CHEERS_TO_USERS_VALUE,
     SUBMIT_CHEERS_TO_CHANNEL_VALUE,
+    SUBMIT_CHEERS_FOR_POINTS_VALUE,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SHOULD_SHARE_GIPHY_VALUE,
@@ -58,6 +60,12 @@ const processCheers = async payload => {
     const channel =
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
         .selected_conversation;
+
+    const points = state.values[SUBMIT_CHEERS_FOR_POINTS][
+      SUBMIT_CHEERS_FOR_POINTS_VALUE
+    ].selected_options.map(option => option.value);
+
+    logger.debug("points : ", points);
 
     const companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
       SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE

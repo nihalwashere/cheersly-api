@@ -509,7 +509,6 @@ const submitCheersTemplate = (
       {
         type: "input",
         block_id: SUBMIT_CHEERS_FOR_POINTS,
-        optional: true,
         label: {
           type: "plain_text",
           text: "How many points would you like to share with each recipient?",
@@ -522,7 +521,14 @@ const submitCheersTemplate = (
             text: "Select a point amount",
             emoji: true,
           },
-          options: pointAmountOptions,
+          options: pointAmountOptions.map(elem => ({
+            text: {
+              type: "plain_text",
+              text: elem,
+              emoji: true,
+            },
+            value: elem,
+          })),
           action_id: SUBMIT_CHEERS_FOR_POINTS_VALUE,
         },
       },
