@@ -61,9 +61,10 @@ const processCheers = async payload => {
       state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
         .selected_conversation;
 
-    const points = state.values[SUBMIT_CHEERS_FOR_POINTS][
-      SUBMIT_CHEERS_FOR_POINTS_VALUE
-    ].selected_options.map(option => option.value);
+    const points = Number(
+      state.values[SUBMIT_CHEERS_FOR_POINTS][SUBMIT_CHEERS_FOR_POINTS_VALUE]
+        .selected_option.value
+    );
 
     logger.debug("points : ", points);
 
