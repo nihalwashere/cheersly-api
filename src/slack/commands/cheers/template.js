@@ -7,7 +7,7 @@ const createChannelNotSetupTemplate = (teamId, recognitionTeams) => {
       text: {
         type: "mrkdwn",
         text:
-          "*Oops!* You haven't setup this channel to be used to share cheers with your peers.",
+          "*Oops!* You haven't setup this channel to share cheers with your peers.",
       },
     },
   ];
@@ -17,7 +17,7 @@ const createChannelNotSetupTemplate = (teamId, recognitionTeams) => {
   recognitionTeams.map((elem, index) => {
     channelString += `<${getChannelDeepLink(teamId, elem.channel.id)}|#${
       elem.channel.name
-    }>${recognitionTeams.length === index + 1 ? "" : " ,"}`;
+    }>${recognitionTeams.length === index + 1 ? "" : ", "}`;
   });
 
   if (recognitionTeams.length) {
