@@ -19,7 +19,7 @@ const createCheersSubmittedTemplate = ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `<@${senderUserId}> sent some cheers with \`${points} points\` to ${recipientString}.`,
+        text: `<@${senderUserId}> shared some cheers for \`${points} points\` with ${recipientString}.`,
       },
     },
   ];
@@ -37,7 +37,7 @@ const createCheersSubmittedTemplate = ({
   let companyValuesString = "";
 
   companyValues.map(companyValue => {
-    companyValuesString += `\`${companyValue}\``;
+    companyValuesString += `\`${companyValue}\` `;
   });
 
   if (companyValues && companyValues.length) {
