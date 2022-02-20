@@ -4,6 +4,7 @@ const createCheersSubmittedTemplate = ({
   reason,
   giphyUrl,
   companyValues,
+  points,
 }) => {
   let recipientString = "";
 
@@ -18,7 +19,7 @@ const createCheersSubmittedTemplate = ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `<@${senderUserId}> just shared in some cheers with ${recipientString}, giving them \`10 points\` each.`,
+        text: `<@${senderUserId}> sent some cheers with \`${points} points\` to ${recipientString}.`,
       },
     },
   ];
@@ -35,10 +36,8 @@ const createCheersSubmittedTemplate = ({
 
   let companyValuesString = "";
 
-  companyValues.map((companyValue, index) => {
-    companyValuesString += `\`${companyValue}>\`${
-      companyValues.length === index + 1 ? "" : ", "
-    }`;
+  companyValues.map(companyValue => {
+    companyValuesString += `\`${companyValue}\``;
   });
 
   if (companyValues && companyValues.length) {

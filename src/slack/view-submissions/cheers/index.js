@@ -19,9 +19,9 @@ const {
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
 const { createCheersSubmittedTemplate } = require("./template");
-const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
-const { upsertAppHpmeBlocks } = require("../../../mongo/helper/appHomeBlocks");
-const { sortLeaders, getAppUrl } = require("../../../utils/common");
+// const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
+// const { upsertAppHpmeBlocks } = require("../../../mongo/helper/appHomeBlocks");
+// const { sortLeaders, getAppUrl } = require("../../../utils/common");
 const { getRandomGif } = require("../../../giphy/api");
 const { validateRecipients } = require("./helper");
 const logger = require("../../../global/logger");
@@ -90,7 +90,7 @@ const processCheers = async payload => {
         recognitionTeamId,
         slackUserId: senderUserId,
         teamId,
-        cheersGiven: points,
+        cheersGiven: validRecipients.length * points,
         cheersReceived: 0,
         cheersRedeemable: 0,
       }).save();
@@ -187,6 +187,7 @@ const processCheers = async payload => {
         reason,
         companyValues,
         giphyUrl,
+        points,
       })
     );
   } catch (error) {
