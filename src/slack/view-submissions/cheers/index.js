@@ -81,7 +81,8 @@ const processCheers = async payload => {
       await CheersStatsModel.findOneAndUpdate(
         { recognitionTeamId, slackUserId: senderUserId, teamId },
         {
-          cheersGiven: cheersStatsSender.cheersGiven + points,
+          cheersGiven:
+            cheersStatsSender.cheersGiven + validRecipients.length * points,
         }
       );
     } else {
@@ -92,7 +93,7 @@ const processCheers = async payload => {
         cheersGiven: points,
         cheersReceived: 0,
         cheersRedeemable: 0,
-      });
+      }).save();
     }
 
     // save to cheers for activity

@@ -35,7 +35,7 @@ const createCheersSubmittedTemplate = ({
 
   let companyValuesString = "";
 
-  companyValuesString += companyValues.map((companyValue, index) => {
+  companyValues.map((companyValue, index) => {
     companyValuesString += `\`${companyValue}>\`${
       companyValues.length === index + 1 ? "" : ", "
     }`;
