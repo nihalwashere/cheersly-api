@@ -12,10 +12,17 @@ const CheersSchema = new mongoose.Schema(
       type: String,
       index: true,
     },
+    companyValues: {
+      type: Array,
+    },
     reason: {
       type: String,
     },
     teamId: {
+      type: String,
+      index: true,
+    },
+    recognitionTeamId: {
       type: String,
       index: true,
     },

@@ -1,53 +1,52 @@
-const createSenderCheersSubmittedTemplate = senderUsername => {
-  return [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `@${senderUsername} just shared in some cheers :heart:`,
-      },
-    },
-  ];
-};
-
 const createCheersSubmittedTemplate = ({
-  users,
+  senderUserId,
+  recipients,
   reason,
   giphyUrl,
   companyValues,
 }) => {
-  const blocks = [];
+  let recipientString = "";
 
-  users.map(user => {
-    blocks.push({
+  recipients.map((recipient, index) => {
+    recipientString += `<@${recipient}>${
+      recipients.length === index + 1 ? "" : ", "
+    }`;
+  });
+
+  const blocks = [
+    {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `@${user.recipient} now has ${user.cheersReceived} cheers :beers:`,
+        text: `<@${senderUserId}> just shared in some cheers with ${recipientString}, giving them \`10 points\` each.`,
       },
-    });
-  });
+    },
+  ];
 
   if (reason) {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*For reason:*\n" + "```" + `${reason}` + "```",
+        text: `*For reason:*\n_${reason}_`,
       },
     });
   }
+
+  let companyValuesString = "";
+
+  companyValuesString += companyValues.map((companyValue, index) => {
+    companyValuesString += `\`${companyValue}>\`${
+      companyValues.length === index + 1 ? "" : ", "
+    }`;
+  });
 
   if (companyValues && companyValues.length) {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "*Company values favored :*\n" +
-          "```" +
-          `${companyValues.join(" ")}` +
-          "```",
+        text: `*Company values favored :*\n${companyValuesString}`,
       },
     });
   }
@@ -63,21 +62,6 @@ const createCheersSubmittedTemplate = ({
   return blocks;
 };
 
-const createSelectPeersTemplate = () => {
-  return [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text:
-          "Please select your peers while sharing cheers, you should not share cheers with yourself! :smile:",
-      },
-    },
-  ];
-};
-
 module.exports = {
-  createSenderCheersSubmittedTemplate,
   createCheersSubmittedTemplate,
-  createSelectPeersTemplate,
 };

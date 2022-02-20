@@ -1,3 +1,4 @@
+const CheersStatsModel = require("../../../mongo/models/CheersStats");
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const { postEphemeralMessage, openModal } = require("../../api");
 const { createChannelNotSetupTemplate } = require("./template");
@@ -8,13 +9,7 @@ const {
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleCheersCommand = async (
-  teamId,
-  userName,
-  userId,
-  triggerId,
-  channelId
-) => {
+const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
   try {
     // /cheers
 
@@ -26,7 +21,11 @@ const handleCheersCommand = async (
       teamId,
     });
 
-    if (!recognitionTeams.some(elem => elem.channel.id === channelId)) {
+    const recognitionTeam = recognitionTeams.find(
+      elem => elem.channel.id === channelId
+    );
+
+    if (!recognitionTeam) {
       return await postEphemeralMessage(
         channelId,
         userId,
@@ -35,16 +34,40 @@ const handleCheersCommand = async (
       );
     }
 
+    const {
+      _id: recognitionTeamId,
+      pointAmountOptions,
+      pointAllowance,
+    } = recognitionTeam;
+
+    const metaData = JSON.stringify({
+      channelId,
+      recognitionTeamId: recognitionTeam._id,
+    });
+
+    let remainingPointsForUser = 0;
+
+    const cheersStatsSender = await CheersStatsModel.findOne({
+      recognitionTeamId,
+      slackUserId: userId,
+      teamId,
+    });
+
+    if (cheersStatsSender) {
+      remainingPointsForUser =
+        Number(pointAllowance) - cheersStatsSender.cheersGiven;
+    }
+
     await openModal(
       teamId,
       triggerId,
-      submitCheersTemplate(
-        userName,
-        SAY_CHEERS,
+      submitCheersTemplate({
+        metaData,
+        callback_id: SAY_CHEERS,
         companyValueOptions,
-        recognitionTeams.find(elem => elem.channel.id === channelId)
-          .pointAmountOptions
-      )
+        pointAmountOptions,
+        remainingPointsForUser,
+      })
     );
   } catch (error) {
     logger.error("handleCheersCommand() -> error : ", error);

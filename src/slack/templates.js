@@ -9,7 +9,6 @@ const {
     POLL_OPTION_C,
     POLL_OPTION_D,
     SUBMIT_CHEERS_FOR_REASON,
-    SUBMIT_CHEERS_TO_CHANNEL,
     SUBMIT_CHEERS_FOR_POINTS,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_TO_USERS,
@@ -28,7 +27,6 @@ const {
     POLL_OPTION_C_VALUE,
     POLL_OPTION_D_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
-    SUBMIT_CHEERS_TO_CHANNEL_VALUE,
     SUBMIT_CHEERS_FOR_POINTS_VALUE,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_TO_USERS_VALUE,
@@ -37,7 +35,6 @@ const {
     FEEDBACK_CHANNEL_VALUE,
     FEEDBACK_IS_ANONYMOUS_VALUE,
   },
-  SLACK_ACTIONS: { CUSTOMER_FEEDBACK },
 } = require("../global/constants");
 const { getAppHomeLink } = require("../utils/common");
 
@@ -433,16 +430,17 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
   };
 };
 
-const submitCheersTemplate = (
-  user_name,
+const submitCheersTemplate = ({
+  metaData,
   callback_id,
   companyValueOptions,
-  pointAmountOptions
-) => {
+  pointAmountOptions,
+  remainingPointsForUser,
+}) => {
   return {
     type: "modal",
     callback_id,
-    private_metadata: user_name,
+    private_metadata: metaData,
     title: {
       type: "plain_text",
       text: "Say Cheers",
@@ -470,7 +468,6 @@ const submitCheersTemplate = (
         element: {
           action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
           type: "multi_conversations_select",
-          max_selected_items: 3,
           placeholder: {
             type: "plain_text",
             text: "Select your peers",
@@ -478,29 +475,6 @@ const submitCheersTemplate = (
           },
           filter: {
             include: ["im"],
-            exclude_bot_users: true,
-            exclude_external_shared_channels: true,
-          },
-        },
-      },
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_TO_CHANNEL,
-        label: {
-          type: "plain_text",
-          text: "Which channel do you want to post to?",
-          emoji: true,
-        },
-        element: {
-          action_id: SUBMIT_CHEERS_TO_CHANNEL_VALUE,
-          type: "conversations_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Select channel",
-            emoji: true,
-          },
-          filter: {
-            include: ["private", "public"],
             exclude_bot_users: true,
             exclude_external_shared_channels: true,
           },
@@ -531,6 +505,16 @@ const submitCheersTemplate = (
           })),
           action_id: SUBMIT_CHEERS_FOR_POINTS_VALUE,
         },
+      },
+      {
+        type: "context",
+        elements: [
+          {
+            type: "plain_text",
+            text: `You currently have ${remainingPointsForUser} points remaining.`,
+            emoji: true,
+          },
+        ],
       },
       {
         type: "input",

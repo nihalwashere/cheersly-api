@@ -1,7 +1,9 @@
+const CheersModel = require("../../../mongo/models/Cheers");
+const CheersStatsModel = require("../../../mongo/models/CheersStats");
+// const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const {
   BLOCK_IDS: {
     SUBMIT_CHEERS_TO_USERS,
-    SUBMIT_CHEERS_TO_CHANNEL,
     SUBMIT_CHEERS_FOR_POINTS,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_FOR_REASON,
@@ -9,37 +11,16 @@ const {
   },
   ACTION_IDS: {
     SUBMIT_CHEERS_TO_USERS_VALUE,
-    SUBMIT_CHEERS_TO_CHANNEL_VALUE,
     SUBMIT_CHEERS_FOR_POINTS_VALUE,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
     SHOULD_SHARE_GIPHY_VALUE,
   },
-  SLACK_ERROR: { CHANNEL_NOT_FOUND },
 } = require("../../../global/constants");
-const {
-  slackPostMessageToChannel,
-  postEphemeralMessage,
-} = require("../../api");
-const {
-  createSenderCheersSubmittedTemplate,
-  createCheersSubmittedTemplate,
-  createSelectPeersTemplate,
-} = require("./template");
+const { slackPostMessageToChannel } = require("../../api");
+const { createCheersSubmittedTemplate } = require("./template");
 const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
 const { upsertAppHpmeBlocks } = require("../../../mongo/helper/appHomeBlocks");
-const {
-  addCheersStats,
-  getCheersStatsForTeam,
-  getCheersStatsForUser,
-  updateCheersStatsForUser,
-} = require("../../../mongo/helper/cheersStats");
-const { addCheers } = require("../../../mongo/helper/cheers");
-const { createAppHomeLeaderBoard } = require("../../app-home/template");
-const {
-  createNotInChannelTemplate,
-  createGamePostedSuccessModalTemplate,
-} = require("../../templates");
 const { sortLeaders, getAppUrl } = require("../../../utils/common");
 const { getRandomGif } = require("../../../giphy/api");
 const { validateRecipients } = require("./helper");
@@ -50,23 +31,19 @@ const processCheers = async payload => {
     const {
       team: { id: teamId },
       user: { id: senderUserId },
-      view: { state, private_metadata: senderUsername },
+      view: { state, private_metadata: metaData },
     } = payload;
+
+    const { channelId, recognitionTeamId } = JSON.parse(metaData);
 
     const recipients =
       state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
         .selected_conversations;
 
-    const channel =
-      state.values[SUBMIT_CHEERS_TO_CHANNEL][SUBMIT_CHEERS_TO_CHANNEL_VALUE]
-        .selected_conversation;
-
     const points = Number(
       state.values[SUBMIT_CHEERS_FOR_POINTS][SUBMIT_CHEERS_FOR_POINTS_VALUE]
         .selected_option.value
     );
-
-    logger.debug("points : ", points);
 
     const companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
       SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
@@ -87,102 +64,78 @@ const processCheers = async payload => {
     const validRecipients = await validateRecipients(
       teamId,
       recipients,
-      senderUsername
+      senderUserId
     );
 
-    if (!validRecipients.length) {
-      return await postEphemeralMessage(
-        channel,
-        senderUserId,
-        teamId,
-        createSelectPeersTemplate()
-      );
-    }
+    logger.debug("validRecipients : ", validRecipients);
 
-    // for sender
-
-    const senderCheersSubmittedResponse = await slackPostMessageToChannel(
-      channel,
+    const cheersStatsSender = await CheersStatsModel.findOne({
+      recognitionTeamId,
+      slackUserId: senderUserId,
       teamId,
-      createSenderCheersSubmittedTemplate(senderUsername)
-    );
+    });
 
-    if (
-      senderCheersSubmittedResponse &&
-      !senderCheersSubmittedResponse.ok &&
-      senderCheersSubmittedResponse.error === CHANNEL_NOT_FOUND
-    ) {
-      return {
-        push: true,
-        view: createNotInChannelTemplate(),
-      };
-    }
-
-    const cheersStatsSender = await getCheersStatsForUser(
-      teamId,
-      senderUsername
-    );
+    logger.debug("cheersStatsSender : ", cheersStatsSender);
 
     if (cheersStatsSender) {
-      const { cheersGiven } = cheersStatsSender;
-      await updateCheersStatsForUser(senderUsername, {
-        cheersGiven: cheersGiven + validRecipients.length,
-      });
+      await CheersStatsModel.findOneAndUpdate(
+        { recognitionTeamId, slackUserId: senderUserId, teamId },
+        {
+          cheersGiven: cheersStatsSender.cheersGiven + points,
+        }
+      );
     } else {
-      await addCheersStats({
-        slackUsername: senderUsername,
+      await new CheersStatsModel({
+        recognitionTeamId,
+        slackUserId: senderUserId,
         teamId,
-        cheersGiven: validRecipients.length,
+        cheersGiven: points,
         cheersReceived: 0,
         cheersRedeemable: 0,
       });
     }
 
-    // save to cheers for filters
+    // save to cheers for activity
     await Promise.all(
       validRecipients.map(async recipient => {
-        await addCheers({
-          from: senderUsername,
+        await new CheersModel({
+          from: senderUserId,
           to: recipient,
-          teamId,
+          companyValues,
           reason,
-        });
+          teamId,
+          recognitionTeamId,
+        }).save();
       })
     );
 
-    const notifyRecipients = [];
     // for receivers
     await Promise.all(
       validRecipients.map(async recipient => {
-        const cheersStatsRecipient = await getCheersStatsForUser(
+        const cheersStatsRecipient = await CheersStatsModel.findOne({
+          recognitionTeamId,
+          slackUserId: recipient,
           teamId,
-          recipient
-        );
+        });
 
         if (cheersStatsRecipient) {
           const { cheersReceived, cheersRedeemable } = cheersStatsRecipient;
 
-          await updateCheersStatsForUser(recipient, {
-            cheersReceived: cheersReceived + 1,
-            cheersRedeemable: cheersRedeemable + 1,
-          });
-
-          notifyRecipients.push({
-            recipient,
-            cheersReceived: cheersReceived + 1,
-          });
+          await CheersStatsModel.findOneAndUpdate(
+            { recognitionTeamId, slackUserId: recipient, teamId },
+            {
+              cheersReceived: cheersReceived + points,
+              cheersRedeemable: cheersRedeemable + points,
+            }
+          );
         } else {
-          await addCheersStats({
-            slackUsername: recipient,
+          await new CheersStatsModel({
+            recognitionTeamId,
+            slackUserId: recipient,
             teamId,
             cheersGiven: 0,
-            cheersReceived: 1,
-            cheersRedeemable: 1,
-          });
-
-          notifyRecipients.push({
-            recipient,
-            cheersReceived: 1,
+            cheersReceived: points,
+            cheersRedeemable: points,
           });
         }
       })
@@ -205,46 +158,36 @@ const processCheers = async payload => {
     }
 
     // compute leaderboard
-    const cheersStatsForTeam = await getCheersStatsForTeam(teamId);
+    // const cheersStatsForTeam = await getCheersStatsForTeam(teamId);
 
-    const leaders = [];
+    // const leaders = [];
 
-    cheersStatsForTeam.map(stat => {
-      const { slackUsername, cheersReceived } = stat;
-      leaders.push({ slackUsername, cheersReceived });
-    });
+    // cheersStatsForTeam.map(stat => {
+    //   const { slackUsername, cheersReceived } = stat;
+    //   leaders.push({ slackUsername, cheersReceived });
+    // });
 
-    const sortedLeaders = sortLeaders(leaders);
+    // const sortedLeaders = sortLeaders(leaders);
 
-    const leaderBoardBlocks = createAppHomeLeaderBoard({
-      leaders: sortedLeaders,
-      leaderBoardUrl: `${getAppUrl()}/leaderboard`,
-    });
+    // const leaderBoardBlocks = createAppHomeLeaderBoard({
+    //   leaders: sortedLeaders,
+    //   leaderBoardUrl: `${getAppUrl()}/leaderboard`,
+    // });
 
-    await upsertAppHpmeBlocks(teamId, { blocks: leaderBoardBlocks });
-    await updateAppHomePublishedForTeam(teamId, false);
+    // await upsertAppHpmeBlocks(teamId, { blocks: leaderBoardBlocks });
+    // await updateAppHomePublishedForTeam(teamId, false);
 
-    const cheersPostedResponse = await slackPostMessageToChannel(
-      channel,
+    await slackPostMessageToChannel(
+      channelId,
       teamId,
       createCheersSubmittedTemplate({
-        users: notifyRecipients,
+        senderUserId,
+        recipients: validRecipients,
         reason,
-        giphyUrl,
         companyValues,
+        giphyUrl,
       })
     );
-
-    if (cheersPostedResponse && cheersPostedResponse.ok) {
-      return {
-        update: true,
-        view: createGamePostedSuccessModalTemplate({
-          teamId,
-          channelId: channel,
-          message: "*Cheers posted successfully!*",
-        }),
-      };
-    }
   } catch (error) {
     logger.error("processCheers() -> error : ", error);
   }
