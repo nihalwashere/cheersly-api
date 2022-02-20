@@ -45,7 +45,7 @@ const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
       recognitionTeamId: recognitionTeam._id,
     });
 
-    let remainingPointsForUser = 0;
+    let remainingPointsForUser = Number(pointAllowance);
 
     const cheersStatsSender = await CheersStatsModel.findOne({
       recognitionTeamId,
