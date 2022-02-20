@@ -127,10 +127,10 @@ router.post("/", async (req, res) => {
       await updateAppHomePublishedForTeam(team_id, false);
 
       if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
-        return await trialEndedMessage(team_id, channel_id);
+        return await trialEndedMessage(team_id, user_id, channel_id);
       }
 
-      return await upgradeSubscriptionMessage(team_id, channel_id);
+      return await upgradeSubscriptionMessage(team_id, user_id, channel_id);
     }
 
     if (isCheersCommand(text)) {

@@ -2,13 +2,14 @@ const {
   createTrialEndedTemplate,
   createUpgradeSubscriptionTemplate,
 } = require("./template");
-const { slackPostMessageToChannel } = require("../api");
+const { postEphemeralMessage } = require("../api");
 const logger = require("../../global/logger");
 
-const trialEndedMessage = async (teamId, channel) => {
+const trialEndedMessage = async (teamId, userId, channelId) => {
   try {
-    return await slackPostMessageToChannel(
-      channel,
+    return await postEphemeralMessage(
+      channelId,
+      userId,
       teamId,
       createTrialEndedTemplate()
     );
@@ -17,13 +18,13 @@ const trialEndedMessage = async (teamId, channel) => {
   }
 };
 
-const upgradeSubscriptionMessage = async (teamId, channel) => {
+const upgradeSubscriptionMessage = async (teamId, userId, channelId) => {
   try {
-    return await slackPostMessageToChannel(
-      channel,
+    return await postEphemeralMessage(
+      channelId,
+      userId,
       teamId,
-      createUpgradeSubscriptionTemplate(),
-      true
+      createUpgradeSubscriptionTemplate()
     );
   } catch (error) {
     logger.error("upgradeSubscriptionMessage() -> ", error);
