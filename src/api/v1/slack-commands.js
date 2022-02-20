@@ -142,7 +142,6 @@ router.post("/", async (req, res) => {
 
       return await handleCheersCommand(
         team_id,
-        user_name,
         user_id,
         trigger_id,
         channel_id
