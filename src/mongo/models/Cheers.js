@@ -18,6 +18,9 @@ const CheersSchema = new mongoose.Schema(
     reason: {
       type: String,
     },
+    points: {
+      type: Number,
+    },
     teamId: {
       type: String,
       index: true,

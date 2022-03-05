@@ -4,7 +4,9 @@ const router = express.Router();
 
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const CompanyValuesModel = require("../../../mongo/models/CompanyValues");
-
+const {
+  getConversationMembers,
+} = require("../../../slack/pagination/conversations-members");
 const { validateToken } = require("../../../utils/common");
 const logger = require("../../../global/logger");
 
@@ -59,7 +61,7 @@ router.get("/teams/:id", async (req, res) => {
     const team = await RecognitionTeamsModel.findOne({
       _id: id,
       teamId,
-    }).populate("managers");
+    }).populate("members managers");
 
     if (!team) {
       return res
@@ -174,6 +176,11 @@ router.put("/teams/:id", async (req, res) => {
         .json({ success: false, message: "Managers is required." });
     }
 
+    const oldRecognitionTeam = await RecognitionTeamsModel.findOne({
+      _id: id,
+      teamId,
+    });
+
     await RecognitionTeamsModel.findOneAndUpdate(
       { _id: id, teamId },
       {
@@ -184,6 +191,10 @@ router.put("/teams/:id", async (req, res) => {
         managers,
       }
     );
+
+    if (channel.id && channel.id !== oldRecognitionTeam.channel.id) {
+      await getConversationMembers(teamId, id, channel.id);
+    }
 
     return res
       .status(200)

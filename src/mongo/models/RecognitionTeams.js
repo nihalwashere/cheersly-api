@@ -32,6 +32,10 @@ const RecognitionTeamsSchema = new Schema(
       type: Array,
       default: [],
     },
+    members: {
+      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+      default: [],
+    },
     managers: {
       type: [{ type: Schema.Types.ObjectId, ref: "User" }],
       default: [],

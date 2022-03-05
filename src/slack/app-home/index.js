@@ -1,9 +1,9 @@
-const logger = require("../../global/logger");
-const { getAppHpmeBlocksForTeam } = require("../../mongo/helper/appHomeBlocks");
 const { getCheersStatsForUser } = require("../../mongo/helper/cheersStats");
 const { publishView } = require("../api");
 const { createAppHomeTemplate } = require("./template");
 const { getAppUrl } = require("../../utils/common");
+const { getCurrentMonthStatsForUser } = require("../../concerns/cheers");
+const logger = require("../../global/logger");
 
 const publishStats = async ({
   teamId,
@@ -30,14 +30,18 @@ const publishStats = async ({
       }
     }
 
-    const appHomeBlocks = await getAppHpmeBlocksForTeam(teamId);
+    const {
+      totalPointAllowance,
+      totalSpentThisMonth,
+    } = await getCurrentMonthStatsForUser(teamId, slackUserId);
 
     const appHomeTemplate = createAppHomeTemplate({
       appUrl: getAppUrl(),
       cheersGiven,
       cheersReceived,
       cheersRedeemable,
-      appHomeBlocks,
+      totalPointAllowance,
+      totalSpentThisMonth,
       isSubscriptionExpired,
       isTrialPlan,
     });

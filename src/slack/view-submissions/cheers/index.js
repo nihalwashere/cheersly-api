@@ -1,6 +1,6 @@
+const UserModel = require("../../../mongo/models/User");
 const CheersModel = require("../../../mongo/models/Cheers");
 const CheersStatsModel = require("../../../mongo/models/CheersStats");
-// const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const {
   BLOCK_IDS: {
     SUBMIT_CHEERS_TO_USERS,
@@ -19,9 +19,6 @@ const {
 } = require("../../../global/constants");
 const { slackPostMessageToChannel } = require("../../api");
 const { createCheersSubmittedTemplate } = require("./template");
-// const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
-// const { upsertAppHpmeBlocks } = require("../../../mongo/helper/appHomeBlocks");
-// const { sortLeaders, getAppUrl } = require("../../../utils/common");
 const { getRandomGif } = require("../../../giphy/api");
 const { validateRecipients } = require("./helper");
 const logger = require("../../../global/logger");
@@ -104,6 +101,7 @@ const processCheers = async payload => {
           to: recipient,
           companyValues,
           reason,
+          points,
           teamId,
           recognitionTeamId,
         }).save();
@@ -158,25 +156,13 @@ const processCheers = async payload => {
       }
     }
 
-    // compute leaderboard
-    // const cheersStatsForTeam = await getCheersStatsForTeam(teamId);
-
-    // const leaders = [];
-
-    // cheersStatsForTeam.map(stat => {
-    //   const { slackUsername, cheersReceived } = stat;
-    //   leaders.push({ slackUsername, cheersReceived });
-    // });
-
-    // const sortedLeaders = sortLeaders(leaders);
-
-    // const leaderBoardBlocks = createAppHomeLeaderBoard({
-    //   leaders: sortedLeaders,
-    //   leaderBoardUrl: `${getAppUrl()}/leaderboard`,
-    // });
-
-    // await upsertAppHpmeBlocks(teamId, { blocks: leaderBoardBlocks });
-    // await updateAppHomePublishedForTeam(teamId, false);
+    await UserModel.findOneAndUpdate(
+      {
+        "slackUserData.team_id": teamId,
+        "slackUserData.id": senderUserId,
+      },
+      { appHomePublished: false }
+    );
 
     await slackPostMessageToChannel(
       channelId,
