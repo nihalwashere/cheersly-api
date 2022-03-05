@@ -71,7 +71,9 @@ const validateRecipients = async (
         };
       }
 
-      validRecipients.push(user.slackUserData.id);
+      if (user) {
+        validRecipients.push(user.slackUserData.id);
+      }
     }
 
     return { validRecipients };
