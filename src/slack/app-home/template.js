@@ -40,10 +40,7 @@ const createAppHomeTemplate = ({
   isSubscriptionExpired,
   isTrialPlan,
 }) => {
-  const appHomeTemplate = {
-    type: "home",
-    blocks: [],
-  };
+  let blocks = [];
 
   if (isSubscriptionExpired) {
     let text = "";
@@ -54,7 +51,7 @@ const createAppHomeTemplate = ({
       text = upgradeSubscriptionText;
     }
 
-    appHomeTemplate.blocks = [
+    blocks = [
       {
         type: "section",
         text: {
@@ -68,7 +65,8 @@ const createAppHomeTemplate = ({
     ];
   }
 
-  appHomeTemplate.blocks.push(
+  blocks = [
+    ...blocks,
     {
       type: "section",
       text: {
@@ -118,10 +116,7 @@ const createAppHomeTemplate = ({
           emoji: true,
         },
       ],
-    }
-  );
-
-  appHomeTemplate.blocks = [
+    },
     {
       type: "divider",
     },
@@ -250,7 +245,10 @@ const createAppHomeTemplate = ({
     createSupportContextTemplate(),
   ];
 
-  return appHomeTemplate;
+  return {
+    type: "home",
+    blocks,
+  };
 };
 
 module.exports = {
