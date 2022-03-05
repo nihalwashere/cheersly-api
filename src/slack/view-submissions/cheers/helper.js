@@ -18,6 +18,8 @@ const validateRecipients = async (
   try {
     const validRecipients = [];
 
+    let recognitionTeam = {};
+
     for (let i = 0; i < recipients.length; i += 1) {
       const recipient = recipients[i];
 
@@ -27,13 +29,18 @@ const validateRecipients = async (
         slackDeleted: false,
       });
 
-      const recognitionTeam = await RecognitionTeamsModel.findOne({
+      recognitionTeam = await RecognitionTeamsModel.findOne({
         _id: recognitionTeamId,
         teamId,
       });
 
       if (!user) {
         await getConversationMembers(teamId, recognitionTeamId, channelId);
+
+        recognitionTeam = await RecognitionTeamsModel.findOne({
+          _id: recognitionTeamId,
+          teamId,
+        });
 
         const newlySyncedUser = await UserModel.findOne({
           "slackUserData.id": recipient,
