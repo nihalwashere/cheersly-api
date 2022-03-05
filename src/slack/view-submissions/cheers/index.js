@@ -56,15 +56,23 @@ const processCheers = async payload => {
       ? true // eslint-disable-line
       : false;
 
-    // first check if stats exist for user, if it exist then update else create
-
-    const validRecipients = await validateRecipients(
+    const { errors = null, validRecipients = [] } = await validateRecipients(
       teamId,
       recipients,
-      senderUserId
+      senderUserId,
+      recognitionTeamId,
+      channelId
     );
 
+    if (errors) {
+      return {
+        errors,
+      };
+    }
+
     logger.debug("validRecipients : ", validRecipients);
+
+    // first check if stats exist for user, if it exist then update else create
 
     const cheersStatsSender = await CheersStatsModel.findOne({
       slackUserId: senderUserId,

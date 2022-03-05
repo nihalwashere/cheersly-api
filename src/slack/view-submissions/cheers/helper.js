@@ -1,49 +1,75 @@
-const pMap = require("p-map");
+const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const UserModel = require("../../../mongo/models/User");
-const { addUser } = require("../../../mongo/helper/user");
-const { getSlackUser } = require("../../api");
-const { UserRoles } = require("../../../enums/userRoles");
+const {
+  getConversationMembers,
+} = require("../../pagination/conversations-members");
+const {
+  BLOCK_IDS: { SUBMIT_CHEERS_TO_USERS },
+} = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const validateRecipients = async (teamId, recipients, senderUserId) => {
+const validateRecipients = async (
+  teamId,
+  recipients,
+  senderUserId,
+  recognitionTeamId,
+  channelId
+) => {
   try {
     const validRecipients = [];
 
-    const handler = async recipient => {
+    let errors = null;
+
+    recipients.forEach(async recipient => {
       const user = await UserModel.findOne({
         "slackUserData.id": recipient,
+        "slackUserData.team_id": teamId,
         slackDeleted: false,
       });
 
-      if (user && user.slackUserData.id !== senderUserId) {
-        validRecipients.push(user.slackUserData.id);
-      }
-
       if (!user) {
-        const slackUserData = await getSlackUser(teamId, recipient);
+        await getConversationMembers(teamId, recognitionTeamId, channelId);
 
-        if (
-          !slackUserData.deleted &&
-          !slackUserData.is_bot &&
-          slackUserData.name !== "slackbot"
-        ) {
-          // add new user
+        const recognitionTeam = await RecognitionTeamsModel.findOne({
+          _id: recognitionTeamId,
+          teamId,
+        });
 
-          await addUser({
-            slackUserData,
-            slackDeleted: false,
-            appHomePublished: false,
-            role: slackUserData.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER,
-          });
+        const newlySyncedUser = await UserModel.findOne({
+          "slackUserData.id": recipient,
+          "slackUserData.team_id": teamId,
+          slackDeleted: false,
+        });
 
-          validRecipients.push(slackUserData.id);
+        if (!recognitionTeam.members.includes(newlySyncedUser._id)) {
+          errors = {
+            [SUBMIT_CHEERS_TO_USERS]:
+              "Contains users who aren't in this channel.",
+          };
+
+          return;
         }
+
+        validRecipients.push(newlySyncedUser.slackUserData.id);
       }
-    };
 
-    await pMap(recipients, handler, { concurrency: 1 });
+      if (user && user.slackUserData.id === senderUserId) {
+        errors = {
+          [SUBMIT_CHEERS_TO_USERS]:
+            "Oops! You can't give yourself a shoutout, for obvious reasons, duhh!",
+        };
 
-    return validRecipients;
+        return;
+      }
+
+      validRecipients.push(user.slackUserData.id);
+    });
+
+    if (errors) {
+      return { errors };
+    }
+
+    return { validRecipients };
   } catch (error) {
     logger.error("validateRecipients() -> error : ", error);
   }
