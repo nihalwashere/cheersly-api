@@ -5,7 +5,7 @@ const router = express.Router();
 
 const { handleCheersCommand } = require("../../slack/commands/cheers");
 const { paginateUsersList } = require("../../slack/pagination/users-list");
-const { publishStats } = require("../../slack/app-home");
+const { publishAppHome } = require("../../slack/app-home");
 // const logger = require("../../global/logger");
 
 router.get("/health", (req, res) =>
@@ -25,8 +25,8 @@ router.post("/cheers", async (req, res) => {
 });
 
 router.post("/app-home", async (req, res) => {
-  const { teamId, slackUserId, slackUsername } = req.body;
-  await publishStats(teamId, slackUserId, slackUsername);
+  const { teamId, slackUserId } = req.body;
+  await publishAppHome(teamId, slackUserId);
   res.status(200).json({ success: true });
 });
 

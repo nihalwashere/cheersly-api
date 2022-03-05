@@ -2,7 +2,35 @@ const moment = require("moment-timezone");
 const RecognitionTeamsModel = require("../mongo/models/RecognitionTeams");
 const UserModel = require("../mongo/models/User");
 const CheersModel = require("../mongo/models/Cheers");
+const CheersStatsModel = require("../mongo/models/CheersStats");
 const logger = require("../global/logger");
+
+const getCheersStatsForUser = async (teamId, slackUserId) => {
+  try {
+    let cheersGiven = 0,
+      cheersReceived = 0,
+      cheersRedeemable = 0;
+
+    const cheersStatsForUser = await CheersStatsModel.findOne({
+      teamId,
+      slackUserId,
+    });
+
+    if (cheersStatsForUser) {
+      cheersGiven = cheersStatsForUser.cheersGiven;
+      cheersReceived = cheersStatsForUser.cheersReceived;
+      cheersRedeemable = cheersStatsForUser.cheersRedeemable;
+    }
+
+    return {
+      cheersGiven,
+      cheersReceived,
+      cheersRedeemable,
+    };
+  } catch (error) {
+    logger.error("getCheersStatsForUser() -> error : ", error);
+  }
+};
 
 const getCurrentMonthStatsForUser = async (teamId, slackUserId) => {
   try {
@@ -39,13 +67,18 @@ const getCurrentMonthStatsForUser = async (teamId, slackUserId) => {
       totalSpentThisMonth += Number(elem.points);
     });
 
+    const totalPointsRemaining = Number(
+      totalPointAllowance - totalSpentThisMonth
+    );
+
     return {
       totalPointAllowance,
       totalSpentThisMonth,
+      totalPointsRemaining,
     };
   } catch (error) {
-    logger.error("getCurrentMonthStatsForUser() -> ", error);
+    logger.error("getCurrentMonthStatsForUser() -> error : ", error);
   }
 };
 
-module.exports = { getCurrentMonthStatsForUser };
+module.exports = { getCheersStatsForUser, getCurrentMonthStatsForUser };

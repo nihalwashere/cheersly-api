@@ -67,7 +67,6 @@ const processCheers = async payload => {
     logger.debug("validRecipients : ", validRecipients);
 
     const cheersStatsSender = await CheersStatsModel.findOne({
-      recognitionTeamId,
       slackUserId: senderUserId,
       teamId,
     });
@@ -76,7 +75,7 @@ const processCheers = async payload => {
 
     if (cheersStatsSender) {
       await CheersStatsModel.findOneAndUpdate(
-        { recognitionTeamId, slackUserId: senderUserId, teamId },
+        { slackUserId: senderUserId, teamId },
         {
           cheersGiven:
             cheersStatsSender.cheersGiven + validRecipients.length * points,
@@ -84,7 +83,6 @@ const processCheers = async payload => {
       );
     } else {
       await new CheersStatsModel({
-        recognitionTeamId,
         slackUserId: senderUserId,
         teamId,
         cheersGiven: validRecipients.length * points,
@@ -112,7 +110,6 @@ const processCheers = async payload => {
     await Promise.all(
       validRecipients.map(async recipient => {
         const cheersStatsRecipient = await CheersStatsModel.findOne({
-          recognitionTeamId,
           slackUserId: recipient,
           teamId,
         });
@@ -121,7 +118,7 @@ const processCheers = async payload => {
           const { cheersReceived, cheersRedeemable } = cheersStatsRecipient;
 
           await CheersStatsModel.findOneAndUpdate(
-            { recognitionTeamId, slackUserId: recipient, teamId },
+            { slackUserId: recipient, teamId },
             {
               cheersReceived: cheersReceived + points,
               cheersRedeemable: cheersRedeemable + points,
@@ -129,7 +126,6 @@ const processCheers = async payload => {
           );
         } else {
           await new CheersStatsModel({
-            recognitionTeamId,
             slackUserId: recipient,
             teamId,
             cheersGiven: 0,

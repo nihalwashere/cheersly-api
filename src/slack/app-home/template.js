@@ -1,8 +1,5 @@
 const {
   SLACK_ACTIONS: {
-    SAY_CHEERS,
-    START_A_POLL,
-    SHARE_FEEDBACK_WITH_TEAM,
     THIS_OR_THAT,
     ICEBREAKER_QUESTION,
     TWO_TRUTHS_AND_A_LIE,
@@ -16,20 +13,6 @@ const {
   upgradeSubscriptionText,
 } = require("../subscription-handlers/template");
 
-const createMyStatsSection = (
-  cheersGiven,
-  cheersReceived,
-  cheersRedeemable
-) => {
-  return {
-    type: "section",
-    text: {
-      type: "mrkdwn",
-      text: `Given: *${cheersGiven}*   |   Received: *${cheersReceived}*   |   Redeemable: *${cheersRedeemable}*`,
-    },
-  };
-};
-
 const createAppHomeTemplate = ({
   appUrl,
   cheersGiven,
@@ -37,6 +20,7 @@ const createAppHomeTemplate = ({
   cheersRedeemable,
   totalPointAllowance,
   totalSpentThisMonth,
+  totalPointsRemaining,
   isSubscriptionExpired,
   isTrialPlan,
 }) => {
@@ -83,7 +67,13 @@ const createAppHomeTemplate = ({
         url: appUrl,
       },
     },
-    createMyStatsSection(cheersGiven, cheersReceived, cheersRedeemable),
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Given: *${cheersGiven}*   |   Received: *${cheersReceived}*   |   Redeemable: *${cheersRedeemable}*`,
+      },
+    },
     {
       type: "divider",
     },
@@ -114,47 +104,20 @@ const createAppHomeTemplate = ({
       ],
     },
     {
-      type: "divider",
+      type: "section",
+      fields: [
+        {
+          type: "mrkdwn",
+          text: "*Points Remaining* :coin:",
+        },
+      ],
     },
     {
       type: "section",
-      text: {
-        type: "mrkdwn",
-        text: ":people_hugging: *Culture*",
-      },
-    },
-    {
-      type: "actions",
-      elements: [
+      fields: [
         {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: ":beers: Say cheers to your peers",
-            emoji: true,
-          },
-          value: SAY_CHEERS,
-          action_id: SAY_CHEERS,
-        },
-        {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: ":bar_chart: Start a poll",
-            emoji: true,
-          },
-          value: START_A_POLL,
-          action_id: START_A_POLL,
-        },
-        {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: ":speech_balloon: Share feedback with team",
-            emoji: true,
-          },
-          value: SHARE_FEEDBACK_WITH_TEAM,
-          action_id: SHARE_FEEDBACK_WITH_TEAM,
+          type: "mrkdwn",
+          text: `Total \`${totalPointsRemaining} points\` remaining this month`,
         },
       ],
     },

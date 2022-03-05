@@ -8,10 +8,6 @@ const CheersStatsSchema = new mongoose.Schema(
       type: String,
       index: true,
     },
-    recognitionTeamId: {
-      type: String,
-      index: true,
-    },
     teamId: {
       type: String,
       index: true,
@@ -29,7 +25,7 @@ const CheersStatsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-CheersStatsSchema.index({ slackUsername: 1, teamId: 1 });
+CheersStatsSchema.index({ slackUserId: 1, teamId: 1 });
 
 const CheersStats = mongoose.model(collection, CheersStatsSchema);
 
