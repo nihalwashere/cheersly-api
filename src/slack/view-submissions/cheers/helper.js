@@ -27,13 +27,13 @@ const validateRecipients = async (
         slackDeleted: false,
       });
 
+      const recognitionTeam = await RecognitionTeamsModel.findOne({
+        _id: recognitionTeamId,
+        teamId,
+      });
+
       if (!user) {
         await getConversationMembers(teamId, recognitionTeamId, channelId);
-
-        const recognitionTeam = await RecognitionTeamsModel.findOne({
-          _id: recognitionTeamId,
-          teamId,
-        });
 
         const newlySyncedUser = await UserModel.findOne({
           "slackUserData.id": recipient,
@@ -58,6 +58,15 @@ const validateRecipients = async (
           errors: {
             [SUBMIT_CHEERS_TO_USERS]:
               "Oops! You can't give yourself a shoutout, for obvious reasons, duhh!",
+          },
+        };
+      }
+
+      if (!recognitionTeam.members.includes(user._id)) {
+        return {
+          errors: {
+            [SUBMIT_CHEERS_TO_USERS]:
+              "Contains users who aren't in this channel.",
           },
         };
       }
