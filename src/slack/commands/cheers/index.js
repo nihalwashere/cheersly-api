@@ -1,9 +1,11 @@
-const CheersStatsModel = require("../../../mongo/models/CheersStats");
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const { postEphemeralMessage, openModal } = require("../../api");
 const { createChannelNotSetupTemplate } = require("./template");
 const { submitCheersTemplate } = require("../../templates");
 const { wrapCompanyValueOptionsForTeam } = require("../../helper");
+const {
+  getCurrentMonthTotalSpentForUserByRecognitionTeam,
+} = require("../../../concerns/cheers");
 const {
   VIEW_SUBMISSIONS: { SAY_CHEERS },
 } = require("../../../global/constants");
@@ -45,18 +47,17 @@ const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
       recognitionTeamId: recognitionTeam._id,
     });
 
-    let remainingPointsForUser = Number(pointAllowance);
-
-    const cheersStatsSender = await CheersStatsModel.findOne({
-      recognitionTeamId,
-      slackUserId: userId,
+    const {
+      currentMonthTotalSpentForRecognitionTeam,
+    } = await getCurrentMonthTotalSpentForUserByRecognitionTeam(
       teamId,
-    });
+      userId,
+      recognitionTeamId
+    );
 
-    if (cheersStatsSender) {
-      remainingPointsForUser =
-        Number(pointAllowance) - cheersStatsSender.cheersGiven;
-    }
+    const remainingPointsForUser = Number(
+      pointAllowance - currentMonthTotalSpentForRecognitionTeam
+    );
 
     await openModal(
       teamId,

@@ -81,4 +81,43 @@ const getCurrentMonthStatsForUser = async (teamId, slackUserId) => {
   }
 };
 
-module.exports = { getCheersStatsForUser, getCurrentMonthStatsForUser };
+const getCurrentMonthTotalSpentForUserByRecognitionTeam = async (
+  teamId,
+  slackUserId,
+  recognitionTeamId
+) => {
+  try {
+    const cheersForThisMonth = await CheersModel.find({
+      teamId,
+      recognitionTeamId,
+      from: slackUserId,
+      createdAt: {
+        $gte: moment()
+          .startOf("month")
+          .toDate(),
+        $lte: new Date(),
+      },
+    });
+
+    let currentMonthTotalSpentForRecognitionTeam = 0;
+
+    cheersForThisMonth.forEach(elem => {
+      currentMonthTotalSpentForRecognitionTeam += Number(elem.points);
+    });
+
+    return {
+      currentMonthTotalSpentForRecognitionTeam,
+    };
+  } catch (error) {
+    logger.error(
+      "getCurrentMonthTotalSpentForUserByRecognitionTeam() -> error : ",
+      error
+    );
+  }
+};
+
+module.exports = {
+  getCheersStatsForUser,
+  getCurrentMonthStatsForUser,
+  getCurrentMonthTotalSpentForUserByRecognitionTeam,
+};

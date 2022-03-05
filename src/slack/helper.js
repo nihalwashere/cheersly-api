@@ -1,7 +1,7 @@
-const { getCompanyValuesByTeamId } = require("../mongo/helper/companyValues");
+const CompanyValuesModel = require("../mongo/models/CompanyValues");
 
 const wrapCompanyValueOptionsForTeam = async teamId => {
-  const companyValues = await getCompanyValuesByTeamId(teamId);
+  const companyValues = await CompanyValuesModel.find({ teamId });
 
   return companyValues.map(companyValue => {
     const { title } = companyValue;
