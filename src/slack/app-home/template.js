@@ -91,14 +91,12 @@ const createAppHomeTemplate = ({
       type: "section",
       fields: [
         {
-          type: "plain_text",
+          type: "mrkdwn",
           text: "*Point Allowance* :coin:",
-          emoji: true,
         },
         {
-          type: "plain_text",
-          text: "*Points Spent* :coin:",
-          emoji: true,
+          type: "mrkdwn",
+          text: "*Points Spent* :moneybag:",
         },
       ],
     },
@@ -106,14 +104,12 @@ const createAppHomeTemplate = ({
       type: "section",
       fields: [
         {
-          type: "plain_text",
+          type: "mrkdwn",
           text: `Total \`${totalPointAllowance} points\` available this month`,
-          emoji: true,
         },
         {
-          type: "plain_text",
+          type: "mrkdwn",
           text: `Total \`${totalSpentThisMonth} points\` spent this month`,
-          emoji: true,
         },
       ],
     },

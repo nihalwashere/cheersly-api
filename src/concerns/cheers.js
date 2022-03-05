@@ -19,7 +19,7 @@ const getCurrentMonthStatsForUser = async (teamId, slackUserId) => {
     let totalPointAllowance = 0;
 
     recognitionTeamsForUser.forEach(elem => {
-      totalPointAllowance += elem.pointAllowance;
+      totalPointAllowance += Number(elem.pointAllowance);
     });
 
     const cheersForThisMonth = await CheersModel.find({
@@ -36,7 +36,7 @@ const getCurrentMonthStatsForUser = async (teamId, slackUserId) => {
     let totalSpentThisMonth = 0;
 
     cheersForThisMonth.forEach(elem => {
-      totalSpentThisMonth += elem.points;
+      totalSpentThisMonth += Number(elem.points);
     });
 
     return {
