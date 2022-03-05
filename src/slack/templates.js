@@ -498,7 +498,7 @@ const submitCheersTemplate = ({
           options: pointAmountOptions.map(elem => ({
             text: {
               type: "plain_text",
-              text: elem,
+              text: `${elem} points`,
               emoji: true,
             },
             value: elem,
