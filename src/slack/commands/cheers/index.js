@@ -42,11 +42,6 @@ const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
       pointAllowance,
     } = recognitionTeam;
 
-    const metaData = JSON.stringify({
-      channelId,
-      recognitionTeamId: recognitionTeam._id,
-    });
-
     const {
       currentMonthTotalSpentForRecognitionTeam,
     } = await getCurrentMonthTotalSpentForUserByRecognitionTeam(
@@ -58,6 +53,12 @@ const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
     const remainingPointsForUser = Number(
       pointAllowance - currentMonthTotalSpentForRecognitionTeam
     );
+
+    const metaData = JSON.stringify({
+      channelId,
+      recognitionTeamId: recognitionTeam._id,
+      remainingPointsForUser,
+    });
 
     await openModal(
       teamId,

@@ -31,7 +31,9 @@ const processCheers = async payload => {
       view: { state, private_metadata: metaData },
     } = payload;
 
-    const { channelId, recognitionTeamId } = JSON.parse(metaData);
+    const { channelId, recognitionTeamId, remainingPointsForUser } = JSON.parse(
+      metaData
+    );
 
     const recipients =
       state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
@@ -55,6 +57,15 @@ const processCheers = async payload => {
     ].selected_options.length
       ? true // eslint-disable-line
       : false;
+
+    if (remainingPointsForUser < points) {
+      return {
+        errors: {
+          [SUBMIT_CHEERS_FOR_POINTS]:
+            "You don't have sufficient points to give.",
+        },
+      };
+    }
 
     const { errors = null, validRecipients = [] } = await validateRecipients(
       teamId,
