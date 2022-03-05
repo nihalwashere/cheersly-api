@@ -41,7 +41,10 @@ const validateRecipients = async (
           slackDeleted: false,
         });
 
-        if (!recognitionTeam.members.includes(newlySyncedUser._id)) {
+        if (
+          !newlySyncedUser ||
+          !recognitionTeam.members.includes(newlySyncedUser._id)
+        ) {
           return {
             errors: {
               [SUBMIT_CHEERS_TO_USERS]:
