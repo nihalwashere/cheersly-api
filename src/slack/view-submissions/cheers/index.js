@@ -58,15 +58,6 @@ const processCheers = async payload => {
       ? true // eslint-disable-line
       : false;
 
-    if (remainingPointsForUser < points) {
-      return {
-        errors: {
-          [SUBMIT_CHEERS_FOR_POINTS]:
-            "You don't have sufficient points to give.",
-        },
-      };
-    }
-
     const { errors = null, validRecipients = [] } = await validateRecipients(
       teamId,
       recipients,
@@ -81,6 +72,18 @@ const processCheers = async payload => {
     if (errors) {
       return {
         errors,
+      };
+    }
+
+    if (
+      remainingPointsForUser < points ||
+      remainingPointsForUser < validRecipients.length * points
+    ) {
+      return {
+        errors: {
+          [SUBMIT_CHEERS_FOR_POINTS]:
+            "You don't have sufficient points to give.",
+        },
       };
     }
 
