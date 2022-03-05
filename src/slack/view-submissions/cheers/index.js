@@ -64,13 +64,14 @@ const processCheers = async payload => {
       channelId
     );
 
+    logger.debug("errors : ", errors);
+    logger.debug("validRecipients : ", validRecipients);
+
     if (errors) {
       return {
         errors,
       };
     }
-
-    logger.debug("validRecipients : ", validRecipients);
 
     // first check if stats exist for user, if it exist then update else create
 

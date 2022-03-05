@@ -18,9 +18,9 @@ const validateRecipients = async (
   try {
     const validRecipients = [];
 
-    let errors = null;
+    for (let i = 0; i < recipients.length; i += 1) {
+      const recipient = recipients[i];
 
-    recipients.forEach(async recipient => {
       const user = await UserModel.findOne({
         "slackUserData.id": recipient,
         "slackUserData.team_id": teamId,
@@ -42,31 +42,27 @@ const validateRecipients = async (
         });
 
         if (!recognitionTeam.members.includes(newlySyncedUser._id)) {
-          errors = {
-            [SUBMIT_CHEERS_TO_USERS]:
-              "Contains users who aren't in this channel.",
+          return {
+            errors: {
+              [SUBMIT_CHEERS_TO_USERS]:
+                "Contains users who aren't in this channel.",
+            },
           };
-
-          return;
         }
 
         validRecipients.push(newlySyncedUser.slackUserData.id);
       }
 
       if (user && user.slackUserData.id === senderUserId) {
-        errors = {
-          [SUBMIT_CHEERS_TO_USERS]:
-            "Oops! You can't give yourself a shoutout, for obvious reasons, duhh!",
+        return {
+          errors: {
+            [SUBMIT_CHEERS_TO_USERS]:
+              "Oops! You can't give yourself a shoutout, for obvious reasons, duhh!",
+          },
         };
-
-        return;
       }
 
       validRecipients.push(user.slackUserData.id);
-    });
-
-    if (errors) {
-      return { errors };
     }
 
     return { validRecipients };
