@@ -1,3 +1,4 @@
+const AuthModel = require("../../../mongo/models/Auth");
 const { slackPostMessageToChannel } = require("../../api");
 const {
   BLOCK_IDS: { INTRODUCE_TO_TEAM_CHANNEL, INTRODUCE_TO_TEAM_MESSAGE },
@@ -34,6 +35,13 @@ const processIntroduceToTeam = async payload => {
         userId,
         getAppHomeUrl(teamId)
       )
+    );
+
+    await AuthModel.findOneAndUpdate(
+      { "slackInstallation.team.id": teamId },
+      {
+        appIntroducedToTeam: true,
+      }
     );
   } catch (error) {
     logger.error("processIntroduceToTeam() -> error : ", error);
