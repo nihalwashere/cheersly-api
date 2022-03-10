@@ -1,16 +1,14 @@
 const mongoose = require("mongoose");
 const pMap = require("p-map");
 const UserModel = require("../mongo/models/User");
+const SubscriptionsModel = require("../mongo/models/Subscriptions");
 const { MONGO_URL, MONGO_OPTIONS } = require("../global/config");
 const { getAllAuths } = require("../mongo/helper/auth");
-const {
-  getTrialSubscriptionForSlackTeam,
-} = require("../mongo/helper/subscriptions");
 const { slackPostMessageToChannel } = require("../slack/api");
 const { waitForMilliSeconds } = require("../utils/common");
 const logger = require("../global/logger");
 
-const createUpgradeTrialSubscriptionReminderTemplate = days => {
+const createTemplate = (user, days) => {
   const dayOrDays = days > 1 ? "days" : "day";
 
   return [
@@ -18,7 +16,7 @@ const createUpgradeTrialSubscriptionReminderTemplate = days => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `Hey there :wave:! Your *Cheersly* trial is about to end in ${days} ${dayOrDays}. Upgrade your subscription now so that you can continue sharing cheers with your peers!`,
+        text: `:wave: *Hey there <@${user}>!* Your *Cheersly* trial is about to end in ${days} ${dayOrDays}. Upgrade your subscription now so that you can continue sharing cheers with your peers!`,
       },
     },
     {
@@ -47,9 +45,12 @@ const service = async () => {
         },
       } = auth;
 
-      const subscription = await getTrialSubscriptionForSlackTeam(teamId);
+      const subscription = await SubscriptionsModel.findOne({
+        slackTeamId: teamId,
+        isTrialPeriod: true,
+      });
 
-      if (!subscription || !subscription.isTrialPeriod) {
+      if (!subscription) {
         return;
       }
 
@@ -90,7 +91,7 @@ const service = async () => {
             slackDeleted: false,
           });
 
-          admins.map(admin => {
+          admins.forEach(admin => {
             if (!users.includes(admin.slackUserData.id)) {
               users.push(admin.slackUserData.id);
             }
@@ -100,7 +101,7 @@ const service = async () => {
             await slackPostMessageToChannel(
               users[i],
               teamId,
-              createUpgradeTrialSubscriptionReminderTemplate(days)
+              createTemplate(users[i], days)
             );
 
             await waitForMilliSeconds(1000);
