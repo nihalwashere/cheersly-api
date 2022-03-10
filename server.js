@@ -76,6 +76,7 @@ const auth = require("./src/api/v1/auth");
 const users = require("./src/api/v1/users");
 const recognition = require("./src/api/v1/recognition");
 const slackChannels = require("./src/api/v1/slack/channels");
+const catalogs = require("./src/api/v1/catalogs");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
@@ -87,6 +88,7 @@ app.use("/api/v1/slack/channels", slackChannels);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
 app.use("/api/v1/recognition", recognition);
+app.use("/api/v1/catalogs", catalogs);
 app.use("/api/test", test);
 
 // GraphQL

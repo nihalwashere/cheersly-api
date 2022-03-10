@@ -108,7 +108,7 @@ const createAppHomeTemplate = ({
       fields: [
         {
           type: "mrkdwn",
-          text: "*Points Remaining* :coin:",
+          text: "*Points Remaining* :money_mouth_face:",
         },
       ],
     },
