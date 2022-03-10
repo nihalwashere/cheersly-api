@@ -102,10 +102,7 @@ const actionsMapper = async payload => {
         );
 
         if (!subscriptionInfo.hasSubscription) {
-          return await handleUpgradeSubscription(
-            payload,
-            subscriptionInfo.hasSubscription
-          );
+          return await handleUpgradeSubscription(payload, subscriptionInfo);
         }
       }
 
