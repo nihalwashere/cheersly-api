@@ -92,10 +92,7 @@ const actionsMapper = async payload => {
       if (
         payload.actions[0].action_id === SAY_CHEERS ||
         payload.actions[0].action_id === START_A_POLL ||
-        payload.actions[0].action_id === SHARE_FEEDBACK_WITH_TEAM ||
-        payload.actions[0].action_id === THIS_OR_THAT ||
-        payload.actions[0].action_id === ICEBREAKER_QUESTION ||
-        payload.actions[0].action_id === TWO_TRUTHS_AND_A_LIE
+        payload.actions[0].action_id === SHARE_FEEDBACK_WITH_TEAM
       ) {
         const subscriptionInfo = await isSubscriptionValidForSlack(
           payload.team.id
