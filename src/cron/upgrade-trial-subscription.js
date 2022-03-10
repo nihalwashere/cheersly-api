@@ -1,16 +1,37 @@
 const mongoose = require("mongoose");
 const pMap = require("p-map");
-const { MONGO_URL, MONGO_OPTIONS } = require("../../global/config");
-const { getAllAuths } = require("../../mongo/helper/auth");
+const UserModel = require("../mongo/models/User");
+const { MONGO_URL, MONGO_OPTIONS } = require("../global/config");
+const { getAllAuths } = require("../mongo/helper/auth");
 const {
   getTrialSubscriptionForSlackTeam,
-} = require("../../mongo/helper/subscriptions");
-const { postMessageToHook } = require("../../slack/api");
-const {
-  createUpgradeTrialSubscriptionReminderTemplate,
-} = require("./template");
-const { waitForMilliSeconds } = require("../../utils/common");
-const logger = require("../../global/logger");
+} = require("../mongo/helper/subscriptions");
+const { slackPostMessageToChannel } = require("../slack/api");
+const { waitForMilliSeconds } = require("../utils/common");
+const logger = require("../global/logger");
+
+const createUpgradeTrialSubscriptionReminderTemplate = days => {
+  const dayOrDays = days > 1 ? "days" : "day";
+
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Hey there :wave:! Your *Cheersly* trial is about to end in ${days} ${dayOrDays}. Upgrade your subscription now so that you can continue sharing cheers with your peers!`,
+      },
+    },
+    {
+      type: "context",
+      elements: [
+        {
+          type: "mrkdwn",
+          text: "Want to upgrade? contact support@cheersly.club",
+        },
+      ],
+    },
+  ];
+};
 
 const service = async () => {
   try {
@@ -21,6 +42,7 @@ const service = async () => {
     const handler = async auth => {
       const {
         slackInstallation: {
+          authed_user: { id: authed_user_id },
           team: { id: teamId },
         },
       } = auth;
@@ -60,12 +82,29 @@ const service = async () => {
         }
 
         if (days) {
-          await postMessageToHook(
-            teamId,
-            createUpgradeTrialSubscriptionReminderTemplate(days)
-          );
+          const users = [authed_user_id];
 
-          await waitForMilliSeconds(1000);
+          const admins = await UserModel.find({
+            "slackUserData.is_admin": true,
+            "slackUserData.team_id": teamId,
+            slackDeleted: false,
+          });
+
+          admins.map(admin => {
+            if (!users.includes(admin.slackUserData.id)) {
+              users.push(admin.slackUserData.id);
+            }
+          });
+
+          for (let i = 0; i < users.length; i++) {
+            await slackPostMessageToChannel(
+              users[i],
+              teamId,
+              createUpgradeTrialSubscriptionReminderTemplate(days)
+            );
+
+            await waitForMilliSeconds(1000);
+          }
         }
       }
     };
