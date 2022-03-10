@@ -11,10 +11,7 @@ const {
   },
 } = require("../../global/constants");
 const { createSupportContextTemplate } = require("../templates");
-const {
-  trialEndedText,
-  upgradeSubscriptionText,
-} = require("../subscription-handlers/template");
+const { trialEndedText, upgradeSubscriptionText } = require("../templates");
 
 const createMyStatsSection = (
   cheersGiven,

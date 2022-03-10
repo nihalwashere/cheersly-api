@@ -1,5 +1,5 @@
 const express = require("express");
-const { CronJob } = require("cron");
+const cron = require("node-cron");
 const { spawn } = require("child_process");
 const morgan = require("morgan");
 const path = require("path");
@@ -116,34 +116,68 @@ const server = app.listen(PORT, () => {
     logger.info(`App is now running on port ${PORT}!!!`);
 
     // polls cron scheduled every 5 mins
-    new CronJob(
-      "00 */5 * * * *",
+    cron.schedule(
+      "*/5 * * * *",
       () => {
         spawn(process.execPath, ["./src/cron/polls.js"], {
           stdio: "inherit",
         });
       },
-      null,
-      true,
-      DEFAULT_TIME_ZONE
+      {
+        scheduled: true,
+        timezone: "America/Sao_Paulo",
+      }
     );
 
-    // // upgrade trial subscription reminder cron scheduled at 12:00 PM daily
-    // new CronJob(
-    //   "00 00 12 * * *",
-    //   () => {
-    //     spawn(
-    //       process.execPath,
-    //       ["./src/cron/upgrade-trial-subscription/index.js"],
-    //       {
-    //         stdio: "inherit"
-    //       }
-    //     );
-    //   },
-    //   null,
-    //   true,
-    //   DEFAULT_TIME_ZONE
-    // );
+    // introduce to team reminder cron scheduled at 11:00 AM every M,W,F
+    cron.schedule(
+      "00 10 * * 1,3,5",
+      () => {
+        spawn(process.execPath, ["./src/cron/introduce-to-team/index.js"], {
+          stdio: "inherit",
+        });
+      },
+      {
+        scheduled: true,
+        timezone: DEFAULT_TIME_ZONE,
+      }
+    );
+
+    // upgrade trial subscription reminder cron scheduled at 12:00 PM daily
+    cron.schedule(
+      "00 12 * * *",
+      () => {
+        spawn(
+          process.execPath,
+          ["./src/cron/upgrade-trial-subscription/index.js"],
+          {
+            stdio: "inherit",
+          }
+        );
+      },
+      {
+        scheduled: true,
+        timezone: DEFAULT_TIME_ZONE,
+      }
+    );
+
+    // upgrade trial with offer cron scheduled at 01:00 PM every thursday
+    cron.schedule(
+      "00 13 * * 4",
+      () => {
+        spawn(
+          process.execPath,
+          ["./src/cron/upgrade-trial-with-offer/index.js"],
+          {
+            stdio: "inherit",
+          }
+        );
+      },
+      {
+        scheduled: true,
+        timezone: DEFAULT_TIME_ZONE,
+      }
+    );
   } catch (error) {
     logger.error("Failed to start server -> error : ", error);
   }

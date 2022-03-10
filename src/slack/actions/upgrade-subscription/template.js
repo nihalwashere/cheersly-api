@@ -1,7 +1,4 @@
-const {
-  trialEndedText,
-  upgradeSubscriptionText,
-} = require("../../subscription-handlers/template");
+const { trialEndedText, upgradeSubscriptionText } = require("../../templates");
 
 const createUpgradeSubscriptionView = isTrialPlan => {
   let text = trialEndedText;

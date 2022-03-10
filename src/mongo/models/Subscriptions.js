@@ -13,7 +13,7 @@ const SubscriptionSchema = new mongoose.Schema(
     },
     isTrialPeriod: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     subscribedOn: {
       type: Date,

@@ -1,7 +1,7 @@
 const {
   createTrialEndedTemplate,
   createUpgradeSubscriptionTemplate,
-} = require("./template");
+} = require("../templates");
 const { postEphemeralMessage } = require("../api");
 const logger = require("../../global/logger");
 
