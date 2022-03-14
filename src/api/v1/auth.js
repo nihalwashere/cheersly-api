@@ -22,6 +22,7 @@ const {
 } = require("../../mongo/helper/companyValues");
 const { addDefaultRewardsForTeam } = require("../../mongo/helper/rewards");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
+const { createDefaultSettings } = require("../../concerns/teams/settings");
 const {
   createTrialSubscription,
   validateToken,
@@ -58,7 +59,6 @@ router.post("/signup", async (req, res) => {
     const auth = await getAuthDeletedOrNotDeleted(teamId);
 
     if (!auth) {
-      // if installation does not exist already, then create trial subscription
       await createTrialSubscription(teamId);
       await addDefaultCompanyValuesForTeam(teamId);
       await addDefaultRewardsForTeam(teamId);
@@ -73,6 +73,7 @@ router.post("/signup", async (req, res) => {
 
     if (!auth) {
       await sendOnBoardingInstructions(teamId, authedUserId);
+      await createDefaultSettings(teamId, authedUserId);
     }
 
     await postInternalMessage(

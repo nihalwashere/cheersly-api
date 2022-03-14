@@ -173,7 +173,7 @@ router.put("/teams/:id", async (req, res) => {
     if (!managers.length) {
       return res
         .status(400)
-        .json({ success: false, message: "Managers is required." });
+        .json({ success: false, message: "Atleast one manager is required." });
     }
 
     const oldRecognitionTeam = await RecognitionTeamsModel.findOne({
