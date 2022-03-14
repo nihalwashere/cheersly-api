@@ -7,7 +7,6 @@ const CompanyValuesModel = require("../../../mongo/models/CompanyValues");
 const {
   getConversationMembers,
 } = require("../../../slack/pagination/conversations-members");
-const { conversationsInvite } = require("../../../slack/api");
 const { validateToken } = require("../../../utils/common");
 const logger = require("../../../global/logger");
 
@@ -195,7 +194,6 @@ router.put("/teams/:id", async (req, res) => {
 
     if (channel.id && channel.id !== oldRecognitionTeam.channel.id) {
       await getConversationMembers(teamId, id, channel.id);
-      await conversationsInvite(teamId, channel.id); // invite Cheersly to the new selected channel
     }
 
     return res
