@@ -1,4 +1,4 @@
-const { getAppURL } = require("../../../utils/common");
+const { getAppUrl } = require("../../../utils/common");
 
 const createCheersSubmittedTemplate = ({
   senderUserId,
@@ -89,7 +89,7 @@ const createCheersNewsInDMTemplate = (
         text: ":moneybag: Redeem your points",
         emoji: true,
       },
-      url: `${getAppURL()}/redeem`,
+      url: `${getAppUrl()}/redeem`,
     },
   },
 ];
