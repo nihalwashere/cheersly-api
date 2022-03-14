@@ -410,16 +410,15 @@ const getPermaLink = async (teamId, channelId, messageTimestamp) => {
   try {
     const bot_access_token = await getSlackBotTokenForTeam(teamId);
 
-    const req = await fetch(`${SLACK_API}/chat.getPermalink`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${bot_access_token}`,
-      },
-      body: new URLSearchParams({
-        channel: channelId,
-        message_ts: messageTimestamp,
-      }),
-    });
+    const req = await fetch(
+      `${SLACK_API}/chat.getPermalink?channel=${channelId}&message_ts=${messageTimestamp}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${bot_access_token}`,
+        },
+      }
+    );
 
     const res = await req.json();
 

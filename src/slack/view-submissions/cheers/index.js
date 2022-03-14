@@ -199,7 +199,7 @@ const processCheers = async payload => {
       })
     );
 
-    if (!postMessageResponse.ok) {
+    if (!postMessageResponse || !postMessageResponse.ok) {
       return;
     }
 
@@ -209,7 +209,7 @@ const processCheers = async payload => {
       postMessageResponse.ts
     );
 
-    if (!permaLinkResponse.ok) {
+    if (!permaLinkResponse || !permaLinkResponse.ok) {
       return;
     }
 
