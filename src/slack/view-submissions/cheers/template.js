@@ -1,3 +1,5 @@
+const { getAppURL } = require("../../../utils/common");
+
 const createCheersSubmittedTemplate = ({
   senderUserId,
   recipients,
@@ -61,6 +63,38 @@ const createCheersSubmittedTemplate = ({
   return blocks;
 };
 
+const createCheersNewsInDMTemplate = (
+  permaLink,
+  points,
+  senderUserId,
+  channelId
+) => [
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `<@${senderUserId}> shared some <${permaLink}|cheers> with you for \`${points} points\` in <#${channelId}>!`,
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "You now have `-- points` to redeem.",
+    },
+    accessory: {
+      type: "button",
+      text: {
+        type: "plain_text",
+        text: ":moneybag: Redeem your points",
+        emoji: true,
+      },
+      url: `${getAppURL()}/redeem`,
+    },
+  },
+];
+
 module.exports = {
   createCheersSubmittedTemplate,
+  createCheersNewsInDMTemplate,
 };

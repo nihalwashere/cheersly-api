@@ -191,6 +191,7 @@ const validateToken = async headers => {
     data: {
       user: {
         role: user.role,
+        country: user.country,
         slackUserData: user.slackUserData,
       },
     },

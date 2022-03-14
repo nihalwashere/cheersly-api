@@ -100,6 +100,7 @@ router.post("/signup", async (req, res) => {
         data: {
           user: {
             role: authedUser.role,
+            country: authedUser.country,
             slackUserData: authedUser.slackUserData,
           },
         },
@@ -155,6 +156,7 @@ router.post("/login", async (req, res) => {
         data: {
           user: {
             role: authedUser.role,
+            country: authedUser.country,
             slackUserData: authedUser.slackUserData,
           },
         },

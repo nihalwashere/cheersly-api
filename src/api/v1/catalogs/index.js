@@ -24,12 +24,16 @@ router.get("/", async (req, res) => {
     //   },
     // } = token;
 
-    const { brandKey = null } = req.query;
+    const { brandKey = null, country = null } = req.query;
 
     let filters = "";
 
     if (brandKey) {
       filters = `?brandKey=${brandKey}`;
+    }
+
+    if (country) {
+      filters = `?country=${country}`;
     }
 
     const catalogs = await getCatalogs(filters);

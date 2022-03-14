@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema(
       enum: getUserRoles(),
       index: true,
     },
+    country: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );

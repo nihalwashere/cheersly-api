@@ -17,10 +17,13 @@ const {
     SHOULD_SHARE_GIPHY_VALUE,
   },
 } = require("../../../global/constants");
-const { slackPostMessageToChannel } = require("../../api");
+const { slackPostMessageToChannel, getPermaLink } = require("../../api");
 const { createCheersSubmittedTemplate } = require("./template");
 const { getRandomGif } = require("../../../giphy/api");
-const { validateRecipients } = require("./helper");
+const {
+  validateRecipients,
+  shareCheersNewsWithRecipientsInDM,
+} = require("./helper");
 const logger = require("../../../global/logger");
 
 const processCheers = async payload => {
@@ -183,7 +186,7 @@ const processCheers = async payload => {
       { appHomePublished: false }
     );
 
-    await slackPostMessageToChannel(
+    const postMessageResponse = await slackPostMessageToChannel(
       channelId,
       teamId,
       createCheersSubmittedTemplate({
@@ -194,6 +197,29 @@ const processCheers = async payload => {
         giphyUrl,
         points,
       })
+    );
+
+    if (!postMessageResponse.ok) {
+      return;
+    }
+
+    const permaLinkResponse = await getPermaLink(
+      teamId,
+      channelId,
+      postMessageResponse.ts
+    );
+
+    if (!permaLinkResponse.ok) {
+      return;
+    }
+
+    await shareCheersNewsWithRecipientsInDM(
+      teamId,
+      validRecipients,
+      permaLinkResponse.permalink,
+      points,
+      senderUserId,
+      channelId
     );
   } catch (error) {
     logger.error("processCheers() -> error : ", error);

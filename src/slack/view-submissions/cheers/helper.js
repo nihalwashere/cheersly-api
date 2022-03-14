@@ -1,11 +1,14 @@
+const pMap = require("p-map");
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const UserModel = require("../../../mongo/models/User");
 const {
-  getConversationMembers,
-} = require("../../pagination/conversations-members");
-const {
   BLOCK_IDS: { SUBMIT_CHEERS_TO_USERS },
 } = require("../../../global/constants");
+const {
+  getConversationMembers,
+} = require("../../pagination/conversations-members");
+const { slackPostMessageToChannel } = require("../../api");
+const { createCheersNewsInDMTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
 const validateRecipients = async (
@@ -92,4 +95,29 @@ const validateRecipients = async (
   }
 };
 
-module.exports = { validateRecipients };
+const shareCheersNewsWithRecipientsInDM = async (
+  teamId,
+  recipients,
+  permaLink,
+  points,
+  senderUserId,
+  channelId
+) => {
+  try {
+    const handler = async recipient => {
+      // TODO: get remaining redemption points for user
+
+      await slackPostMessageToChannel(
+        recipient,
+        teamId,
+        createCheersNewsInDMTemplate(permaLink, points, senderUserId, channelId)
+      );
+    };
+
+    await pMap(recipients, handler, { concurrency: 1 });
+  } catch (error) {
+    logger.error("shareCheersNewsWithRecipientsInDM() -> error : ", error);
+  }
+};
+
+module.exports = { validateRecipients, shareCheersNewsWithRecipientsInDM };

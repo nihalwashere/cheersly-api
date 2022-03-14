@@ -406,6 +406,31 @@ const postEphemeralMessage = async (channel, user, teamId, blocks) => {
   }
 };
 
+const getPermaLink = async (teamId, channelId, messageTimestamp) => {
+  try {
+    const bot_access_token = await getSlackBotTokenForTeam(teamId);
+
+    const req = await fetch(`${SLACK_API}/chat.getPermalink`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${bot_access_token}`,
+      },
+      body: new URLSearchParams({
+        channel: channelId,
+        message_ts: messageTimestamp,
+      }),
+    });
+
+    const res = await req.json();
+
+    logger.debug("getPermaLink() -> response : ", res);
+
+    return res;
+  } catch (error) {
+    logger.error(`getPermaLink() -> error : `, error);
+  }
+};
+
 module.exports = {
   getSlackUser,
   getSlackTokenForUser,
@@ -421,4 +446,5 @@ module.exports = {
   updateChat,
   postEphemeralMessage,
   conversationsList,
+  getPermaLink,
 };
