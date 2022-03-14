@@ -157,7 +157,7 @@ const processCheers = async payload => {
             cheersGiven: 0,
             cheersReceived: points,
             cheersRedeemable: points,
-          });
+          }).save();
         }
       })
     );
@@ -185,6 +185,16 @@ const processCheers = async payload => {
       },
       { appHomePublished: false }
     );
+
+    validRecipients.forEach(async recipient => {
+      await UserModel.findOneAndUpdate(
+        {
+          "slackUserData.team_id": teamId,
+          "slackUserData.id": recipient,
+        },
+        { appHomePublished: false }
+      );
+    });
 
     const postMessageResponse = await slackPostMessageToChannel(
       channelId,
