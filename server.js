@@ -133,7 +133,7 @@ const server = app.listen(PORT, () => {
     cron.schedule(
       "00 10 * * 1,3,5",
       () => {
-        spawn(process.execPath, ["./src/cron/introduce-to-team/index.js"], {
+        spawn(process.execPath, ["./src/cron/introduce-to-team.js"], {
           stdio: "inherit",
         });
       },
@@ -147,13 +147,9 @@ const server = app.listen(PORT, () => {
     cron.schedule(
       "00 12 * * *",
       () => {
-        spawn(
-          process.execPath,
-          ["./src/cron/upgrade-trial-subscription/index.js"],
-          {
-            stdio: "inherit",
-          }
-        );
+        spawn(process.execPath, ["./src/cron/upgrade-trial-subscription.js"], {
+          stdio: "inherit",
+        });
       },
       {
         scheduled: true,
@@ -165,13 +161,9 @@ const server = app.listen(PORT, () => {
     cron.schedule(
       "00 13 * * 4",
       () => {
-        spawn(
-          process.execPath,
-          ["./src/cron/upgrade-trial-with-offer/index.js"],
-          {
-            stdio: "inherit",
-          }
-        );
+        spawn(process.execPath, ["./src/cron/upgrade-trial-with-offer.js"], {
+          stdio: "inherit",
+        });
       },
       {
         scheduled: true,
