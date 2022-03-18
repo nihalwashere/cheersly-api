@@ -65,7 +65,7 @@ const validateRecipients = async (
 
         validRecipients.push({
           id: newlySyncedUser.slackUserData.id,
-          name: newlySyncedUser.slackUserData.profile.first_name,
+          name: newlySyncedUser.slackUserData.real_name,
         });
       }
 
@@ -90,7 +90,7 @@ const validateRecipients = async (
       if (user) {
         validRecipients.push({
           id: user.slackUserData.id,
-          name: user.slackUserData.profile.first_name,
+          name: user.slackUserData.real_name,
         });
       }
     }

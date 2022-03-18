@@ -17,6 +17,7 @@ const createDefaultSettings = async (teamId, authedUserId) => {
       pointsAboutToExpire: true,
       inactivityReminders: true,
       pointsAvailableToRedeem: true,
+      requireCompanyValues: false,
     }).save();
   } catch (error) {
     logger.error("createDefaultSettings() -> error : ", error);

@@ -44,7 +44,8 @@ const CheersSchema = new Schema(
       index: true,
     },
     recognitionTeamId: {
-      type: [{ type: Schema.Types.ObjectId, ref: "RecognitionTeams" }],
+      type: Schema.Types.ObjectId,
+      ref: "RecognitionTeams",
       index: true,
     },
   },
