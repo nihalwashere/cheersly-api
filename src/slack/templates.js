@@ -518,7 +518,7 @@ const submitCheersTemplate = ({
     blocks.push({
       type: "input",
       block_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES,
-      optional: teamSettings.requireCompanyValues,
+      optional: !teamSettings.requireCompanyValues,
       label: {
         type: "plain_text",
         text: "Tag company values",
