@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const AuthModel = require("../../mongo/models/Auth");
-const CheersModel = require("../../mongo/models/Cheers");
+const ActivityModel = require("../../mongo/models/Activity");
 const SettingsModel = require("../../mongo/models/Settings");
 const { validateToken } = require("../../utils/common");
 const logger = require("../../global/logger");
@@ -58,18 +58,18 @@ router.get("/activity", async (req, res) => {
 
     const { pageSize, pageIndex } = req.params;
 
-    const totalCount = await CheersModel.find({
+    const totalCount = await ActivityModel.find({
       teamId,
     }).countDocuments({});
 
-    const cheers = await CheersModel.find({ teamId })
+    const activity = await ActivityModel.find({ teamId })
       .sort({ created_at: 1 })
       .skip(pageSize * pageIndex)
       .limit(pageSize);
 
     return res.status(200).json({
       success: true,
-      activity: cheers,
+      activity,
       totalCount: Number(totalCount),
       totalPages: Math.ceil(totalCount / pageSize),
     });

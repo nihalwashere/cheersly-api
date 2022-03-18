@@ -1,6 +1,7 @@
 const UserModel = require("../../../mongo/models/User");
 const CheersModel = require("../../../mongo/models/Cheers");
 const CheersStatsModel = require("../../../mongo/models/CheersStats");
+const ActivityModel = require("../../../mongo/models/Activity");
 const {
   BLOCK_IDS: {
     SUBMIT_CHEERS_TO_USERS,
@@ -17,6 +18,7 @@ const {
     SHOULD_SHARE_GIPHY_VALUE,
   },
 } = require("../../../global/constants");
+const { ActivityTypes } = require("../../../enums/activityTypes");
 const { slackPostMessageToChannel, getPermaLink } = require("../../api");
 const { createCheersSubmittedTemplate } = require("./template");
 const { getRandomGif } = require("../../../giphy/api");
@@ -30,7 +32,7 @@ const processCheers = async payload => {
   try {
     const {
       team: { id: teamId },
-      user: { id: senderId, name: senderName },
+      user: { id: senderId },
       view: { state, private_metadata: metaData },
     } = payload;
 
@@ -50,9 +52,13 @@ const processCheers = async payload => {
         .selected_option.value
     );
 
-    const companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
-      SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
-    ].selected_options.map(option => option.value);
+    let companyValues = [];
+
+    if (state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES]) {
+      companyValues = state.values[SUBMIT_CHEERS_FOR_COMPANY_VALUES][
+        SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE
+      ].selected_options.map(option => option.value);
+    }
 
     const reason =
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
@@ -93,6 +99,12 @@ const processCheers = async payload => {
       };
     }
 
+    const senderUser = await UserModel.findOne({
+      "slackUserData.id": senderId,
+    });
+
+    const senderName = senderUser.slackUserData.real_name;
+
     // first check if stats exist for user, if it exist then update else create
 
     const cheersStatsSender = await CheersStatsModel.findOne({
@@ -120,7 +132,7 @@ const processCheers = async payload => {
       }).save();
     }
 
-    // save to cheers for activity
+    // save to cheers for insights
     await Promise.all(
       validRecipients.map(async recipient => {
         await new CheersModel({
@@ -199,6 +211,18 @@ const processCheers = async payload => {
         { appHomePublished: false }
       );
     });
+
+    await new ActivityModel({
+      data: {
+        senderName,
+        recipients: validRecipients,
+        reason,
+        companyValues,
+        points,
+      },
+      type: ActivityTypes.CHEERS,
+      teamId,
+    }).save();
 
     const postMessageResponse = await slackPostMessageToChannel(
       channelId,
