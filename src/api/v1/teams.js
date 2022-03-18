@@ -26,7 +26,9 @@ router.get("/", async (req, res) => {
       },
     } = token;
 
-    const auth = await AuthModel.findOne({ teamId });
+    const auth = await AuthModel.findOne({
+      "slackInstallation.team.id": teamId,
+    });
 
     return res.status(200).json({ success: true, data: auth });
   } catch (error) {
@@ -135,6 +137,7 @@ router.put("/settings", async (req, res) => {
       pointsAboutToExpire,
       inactivityReminders,
       pointsAvailableToRedeem,
+      requireCompanyValues,
     } = req.body;
 
     if (!admins.length) {
@@ -152,6 +155,7 @@ router.put("/settings", async (req, res) => {
         pointsAboutToExpire,
         inactivityReminders,
         pointsAvailableToRedeem,
+        requireCompanyValues,
       }
     );
 

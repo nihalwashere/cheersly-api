@@ -514,11 +514,11 @@ const submitCheersTemplate = ({
     },
   ];
 
-  if (teamSettings.requireCompanyValues && companyValueOptions.length) {
+  if (companyValueOptions.length) {
     blocks.push({
       type: "input",
       block_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES,
-      optional: true,
+      optional: teamSettings.requireCompanyValues,
       label: {
         type: "plain_text",
         text: "Tag company values",

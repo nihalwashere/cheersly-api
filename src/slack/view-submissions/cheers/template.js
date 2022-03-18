@@ -10,7 +10,7 @@ const createCheersSubmittedTemplate = ({
 }) => {
   let recipientString = "";
 
-  recipients.map((recipient, index) => {
+  recipients.forEach((recipient, index) => {
     recipientString += `<@${recipient.id}>${
       recipients.length === index + 1 ? "" : ", "
     }`;
@@ -38,7 +38,7 @@ const createCheersSubmittedTemplate = ({
 
   let companyValuesString = "";
 
-  companyValues.map(companyValue => {
+  companyValues.forEach(companyValue => {
     companyValuesString += `\`${companyValue}\` `;
   });
 

@@ -17,10 +17,6 @@ const {
   upsertAuth,
   getAuthDeletedOrNotDeleted,
 } = require("../../mongo/helper/auth");
-const {
-  addDefaultCompanyValuesForTeam,
-} = require("../../mongo/helper/companyValues");
-const { addDefaultRewardsForTeam } = require("../../mongo/helper/rewards");
 const { sendOnBoardingInstructions } = require("../../slack/onboarding");
 const { createDefaultSettings } = require("../../concerns/teams/settings");
 const {
@@ -60,8 +56,6 @@ router.post("/signup", async (req, res) => {
 
     if (!auth) {
       await createTrialSubscription(teamId);
-      await addDefaultCompanyValuesForTeam(teamId);
-      await addDefaultRewardsForTeam(teamId);
     }
 
     await upsertAuth(teamId, {

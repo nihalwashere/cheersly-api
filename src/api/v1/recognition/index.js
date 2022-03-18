@@ -2,6 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
+const AuthModel = require("../../../mongo/models/Auth");
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const CompanyValuesModel = require("../../../mongo/models/CompanyValues");
 const {
@@ -107,6 +108,18 @@ router.post("/teams", async (req, res) => {
       teamId,
       name,
     }).save();
+
+    const recognitionTeamsCount = await RecognitionTeamsModel.find({
+      teamId,
+    }).countDocuments({});
+
+    if (recognitionTeamsCount === 1) {
+      // first recognition team created, update getting started steps
+      await AuthModel.findOneAndUpdate(
+        { "slackInstallation.team.id": teamId },
+        { recognitionTeamCreated: true }
+      );
+    }
 
     return res
       .status(200)
@@ -307,6 +320,18 @@ router.post("/company-values", async (req, res) => {
       title,
       description,
     }).save();
+
+    const companyValuesCount = await CompanyValuesModel.find({
+      teamId,
+    }).countDocuments({});
+
+    if (companyValuesCount === 1) {
+      // first company value created, update getting started steps
+      await AuthModel.findOneAndUpdate(
+        { "slackInstallation.team.id": teamId },
+        { companyValuesCreated: true }
+      );
+    }
 
     return res
       .status(200)
