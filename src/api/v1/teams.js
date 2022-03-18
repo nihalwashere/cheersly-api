@@ -2,9 +2,85 @@ const express = require("express");
 
 const router = express.Router();
 
-const SettingsModel = require("../../../mongo/models/Settings");
-const { validateToken } = require("../../../utils/common");
-const logger = require("../../../global/logger");
+const AuthModel = require("../../mongo/models/Auth");
+const CheersModel = require("../../mongo/models/Cheers");
+const SettingsModel = require("../../mongo/models/Settings");
+const { validateToken } = require("../../utils/common");
+const logger = require("../../global/logger");
+
+// TEAM
+
+router.get("/", async (req, res) => {
+  try {
+    const token = await validateToken(req.headers);
+
+    if (!token.success) {
+      return res.status(401).json(token);
+    }
+
+    const {
+      data: {
+        user: {
+          slackUserData: { team_id: teamId },
+        },
+      },
+    } = token;
+
+    const auth = await AuthModel.findOne({ teamId });
+
+    return res.status(200).json({ success: true, data: auth });
+  } catch (error) {
+    logger.error("GET /teams -> error : ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Oops! Something went wrong!",
+    });
+  }
+});
+
+// ACTIVITY
+
+router.get("/activity", async (req, res) => {
+  try {
+    const token = await validateToken(req.headers);
+
+    if (!token.success) {
+      return res.status(401).json(token);
+    }
+
+    const {
+      data: {
+        user: {
+          slackUserData: { team_id: teamId },
+        },
+      },
+    } = token;
+
+    const { pageSize, pageIndex } = req.params;
+
+    const totalCount = await CheersModel.find({
+      teamId,
+    }).countDocuments({});
+
+    const cheers = await CheersModel.find({ teamId })
+      .sort({ created_at: 1 })
+      .skip(pageSize * pageIndex)
+      .limit(pageSize);
+
+    return res.status(200).json({
+      success: true,
+      activity: cheers,
+      totalCount: Number(totalCount),
+      totalPages: Math.ceil(totalCount / pageSize),
+    });
+  } catch (error) {
+    logger.error("GET /teams/activity -> error : ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Oops! Something went wrong!",
+    });
+  }
+});
 
 // SETTINGS
 

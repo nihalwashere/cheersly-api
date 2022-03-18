@@ -1,7 +1,7 @@
 const { getAppUrl } = require("../../../utils/common");
 
 const createCheersSubmittedTemplate = ({
-  senderUserId,
+  senderId,
   recipients,
   reason,
   giphyUrl,
@@ -11,7 +11,7 @@ const createCheersSubmittedTemplate = ({
   let recipientString = "";
 
   recipients.map((recipient, index) => {
-    recipientString += `<@${recipient}>${
+    recipientString += `<@${recipient.id}>${
       recipients.length === index + 1 ? "" : ", "
     }`;
   });
@@ -21,7 +21,7 @@ const createCheersSubmittedTemplate = ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `<@${senderUserId}> shared some cheers for \`${points} points\` with ${recipientString}.`,
+        text: `<@${senderId}> shared some cheers for \`${points} points\` with ${recipientString}.`,
       },
     },
   ];

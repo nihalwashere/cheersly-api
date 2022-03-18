@@ -63,7 +63,10 @@ const validateRecipients = async (
           };
         }
 
-        validRecipients.push(newlySyncedUser.slackUserData.id);
+        validRecipients.push({
+          id: newlySyncedUser.slackUserData.id,
+          name: newlySyncedUser.slackUserData.profile.first_name,
+        });
       }
 
       if (user && user.slackUserData.id === senderUserId) {
@@ -85,7 +88,10 @@ const validateRecipients = async (
       }
 
       if (user) {
-        validRecipients.push(user.slackUserData.id);
+        validRecipients.push({
+          id: user.slackUserData.id,
+          name: user.slackUserData.profile.first_name,
+        });
       }
     }
 
@@ -108,7 +114,7 @@ const shareCheersNewsWithRecipientsInDM = async (
       // TODO: get remaining redemption points for user
 
       await slackPostMessageToChannel(
-        recipient,
+        recipient.id,
         teamId,
         createCheersNewsInDMTemplate(permaLink, points, senderUserId, channelId)
       );

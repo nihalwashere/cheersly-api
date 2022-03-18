@@ -29,6 +29,9 @@ const SettingsSchema = new Schema(
     pointsAvailableToRedeem: {
       type: Boolean,
     },
+    requireCompanyValues: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

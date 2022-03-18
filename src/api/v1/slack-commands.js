@@ -70,6 +70,7 @@ router.post("/", async (req, res) => {
     const {
       team_id,
       channel_id,
+      channel_name,
       user_id,
       user_name,
       trigger_id,
@@ -144,7 +145,8 @@ router.post("/", async (req, res) => {
         team_id,
         user_id,
         trigger_id,
-        channel_id
+        channel_id,
+        channel_name
       );
     }
 

@@ -436,7 +436,128 @@ const submitCheersTemplate = ({
   companyValueOptions,
   pointAmountOptions,
   remainingPointsForUser,
+  teamSettings,
 }) => {
+  const blocks = [
+    {
+      type: "input",
+      block_id: SUBMIT_CHEERS_TO_USERS,
+      label: {
+        type: "plain_text",
+        text: "Whom do you want to say cheers to?",
+        emoji: true,
+      },
+      element: {
+        action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
+        type: "multi_conversations_select",
+        placeholder: {
+          type: "plain_text",
+          text: "Select your peers",
+          emoji: true,
+        },
+        filter: {
+          include: ["im"],
+          exclude_bot_users: true,
+          exclude_external_shared_channels: true,
+        },
+      },
+    },
+    {
+      type: "input",
+      block_id: SUBMIT_CHEERS_FOR_POINTS,
+      label: {
+        type: "plain_text",
+        text: "How many points would you like to share with each recipient?",
+        emoji: true,
+      },
+      element: {
+        type: "static_select",
+        placeholder: {
+          type: "plain_text",
+          text: "Select a point amount",
+          emoji: true,
+        },
+        options: pointAmountOptions.map(elem => ({
+          text: {
+            type: "plain_text",
+            text: `${elem} points`,
+            emoji: true,
+          },
+          value: elem,
+        })),
+        action_id: SUBMIT_CHEERS_FOR_POINTS_VALUE,
+      },
+    },
+    {
+      type: "context",
+      elements: [
+        {
+          type: "plain_text",
+          text: `You currently have ${remainingPointsForUser} points remaining.`,
+          emoji: true,
+        },
+      ],
+    },
+    {
+      type: "input",
+      block_id: SUBMIT_CHEERS_FOR_REASON,
+      element: {
+        type: "plain_text_input",
+        multiline: true,
+        action_id: SUBMIT_CHEERS_FOR_REASON_VALUE,
+      },
+      label: {
+        type: "plain_text",
+        text: "For reason?",
+        emoji: true,
+      },
+    },
+  ];
+
+  if (teamSettings.requireCompanyValues && companyValueOptions.length) {
+    blocks.push({
+      type: "input",
+      block_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES,
+      optional: true,
+      label: {
+        type: "plain_text",
+        text: "Tag company values",
+        emoji: true,
+      },
+      element: {
+        type: "multi_static_select",
+        placeholder: {
+          type: "plain_text",
+          text: "Select a company value",
+          emoji: true,
+        },
+        options: companyValueOptions,
+        action_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
+      },
+    });
+  }
+
+  blocks.push({
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*Would you like to post a Giphy?*",
+    },
+    block_id: SHOULD_SHARE_GIPHY,
+    accessory: {
+      type: "checkboxes",
+      options: [
+        {
+          text: {
+            type: "mrkdwn",
+            text: "Share cheers Giphy",
+          },
+        },
+      ],
+      action_id: SHOULD_SHARE_GIPHY_VALUE,
+    },
+  });
+
   return {
     type: "modal",
     callback_id,
@@ -456,122 +577,7 @@ const submitCheersTemplate = ({
       text: "Cancel",
       emoji: true,
     },
-    blocks: [
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_TO_USERS,
-        label: {
-          type: "plain_text",
-          text: "Whom do you want to say cheers to?",
-          emoji: true,
-        },
-        element: {
-          action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
-          type: "multi_conversations_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Select your peers",
-            emoji: true,
-          },
-          filter: {
-            include: ["im"],
-            exclude_bot_users: true,
-            exclude_external_shared_channels: true,
-          },
-        },
-      },
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_FOR_POINTS,
-        label: {
-          type: "plain_text",
-          text: "How many points would you like to share with each recipient?",
-          emoji: true,
-        },
-        element: {
-          type: "static_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Select a point amount",
-            emoji: true,
-          },
-          options: pointAmountOptions.map(elem => ({
-            text: {
-              type: "plain_text",
-              text: `${elem} points`,
-              emoji: true,
-            },
-            value: elem,
-          })),
-          action_id: SUBMIT_CHEERS_FOR_POINTS_VALUE,
-        },
-      },
-      {
-        type: "context",
-        elements: [
-          {
-            type: "plain_text",
-            text: `You currently have ${remainingPointsForUser} points remaining.`,
-            emoji: true,
-          },
-        ],
-      },
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES,
-        optional: true,
-        label: {
-          type: "plain_text",
-          text: "Tag company values",
-          emoji: true,
-        },
-        element: {
-          type: "multi_static_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Select a company value",
-            emoji: true,
-          },
-          options: companyValueOptions,
-          action_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
-        },
-      },
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_FOR_REASON,
-        optional: true,
-        element: {
-          type: "plain_text_input",
-          multiline: true,
-          action_id: SUBMIT_CHEERS_FOR_REASON_VALUE,
-        },
-        label: {
-          type: "plain_text",
-          text: "For reason?",
-          emoji: true,
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "*Would you like to post a Giphy?*",
-        },
-        block_id: SHOULD_SHARE_GIPHY,
-        accessory: {
-          type: "checkboxes",
-          options: [
-            {
-              text: {
-                type: "mrkdwn",
-                text: "Share cheers Giphy",
-              },
-            },
-          ],
-          action_id: SHOULD_SHARE_GIPHY_VALUE,
-        },
-      },
-    ],
+    blocks,
   };
 };
 

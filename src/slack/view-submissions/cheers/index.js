@@ -30,13 +30,16 @@ const processCheers = async payload => {
   try {
     const {
       team: { id: teamId },
-      user: { id: senderUserId },
+      user: { id: senderId, name: senderName },
       view: { state, private_metadata: metaData },
     } = payload;
 
-    const { channelId, recognitionTeamId, remainingPointsForUser } = JSON.parse(
-      metaData
-    );
+    const {
+      channelId,
+      channelName,
+      recognitionTeamId,
+      remainingPointsForUser,
+    } = JSON.parse(metaData);
 
     const recipients =
       state.values[SUBMIT_CHEERS_TO_USERS][SUBMIT_CHEERS_TO_USERS_VALUE]
@@ -64,7 +67,7 @@ const processCheers = async payload => {
     const { errors = null, validRecipients = [] } = await validateRecipients(
       teamId,
       recipients,
-      senderUserId,
+      senderId,
       recognitionTeamId,
       channelId
     );
@@ -93,7 +96,7 @@ const processCheers = async payload => {
     // first check if stats exist for user, if it exist then update else create
 
     const cheersStatsSender = await CheersStatsModel.findOne({
-      slackUserId: senderUserId,
+      slackUserId: senderId,
       teamId,
     });
 
@@ -101,7 +104,7 @@ const processCheers = async payload => {
 
     if (cheersStatsSender) {
       await CheersStatsModel.findOneAndUpdate(
-        { slackUserId: senderUserId, teamId },
+        { slackUserId: senderId, teamId },
         {
           cheersGiven:
             cheersStatsSender.cheersGiven + validRecipients.length * points,
@@ -109,7 +112,7 @@ const processCheers = async payload => {
       );
     } else {
       await new CheersStatsModel({
-        slackUserId: senderUserId,
+        slackUserId: senderId,
         teamId,
         cheersGiven: validRecipients.length * points,
         cheersReceived: 0,
@@ -121,8 +124,9 @@ const processCheers = async payload => {
     await Promise.all(
       validRecipients.map(async recipient => {
         await new CheersModel({
-          from: senderUserId,
-          to: recipient,
+          from: { id: senderId, name: senderName },
+          to: { id: recipient.id, name: recipient.name },
+          channel: { id: channelId, name: channelName },
           companyValues,
           reason,
           points,
@@ -136,7 +140,7 @@ const processCheers = async payload => {
     await Promise.all(
       validRecipients.map(async recipient => {
         const cheersStatsRecipient = await CheersStatsModel.findOne({
-          slackUserId: recipient,
+          slackUserId: recipient.id,
           teamId,
         });
 
@@ -144,7 +148,7 @@ const processCheers = async payload => {
           const { cheersReceived, cheersRedeemable } = cheersStatsRecipient;
 
           await CheersStatsModel.findOneAndUpdate(
-            { slackUserId: recipient, teamId },
+            { slackUserId: recipient.id, teamId },
             {
               cheersReceived: cheersReceived + points,
               cheersRedeemable: cheersRedeemable + points,
@@ -152,7 +156,7 @@ const processCheers = async payload => {
           );
         } else {
           await new CheersStatsModel({
-            slackUserId: recipient,
+            slackUserId: recipient.id,
             teamId,
             cheersGiven: 0,
             cheersReceived: points,
@@ -181,7 +185,7 @@ const processCheers = async payload => {
     await UserModel.findOneAndUpdate(
       {
         "slackUserData.team_id": teamId,
-        "slackUserData.id": senderUserId,
+        "slackUserData.id": senderId,
       },
       { appHomePublished: false }
     );
@@ -190,7 +194,7 @@ const processCheers = async payload => {
       await UserModel.findOneAndUpdate(
         {
           "slackUserData.team_id": teamId,
-          "slackUserData.id": recipient,
+          "slackUserData.id": recipient.id,
         },
         { appHomePublished: false }
       );
@@ -200,7 +204,7 @@ const processCheers = async payload => {
       channelId,
       teamId,
       createCheersSubmittedTemplate({
-        senderUserId,
+        senderId,
         recipients: validRecipients,
         reason,
         companyValues,
@@ -228,7 +232,7 @@ const processCheers = async payload => {
       validRecipients,
       permaLinkResponse.permalink,
       points,
-      senderUserId,
+      senderId,
       channelId
     );
   } catch (error) {

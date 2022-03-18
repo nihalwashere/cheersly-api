@@ -12,6 +12,28 @@ const AuthSchema = new mongoose.Schema(
       default: false,
       index: true,
     },
+
+    // getting started steps
+    recognitionTeamCreated: {
+      type: Boolean,
+      default: false,
+    },
+    companyValuesCreated: {
+      type: Boolean,
+      default: false,
+    },
+    rewardRedemptionsEnabled: {
+      type: Boolean,
+      default: false,
+    },
+    introducedToTeam: {
+      type: Boolean,
+      default: false,
+    },
+    paymentMethodAdded: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
@@ -19,4 +41,5 @@ const AuthSchema = new mongoose.Schema(
 AuthSchema.index({ "slackInstallation.team.id": 1 });
 
 const Auth = mongoose.model(collection, AuthSchema);
+
 module.exports = Auth;

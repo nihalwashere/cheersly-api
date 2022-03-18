@@ -1,3 +1,4 @@
+const SettingsModel = require("../../../mongo/models/Settings");
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
 const { postEphemeralMessage, openModal } = require("../../api");
 const { createChannelNotSetupTemplate } = require("./template");
@@ -11,7 +12,13 @@ const {
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
+const handleCheersCommand = async (
+  teamId,
+  userId,
+  triggerId,
+  channelId,
+  channelName
+) => {
   try {
     // /cheers
 
@@ -36,6 +43,8 @@ const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
       );
     }
 
+    const teamSettings = await SettingsModel.findOne({ teamId });
+
     const {
       _id: recognitionTeamId,
       pointAmountOptions,
@@ -56,6 +65,7 @@ const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
 
     const metaData = JSON.stringify({
       channelId,
+      channelName,
       recognitionTeamId: recognitionTeam._id,
       remainingPointsForUser,
     });
@@ -69,6 +79,7 @@ const handleCheersCommand = async (teamId, userId, triggerId, channelId) => {
         companyValueOptions,
         pointAmountOptions,
         remainingPointsForUser,
+        teamSettings,
       })
     );
   } catch (error) {

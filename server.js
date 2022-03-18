@@ -77,7 +77,7 @@ const users = require("./src/api/v1/users");
 const recognition = require("./src/api/v1/recognition");
 const slackChannels = require("./src/api/v1/slack/channels");
 const catalogs = require("./src/api/v1/catalogs");
-const teams = require("./src/api/v1/teams/settings");
+const teams = require("./src/api/v1/teams");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
