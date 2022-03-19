@@ -14,6 +14,7 @@ const {
 } = require("../subscription-handlers/template");
 
 const createAppHomeTemplate = ({
+  slackUserId,
   appUrl,
   cheersGiven,
   cheersReceived,
@@ -55,7 +56,7 @@ const createAppHomeTemplate = ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*My Cheers* :beers:",
+        text: `Hey <@${slackUserId}> :wave:`,
       },
       accessory: {
         type: "button",
@@ -65,6 +66,13 @@ const createAppHomeTemplate = ({
           emoji: true,
         },
         url: appUrl,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Your Cheers* :beers:",
       },
     },
     {

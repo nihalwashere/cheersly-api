@@ -27,6 +27,7 @@ const publishAppHome = async ({
     } = await getCurrentMonthStatsForUser(teamId, slackUserId);
 
     const appHomeTemplate = createAppHomeTemplate({
+      slackUserId,
       appUrl: getAppUrl(),
       cheersGiven,
       cheersReceived,

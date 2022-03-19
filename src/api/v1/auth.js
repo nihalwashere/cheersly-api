@@ -17,8 +17,7 @@ const {
   upsertAuth,
   getAuthDeletedOrNotDeleted,
 } = require("../../mongo/helper/auth");
-const { sendOnBoardingInstructions } = require("../../slack/onboarding");
-const { createDefaultSettings } = require("../../concerns/teams/settings");
+const { createDefaultSettings } = require("../../concerns/teams");
 const {
   createTrialSubscription,
   validateToken,
@@ -66,7 +65,6 @@ router.post("/signup", async (req, res) => {
     await paginateUsersList(access_token);
 
     if (!auth) {
-      await sendOnBoardingInstructions(teamId, authedUserId);
       await createDefaultSettings(teamId, authedUserId);
     }
 

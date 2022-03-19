@@ -6,6 +6,9 @@ const AuthModel = require("../../mongo/models/Auth");
 const ActivityModel = require("../../mongo/models/Activity");
 const SettingsModel = require("../../mongo/models/Settings");
 const { validateToken } = require("../../utils/common");
+const {
+  sendOnBoardingInstructionsToAllUsers,
+} = require("../../concerns/onboarding");
 const logger = require("../../global/logger");
 
 // TEAM
@@ -77,6 +80,67 @@ router.get("/activity", async (req, res) => {
     });
   } catch (error) {
     logger.error("GET /teams/activity -> error : ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Oops! Something went wrong!",
+    });
+  }
+});
+
+// ENABLE APP
+
+router.post("/enable-app", async (req, res) => {
+  try {
+    const token = await validateToken(req.headers);
+
+    if (!token.success) {
+      return res.status(401).json(token);
+    }
+
+    const {
+      data: {
+        user: {
+          slackUserData: { team_id: teamId },
+        },
+      },
+    } = token;
+
+    const {
+      shouldSendOnboardingMessage,
+      shouldAddCustomMessage,
+      message = "",
+    } = req.body;
+
+    if (shouldSendOnboardingMessage && shouldAddCustomMessage && !message) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Custom message is required." });
+    }
+
+    await AuthModel.findOneAndUpdate(
+      {
+        "slackInstallation.team.id": teamId,
+      },
+      { appEnabled: true }
+    );
+
+    if (shouldSendOnboardingMessage) {
+      await AuthModel.findOneAndUpdate(
+        {
+          "slackInstallation.team.id": teamId,
+        },
+        { appIntroducedToTeam: true }
+      );
+
+      await sendOnBoardingInstructionsToAllUsers(teamId, message);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Hurray, Cheersly is now enabled for your team to use!",
+    });
+  } catch (error) {
+    logger.error("GET /teams/enable-app -> error : ", error);
     return res.status(500).json({
       success: false,
       message: "Oops! Something went wrong!",

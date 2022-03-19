@@ -17,14 +17,14 @@ const {
   isCheersCommand,
   handleCheersCommand,
 } = require("../../slack/commands/cheers");
-const {
-  isPollCommand,
-  handlePollCommand,
-} = require("../../slack/commands/poll");
-const {
-  isFeedbackCommand,
-  handleFeedbackCommand,
-} = require("../../slack/commands/feedback");
+// const {
+//   isPollCommand,
+//   handlePollCommand,
+// } = require("../../slack/commands/poll");
+// const {
+//   isFeedbackCommand,
+//   handleFeedbackCommand,
+// } = require("../../slack/commands/feedback");
 const {
   isSPSCommand,
   handleStonePaperScissorsCommand,
@@ -45,6 +45,7 @@ const {
   SubscriptionMessageType,
 } = require("../../enums/subscriptionMessageTypes");
 const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
+const { isAppEnabledForTeam } = require("../../concerns/teams");
 const logger = require("../../global/logger");
 
 router.post("/", async (req, res) => {
@@ -72,7 +73,7 @@ router.post("/", async (req, res) => {
       channel_id,
       channel_name,
       user_id,
-      user_name,
+      // user_name,
       trigger_id,
       text,
     } = req.body;
@@ -86,6 +87,24 @@ router.post("/", async (req, res) => {
       });
     }
 
+    // check if app is enabled
+    const isAppEnabled = await isAppEnabledForTeam(team_id);
+
+    if (!isAppEnabled) {
+      return res.status(200).json({
+        response_type: "ephemeral",
+        blocks: [
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "Oops! Cheersly is not yet enabled for your team to use.",
+            },
+          },
+        ],
+      });
+    }
+
     if (isOnboardCommand(text)) {
       // /cheers onboard
 
@@ -93,7 +112,7 @@ router.post("/", async (req, res) => {
 
       res.send("");
 
-      return await handleOnboardCommand(team_id, channel_id, user_id);
+      return await handleOnboardCommand(team_id, channel_id);
     }
 
     if (isSPSCommand(text)) {
@@ -150,25 +169,25 @@ router.post("/", async (req, res) => {
       );
     }
 
-    if (isPollCommand(text)) {
-      // /cheers poll
+    // if (isPollCommand(text)) {
+    //   // /cheers poll
 
-      isCommandValid = true;
+    //   isCommandValid = true;
 
-      res.send("");
+    //   res.send("");
 
-      return await handlePollCommand(team_id, user_name, trigger_id);
-    }
+    //   return await handlePollCommand(team_id, user_name, trigger_id);
+    // }
 
-    if (isFeedbackCommand(text)) {
-      // /cheers feedback
+    // if (isFeedbackCommand(text)) {
+    //   // /cheers feedback
 
-      isCommandValid = true;
+    //   isCommandValid = true;
 
-      res.send("");
+    //   res.send("");
 
-      return await handleFeedbackCommand(team_id, user_name, trigger_id);
-    }
+    //   return await handleFeedbackCommand(team_id, user_name, trigger_id);
+    // }
 
     // if (isInterestsCommand(text)) {
     //   // /cheers interests

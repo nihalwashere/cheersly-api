@@ -26,7 +26,11 @@ const AuthSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    introducedToTeam: {
+    appEnabled: {
+      type: Boolean,
+      default: false,
+    },
+    appIntroducedToTeam: {
       type: Boolean,
       default: false,
     },

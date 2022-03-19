@@ -36,7 +36,7 @@ const {
     FEEDBACK_IS_ANONYMOUS_VALUE,
   },
 } = require("../global/constants");
-const { getAppHomeLink } = require("../utils/common");
+const { getAppHomeUrl, getAppHomeLink } = require("../utils/common");
 
 const createAPITokensRevokedTemplate = teamId => {
   return [
@@ -706,6 +706,95 @@ const createGamePostedSuccessModalTemplate = ({
   ],
 });
 
+const createOnboardingTemplate = teamId => [
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "Hey there :wave: I'm Cheersly, the employee engagement and peer recognition app for Slack.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "I am here to help your team recognize each other for all of the meaningful contributions that you make.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*Here's how it works:*",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Use the command `/cheers` to share cheers with your peers.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":thumbsup: *Show some support*\nAdd any reaction to cheers that are posted publicly as a fun way to show your support to your peers.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":moneybag: *Earn & redeem points*\nAccrue points from cheers to redeem in our reward catalog.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":ice_cube: *Fun Icebreakers*\nSpark funny conversations with your peers.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":v: *Play 1-1 Games*\nPlay Tic Tac Toe or Stone Paper Scissors with your co-worker.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Head over to the home tab of Cheersly and let the fun begin!",
+    },
+    accessory: {
+      type: "button",
+      text: {
+        type: "plain_text",
+        text: "Take me there :rocket:",
+        emoji: true,
+      },
+      url: getAppHomeUrl(teamId),
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Cheers :beers:",
+    },
+  },
+  createSupportContextTemplate(),
+];
+
 module.exports = {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
@@ -718,4 +807,5 @@ module.exports = {
   createHomeSneakPeakTemplate,
   createNotInChannelTemplate,
   createGamePostedSuccessModalTemplate,
+  createOnboardingTemplate,
 };
