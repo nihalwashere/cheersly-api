@@ -52,7 +52,7 @@ const getCurrentMonthStatsForUser = async (teamId, slackUserId) => {
 
     const cheersForThisMonth = await CheersModel.find({
       teamId,
-      from: slackUserId,
+      "from.id": slackUserId,
       createdAt: {
         $gte: moment()
           .startOf("month")
@@ -90,7 +90,7 @@ const getCurrentMonthTotalSpentForUserByRecognitionTeam = async (
     const cheersForThisMonth = await CheersModel.find({
       teamId,
       recognitionTeamId,
-      from: slackUserId,
+      "from.id": slackUserId,
       createdAt: {
         $gte: moment()
           .startOf("month")

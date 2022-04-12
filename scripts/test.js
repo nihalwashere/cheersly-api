@@ -125,19 +125,11 @@ const now = new Date();
 
 // console.log(arr);
 
-// console.log(
-//   "start : ",
-//   moment()
-//     .startOf("month")
-//     .toDate()
-// );
+console.log(
+  "start : ",
+  moment()
+    .startOf("month")
+    .format()
+);
 
-function returnMe() {
-  for (var i = 0; i < 2; i++) {
-    if (i === 1) return i;
-  }
-
-  console.log("HERE");
-}
-
-console.log(returnMe());
+console.log("start : ", moment().format());
