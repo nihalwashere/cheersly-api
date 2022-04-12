@@ -537,26 +537,28 @@ const submitCheersTemplate = ({
     });
   }
 
-  blocks.push({
-    type: "section",
-    text: {
-      type: "mrkdwn",
-      text: "*Would you like to post a Giphy?*",
-    },
-    block_id: SHOULD_SHARE_GIPHY,
-    accessory: {
-      type: "checkboxes",
-      options: [
-        {
-          text: {
-            type: "mrkdwn",
-            text: "Share cheers Giphy",
+  if (teamSettings.enableSharingGiphys) {
+    blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Would you like to post a Giphy?*",
+      },
+      block_id: SHOULD_SHARE_GIPHY,
+      accessory: {
+        type: "checkboxes",
+        options: [
+          {
+            text: {
+              type: "mrkdwn",
+              text: "Share cheers Giphy",
+            },
           },
-        },
-      ],
-      action_id: SHOULD_SHARE_GIPHY_VALUE,
-    },
-  });
+        ],
+        action_id: SHOULD_SHARE_GIPHY_VALUE,
+      },
+    });
+  }
 
   return {
     type: "modal",

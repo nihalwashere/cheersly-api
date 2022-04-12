@@ -13,6 +13,8 @@ const getHeaders = () => ({
     `${TANGO_CARD_USERNAME}:${TANGO_CARD_PASSWORD}`,
     "utf-8"
   ).toString("base64")}`,
+  Accept: "application/json",
+  "Content-Type": "application/json",
 });
 
 const getCatalogs = async filters => {
@@ -33,4 +35,22 @@ const getCatalogs = async filters => {
   }
 };
 
-module.exports = { getCatalogs };
+const placeOrder = async payload => {
+  try {
+    const req = await fetch(`${TANGO_CARD_SANDOX_API_BASE_URL}/orders`, {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(payload),
+    });
+
+    const { status } = req;
+
+    const response = await req.json();
+
+    return { status, response };
+  } catch (error) {
+    logger.error("placeOrder() : error -> ", error);
+  }
+};
+
+module.exports = { getCatalogs, placeOrder };

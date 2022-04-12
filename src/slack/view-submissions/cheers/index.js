@@ -64,11 +64,15 @@ const processCheers = async payload => {
       state.values[SUBMIT_CHEERS_FOR_REASON][SUBMIT_CHEERS_FOR_REASON_VALUE]
         .value;
 
-    const shouldShareGiphy = state.values[SHOULD_SHARE_GIPHY][
-      SHOULD_SHARE_GIPHY_VALUE
-    ].selected_options.length
-      ? true // eslint-disable-line
-      : false;
+    let shouldShareGiphy = null;
+
+    if (state.values[SHOULD_SHARE_GIPHY]) {
+      shouldShareGiphy = state.values[SHOULD_SHARE_GIPHY][
+        SHOULD_SHARE_GIPHY_VALUE
+      ].selected_options.length
+        ? true // eslint-disable-line
+        : false;
+    }
 
     const { errors = null, validRecipients = [] } = await validateRecipients(
       teamId,

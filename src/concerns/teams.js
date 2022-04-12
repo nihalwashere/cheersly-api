@@ -19,6 +19,8 @@ const createDefaultSettings = async (teamId, authedUserId) => {
       inactivityReminders: true,
       pointsAvailableToRedeem: true,
       requireCompanyValues: false,
+      enableSharingGiphys: true,
+      enableGiftCards: false,
     }).save();
   } catch (error) {
     logger.error("createDefaultSettings() -> error : ", error);

@@ -32,6 +32,12 @@ const SettingsSchema = new Schema(
     requireCompanyValues: {
       type: Boolean,
     },
+    enableSharingGiphys: {
+      type: Boolean,
+    },
+    enableGiftCards: {
+      type: Boolean,
+    },
   },
   { timestamps: true }
 );

@@ -11,7 +11,7 @@ const {
 const { validateToken } = require("../../../utils/common");
 const logger = require("../../../global/logger");
 
-// TEAMS
+// RECOGNITION TEAMS
 
 router.get("/teams", async (req, res) => {
   try {

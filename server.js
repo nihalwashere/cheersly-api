@@ -73,11 +73,11 @@ const slackEvents = require("./src/api/v1/slack-events");
 const slackActions = require("./src/api/v1/slack-actions");
 const loadOptions = require("./src/api/v1/load-options");
 const auth = require("./src/api/v1/auth");
-const users = require("./src/api/v1/users");
+const user = require("./src/api/v1/user");
+const team = require("./src/api/v1/team");
 const recognition = require("./src/api/v1/recognition");
 const slackChannels = require("./src/api/v1/slack/channels");
-const catalogs = require("./src/api/v1/catalogs");
-const teams = require("./src/api/v1/teams");
+const giftCards = require("./src/api/v1/gift-cards");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
@@ -87,10 +87,10 @@ app.use("/api/v1/slack-actions", slackActions);
 app.use("/api/v1/load-options", loadOptions);
 app.use("/api/v1/slack/channels", slackChannels);
 app.use("/api/v1/auth", auth);
-app.use("/api/v1/users", users);
+app.use("/api/v1/user", user);
+app.use("/api/v1/team", team);
 app.use("/api/v1/recognition", recognition);
-app.use("/api/v1/catalogs", catalogs);
-app.use("/api/v1/teams", teams);
+app.use("/api/v1/gift-cards", giftCards);
 app.use("/api/test", test);
 
 // GraphQL
