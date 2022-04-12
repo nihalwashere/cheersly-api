@@ -66,6 +66,7 @@ const createCheersSubmittedTemplate = ({
 const createCheersNewsInDMTemplate = (
   permaLink,
   points,
+  cheersRedeemable,
   senderUserId,
   channelId
 ) => [
@@ -80,7 +81,7 @@ const createCheersNewsInDMTemplate = (
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "You now have `-- points` to redeem.",
+      text: `You now have \`${cheersRedeemable}\` points to redeem.`,
     },
     accessory: {
       type: "button",

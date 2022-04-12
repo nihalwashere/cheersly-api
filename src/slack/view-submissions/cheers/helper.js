@@ -1,5 +1,6 @@
 const pMap = require("p-map");
 const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
+const CheersStatsModel = require("../../../mongo/models/CheersStats");
 const UserModel = require("../../../mongo/models/User");
 const {
   BLOCK_IDS: { SUBMIT_CHEERS_TO_USERS },
@@ -111,12 +112,21 @@ const shareCheersNewsWithRecipientsInDM = async (
 ) => {
   try {
     const handler = async recipient => {
-      // TODO: get remaining redemption points for user
+      const cheersStat = await CheersStatsModel.findOne({
+        slackUserId: recipient.id,
+        teamId,
+      });
 
       await slackPostMessageToChannel(
         recipient.id,
         teamId,
-        createCheersNewsInDMTemplate(permaLink, points, senderUserId, channelId)
+        createCheersNewsInDMTemplate(
+          permaLink,
+          points,
+          cheersStat.cheersRedeemable,
+          senderUserId,
+          channelId
+        )
       );
     };
 
