@@ -81,7 +81,7 @@ const createCheersNewsInDMTemplate = (
     type: "section",
     text: {
       type: "mrkdwn",
-      text: `You now have \`${cheersRedeemable}\` points to redeem.`,
+      text: `You now have \`${cheersRedeemable} points\` to redeem.`,
     },
     accessory: {
       type: "button",
