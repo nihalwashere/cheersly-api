@@ -56,7 +56,7 @@ const createAppHomeTemplate = ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `Hey there :wave:,<@${slackUserId}>. Share some cheers with your peers!`,
+        text: `Hey there :wave: <@${slackUserId}>. Share some cheers with your peers!`,
       },
       accessory: {
         type: "button",

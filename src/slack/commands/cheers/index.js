@@ -59,9 +59,16 @@ const handleCheersCommand = async (
       recognitionTeamId
     );
 
+    logger.debug(
+      "currentMonthTotalSpentForRecognitionTeam : ",
+      currentMonthTotalSpentForRecognitionTeam
+    );
+
     const remainingPointsForUser = Number(
       pointAllowance - currentMonthTotalSpentForRecognitionTeam
     );
+
+    logger.debug("remainingPointsForUser : ", remainingPointsForUser);
 
     const metaData = JSON.stringify({
       channelId,
