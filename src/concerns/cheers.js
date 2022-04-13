@@ -75,6 +75,7 @@ const getCurrentMonthStatsForUser = async (teamId, slackUserId) => {
       totalPointAllowance,
       totalSpentThisMonth,
       totalPointsRemaining,
+      recognitionTeamsForUser,
     };
   } catch (error) {
     logger.error("getCurrentMonthStatsForUser() -> error : ", error);

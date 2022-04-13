@@ -1,6 +1,6 @@
 const express = require("express");
-// const { CronJob } = require("cron");
-// const { spawn } = require("child_process");
+const { CronJob } = require("cron");
+const { spawn } = require("child_process");
 const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -10,7 +10,7 @@ const schema = require("./src/graphql/schema");
 const logger = require("./src/global/logger");
 
 const { PORT, MONGO_URL, MONGO_OPTIONS } = require("./src/global/config");
-// const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
+const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
 
 const PUBLIC_DIR = "src/public";
 
@@ -144,7 +144,7 @@ const server = app.listen(PORT, () => {
     //       process.execPath,
     //       ["./src/cron/upgrade-trial-subscription/index.js"],
     //       {
-    //         stdio: "inherit"
+    //         stdio: "inherit",
     //       }
     //     );
     //   },
@@ -152,6 +152,60 @@ const server = app.listen(PORT, () => {
     //   true,
     //   DEFAULT_TIME_ZONE
     // );
+
+    // NUDGES
+
+    // allowance reloaded cron scheduled at 10:00 AM on the first of every month
+    new CronJob(
+      "00 00 10 1 * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/allowance-reloaded.js"], {
+          stdio: "inherit",
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
+    // points about to expire cron scheduled at 10:00 AM on the 25th of every month
+    new CronJob(
+      "00 00 10 25 * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/points-about-to-expire.js"], {
+          stdio: "inherit",
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
+    // inactivity reminders cron scheduled at 10:00 AM on the 15th of every month
+    new CronJob(
+      "00 00 10 15 * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/inactivity-reminders.js"], {
+          stdio: "inherit",
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
+    // points available to redeem cron scheduled at 10:00 AM on the 10th of every month
+    new CronJob(
+      "00 00 10 10 * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/points-available-to-redeem.js"], {
+          stdio: "inherit",
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
   } catch (error) {
     logger.error("Failed to start server -> error : ", error);
   }

@@ -132,4 +132,11 @@ console.log(
     .format()
 );
 
-console.log("start : ", moment().format());
+console.log(
+  "month : ",
+  moment()
+    .startOf("month")
+    .format("MMMM")
+);
+
+console.log("random : ", Math.random() >= 0.5 ? 1 : 0);

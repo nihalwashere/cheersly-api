@@ -1,4 +1,4 @@
-const { getChannelDeepLink } = require("../../../utils/common");
+const { getChannelString } = require("../../../utils/common");
 
 const createChannelNotSetupTemplate = (teamId, recognitionTeams) => {
   const blocks = [
@@ -12,20 +12,15 @@ const createChannelNotSetupTemplate = (teamId, recognitionTeams) => {
     },
   ];
 
-  let channelString = "";
-
-  recognitionTeams.map((elem, index) => {
-    channelString += `<${getChannelDeepLink(teamId, elem.channel.id)}|#${
-      elem.channel.name
-    }>${recognitionTeams.length === index + 1 ? "" : ", "}`;
-  });
-
   if (recognitionTeams.length) {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `Here are the channels you can share cheers in,\n${channelString}`,
+        text: `Here are the channels you can share cheers in,\n${getChannelString(
+          teamId,
+          recognitionTeams
+        )}`,
       },
     });
   }

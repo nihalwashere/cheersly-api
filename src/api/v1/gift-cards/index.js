@@ -4,6 +4,7 @@ const router = express.Router();
 
 const TeamPointBalanceModel = require("../../../mongo/models/TeamPointBalance");
 const CheersStatsModel = require("../../../mongo/models/CheersStats");
+const UserModel = require("../../../mongo/models/User");
 const OrdersModel = require("../../../mongo/models/Orders");
 const { getCatalogs, placeOrder } = require("../../../tango-card/api");
 const { validateToken } = require("../../../utils/common");
@@ -24,13 +25,6 @@ router.get("/catalog", async (req, res) => {
     }
 
     const { brandKey = null, country = null } = req.query;
-
-    if (!country) {
-      return res.status(400).json({
-        success: false,
-        message: "Country is required.",
-      });
-    }
 
     let filters = "";
 
@@ -202,6 +196,14 @@ router.post("/order", async (req, res) => {
         success: true,
         message: "Gift card order placed successfully!",
       };
+
+      await UserModel.findOneAndUpdate(
+        {
+          "slackUserData.team_id": teamId,
+          "slackUserData.id": slackUserId,
+        },
+        { appHomePublished: false }
+      );
     } else {
       responsePayload = {
         success: false,
