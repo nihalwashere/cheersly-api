@@ -4,35 +4,32 @@ const collection = "Subscriptions";
 
 const SubscriptionSchema = new mongoose.Schema(
   {
-    subscribedBy: {
-      type: mongoose.Schema.Types.Mixed,
+    customerId: {
+      type: String,
+      index: true,
     },
-    slackTeamId: {
+    paymentMethodId: {
+      type: String,
+    },
+    teamId: {
       type: String,
       index: true,
     },
     isTrialPeriod: {
       type: Boolean,
-      default: false,
     },
     subscribedOn: {
       type: Date,
     },
-    nextDueDate: {
+    expiresOn: {
       type: Date,
-    },
-    ultimateDueDate: {
-      type: Date,
-    },
-    totalUsers: {
-      type: String,
-    },
-    users: {
-      type: mongoose.Schema.Types.Mixed,
     },
   },
   { timestamps: true }
 );
 
+SubscriptionSchema.index({ customerId: 1, teamId: 1 });
+
 const Subscription = mongoose.model(collection, SubscriptionSchema);
+
 module.exports = Subscription;

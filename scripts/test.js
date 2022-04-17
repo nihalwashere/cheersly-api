@@ -2,7 +2,7 @@
 
 const moment = require("moment-timezone");
 
-const { nanoid } = require("nanoid");
+// const { nanoid } = require("nanoid");
 
 // const text =
 //   "@user1 @user2 @user3      Thanks for all the help \n      dasdsad dasdsada \n dasdsa :beers:";
@@ -125,18 +125,18 @@ const now = new Date();
 
 // console.log(arr);
 
-console.log(
-  "start : ",
-  moment()
-    .startOf("month")
-    .format()
-);
+// console.log(
+//   "start : ",
+//   moment()
+//     .startOf("month")
+//     .format()
+// );
 
-console.log(
-  "month : ",
-  moment()
-    .startOf("month")
-    .format("MMMM")
-);
+// console.log(
+//   "month : ",
+//   moment()
+//     .startOf("month")
+//     .format("MMMM")
+// );
 
-console.log("random : ", Math.random() >= 0.5 ? 1 : 0);
+// console.log("random : ", Math.random() >= 0.5 ? 1 : 0);

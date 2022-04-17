@@ -12,28 +12,28 @@ const addSubscription = async payload => {
   }
 };
 
-const getTrialSubscriptionForSlackTeam = async slackTeamId => {
+const getTrialSubscriptionForSlackTeam = async teamId => {
   try {
     return await Subscriptions.findOne({
-      slackTeamId,
+      teamId,
       isTrialPeriod: true,
     });
   } catch (error) {
     logger.error(
-      `getTrialSubscriptionForSlackTeam() : slackTeamId : ${slackTeamId} -> error : `,
+      `getTrialSubscriptionForSlackTeam() : teamId : ${teamId} -> error : `,
       error
     );
   }
 };
 
-const getSubscriptionBySlackTeamId = async slackTeamId => {
+const getSubscriptionBySlackTeamId = async teamId => {
   try {
-    return await Subscriptions.findOne({ slackTeamId }).sort({
-      nextDueDate: -1,
+    return await Subscriptions.findOne({ teamId }).sort({
+      expiresOn: -1,
     });
   } catch (error) {
     logger.error(
-      `getSubscriptionBySlackTeamId() : slackTeamId : ${slackTeamId} -> `,
+      `getSubscriptionBySlackTeamId() : teamId : ${teamId} -> `,
       error
     );
   }

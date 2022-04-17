@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const { APP_URL, SLACK_APP_ID } = require("../global/config");
 const {
-  addSubscription,
   getSubscriptionBySlackTeamId,
 } = require("../mongo/helper/subscriptions");
 const { getUserDataBySlackUserId } = require("../mongo/helper/user");
@@ -60,34 +59,9 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, rawBody) => {
 const waitForMilliSeconds = ms =>
   new Promise(resolve => setTimeout(resolve, ms));
 
-// return date + 14 days
-const getTrialEndDate = date => new Date(date.setDate(date.getDate() + 14));
-
-const createTrialSubscription = async slackTeamId => {
+const isSubscriptionValidForSlack = async teamId => {
   try {
-    const now = new Date();
-    const subscribedOn = new Date(now);
-    const nextDueDate = getTrialEndDate(new Date(subscribedOn));
-    const ultimateDueDate = nextDueDate;
-
-    await addSubscription({
-      isTrialPeriod: true,
-      subscribedBy: null,
-      subscribedOn,
-      nextDueDate,
-      ultimateDueDate,
-      totalUsers: null,
-      users: [],
-      slackTeamId,
-    });
-  } catch (error) {
-    logger.error("createTrialSubscription() -> ", error);
-  }
-};
-
-const isSubscriptionValidForSlack = async slackTeamId => {
-  try {
-    const subscription = await getSubscriptionBySlackTeamId(slackTeamId);
+    const subscription = await getSubscriptionBySlackTeamId(teamId);
 
     if (!subscription) {
       return {
@@ -100,7 +74,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       !subscription.isTrialPeriod &&
-      new Date(subscription.ultimateDueDate) > new Date(now)
+      new Date(subscription.expiresOn) > new Date(now)
     ) {
       return {
         hasSubscription: true,
@@ -110,7 +84,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       subscription.isTrialPeriod &&
-      new Date(subscription.ultimateDueDate) > new Date(now)
+      new Date(subscription.expiresOn) > new Date(now)
     ) {
       return {
         hasSubscription: true,
@@ -120,7 +94,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       subscription.isTrialPeriod &&
-      new Date(now) > new Date(subscription.ultimateDueDate)
+      new Date(now) > new Date(subscription.expiresOn)
     ) {
       return {
         hasSubscription: false,
@@ -130,7 +104,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       !subscription.isTrialPeriod &&
-      new Date(now) > new Date(subscription.ultimateDueDate)
+      new Date(now) > new Date(subscription.expiresOn)
     ) {
       return {
         hasSubscription: false,
@@ -139,7 +113,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
     }
   } catch (error) {
     logger.error(
-      `isSubscriptionValidForSlack() : slackTeamId : ${slackTeamId} -> `,
+      `isSubscriptionValidForSlack() : teamId : ${teamId} -> `,
       error
     );
   }
@@ -296,7 +270,6 @@ module.exports = {
   newIdString,
   verifySlackRequest,
   waitForMilliSeconds,
-  createTrialSubscription,
   isSubscriptionValidForSlack,
   sortLeaders,
   validateToken,

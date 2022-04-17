@@ -1,11 +1,14 @@
 const express = require("express");
+const moment = require("moment-timezone");
 
 const router = express.Router();
 
 const AuthModel = require("../../../mongo/models/Auth");
 const ActivityModel = require("../../../mongo/models/Activity");
 const SettingsModel = require("../../../mongo/models/Settings");
+const OrdersModel = require("../../../mongo/models/Orders");
 const TeamPointBalanceModel = require("../../../mongo/models/TeamPointBalance");
+const PointTopUpsModel = require("../../../mongo/models/PointTopUps");
 const {
   sendOnBoardingInstructionsToAllUsers,
 } = require("../../../concerns/onboarding");
@@ -272,6 +275,93 @@ router.get("/balance", async (req, res) => {
     });
   } catch (error) {
     logger.error("GET /team/balance -> error : ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Oops! Something went wrong!",
+    });
+  }
+});
+
+router.get("/reward-stats", async (req, res) => {
+  try {
+    const token = await validateToken(req.headers);
+
+    if (!token.success) {
+      return res.status(401).json(token);
+    }
+
+    const {
+      data: {
+        user: {
+          slackUserData: { team_id: teamId },
+        },
+      },
+    } = token;
+
+    const teamPointBalance = await TeamPointBalanceModel.findOne({ teamId });
+
+    const orders = await OrdersModel.find({
+      teamId,
+      "response.status": "COMPLETE",
+      createdAt: {
+        $gte: moment()
+          .startOf("month")
+          .toDate(),
+        $lte: new Date(),
+      },
+    });
+
+    let redemptionPoints = 0;
+    let redemptionCosts = 0;
+
+    orders.forEach(order => {
+      redemptionPoints += Number(order.points);
+      redemptionCosts += Number(order.response.amountCharged.total);
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        purchasedPoints: teamPointBalance.balance,
+        redemptionPoints,
+        redemptionCosts,
+      },
+    });
+  } catch (error) {
+    logger.error("GET /team/reward-stats -> error : ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Oops! Something went wrong!",
+    });
+  }
+});
+
+router.get("/top-ups", async (req, res) => {
+  try {
+    const token = await validateToken(req.headers);
+
+    if (!token.success) {
+      return res.status(401).json(token);
+    }
+
+    const {
+      data: {
+        user: {
+          slackUserData: { team_id: teamId },
+        },
+      },
+    } = token;
+
+    const data = await PointTopUpsModel.find({ teamId }).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (error) {
+    logger.error("GET /team/top-ups -> error : ", error);
     return res.status(500).json({
       success: false,
       message: "Oops! Something went wrong!",

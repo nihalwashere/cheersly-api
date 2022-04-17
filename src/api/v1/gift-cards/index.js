@@ -6,6 +6,7 @@ const TeamPointBalanceModel = require("../../../mongo/models/TeamPointBalance");
 const CheersStatsModel = require("../../../mongo/models/CheersStats");
 const UserModel = require("../../../mongo/models/User");
 const OrdersModel = require("../../../mongo/models/Orders");
+const ExchangeRatesModel = require("../../../mongo/models/ExchangeRates");
 const { getCatalogs, placeOrder } = require("../../../tango-card/api");
 const { validateToken } = require("../../../utils/common");
 const {
@@ -159,6 +160,7 @@ router.post("/order", async (req, res) => {
         email,
         firstName,
       },
+      etid: "E792782",
       sendEmail: true,
       //   sender: {
       //     email: "",
@@ -169,7 +171,8 @@ router.post("/order", async (req, res) => {
       //   campaign: "",
       //   emailSubject: "",
       //   externalRefID: "",
-      //   message: "",
+      message: `Hey ${firstName},
+        your Cheersly gift card purchase was successful. Please refer to the instructions below on how to redeem your gift card.`,
       //   notes: "",
     };
 
@@ -182,6 +185,7 @@ router.post("/order", async (req, res) => {
     await new OrdersModel({
       request: payload,
       response,
+      points,
       teamId,
       slackUserId,
     }).save();
@@ -215,6 +219,62 @@ router.post("/order", async (req, res) => {
     return res.status(200).json(responsePayload);
   } catch (error) {
     logger.error("POST /gift-cards/order -> error : ", error);
+    return res.status(500).json({
+      success: false,
+      message: "Oops! Something went wrong!",
+    });
+  }
+});
+
+// EXCHANGE RATES
+
+router.get("/exchange-rate", async (req, res) => {
+  try {
+    const token = await validateToken(req.headers);
+
+    if (!token.success) {
+      return res.status(401).json(token);
+    }
+
+    const { rewardCurrency, baseCurrency } = req.query;
+
+    if (!rewardCurrency) {
+      return res.status(401).json({
+        success: false,
+        message: "Reward currency is required",
+      });
+    }
+
+    if (!baseCurrency) {
+      return res.status(401).json({
+        success: false,
+        message: "Base currency is required",
+      });
+    }
+
+    const exchangeRate = await ExchangeRatesModel.findOne({
+      rewardCurrency,
+      baseCurrency,
+    });
+
+    if (!exchangeRate) {
+      return res.status(401).json({
+        success: false,
+        message:
+          "Could not fetch exchange rate, please contact support@cheersly.club",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        rewardCurrency: exchangeRate.rewardCurrency,
+        baseCurrency: exchangeRate.baseCurrency,
+        baseFx: exchangeRate.baseFx,
+      },
+    });
+  } catch (error) {
+    logger.error("GET /gift-cards/exchange-rate -> error : ", error);
     return res.status(500).json({
       success: false,
       message: "Oops! Something went wrong!",

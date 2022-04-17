@@ -27,35 +27,26 @@ const service = async () => {
 
       const subscription = await getTrialSubscriptionForSlackTeam(teamId);
 
-      if (!subscription || !subscription.isTrialPeriod) {
+      if (!subscription) {
         return;
       }
 
       const now = new Date();
 
-      const { ultimateDueDate } = subscription;
+      const { expiresOn } = subscription;
 
-      if (new Date(ultimateDueDate) > new Date(now)) {
+      if (new Date(expiresOn) > new Date(now)) {
         let days = 0;
 
-        if (
-          new Date(ultimateDueDate).getDate() - new Date(now).getDate() ===
-          3
-        ) {
+        if (new Date(expiresOn).getDate() - new Date(now).getDate() === 3) {
           days = 3;
         }
 
-        if (
-          new Date(ultimateDueDate).getDate() - new Date(now).getDate() ===
-          2
-        ) {
+        if (new Date(expiresOn).getDate() - new Date(now).getDate() === 2) {
           days = 2;
         }
 
-        if (
-          new Date(ultimateDueDate).getDate() - new Date(now).getDate() ===
-          1
-        ) {
+        if (new Date(expiresOn).getDate() - new Date(now).getDate() === 1) {
           days = 1;
         }
 

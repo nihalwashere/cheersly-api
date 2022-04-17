@@ -18,10 +18,8 @@ const {
   getAuthDeletedOrNotDeleted,
 } = require("../../mongo/helper/auth");
 const { createDefaultSettings } = require("../../concerns/teams");
-const {
-  createTrialSubscription,
-  validateToken,
-} = require("../../utils/common");
+const { createTrialSubscription } = require("../../concerns/subscriptions");
+const { validateToken } = require("../../utils/common");
 const { encodeJWT } = require("../../utils/jwt");
 const logger = require("../../global/logger");
 
@@ -45,7 +43,7 @@ router.post("/signup", async (req, res) => {
     }
 
     const {
-      team: { id: teamId },
+      team: { id: teamId, name: teamName },
       access_token,
       authed_user: { id: authedUserId },
     } = slackTokenPayload;
@@ -53,26 +51,12 @@ router.post("/signup", async (req, res) => {
     // check if installation already exists
     const auth = await getAuthDeletedOrNotDeleted(teamId);
 
-    if (!auth) {
-      await createTrialSubscription(teamId);
-    }
-
     await upsertAuth(teamId, {
       slackInstallation: slackTokenPayload,
       slackDeleted: false,
     });
 
     await paginateUsersList(access_token);
-
-    if (!auth) {
-      await createDefaultSettings(teamId, authedUserId);
-    }
-
-    await postInternalMessage(
-      INTERNAL_SLACK_TEAM_ID,
-      INTERNAL_SLACK_CHANNEL_ID,
-      createAppInstalledTemplate(teamId)
-    );
 
     const authedUser = await UserModel.findOne({
       "slackUserData.id": authedUserId,
@@ -83,6 +67,21 @@ router.post("/signup", async (req, res) => {
         .status(400)
         .json({ success: false, message: "User not found." });
     }
+
+    if (!auth) {
+      await createDefaultSettings(teamId, authedUserId);
+      await createTrialSubscription(
+        teamId,
+        teamName,
+        authedUser.slackUserData.profile.email
+      );
+    }
+
+    await postInternalMessage(
+      INTERNAL_SLACK_TEAM_ID,
+      INTERNAL_SLACK_CHANNEL_ID,
+      createAppInstalledTemplate(teamId)
+    );
 
     return res
       .header("x-access-token", encodeJWT({ teamId, userId: authedUserId }))

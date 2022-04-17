@@ -53,4 +53,19 @@ const placeOrder = async payload => {
   }
 };
 
-module.exports = { getCatalogs, placeOrder };
+const getExchangeRates = async () => {
+  try {
+    const req = await fetch(`${TANGO_CARD_SANDOX_API_BASE_URL}/exchangerates`, {
+      method: "GET",
+      headers: getHeaders(),
+    });
+
+    const res = await req.json();
+
+    return res;
+  } catch (error) {
+    logger.error("getExchangeRates() : error -> ", error);
+  }
+};
+
+module.exports = { getCatalogs, placeOrder, getExchangeRates };

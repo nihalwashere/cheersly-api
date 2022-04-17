@@ -12,6 +12,9 @@ const OrdersSchema = new Schema(
     response: {
       type: Object,
     },
+    points: {
+      type: Number,
+    },
     teamId: {
       type: String,
       index: true,

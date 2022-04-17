@@ -78,6 +78,7 @@ const team = require("./src/api/v1/team");
 const recognition = require("./src/api/v1/recognition");
 const slackChannels = require("./src/api/v1/slack/channels");
 const giftCards = require("./src/api/v1/gift-cards");
+const billing = require("./src/api/v1/billing");
 const test = require("./src/api/v1/test");
 
 // USE ROUTES
@@ -91,6 +92,7 @@ app.use("/api/v1/user", user);
 app.use("/api/v1/team", team);
 app.use("/api/v1/recognition", recognition);
 app.use("/api/v1/gift-cards", giftCards);
+app.use("/api/v1/billing", billing);
 app.use("/api/test", test);
 
 // GraphQL
@@ -199,6 +201,21 @@ const server = app.listen(PORT, () => {
       "00 00 10 10 * *",
       () => {
         spawn(process.execPath, ["./src/cron/points-available-to-redeem.js"], {
+          stdio: "inherit",
+        });
+      },
+      null,
+      true,
+      DEFAULT_TIME_ZONE
+    );
+
+    // EXCHANGE RATES
+
+    // get exchange rates cron scheduled at 3 AM daily
+    new CronJob(
+      "00 00 3 * * *",
+      () => {
+        spawn(process.execPath, ["./src/cron/get-exchange-rates.js"], {
           stdio: "inherit",
         });
       },

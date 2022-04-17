@@ -6,7 +6,8 @@ const router = express.Router();
 const { handleCheersCommand } = require("../../slack/commands/cheers");
 const { paginateUsersList } = require("../../slack/pagination/users-list");
 const { publishAppHome } = require("../../slack/app-home");
-// const logger = require("../../global/logger");
+const { createCustomer } = require("../../stripe");
+const logger = require("../../global/logger");
 
 router.get("/health", (req, res) =>
   res.json({ msg: "Test routes are up and running!!!" })
@@ -68,6 +69,18 @@ router.post("/cron-upgrade-trial-subscription", async (req, res) => {
   });
 
   return res.status(200).json({ success: true });
+});
+
+router.post("/create-customer", async (req, res) => {
+  try {
+    const customer = await createCustomer("LoneWolf-Dev");
+
+    logger.debug("customer : ", customer);
+
+    return res.sendStatus(200);
+  } catch (error) {
+    logger.error("error -> ", error);
+  }
 });
 
 module.exports = router;

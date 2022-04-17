@@ -77,7 +77,7 @@ const service = async () => {
       } = auth;
 
       const subscription = await SubscriptionsModel.findOne({
-        slackTeamId: teamId,
+        teamId,
       });
 
       if (!subscription) {
