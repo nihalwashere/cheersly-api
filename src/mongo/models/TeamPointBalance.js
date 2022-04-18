@@ -18,8 +18,6 @@ const TeamPointBalanceSchema = new Schema(
   { timestamps: true, collection }
 );
 
-TeamPointBalanceSchema.index({ slackUserId: 1, teamId: 1 });
-
 const TeamPointBalance = mongoose.model(collection, TeamPointBalanceSchema);
 
 module.exports = TeamPointBalance;

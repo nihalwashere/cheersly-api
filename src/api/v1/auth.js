@@ -19,6 +19,9 @@ const {
 } = require("../../mongo/helper/auth");
 const { createDefaultSettings } = require("../../concerns/teams");
 const { createTrialSubscription } = require("../../concerns/subscriptions");
+const {
+  createDefaultTeamPointBalance,
+} = require("../../concerns/teamPointBalance");
 const { validateToken } = require("../../utils/common");
 const { encodeJWT } = require("../../utils/jwt");
 const logger = require("../../global/logger");
@@ -69,6 +72,7 @@ router.post("/signup", async (req, res) => {
     }
 
     if (!auth) {
+      await createDefaultTeamPointBalance(teamId);
       await createDefaultSettings(teamId, authedUserId);
       await createTrialSubscription(
         teamId,
