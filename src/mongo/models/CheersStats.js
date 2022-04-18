@@ -22,7 +22,7 @@ const CheersStatsSchema = new mongoose.Schema(
       type: Number,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 CheersStatsSchema.index({ slackUserId: 1, teamId: 1 });

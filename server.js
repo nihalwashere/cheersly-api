@@ -5,8 +5,6 @@ const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const { graphqlHTTP } = require("express-graphql");
-const schema = require("./src/graphql/schema");
 const logger = require("./src/global/logger");
 
 const { PORT, MONGO_URL, MONGO_OPTIONS } = require("./src/global/config");
@@ -94,16 +92,6 @@ app.use("/api/v1/recognition", recognition);
 app.use("/api/v1/gift-cards", giftCards);
 app.use("/api/v1/billing", billing);
 app.use("/api/test", test);
-
-// GraphQL
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema,
-    graphiql: true,
-    pretty: true,
-  })
-);
 
 // CONNECT TO MONGODB
 mongoose

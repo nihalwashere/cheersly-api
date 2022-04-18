@@ -46,7 +46,7 @@ const TicTacToeSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const TicTacToe = mongoose.model(collection, TicTacToeSchema);

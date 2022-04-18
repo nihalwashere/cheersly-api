@@ -39,7 +39,7 @@ const AuthSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 AuthSchema.index({ "slackInstallation.team.id": 1 });

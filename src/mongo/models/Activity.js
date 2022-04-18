@@ -20,7 +20,7 @@ const ActivitySchema = new Schema(
       index: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 ActivitySchema.index({ type: 1, teamId: 1 });

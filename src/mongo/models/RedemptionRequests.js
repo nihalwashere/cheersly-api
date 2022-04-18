@@ -27,7 +27,7 @@ const RedemptionRequestsSchema = new Schema(
       index: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const RedemptionRequests = mongoose.model(collection, RedemptionRequestsSchema);

@@ -15,7 +15,7 @@ const TeamPointBalanceSchema = new Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 TeamPointBalanceSchema.index({ slackUserId: 1, teamId: 1 });

@@ -11,7 +11,7 @@ const ThisOrThatQuestionsSchema = new mongoose.Schema(
       type: Object,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const ThisOrThatQuestions = mongoose.model(

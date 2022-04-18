@@ -12,7 +12,7 @@ const TopicsSchema = new mongoose.Schema(
       type: Array,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const Topics = mongoose.model(collection, TopicsSchema);

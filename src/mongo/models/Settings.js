@@ -39,7 +39,7 @@ const SettingsSchema = new Schema(
       type: Boolean,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const Settings = mongoose.model(collection, SettingsSchema);

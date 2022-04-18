@@ -24,7 +24,7 @@ const OrdersSchema = new Schema(
       index: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 OrdersSchema.index({ slackUserId: 1, teamId: 1 });

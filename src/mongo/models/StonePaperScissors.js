@@ -44,7 +44,7 @@ const StonePaperScissorsSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const StonePaperScissors = mongoose.model(collection, StonePaperScissorsSchema);

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
-const modelName = "CustomerFeedback";
+const collection = "CustomerFeedback";
 
 const CustomerFeedbackSchema = new Schema(
   {
@@ -14,9 +14,10 @@ const CustomerFeedbackSchema = new Schema(
   },
   {
     timestamps: true,
+    collection,
   }
 );
 
-const CustomerFeedback = mongoose.model(modelName, CustomerFeedbackSchema);
+const CustomerFeedback = mongoose.model(collection, CustomerFeedbackSchema);
 
 module.exports = CustomerFeedback;

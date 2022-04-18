@@ -22,7 +22,7 @@ const RewardsSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const Rewards = mongoose.model(collection, RewardsSchema);

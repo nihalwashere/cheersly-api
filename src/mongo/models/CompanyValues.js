@@ -15,7 +15,7 @@ const CompanyValuesSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const CompanyValues = mongoose.model(collection, CompanyValuesSchema);

@@ -19,7 +19,7 @@ const ExchangeRatesSchema = new Schema(
       type: Number,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const ExchangeRates = mongoose.model(collection, ExchangeRatesSchema);

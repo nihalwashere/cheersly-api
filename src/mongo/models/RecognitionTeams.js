@@ -41,7 +41,7 @@ const RecognitionTeamsSchema = new Schema(
       default: [],
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const RecognitionTeams = mongoose.model(collection, RecognitionTeamsSchema);

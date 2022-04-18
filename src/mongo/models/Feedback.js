@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
-const modelName = "Feedback";
+const collection = "Feedback";
 
 const FeedbackSchema = new Schema(
   {
@@ -13,9 +13,10 @@ const FeedbackSchema = new Schema(
   },
   {
     timestamps: true,
+    collection,
   }
 );
 
-const Feedback = mongoose.model(modelName, FeedbackSchema);
+const Feedback = mongoose.model(collection, FeedbackSchema);
 
 module.exports = Feedback;

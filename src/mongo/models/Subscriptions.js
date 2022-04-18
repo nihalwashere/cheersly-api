@@ -25,7 +25,7 @@ const SubscriptionSchema = new mongoose.Schema(
       type: Date,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 SubscriptionSchema.index({ customerId: 1, teamId: 1 });

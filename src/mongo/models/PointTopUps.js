@@ -32,7 +32,7 @@ const PointTopUpsSchema = new Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 PointTopUpsSchema.index({ slackUserId: 1, teamId: 1 });
