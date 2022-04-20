@@ -119,11 +119,12 @@ router.post("/enable-app", async (req, res) => {
         .json({ success: false, message: "Custom message is required." });
     }
 
+    // update app launched for getting started steps
     await AuthModel.findOneAndUpdate(
       {
         "slackInstallation.team.id": teamId,
       },
-      { appEnabled: true }
+      { appLaunched: true }
     );
 
     if (shouldSendOnboardingMessage) {

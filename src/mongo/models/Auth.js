@@ -26,7 +26,7 @@ const AuthSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    appEnabled: {
+    appLaunched: {
       type: Boolean,
       default: false,
     },

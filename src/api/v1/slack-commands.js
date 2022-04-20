@@ -45,7 +45,7 @@ const {
   SubscriptionMessageType,
 } = require("../../enums/subscriptionMessageTypes");
 const { updateAppHomePublishedForTeam } = require("../../mongo/helper/user");
-const { isAppEnabledForTeam } = require("../../concerns/teams");
+const { isAppActivatedForTeam } = require("../../concerns/teams");
 const logger = require("../../global/logger");
 
 router.post("/", async (req, res) => {
@@ -88,9 +88,9 @@ router.post("/", async (req, res) => {
     }
 
     // check if app is enabled
-    const isAppEnabled = await isAppEnabledForTeam(team_id);
+    const isAppActivated = await isAppActivatedForTeam(team_id);
 
-    if (!isAppEnabled) {
+    if (!isAppActivated) {
       return res.status(200).json({
         response_type: "ephemeral",
         blocks: [

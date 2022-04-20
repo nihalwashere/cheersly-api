@@ -1,4 +1,3 @@
-const AuthModel = require("../mongo/models/Auth");
 const UserModel = require("../mongo/models/User");
 const SettingsModel = require("../mongo/models/Settings");
 const logger = require("../global/logger");
@@ -27,16 +26,16 @@ const createDefaultSettings = async (teamId, authedUserId) => {
   }
 };
 
-const isAppEnabledForTeam = async teamId => {
+const isAppActivatedForTeam = async teamId => {
   try {
-    const auth = await AuthModel.findOne({
-      "slackInstallation.team.id": teamId,
+    const settings = await SettingsModel.findOne({
+      teamId,
     });
 
-    return auth.appEnabled;
+    return settings.isActivated;
   } catch (error) {
-    logger.error("isAppEnabledForTeam() -> error : ", error);
+    logger.error("isAppActivatedForTeam() -> error : ", error);
   }
 };
 
-module.exports = { createDefaultSettings, isAppEnabledForTeam };
+module.exports = { createDefaultSettings, isAppActivatedForTeam };

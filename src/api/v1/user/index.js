@@ -192,7 +192,10 @@ router.get("/balance", async (req, res) => {
     return res.status(200).json({
       success: true,
       data: {
-        balance: cheersStats.cheersRedeemable,
+        balance:
+          cheersStats && cheersStats.cheersRedeemable
+            ? cheersStats.cheersRedeemable
+            : 0,
       },
     });
   } catch (error) {

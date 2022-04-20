@@ -31,8 +31,6 @@ app.use(express.raw({ verify: rawBodySaver, type: "*/*", limit: "50mb" }));
 const whitelist = [
   "https://www.cheersly.club",
   "https://dev.cheersly.club",
-  "https://cheersly-dev.herokuapp.com",
-  "https://cheersly.herokuapp.com",
   "https://cheersly.club",
   "https://app.cheersly.club",
   "https://app-dev.cheersly.club",
@@ -99,14 +97,12 @@ mongoose
   .then(() => logger.info("MongoDB Connected!!!"))
   .catch(err => logger.error("MongoDB Connection Failed -> error ", err));
 
-app.get("/logo.png", (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.png"));
+app.get("/", (req, res) => {
+  res.sendStatus(200);
 });
 
-app.get("/giphy_attribution_mark.png", (req, res) => {
-  res
-    .status(200)
-    .sendFile(path.join(__dirname, PUBLIC_DIR, "giphy_attribution_mark.png"));
+app.get("/logo.png", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.png"));
 });
 
 const server = app.listen(PORT, () => {
