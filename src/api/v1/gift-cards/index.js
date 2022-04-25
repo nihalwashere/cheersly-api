@@ -171,8 +171,7 @@ router.post("/order", async (req, res) => {
       //   campaign: "",
       //   emailSubject: "",
       //   externalRefID: "",
-      message: `Hey ${firstName},
-        your Cheersly gift card purchase was successful. Please refer to the instructions below on how to redeem your gift card.`,
+      message: `Hey ${firstName}, your gift card purchase was successful. Please refer to the instructions below on how to redeem your gift card.`,
       //   notes: "",
     };
 

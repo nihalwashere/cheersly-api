@@ -104,7 +104,19 @@ router.post("/teams", async (req, res) => {
         .json({ success: false, message: "Name is required." });
     }
 
-    await new RecognitionTeamsModel({
+    // check if a recognition team already exists with the given name
+    const recognitionTeamExists = await RecognitionTeamsModel.findOne({
+      name,
+    });
+
+    if (recognitionTeamExists) {
+      return res.status(400).json({
+        success: false,
+        message: `Recognition team already exists with the name ${name}, please try again with a unique name.`,
+      });
+    }
+
+    const newRecognitionTeam = await new RecognitionTeamsModel({
       teamId,
       name,
     }).save();
@@ -121,9 +133,13 @@ router.post("/teams", async (req, res) => {
       );
     }
 
-    return res
-      .status(200)
-      .json({ success: true, message: "Team created successfully." });
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: newRecognitionTeam._id,
+      },
+      message: "Team created successfully.",
+    });
   } catch (error) {
     logger.error("POST /recognition/teams -> error : ", error);
     return res.status(500).json({
@@ -187,6 +203,18 @@ router.put("/teams/:id", async (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "Atleast one manager is required." });
+    }
+
+    // check if a recognition team already exists with the given channel ID
+    const recognitionTeamExists = await RecognitionTeamsModel.findOne({
+      "channel.id": channel.id,
+    });
+
+    if (recognitionTeamExists) {
+      return res.status(400).json({
+        success: false,
+        message: `Channel ${channel.name} is linked to another recognition team, please try again with a different channel.`,
+      });
     }
 
     const oldRecognitionTeam = await RecognitionTeamsModel.findOne({
