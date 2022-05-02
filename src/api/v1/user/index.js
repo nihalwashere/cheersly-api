@@ -89,9 +89,10 @@ router.get("/all/stats", async (req, res) => {
 
         const payload = {
           user,
+          cheersRedeemable: 0,
         };
 
-        if (cheersStats) {
+        if (cheersStats && cheersStats.cheersRedeemable) {
           payload.cheersRedeemable = cheersStats.cheersRedeemable;
         }
 
