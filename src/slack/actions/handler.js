@@ -48,6 +48,12 @@ const logger = require("../../global/logger");
 
 const actionsMapper = async payload => {
   try {
+    const subscriptionInfo = await isSubscriptionValidForSlack(payload.team.id);
+
+    if (!subscriptionInfo.hasSubscription) {
+      return await handleUpgradeSubscription(payload, subscriptionInfo);
+    }
+
     const actionIdMapper = {
       [POLL_OPTION_SUBMITTED]: () => handlePollOptionSubmitted(payload),
       [CUSTOMER_FEEDBACK]: () => handleCustomerFeedback(payload),
@@ -89,20 +95,6 @@ const actionsMapper = async payload => {
     ) {
       applyMapper = blockIdMapper[payload.actions[0].block_id];
     } else {
-      if (
-        payload.actions[0].action_id === SAY_CHEERS ||
-        payload.actions[0].action_id === START_A_POLL ||
-        payload.actions[0].action_id === SHARE_FEEDBACK_WITH_TEAM
-      ) {
-        const subscriptionInfo = await isSubscriptionValidForSlack(
-          payload.team.id
-        );
-
-        if (!subscriptionInfo.hasSubscription) {
-          return await handleUpgradeSubscription(payload, subscriptionInfo);
-        }
-      }
-
       applyMapper = actionIdMapper[payload.actions[0].action_id];
     }
 
