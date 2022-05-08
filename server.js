@@ -101,6 +101,10 @@ mongoose
   .then(() => logger.info("MongoDB Connected!!!"))
   .catch(err => logger.error("MongoDB Connection Failed -> error ", err));
 
+app.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.get("/logo.png", (req, res) => {
   res.status(200).sendFile(path.join(__dirname, PUBLIC_DIR, "logo.png"));
 });
