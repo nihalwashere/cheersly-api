@@ -4,6 +4,15 @@ const {
   createAllowedOnlyInDMTemplate,
   createPlayStonePaperScissorsTemplate,
 } = require("./template");
+const { isSubscriptionValidForSlack } = require("../../../utils/common");
+const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
+const {
+  SubscriptionMessageType,
+} = require("../../../enums/subscriptionMessageTypes");
+const {
+  createTrialEndedTemplate,
+  createUpgradeSubscriptionTemplate,
+} = require("../../templates");
 const logger = require("../../../global/logger");
 
 const handleStonePaperScissorsCommand = async (
@@ -19,6 +28,26 @@ const handleStonePaperScissorsCommand = async (
       return {
         response_type: "ephemeral",
         blocks: createAllowedOnlyInDMTemplate(),
+      };
+    }
+
+    // verify subscription
+
+    const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+
+    if (!subscriptionInfo.hasSubscription) {
+      await updateAppHomePublishedForTeam(team_id, false);
+
+      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+        return {
+          response_type: "in_channel",
+          blocks: createTrialEndedTemplate(),
+        };
+      }
+
+      return {
+        response_type: "in_channel",
+        blocks: createUpgradeSubscriptionTemplate(),
       };
     }
 

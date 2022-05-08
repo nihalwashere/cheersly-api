@@ -4,6 +4,15 @@ const {
   createAllowedOnlyInDMTemplate,
   createPlayTicTacToeTemplate,
 } = require("./template");
+const { isSubscriptionValidForSlack } = require("../../../utils/common");
+const { updateAppHomePublishedForTeam } = require("../../../mongo/helper/user");
+const {
+  SubscriptionMessageType,
+} = require("../../../enums/subscriptionMessageTypes");
+const {
+  createTrialEndedTemplate,
+  createUpgradeSubscriptionTemplate,
+} = require("../../templates");
 const logger = require("../../../global/logger");
 
 const handleTicTacToeCommand = async (teamId, userId, channelId) => {
@@ -15,6 +24,26 @@ const handleTicTacToeCommand = async (teamId, userId, channelId) => {
       return {
         response_type: "ephemeral",
         blocks: createAllowedOnlyInDMTemplate(),
+      };
+    }
+
+    // verify subscription
+
+    const subscriptionInfo = await isSubscriptionValidForSlack(teamId);
+
+    if (!subscriptionInfo.hasSubscription) {
+      await updateAppHomePublishedForTeam(teamId, false);
+
+      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+        return {
+          response_type: "in_channel",
+          blocks: createTrialEndedTemplate(),
+        };
+      }
+
+      return {
+        response_type: "in_channel",
+        blocks: createUpgradeSubscriptionTemplate(),
       };
     }
 

@@ -95,22 +95,6 @@ router.post("/", async (req, res) => {
       return await handleOnboardCommand(team_id, channel_id, user_id);
     }
 
-    // verify subscription
-
-    const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
-
-    if (!subscriptionInfo.hasSubscription) {
-      res.send("");
-
-      await updateAppHomePublishedForTeam(team_id, false);
-
-      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
-        return await trialEndedMessage(team_id, user_id, channel_id);
-      }
-
-      return await upgradeSubscriptionMessage(team_id, user_id, channel_id);
-    }
-
     if (isSPSCommand(text)) {
       // /cheers sps
 
@@ -131,6 +115,22 @@ router.post("/", async (req, res) => {
       return res
         .status(200)
         .json(await handleTicTacToeCommand(team_id, user_id, channel_id));
+    }
+
+    // verify subscription
+
+    const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+
+    if (!subscriptionInfo.hasSubscription) {
+      res.send("");
+
+      await updateAppHomePublishedForTeam(team_id, false);
+
+      if (subscriptionInfo.messageType === SubscriptionMessageType.TRIAL) {
+        return await trialEndedMessage(team_id, user_id, channel_id);
+      }
+
+      return await upgradeSubscriptionMessage(team_id, user_id, channel_id);
     }
 
     if (isCheersCommand(text)) {
