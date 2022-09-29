@@ -129,7 +129,7 @@ const server = app.listen(PORT, () => {
       },
       {
         scheduled: true,
-        timezone: "America/Sao_Paulo",
+        timezone: DEFAULT_TIME_ZONE,
       }
     );
 
@@ -162,18 +162,18 @@ const server = app.listen(PORT, () => {
     );
 
     // upgrade trial with offer cron scheduled at 01:00 PM every thursday
-    cron.schedule(
-      "00 13 * * 4",
-      () => {
-        spawn(process.execPath, ["./src/cron/upgrade-trial-with-offer.js"], {
-          stdio: "inherit",
-        });
-      },
-      {
-        scheduled: true,
-        timezone: DEFAULT_TIME_ZONE,
-      }
-    );
+    // cron.schedule(
+    //   "00 13 * * 4",
+    //   () => {
+    //     spawn(process.execPath, ["./src/cron/upgrade-trial-with-offer.js"], {
+    //       stdio: "inherit",
+    //     });
+    //   },
+    //   {
+    //     scheduled: true,
+    //     timezone: DEFAULT_TIME_ZONE,
+    //   }
+    // );
   } catch (error) {
     logger.error("Failed to start server -> error : ", error);
   }

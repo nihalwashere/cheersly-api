@@ -50,7 +50,7 @@ const { nanoid } = require("nanoid");
 
 // console.log("result : ", str.split("----"));
 
-const now = new Date();
+// const now = new Date();
 // console.log("now : ", now);
 
 // console.log("later : ", moment().add(60, "minutes").toDate());
@@ -86,41 +86,70 @@ const now = new Date();
 
 // console.log(nanoid(10));
 
-function shuffle(array) {
-  let currentIndex = array.length,
-    randomIndex;
+// function shuffle(array) {
+//   let currentIndex = array.length,
+//     randomIndex;
 
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+//   // While there remain elements to shuffle...
+//   while (currentIndex != 0) {
+//     // Pick a remaining element...
+//     randomIndex = Math.floor(Math.random() * currentIndex);
+//     currentIndex--;
 
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
+//     // And swap it with the current element.
+//     [array[currentIndex], array[randomIndex]] = [
+//       array[randomIndex],
+//       array[currentIndex],
+//     ];
+//   }
 
-  return array;
+//   return array;
+// }
+
+// const arr = [
+//   {
+//     name: "A",
+//   },
+//   {
+//     name: "B",
+//   },
+//   {
+//     name: "C",
+//   },
+//   {
+//     name: "D",
+//   },
+// ];
+
+// shuffle(arr);
+
+// console.log(arr);
+
+const subscription = {
+  _id: "6201387f6412780004b10e5d",
+  isTrialPeriod: true,
+  subscribedBy: null,
+  subscribedOn: "2022-02-07T15:19:27.348Z",
+  // nextDueDate: "2022-02-21T15:19:27.348Z",
+  nextDueDate: "2022-10-05T15:19:27.348Z",
+  ultimateDueDate: "2022-02-21T15:19:27.348Z",
+  totalUsers: null,
+  users: [],
+  slackTeamId: "T0393P6QL",
+  createdAt: "2022-02-07T15:19:27.349Z",
+  updatedAt: "2022-02-07T15:19:27.349Z",
+  __v: 0,
+};
+
+// subscription &&
+//   new Date().getDate() - new Date(subscription.nextDueDate).getDate() < 7;
+
+// console.log("new Date().getDate() : ", new Date().getDate());
+
+console.log("diff : ", moment().diff(subscription.nextDueDate, "days"));
+
+if (new Date().getDate() - new Date(subscription.nextDueDate).getDate() < 7) {
+  console.log("TRUE");
+} else {
+  console.log("FALSE");
 }
-
-const arr = [
-  {
-    name: "A",
-  },
-  {
-    name: "B",
-  },
-  {
-    name: "C",
-  },
-  {
-    name: "D",
-  },
-];
-
-shuffle(arr);
-
-console.log(arr);
