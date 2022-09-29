@@ -1,7 +1,6 @@
 const express = require("express");
 const cron = require("node-cron");
 const { spawn } = require("child_process");
-const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -15,8 +14,6 @@ const { DEFAULT_TIME_ZONE } = require("./src/global/constants");
 const PUBLIC_DIR = "src/public";
 
 const app = express();
-
-app.use(morgan("combined"));
 
 const rawBodySaver = (req, res, buf, encoding) => {
   if (buf && buf.length) {
