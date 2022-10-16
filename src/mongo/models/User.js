@@ -23,12 +23,17 @@ const UserSchema = new mongoose.Schema(
       enum: getUserRoles(),
       index: true,
     },
+    country: {
+      type: String,
+      default: null,
+    },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 UserSchema.index({ "slackUserData.id": 1 });
 UserSchema.index({ "slackUserData.team_id": 1 });
 
 const User = mongoose.model(collection, UserSchema);
+
 module.exports = User;

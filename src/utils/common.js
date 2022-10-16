@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const { APP_URL, SLACK_APP_ID } = require("../global/config");
 const {
-  addSubscription,
   getSubscriptionBySlackTeamId,
 } = require("../mongo/helper/subscriptions");
 const { getUserDataBySlackUserId } = require("../mongo/helper/user");
@@ -11,6 +10,7 @@ const { getAuthDataForSlackTeam } = require("../mongo/helper/auth");
 const {
   SubscriptionMessageType,
 } = require("../enums/subscriptionMessageTypes");
+const { decodeJWT } = require("./jwt");
 const logger = require("../global/logger");
 
 const newIdString = () => mongoose.Types.ObjectId().toHexString();
@@ -59,34 +59,9 @@ const verifySlackRequest = (slackRequestTimestamp, slackSignature, rawBody) => {
 const waitForMilliSeconds = ms =>
   new Promise(resolve => setTimeout(resolve, ms));
 
-// return date + 14 days
-const getTrialEndDate = date => new Date(date.setDate(date.getDate() + 14));
-
-const createTrialSubscription = async slackTeamId => {
+const isSubscriptionValidForSlack = async teamId => {
   try {
-    const now = new Date();
-    const subscribedOn = new Date(now);
-    const nextDueDate = getTrialEndDate(new Date(subscribedOn));
-    const ultimateDueDate = nextDueDate;
-
-    await addSubscription({
-      isTrialPeriod: true,
-      subscribedBy: null,
-      subscribedOn,
-      nextDueDate,
-      ultimateDueDate,
-      totalUsers: null,
-      users: [],
-      slackTeamId,
-    });
-  } catch (error) {
-    logger.error("createTrialSubscription() -> ", error);
-  }
-};
-
-const isSubscriptionValidForSlack = async slackTeamId => {
-  try {
-    const subscription = await getSubscriptionBySlackTeamId(slackTeamId);
+    const subscription = await getSubscriptionBySlackTeamId(teamId);
 
     if (!subscription) {
       return {
@@ -99,7 +74,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       !subscription.isTrialPeriod &&
-      new Date(subscription.ultimateDueDate) > new Date(now)
+      new Date(subscription.expiresOn) > new Date(now)
     ) {
       return {
         hasSubscription: true,
@@ -109,7 +84,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       subscription.isTrialPeriod &&
-      new Date(subscription.ultimateDueDate) > new Date(now)
+      new Date(subscription.expiresOn) > new Date(now)
     ) {
       return {
         hasSubscription: true,
@@ -119,7 +94,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       subscription.isTrialPeriod &&
-      new Date(now) > new Date(subscription.ultimateDueDate)
+      new Date(now) > new Date(subscription.expiresOn)
     ) {
       return {
         hasSubscription: false,
@@ -129,7 +104,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
 
     if (
       !subscription.isTrialPeriod &&
-      new Date(now) > new Date(subscription.ultimateDueDate)
+      new Date(now) > new Date(subscription.expiresOn)
     ) {
       return {
         hasSubscription: false,
@@ -138,7 +113,7 @@ const isSubscriptionValidForSlack = async slackTeamId => {
     }
   } catch (error) {
     logger.error(
-      `isSubscriptionValidForSlack() : slackTeamId : ${slackTeamId} -> `,
+      `isSubscriptionValidForSlack() : teamId : ${teamId} -> `,
       error
     );
   }
@@ -151,58 +126,49 @@ const validateToken = async headers => {
 
   if (!token) {
     return {
-      status: 401,
-      message: "Token is required!",
+      success: false,
+      message: "Token is required.",
     };
   }
 
-  const buffer = Buffer.from(token, "base64");
-  const decodedToken = buffer.toString("ascii");
+  const decodedToken = decodeJWT(token);
 
-  const slackUserId = decodedToken.split("$")[0];
-  const slackTeamId = decodedToken.split("$")[1];
+  const { userId = null, teamId = null } = decodedToken;
 
-  if (!slackUserId) {
+  if (!userId || !teamId) {
     return {
-      status: 401,
-      message: "Invalid token - Slack userId is required!",
+      success: false,
+      message: "Invalid token.",
     };
   }
 
-  if (!slackTeamId) {
-    return {
-      status: 401,
-      message: "Invalid token - Slack teamId is required!",
-    };
-  }
-
-  const user = await getUserDataBySlackUserId(slackUserId);
+  const user = await getUserDataBySlackUserId(userId);
 
   if (!user) {
     return {
-      status: 401,
-      message: "Slack user not found!",
+      success: false,
+      message: "User not found.",
     };
   }
 
-  const auth = await getAuthDataForSlackTeam(slackTeamId);
+  const auth = await getAuthDataForSlackTeam(teamId);
 
   if (!auth) {
     return {
-      status: 401,
-      message: "Auth not found!",
+      success: false,
+      message: "Team not found.",
     };
   }
 
   return {
-    status: 200,
-    message: "Success",
-    userId: user._id,
-    slackUserId,
-    slackTeamId,
-    role: user.role,
-    slackUserData: user.slackUserData,
-    slackInstallation: auth.slackInstallation,
+    success: true,
+    data: {
+      user: {
+        role: user.role,
+        country: user.country,
+        slackUserData: user.slackUserData,
+      },
+    },
   };
 };
 
@@ -264,6 +230,21 @@ const getAppHomeLink = teamId =>
 const getAppHomeUrl = teamId =>
   `slack://app?team=${teamId}&id=${SLACK_APP_ID}&tab=home`;
 
+const getChannelDeepLink = (teamId, channelId) =>
+  `slack://channel?team=${teamId}&id=${channelId}`;
+
+const getChannelString = (teamId, recognitionTeams) => {
+  let channelString = "";
+
+  recognitionTeams.map((elem, index) => {
+    channelString += `<${getChannelDeepLink(teamId, elem.channel.id)}|#${
+      elem.channel.name
+    }>${recognitionTeams.length === index + 1 ? "" : ", "}`;
+  });
+
+  return channelString;
+};
+
 const shuffle = array => {
   let currentIndex = array.length,
     randomIndex;
@@ -289,7 +270,6 @@ module.exports = {
   newIdString,
   verifySlackRequest,
   waitForMilliSeconds,
-  createTrialSubscription,
   isSubscriptionValidForSlack,
   sortLeaders,
   validateToken,
@@ -299,5 +279,7 @@ module.exports = {
   getAppUrl,
   getAppHomeLink,
   getAppHomeUrl,
+  getChannelDeepLink,
+  getChannelString,
   shuffle,
 };

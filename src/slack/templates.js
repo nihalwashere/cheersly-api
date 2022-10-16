@@ -9,7 +9,7 @@ const {
     POLL_OPTION_C,
     POLL_OPTION_D,
     SUBMIT_CHEERS_FOR_REASON,
-    SUBMIT_CHEERS_TO_CHANNEL,
+    SUBMIT_CHEERS_FOR_POINTS,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES,
     SUBMIT_CHEERS_TO_USERS,
     SHOULD_SHARE_GIPHY,
@@ -27,7 +27,7 @@ const {
     POLL_OPTION_C_VALUE,
     POLL_OPTION_D_VALUE,
     SUBMIT_CHEERS_FOR_REASON_VALUE,
-    SUBMIT_CHEERS_TO_CHANNEL_VALUE,
+    SUBMIT_CHEERS_FOR_POINTS_VALUE,
     SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
     SUBMIT_CHEERS_TO_USERS_VALUE,
     SHOULD_SHARE_GIPHY_VALUE,
@@ -35,9 +35,8 @@ const {
     FEEDBACK_CHANNEL_VALUE,
     FEEDBACK_IS_ANONYMOUS_VALUE,
   },
-  SLACK_ACTIONS: { CUSTOMER_FEEDBACK },
 } = require("../global/constants");
-const { getAppHomeLink } = require("../utils/common");
+const { getAppHomeUrl, getAppHomeLink } = require("../utils/common");
 
 const createAPITokensRevokedTemplate = teamId => {
   return [
@@ -431,11 +430,140 @@ const createSubmitAFeedbackTemplate = (user_name, callback_id) => {
   };
 };
 
-const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
+const submitCheersTemplate = ({
+  metaData,
+  callback_id,
+  companyValueOptions,
+  pointAmountOptions,
+  remainingPointsForUser,
+  teamSettings,
+}) => {
+  const blocks = [
+    {
+      type: "input",
+      block_id: SUBMIT_CHEERS_TO_USERS,
+      label: {
+        type: "plain_text",
+        text: "Whom do you want to say cheers to?",
+        emoji: true,
+      },
+      element: {
+        action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
+        type: "multi_conversations_select",
+        placeholder: {
+          type: "plain_text",
+          text: "Select your peers",
+          emoji: true,
+        },
+        filter: {
+          include: ["im"],
+          exclude_bot_users: true,
+          exclude_external_shared_channels: true,
+        },
+      },
+    },
+    {
+      type: "input",
+      block_id: SUBMIT_CHEERS_FOR_POINTS,
+      label: {
+        type: "plain_text",
+        text: "How many points would you like to share with each recipient?",
+        emoji: true,
+      },
+      element: {
+        type: "static_select",
+        placeholder: {
+          type: "plain_text",
+          text: "Select a point amount",
+          emoji: true,
+        },
+        options: pointAmountOptions.map(elem => ({
+          text: {
+            type: "plain_text",
+            text: `${elem} points`,
+            emoji: true,
+          },
+          value: elem,
+        })),
+        action_id: SUBMIT_CHEERS_FOR_POINTS_VALUE,
+      },
+    },
+    {
+      type: "context",
+      elements: [
+        {
+          type: "plain_text",
+          text: `You currently have ${remainingPointsForUser} points remaining.`,
+          emoji: true,
+        },
+      ],
+    },
+    {
+      type: "input",
+      block_id: SUBMIT_CHEERS_FOR_REASON,
+      element: {
+        type: "plain_text_input",
+        multiline: true,
+        action_id: SUBMIT_CHEERS_FOR_REASON_VALUE,
+      },
+      label: {
+        type: "plain_text",
+        text: "For reason?",
+        emoji: true,
+      },
+    },
+  ];
+
+  if (companyValueOptions.length) {
+    blocks.push({
+      type: "input",
+      block_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES,
+      optional: !teamSettings.requireCompanyValues,
+      label: {
+        type: "plain_text",
+        text: "Tag company values",
+        emoji: true,
+      },
+      element: {
+        type: "multi_static_select",
+        placeholder: {
+          type: "plain_text",
+          text: "Select a company value",
+          emoji: true,
+        },
+        options: companyValueOptions,
+        action_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
+      },
+    });
+  }
+
+  if (teamSettings.enableSharingGiphys) {
+    blocks.push({
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Would you like to post a Giphy?*",
+      },
+      block_id: SHOULD_SHARE_GIPHY,
+      accessory: {
+        type: "checkboxes",
+        options: [
+          {
+            text: {
+              type: "mrkdwn",
+              text: "Share cheers Giphy",
+            },
+          },
+        ],
+        action_id: SHOULD_SHARE_GIPHY_VALUE,
+      },
+    });
+  }
+
   return {
     type: "modal",
     callback_id,
-    private_metadata: user_name,
+    private_metadata: metaData,
     title: {
       type: "plain_text",
       text: "Say Cheers",
@@ -443,7 +571,7 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
     },
     submit: {
       type: "plain_text",
-      text: "Submit",
+      text: "Say Cheers :beers:",
       emoji: true,
     },
     close: {
@@ -451,110 +579,7 @@ const submitCheersTemplate = (user_name, callback_id, companyValueOptions) => {
       text: "Cancel",
       emoji: true,
     },
-    blocks: [
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_TO_USERS,
-        label: {
-          type: "plain_text",
-          text: "Whom do you want to say cheers to?",
-          emoji: true,
-        },
-        element: {
-          action_id: SUBMIT_CHEERS_TO_USERS_VALUE,
-          type: "multi_conversations_select",
-          max_selected_items: 3,
-          placeholder: {
-            type: "plain_text",
-            text: "Select your peers",
-            emoji: true,
-          },
-          filter: {
-            include: ["im"],
-            exclude_bot_users: true,
-            exclude_external_shared_channels: true,
-          },
-        },
-      },
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_TO_CHANNEL,
-        label: {
-          type: "plain_text",
-          text: "Which channel do you want to post to?",
-          emoji: true,
-        },
-        element: {
-          action_id: SUBMIT_CHEERS_TO_CHANNEL_VALUE,
-          type: "conversations_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Select channel",
-            emoji: true,
-          },
-          filter: {
-            include: ["private", "public"],
-            exclude_bot_users: true,
-            exclude_external_shared_channels: true,
-          },
-        },
-      },
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES,
-        optional: true,
-        label: {
-          type: "plain_text",
-          text: "Tag company values",
-          emoji: true,
-        },
-        element: {
-          type: "multi_static_select",
-          placeholder: {
-            type: "plain_text",
-            text: "Select a company value",
-            emoji: true,
-          },
-          options: companyValueOptions,
-          action_id: SUBMIT_CHEERS_FOR_COMPANY_VALUES_VALUE,
-        },
-      },
-      {
-        type: "input",
-        block_id: SUBMIT_CHEERS_FOR_REASON,
-        optional: true,
-        element: {
-          type: "plain_text_input",
-          multiline: true,
-          action_id: SUBMIT_CHEERS_FOR_REASON_VALUE,
-        },
-        label: {
-          type: "plain_text",
-          text: "For reason?",
-          emoji: true,
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "*Would you like to post a Giphy?*",
-        },
-        block_id: SHOULD_SHARE_GIPHY,
-        accessory: {
-          type: "checkboxes",
-          options: [
-            {
-              text: {
-                type: "mrkdwn",
-                text: "Share cheers Giphy",
-              },
-            },
-          ],
-          action_id: SHOULD_SHARE_GIPHY_VALUE,
-        },
-      },
-    ],
+    blocks,
   };
 };
 
@@ -731,6 +756,95 @@ const createUpgradeSubscriptionTemplate = () => {
   ];
 };
 
+const createOnboardingTemplate = teamId => [
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "Hey there :wave: I'm Cheersly, the employee engagement and peer recognition app for Slack.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        "I am here to help your team recognize each other for all of the meaningful contributions that you make.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*Here's how it works:*",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Use the command `/cheers` to share cheers with your peers.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":thumbsup: *Show some support*\nAdd any reaction to cheers that are posted publicly as a fun way to show your support to your peers.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":moneybag: *Earn & redeem points*\nAccrue points from cheers to redeem in our reward catalog.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":ice_cube: *Fun Icebreakers*\nSpark funny conversations with your peers.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        ":v: *Play 1-1 Games*\nPlay Tic Tac Toe or Stone Paper Scissors with your co-worker.",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Head over to the home tab of Cheersly and let the fun begin!",
+    },
+    accessory: {
+      type: "button",
+      text: {
+        type: "plain_text",
+        text: "Take me there :rocket:",
+        emoji: true,
+      },
+      url: getAppHomeUrl(teamId),
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Cheers :beers:",
+    },
+  },
+  createSupportContextTemplate(),
+];
+
 module.exports = {
   createAPITokensRevokedTemplate,
   createAppUninstalledTemplate,
@@ -747,4 +861,5 @@ module.exports = {
   createUpgradeSubscriptionTemplate,
   trialEndedText,
   upgradeSubscriptionText,
+  createOnboardingTemplate,
 };

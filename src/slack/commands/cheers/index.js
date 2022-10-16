@@ -1,24 +1,87 @@
-const { openModal } = require("../../api");
+const SettingsModel = require("../../../mongo/models/Settings");
+const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
+const { postEphemeralMessage, openModal } = require("../../api");
+const { createChannelNotSetupTemplate } = require("./template");
 const { submitCheersTemplate } = require("../../templates");
 const { wrapCompanyValueOptionsForTeam } = require("../../helper");
+const {
+  getCurrentMonthTotalSpentForUserByRecognitionTeam,
+} = require("../../../concerns/cheers");
 const {
   VIEW_SUBMISSIONS: { SAY_CHEERS },
 } = require("../../../global/constants");
 const logger = require("../../../global/logger");
 
-const handleCheersCommand = async (team_id, user_name, trigger_id) => {
+const handleCheersCommand = async (
+  teamId,
+  userId,
+  triggerId,
+  channelId,
+  channelName
+) => {
   try {
     // /cheers
 
-    const companyValueOptions = await wrapCompanyValueOptionsForTeam(team_id);
+    const companyValueOptions = await wrapCompanyValueOptionsForTeam(teamId);
 
-    const viewTemplate = submitCheersTemplate(
-      user_name,
-      SAY_CHEERS,
-      companyValueOptions
+    // first check if there's a recognition team created for this channel
+
+    const recognitionTeams = await RecognitionTeamsModel.find({
+      teamId,
+    });
+
+    const recognitionTeam = recognitionTeams.find(
+      elem => elem.channel.id === channelId
     );
 
-    await openModal(team_id, trigger_id, viewTemplate);
+    if (!recognitionTeam) {
+      return await postEphemeralMessage(
+        channelId,
+        userId,
+        teamId,
+        createChannelNotSetupTemplate(teamId, recognitionTeams)
+      );
+    }
+
+    const teamSettings = await SettingsModel.findOne({ teamId });
+
+    const {
+      _id: recognitionTeamId,
+      pointAmountOptions,
+      pointAllowance,
+    } = recognitionTeam;
+
+    const {
+      currentMonthTotalSpentForRecognitionTeam,
+    } = await getCurrentMonthTotalSpentForUserByRecognitionTeam(
+      teamId,
+      userId,
+      recognitionTeamId
+    );
+
+    const remainingPointsForUser = Number(
+      pointAllowance - currentMonthTotalSpentForRecognitionTeam
+    );
+
+    const metaData = JSON.stringify({
+      channelId,
+      channelName,
+      recognitionTeamId: recognitionTeam._id,
+      remainingPointsForUser,
+    });
+
+    await openModal(
+      teamId,
+      triggerId,
+      submitCheersTemplate({
+        metaData,
+        callback_id: SAY_CHEERS,
+        companyValueOptions,
+        pointAmountOptions,
+        remainingPointsForUser,
+        teamSettings,
+      })
+    );
   } catch (error) {
     logger.error("handleCheersCommand() -> error : ", error);
   }

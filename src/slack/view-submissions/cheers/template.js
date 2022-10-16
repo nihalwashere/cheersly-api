@@ -1,53 +1,53 @@
-const createSenderCheersSubmittedTemplate = senderUsername => {
-  return [
+const { getAppUrl } = require("../../../utils/common");
+
+const createCheersSubmittedTemplate = ({
+  senderId,
+  recipients,
+  reason,
+  giphyUrl,
+  companyValues,
+  points,
+}) => {
+  let recipientString = "";
+
+  recipients.forEach((recipient, index) => {
+    recipientString += `<@${recipient.id}>${
+      recipients.length === index + 1 ? "" : ", "
+    }`;
+  });
+
+  const blocks = [
     {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `@${senderUsername} just shared in some cheers :heart:`,
+        text: `<@${senderId}> shared some cheers for \`${points} points\` with ${recipientString}.`,
       },
     },
   ];
-};
-
-const createCheersSubmittedTemplate = ({
-  users,
-  reason,
-  giphyUrl,
-  companyValues,
-}) => {
-  const blocks = [];
-
-  users.map(user => {
-    blocks.push({
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: `@${user.recipient} now has ${user.cheersReceived} cheers :beers:`,
-      },
-    });
-  });
 
   if (reason) {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: "*For reason:*\n" + "```" + `${reason}` + "```",
+        text: `*For reason:*\n_${reason}_`,
       },
     });
   }
+
+  let companyValuesString = "";
+
+  companyValues.forEach(companyValue => {
+    companyValuesString += `\`${companyValue}\` `;
+  });
 
   if (companyValues && companyValues.length) {
     blocks.push({
       type: "section",
       text: {
         type: "mrkdwn",
-        text:
-          "*Company values favored :*\n" +
-          "```" +
-          `${companyValues.join(" ")}` +
-          "```",
+        text: `*Company values favored :*\n${companyValuesString}`,
       },
     });
   }
@@ -63,21 +63,39 @@ const createCheersSubmittedTemplate = ({
   return blocks;
 };
 
-const createSelectPeersTemplate = () => {
-  return [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text:
-          "Please select your peers while sharing cheers, you should not share cheers with yourself! :smile:",
-      },
+const createCheersNewsInDMTemplate = (
+  permaLink,
+  points,
+  cheersRedeemable,
+  senderUserId,
+  channelId
+) => [
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `<@${senderUserId}> shared some <${permaLink}|cheers> with you for \`${points} points\` in <#${channelId}>!`,
     },
-  ];
-};
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: `You now have \`${cheersRedeemable} points\` to redeem.`,
+    },
+    accessory: {
+      type: "button",
+      text: {
+        type: "plain_text",
+        text: ":moneybag: Redeem your points",
+        emoji: true,
+      },
+      url: `${getAppUrl()}/redeem`,
+    },
+  },
+];
 
 module.exports = {
-  createSenderCheersSubmittedTemplate,
   createCheersSubmittedTemplate,
-  createSelectPeersTemplate,
+  createCheersNewsInDMTemplate,
 };

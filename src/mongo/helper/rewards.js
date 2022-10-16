@@ -1,5 +1,4 @@
 const Rewards = require("../models/Rewards");
-const DefaultRewards = require("../../utils/defaults/rewards");
 const logger = require("../../global/logger");
 
 const getRewardsByTeamId = async teamId => {
@@ -51,21 +50,10 @@ const deleteRewardsById = async _id => {
   }
 };
 
-const addDefaultRewardsForTeam = async teamId => {
-  try {
-    return await Rewards.insertMany(
-      DefaultRewards.map(reward => ({ ...reward, teamId }))
-    );
-  } catch (error) {
-    logger.error(`addDefaultRewardsForTeam() -> error : `, error);
-  }
-};
-
 module.exports = {
   getRewardsByTeamId,
   getRewardById,
   addRewards,
   updateRewardsById,
   deleteRewardsById,
-  addDefaultRewardsForTeam,
 };

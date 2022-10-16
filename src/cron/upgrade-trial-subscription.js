@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const pMap = require("p-map");
 const UserModel = require("../mongo/models/User");
-const SubscriptionsModel = require("../mongo/models/Subscriptions");
 const { MONGO_URL, MONGO_OPTIONS } = require("../global/config");
 const { getAllAuths } = require("../mongo/helper/auth");
+const {
+  getTrialSubscriptionForSlackTeam,
+} = require("../mongo/helper/subscriptions");
 const { slackPostMessageToChannel } = require("../slack/api");
 const { waitForMilliSeconds } = require("../utils/common");
 const logger = require("../global/logger");
@@ -45,10 +47,7 @@ const service = async () => {
         },
       } = auth;
 
-      const subscription = await SubscriptionsModel.findOne({
-        slackTeamId: teamId,
-        isTrialPeriod: true,
-      });
+      const subscription = await getTrialSubscriptionForSlackTeam(teamId);
 
       if (!subscription) {
         return;
@@ -56,29 +55,20 @@ const service = async () => {
 
       const now = new Date();
 
-      const { ultimateDueDate } = subscription;
+      const { expiresOn } = subscription;
 
-      if (new Date(ultimateDueDate) > new Date(now)) {
+      if (new Date(expiresOn) > new Date(now)) {
         let days = 0;
 
-        if (
-          new Date(ultimateDueDate).getDate() - new Date(now).getDate() ===
-          3
-        ) {
+        if (new Date(expiresOn).getDate() - new Date(now).getDate() === 3) {
           days = 3;
         }
 
-        if (
-          new Date(ultimateDueDate).getDate() - new Date(now).getDate() ===
-          2
-        ) {
+        if (new Date(expiresOn).getDate() - new Date(now).getDate() === 2) {
           days = 2;
         }
 
-        if (
-          new Date(ultimateDueDate).getDate() - new Date(now).getDate() ===
-          1
-        ) {
+        if (new Date(expiresOn).getDate() - new Date(now).getDate() === 1) {
           days = 1;
         }
 

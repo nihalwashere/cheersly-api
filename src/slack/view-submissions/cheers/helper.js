@@ -1,51 +1,139 @@
 const pMap = require("p-map");
+const RecognitionTeamsModel = require("../../../mongo/models/RecognitionTeams");
+const CheersStatsModel = require("../../../mongo/models/CheersStats");
+const UserModel = require("../../../mongo/models/User");
 const {
-  addUser,
-  getUserDataBySlackUserId,
-} = require("../../../mongo/helper/user");
-const { getSlackUser } = require("../../api");
-const { UserRoles } = require("../../../enums/userRoles");
+  BLOCK_IDS: { SUBMIT_CHEERS_TO_USERS },
+} = require("../../../global/constants");
+const {
+  getConversationMembers,
+} = require("../../pagination/conversations-members");
+const { slackPostMessageToChannel } = require("../../api");
+const { createCheersNewsInDMTemplate } = require("./template");
 const logger = require("../../../global/logger");
 
-const validateRecipients = async (teamId, recipients, senderUsername) => {
+const validateRecipients = async (
+  teamId,
+  recipients,
+  senderUserId,
+  recognitionTeamId,
+  channelId
+) => {
   try {
     const validRecipients = [];
 
-    const handler = async recipient => {
-      const user = await getUserDataBySlackUserId(recipient);
+    let recognitionTeam = {};
 
-      if (user && user.slackUserData.name !== senderUsername) {
-        validRecipients.push(user.slackUserData.name);
-      }
+    for (let i = 0; i < recipients.length; i += 1) {
+      const recipient = recipients[i];
+
+      const user = await UserModel.findOne({
+        "slackUserData.id": recipient,
+        "slackUserData.team_id": teamId,
+        slackDeleted: false,
+      });
+
+      recognitionTeam = await RecognitionTeamsModel.findOne({
+        _id: recognitionTeamId,
+        teamId,
+      });
 
       if (!user) {
-        const slackUserData = await getSlackUser(teamId, recipient);
+        await getConversationMembers(teamId, recognitionTeamId, channelId);
+
+        recognitionTeam = await RecognitionTeamsModel.findOne({
+          _id: recognitionTeamId,
+          teamId,
+        });
+
+        const newlySyncedUser = await UserModel.findOne({
+          "slackUserData.id": recipient,
+          "slackUserData.team_id": teamId,
+          slackDeleted: false,
+        });
 
         if (
-          !slackUserData.deleted &&
-          !slackUserData.is_bot &&
-          slackUserData.name !== "slackbot"
+          !newlySyncedUser ||
+          !recognitionTeam.members.includes(newlySyncedUser._id)
         ) {
-          // add new user
-
-          await addUser({
-            slackUserData,
-            slackDeleted: false,
-            appHomePublished: false,
-            role: slackUserData.is_admin ? UserRoles.ADMIN : UserRoles.MEMBER,
-          });
-
-          validRecipients.push(slackUserData.name);
+          return {
+            errors: {
+              [SUBMIT_CHEERS_TO_USERS]:
+                "Contains users who aren't in this channel.",
+            },
+          };
         }
+
+        validRecipients.push({
+          id: newlySyncedUser.slackUserData.id,
+          name: newlySyncedUser.slackUserData.real_name,
+        });
       }
-    };
 
-    await pMap(recipients, handler, { concurrency: 1 });
+      if (user && user.slackUserData.id === senderUserId) {
+        return {
+          errors: {
+            [SUBMIT_CHEERS_TO_USERS]:
+              "Oops! You can't give yourself a shoutout, for obvious reasons, duhh!",
+          },
+        };
+      }
 
-    return validRecipients;
+      if (!recognitionTeam.members.includes(user._id)) {
+        return {
+          errors: {
+            [SUBMIT_CHEERS_TO_USERS]:
+              "Contains users who aren't in this channel.",
+          },
+        };
+      }
+
+      if (user) {
+        validRecipients.push({
+          id: user.slackUserData.id,
+          name: user.slackUserData.real_name,
+        });
+      }
+    }
+
+    return { validRecipients };
   } catch (error) {
     logger.error("validateRecipients() -> error : ", error);
   }
 };
 
-module.exports = { validateRecipients };
+const shareCheersNewsWithRecipientsInDM = async (
+  teamId,
+  recipients,
+  permaLink,
+  points,
+  senderUserId,
+  channelId
+) => {
+  try {
+    const handler = async recipient => {
+      const cheersStat = await CheersStatsModel.findOne({
+        slackUserId: recipient.id,
+        teamId,
+      });
+
+      await slackPostMessageToChannel(
+        recipient.id,
+        teamId,
+        createCheersNewsInDMTemplate(
+          permaLink,
+          points,
+          cheersStat.cheersRedeemable,
+          senderUserId,
+          channelId
+        )
+      );
+    };
+
+    await pMap(recipients, handler, { concurrency: 1 });
+  } catch (error) {
+    logger.error("shareCheersNewsWithRecipientsInDM() -> error : ", error);
+  }
+};
+
+module.exports = { validateRecipients, shareCheersNewsWithRecipientsInDM };

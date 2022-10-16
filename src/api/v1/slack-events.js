@@ -22,7 +22,7 @@ const {
 } = require("../../mongo/helper/user");
 const { postInternalMessage } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
-const { publishStats } = require("../../slack/app-home");
+const { publishAppHome } = require("../../slack/app-home");
 const {
   isSubscriptionValidForSlack,
   verifySlackRequest,
@@ -76,7 +76,7 @@ router.post("/", async (req, res) => {
       const user = await getUserDataBySlackUserId(slackUserId);
 
       if (!user) {
-        await publishStats({ teamId: team_id, slackUserId });
+        await publishAppHome({ teamId: team_id, slackUserId });
 
         return await updateAppHomePublishedForUser(slackUserId, true);
       }
@@ -95,10 +95,9 @@ router.post("/", async (req, res) => {
           }
         }
 
-        await publishStats({
+        await publishAppHome({
           teamId: team_id,
           slackUserId,
-          slackUsername: user.slackUserData.name,
           isSubscriptionExpired,
           isTrialPlan,
         });

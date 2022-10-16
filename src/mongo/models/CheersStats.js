@@ -4,7 +4,7 @@ const collection = "CheersStats";
 
 const CheersStatsSchema = new mongoose.Schema(
   {
-    slackUsername: {
+    slackUserId: {
       type: String,
       index: true,
     },
@@ -22,10 +22,11 @@ const CheersStatsSchema = new mongoose.Schema(
       type: Number,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
-CheersStatsSchema.index({ slackUsername: 1, teamId: 1 });
+CheersStatsSchema.index({ slackUserId: 1, teamId: 1 });
 
 const CheersStats = mongoose.model(collection, CheersStatsSchema);
+
 module.exports = CheersStats;

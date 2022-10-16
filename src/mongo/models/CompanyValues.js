@@ -4,18 +4,18 @@ const collection = "CompanyValues";
 
 const CompanyValuesSchema = new mongoose.Schema(
   {
+    teamId: {
+      type: String,
+      index: true,
+    },
     title: {
       type: String,
     },
     description: {
       type: String,
     },
-    teamId: {
-      type: String,
-      index: true,
-    },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const CompanyValues = mongoose.model(collection, CompanyValuesSchema);

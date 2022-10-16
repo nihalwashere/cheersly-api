@@ -3,6 +3,8 @@ const {
   SLACK_API,
   SLACK_CLIENT_ID,
   SLACK_CLIENT_SECRET,
+  SLACK_SIGNUP_REDIRECT_URI,
+  SLACK_LOGIN_REDIRECT_URI,
 } = require("../global/config");
 const {
   getAuthDataForSlackTeam,
@@ -34,32 +36,6 @@ const postMessage = async (messagePayload, bot_access_token) => {
   }
 };
 
-const openDialog = async (messagePayload, bot_access_token) => {
-  try {
-    const req = await fetch(`${SLACK_API}/dialog.open`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${bot_access_token}`,
-      },
-      body: JSON.stringify(messagePayload),
-    });
-
-    const res = await req.json();
-
-    logger.info("openDialog() -> res : ", res);
-
-    return res;
-  } catch (error) {
-    logger.error(
-      `openDialog() : Failed to open dialog -> messagePayload : ${JSON.stringify(
-        messagePayload
-      )} -> `,
-      error
-    );
-  }
-};
-
 const getSlackUser = async (teamId, user) => {
   try {
     const bot_access_token = await getSlackBotTokenForTeam(teamId);
@@ -75,7 +51,7 @@ const getSlackUser = async (teamId, user) => {
     );
     const res = await req.json();
 
-    logger.info("getSlackUser() -> res : ", res);
+    logger.debug("getSlackUser() -> res : ", res);
 
     const slackUser = res.user;
 
@@ -85,20 +61,26 @@ const getSlackUser = async (teamId, user) => {
   }
 };
 
-const getSlackTokenForUser = async code => {
+const getSlackTokenForUser = async ({ code, isSignUp = false }) => {
   try {
     const details = {
+      code,
       client_id: SLACK_CLIENT_ID,
       client_secret: SLACK_CLIENT_SECRET,
-      code,
+      redirect_uri: isSignUp
+        ? SLACK_SIGNUP_REDIRECT_URI
+        : SLACK_LOGIN_REDIRECT_URI,
     };
 
     let formBody = [];
     for (const property in details) {
       const encodedKey = encodeURIComponent(property);
+
       const encodedValue = encodeURIComponent(details[property]);
+
       formBody.push(`${encodedKey}=${encodedValue}`);
     }
+
     formBody = formBody.join("&");
 
     const req = await fetch(`${SLACK_API}/oauth.v2.access`, {
@@ -111,7 +93,7 @@ const getSlackTokenForUser = async code => {
 
     const res = await req.json();
 
-    logger.info("getSlackTokenForUser() -> res : ", res);
+    logger.debug("getSlackTokenForUser() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -136,7 +118,7 @@ const slackPostMessageToChannel = async (
 
     const response = await postMessage(messagePayload, bot_access_token);
 
-    logger.info("slackPostMessageToChannel() -> response : ", response);
+    logger.debug("slackPostMessageToChannel() -> response : ", response);
 
     return response;
   } catch (error) {
@@ -164,7 +146,7 @@ const openModal = async (teamId, trigger_id, view) => {
 
     const res = await req.json();
 
-    logger.info("openModal() -> res : ", res);
+    logger.debug("openModal() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -189,7 +171,7 @@ const updateModal = async ({ teamId, viewId, hash, view }) => {
 
     const res = await req.json();
 
-    logger.info("updateModal() -> res : ", res);
+    logger.debug("updateModal() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -214,7 +196,7 @@ const pushViewToModal = async (teamId, trigger_id, view) => {
 
     const res = await req.json();
 
-    logger.info("pushViewToModal() -> res : ", res);
+    logger.debug("pushViewToModal() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -237,11 +219,35 @@ const conversationsInvite = async (teamId, channel) => {
 
     const res = await req.json();
 
-    logger.info("conversationsInvite() -> res : ", res);
+    logger.debug("conversationsInvite() -> res : ", res);
 
     return res;
   } catch (error) {
     logger.error("conversationsInvite() -> error : ", error);
+  }
+};
+
+const conversationsList = async teamId => {
+  try {
+    const bot_access_token = await getSlackBotTokenForTeam(teamId);
+
+    const req = await fetch(
+      `${SLACK_API}/conversations.list?exclude_archived=true`,
+      {
+        method: "get",
+        headers: {
+          Authorization: `Bearer ${bot_access_token}`,
+        },
+      }
+    );
+
+    const res = await req.json();
+
+    logger.debug("conversationsList() -> res : ", res);
+
+    return res;
+  } catch (error) {
+    logger.error("conversationsList() -> error : ", error);
   }
 };
 
@@ -256,7 +262,7 @@ const postInternalMessage = async (teamId, channel, message) => {
 
     const response = await postMessage(messagePayload, bot_access_token);
 
-    logger.info("postInternalMessage() -> response : ", response);
+    logger.debug("postInternalMessage() -> response : ", response);
 
     return response;
   } catch (error) {
@@ -288,7 +294,7 @@ const postMessageToHook = async (teamId, message) => {
 
     const res = await req.text();
 
-    logger.info("postMessageToHook() -> res : ", res);
+    logger.debug("postMessageToHook() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -317,7 +323,7 @@ const postMessageToResponseUrl = async ({
 
     const res = await req.json();
 
-    logger.info("postMessageToResponseUrl() -> res : ", res);
+    logger.debug("postMessageToResponseUrl() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -340,7 +346,7 @@ const publishView = async (teamId, user_id, view) => {
 
     const res = await req.json();
 
-    logger.info("publishView() -> res : ", res);
+    logger.debug("publishView() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -363,7 +369,7 @@ const updateChat = async (teamId, channel, ts, blocks) => {
 
     const res = await req.json();
 
-    logger.info("updateChat() -> res : ", res);
+    logger.debug("updateChat() -> res : ", res);
 
     return res;
   } catch (error) {
@@ -392,11 +398,35 @@ const postEphemeralMessage = async (channel, user, teamId, blocks) => {
 
     const res = await req.json();
 
-    logger.info("postEphemeralMessage() -> response : ", res);
+    logger.debug("postEphemeralMessage() -> response : ", res);
 
     return res;
   } catch (error) {
     logger.error(`postEphemeralMessage() -> error : `, error);
+  }
+};
+
+const getPermaLink = async (teamId, channelId, messageTimestamp) => {
+  try {
+    const bot_access_token = await getSlackBotTokenForTeam(teamId);
+
+    const req = await fetch(
+      `${SLACK_API}/chat.getPermalink?channel=${channelId}&message_ts=${messageTimestamp}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${bot_access_token}`,
+        },
+      }
+    );
+
+    const res = await req.json();
+
+    logger.debug("getPermaLink() -> response : ", res);
+
+    return res;
+  } catch (error) {
+    logger.error(`getPermaLink() -> error : `, error);
   }
 };
 
@@ -407,7 +437,6 @@ module.exports = {
   openModal,
   updateModal,
   pushViewToModal,
-  openDialog,
   postInternalMessage,
   postMessageToHook,
   postMessageToResponseUrl,
@@ -415,4 +444,6 @@ module.exports = {
   publishView,
   updateChat,
   postEphemeralMessage,
+  conversationsList,
+  getPermaLink,
 };

@@ -1,10 +1,10 @@
 {
   "name": "cheersly",
   "version": "1.0.0",
-  "description": "Build an awesome remote work culture!",
+  "description": "Build cheerful teams!",
   "main": "server.js",
   "scripts": {
-    "start": "nf start",
+    "start": "node server.js",
     "lint": "eslint --ext .js .",
     "prettier": "prettier --write ./**/*.js"
   },
@@ -24,21 +24,19 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "cron": "^2.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-graphql": "^0.12.0",
-    "foreman": "^3.0.1",
-    "graphql": "^15.5.0",
-    "graphql-iso-date": "^3.6.1",
+    "jsonwebtoken": "^8.5.1",
     "log4js": "^6.3.0",
     "moment-timezone": "^0.5.32",
     "mongoose": "^5.11.5",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.30",
-    "node-cron": "^3.0.0",
     "node-fetch": "^2.6.1",
     "p-map": "^4.0.0",
-    "ramda": "^0.27.1"
+    "ramda": "^0.27.1",
+    "stripe": "^8.217.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

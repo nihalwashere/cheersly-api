@@ -8,7 +8,7 @@ const IceBreakerQuestionsSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const IceBreakerQuestions = mongoose.model(

@@ -46,7 +46,7 @@ const TwoTruthsAndALieSchema = new mongoose.Schema(
       type: Array,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const TwoTruthsAndALie = mongoose.model(collection, TwoTruthsAndALieSchema);

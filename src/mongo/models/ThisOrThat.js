@@ -32,7 +32,7 @@ const ThisOrThatSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const ThisOrThat = mongoose.model(collection, ThisOrThatSchema);

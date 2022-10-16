@@ -20,7 +20,7 @@ const PollAnswersSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 PollAnswersSchema.index({ slackUserId: 1, teamId: 1, pollId: 1 });

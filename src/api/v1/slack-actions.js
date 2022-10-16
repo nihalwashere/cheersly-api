@@ -59,6 +59,12 @@ router.post("/", async (req, res) => {
           .send({ response_action: "update", view: response.view });
       }
 
+      if (response && response.errors) {
+        return res
+          .status(200)
+          .send({ response_action: "errors", errors: response.errors });
+      }
+
       return res.status(200).send({});
     }
 

@@ -18,7 +18,7 @@ const MatchMomentsSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const MatchMoments = mongoose.model(collection, MatchMomentsSchema);

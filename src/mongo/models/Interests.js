@@ -16,7 +16,7 @@ const InterestsSchema = new mongoose.Schema(
       type: Array,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const Interests = mongoose.model(collection, InterestsSchema);

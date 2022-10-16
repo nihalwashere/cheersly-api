@@ -39,7 +39,7 @@ const PollQuestionsSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection }
 );
 
 const PollQuestions = mongoose.model(collection, PollQuestionsSchema);
