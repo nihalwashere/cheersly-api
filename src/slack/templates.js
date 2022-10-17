@@ -35,9 +35,100 @@ const {
     FEEDBACK_CHANNEL_VALUE,
     FEEDBACK_IS_ANONYMOUS_VALUE,
   },
-  SLACK_ACTIONS: { CUSTOMER_FEEDBACK },
 } = require("../global/constants");
 const { getAppHomeLink } = require("../utils/common");
+
+const createAppInstalledTemplate = ({ teamId, teamName, authedUser }) => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `*Slack app installed by team - ${teamName} - ${teamId}`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Authed user*",
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Name: ${authedUser.profile.real_name}`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Email: ${authedUser.profile.email}`,
+      },
+    },
+  ];
+};
+
+const createAppUninstalledTemplate = ({
+  teamId,
+  teamName,
+  authedUser,
+  userWhoDeleted,
+}) => {
+  return [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `*Slack app uninstalled by team - ${teamName} - ${teamId}`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*Authed user*",
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Name: ${authedUser.profile.real_name}`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Email: ${authedUser.profile.email}`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: "*User who deleted*",
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Name: ${userWhoDeleted.profile.real_name}`,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Email: ${userWhoDeleted.profile.email}`,
+      },
+    },
+  ];
+};
 
 const createAPITokensRevokedTemplate = teamId => {
   return [
@@ -46,30 +137,6 @@ const createAPITokensRevokedTemplate = teamId => {
       text: {
         type: "mrkdwn",
         text: "API tokens revoked by team - " + teamId,
-      },
-    },
-  ];
-};
-
-const createAppUninstalledTemplate = teamId => {
-  return [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "Slack app uninstalled by team - " + teamId,
-      },
-    },
-  ];
-};
-
-const createAppInstalledTemplate = teamId => {
-  return [
-    {
-      type: "section",
-      text: {
-        type: "mrkdwn",
-        text: "App installed by team - " + teamId,
       },
     },
   ];
@@ -732,9 +799,9 @@ const createUpgradeSubscriptionTemplate = () => {
 };
 
 module.exports = {
-  createAPITokensRevokedTemplate,
-  createAppUninstalledTemplate,
   createAppInstalledTemplate,
+  createAppUninstalledTemplate,
+  createAPITokensRevokedTemplate,
   createSubmitAPollTemplate,
   submitCheersTemplate,
   createInternalFeedbackTemplate,

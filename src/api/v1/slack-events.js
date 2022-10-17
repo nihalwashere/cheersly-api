@@ -14,13 +14,16 @@ const {
   INTERNAL_SLACK_TEAM_ID,
   INTERNAL_SLACK_CHANNEL_ID,
 } = require("../../global/config");
-const { deleteSlackAuthByTeamId } = require("../../mongo/helper/auth");
+const {
+  getAuthDataForSlackTeam,
+  deleteSlackAuthByTeamId,
+} = require("../../mongo/helper/auth");
 const {
   getUserDataBySlackUserId,
   deleteSlackUsersByTeamId,
   updateAppHomePublishedForUser,
 } = require("../../mongo/helper/user");
-const { postInternalMessage } = require("../../slack/api");
+const { getSlackUser, postInternalMessage } = require("../../slack/api");
 const { handleDirectMessage } = require("../../slack/events/direct-message");
 const { publishStats } = require("../../slack/app-home");
 const {
@@ -54,7 +57,7 @@ router.post("/", async (req, res) => {
       return res.status(status).send(message);
     }
 
-    const { team_id, event } = req.body;
+    const { team_id: teamId, user_id: userId, event } = req.body;
 
     // CHALLENGE
     if (req.body.challenge) {
@@ -76,13 +79,13 @@ router.post("/", async (req, res) => {
       const user = await getUserDataBySlackUserId(slackUserId);
 
       if (!user) {
-        await publishStats({ teamId: team_id, slackUserId });
+        await publishStats({ teamId, slackUserId });
 
         return await updateAppHomePublishedForUser(slackUserId, true);
       }
 
       if (user && !user.appHomePublished) {
-        const subscriptionInfo = await isSubscriptionValidForSlack(team_id);
+        const subscriptionInfo = await isSubscriptionValidForSlack(teamId);
 
         let isSubscriptionExpired = false;
         let isTrialPlan = true;
@@ -96,7 +99,7 @@ router.post("/", async (req, res) => {
         }
 
         await publishStats({
-          teamId: team_id,
+          teamId,
           slackUserId,
           slackUsername: user.slackUserData.name,
           isSubscriptionExpired,
@@ -126,7 +129,7 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
       logger.info("TOKENS_REVOKED");
 
-      const apiTokensRevokedTemplate = createAPITokensRevokedTemplate(team_id);
+      const apiTokensRevokedTemplate = createAPITokensRevokedTemplate(teamId);
 
       await postInternalMessage(
         INTERNAL_SLACK_TEAM_ID,
@@ -140,7 +143,25 @@ router.post("/", async (req, res) => {
       res.sendStatus(200);
       logger.info("SLACK_APP_UNINSTALLED");
 
-      const slackAppUninstalledTemplate = createAppUninstalledTemplate(team_id);
+      const auth = await getAuthDataForSlackTeam(teamId);
+
+      const {
+        slackInstallation: {
+          authed_user: { id: authedUserId },
+          team: { name: teamName },
+        },
+      } = auth;
+
+      const authedUser = await getSlackUser(teamId, authedUserId);
+
+      const userWhoDeleted = await getSlackUser(teamId, userId);
+
+      const slackAppUninstalledTemplate = createAppUninstalledTemplate({
+        teamId,
+        teamName,
+        authedUser,
+        userWhoDeleted,
+      });
 
       await postInternalMessage(
         INTERNAL_SLACK_TEAM_ID,
@@ -150,8 +171,8 @@ router.post("/", async (req, res) => {
 
       // update user and auth, set slack deleted to true for this team
 
-      await deleteSlackUsersByTeamId(team_id);
-      await deleteSlackAuthByTeamId(team_id);
+      await deleteSlackUsersByTeamId(teamId);
+      await deleteSlackAuthByTeamId(teamId);
     }
   } catch (error) {
     logger.error("/slack-events -> error : ", error);

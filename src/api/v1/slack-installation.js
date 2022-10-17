@@ -16,6 +16,7 @@ const {
   upsertAuth,
   getAuthDeletedOrNotDeleted,
 } = require("../../mongo/helper/auth");
+const { getUserDataBySlackUserId } = require("../../mongo/helper/user");
 const {
   addDefaultCompanyValuesForTeam,
 } = require("../../mongo/helper/companyValues");
@@ -36,7 +37,7 @@ router.post("/slack-install", async (req, res) => {
 
       if (slackTokenPayload && slackTokenPayload.ok === true) {
         const {
-          team: { id: teamId },
+          team: { id: teamId, name: teamName },
           access_token,
           authed_user: { id: authedUserId },
         } = slackTokenPayload;
@@ -62,10 +63,16 @@ router.post("/slack-install", async (req, res) => {
           await sendOnBoardingInstructions(teamId, authedUserId);
         }
 
+        const authedUser = await getUserDataBySlackUserId(authedUserId);
+
         await postInternalMessage(
           INTERNAL_SLACK_TEAM_ID,
           INTERNAL_SLACK_CHANNEL_ID,
-          createAppInstalledTemplate(teamId)
+          createAppInstalledTemplate({
+            teamId,
+            teamName,
+            authedUser: authedUser.slackUserData,
+          })
         );
       }
     }
