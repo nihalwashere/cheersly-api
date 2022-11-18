@@ -158,15 +158,22 @@ router.post("/", async (req, res) => {
 
       isCommandValid = true;
 
-      res.send("");
-
-      return await handleCheersCommand(
+      const response = await handleCheersCommand(
         team_id,
         user_id,
         trigger_id,
         channel_id,
         channel_name
       );
+
+      if (response.message) {
+        return res.status(200).json({
+          response_type: "ephemeral",
+          blocks: response.blocks,
+        });
+      }
+
+      return res.send("");
     }
 
     // if (isPollCommand(text)) {

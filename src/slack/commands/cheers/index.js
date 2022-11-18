@@ -35,12 +35,16 @@ const handleCheersCommand = async (
     );
 
     if (!recognitionTeam) {
-      return await postEphemeralMessage(
-        channelId,
-        userId,
-        teamId,
-        createChannelNotSetupTemplate(teamId, recognitionTeams)
-      );
+      return {
+        message: true,
+        blocks: createChannelNotSetupTemplate(teamId, recognitionTeams),
+      };
+      // return await postEphemeralMessage(
+      //   channelId,
+      //   userId,
+      //   teamId,
+      //   createChannelNotSetupTemplate(teamId, recognitionTeams)
+      // );
     }
 
     const teamSettings = await SettingsModel.findOne({ teamId });

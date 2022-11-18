@@ -237,9 +237,11 @@ const getChannelString = (teamId, recognitionTeams) => {
   let channelString = "";
 
   recognitionTeams.map((elem, index) => {
-    channelString += `<${getChannelDeepLink(teamId, elem.channel.id)}|#${
-      elem.channel.name
-    }>${recognitionTeams.length === index + 1 ? "" : ", "}`;
+    if (elem.channel.id && elem.channel.name) {
+      channelString += `<${getChannelDeepLink(teamId, elem.channel.id)}|#${
+        elem.channel.name
+      }>${recognitionTeams.length === index + 1 ? "" : ", "}`;
+    }
   });
 
   return channelString;
