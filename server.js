@@ -26,11 +26,8 @@ app.use(
 app.use(express.raw({ verify: rawBodySaver, type: "*/*", limit: "50mb" }));
 
 const whitelist = [
-  "https://www.cheersly.club",
-  "https://dev.cheersly.club",
-  "https://cheersly.club",
-  "https://app.cheersly.club",
-  "https://app-dev.cheersly.club",
+  "https://cheersly-web.nihalwashere.xyz",
+  "https://cheersly-app.nihalwashere.xyz",
   "http://localhost:7000",
   "https://localhost:3000",
   "http://localhost:3000",
